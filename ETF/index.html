@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="css/proto-supplement.css">
 <style>
 /* quick per-page overrides only — all base styles are in proto-supplement.css */
+a[title="Charting by TradingView"] { display: none !important; }
+.stk-range-btn {
+  font-size: 11px; padding: 2px 7px; border-radius: 4px; border: none; cursor: pointer;
+  background: transparent; color: var(--color-gray-600);
+  transition: color 0.15s, background-color 0.15s;
+}
+.stk-range-btn:hover { color: var(--color-gray-900); }
+.stk-range-btn[data-state="active"] { background: var(--color-tint-300); color: var(--color-theme-550); font-weight: 500; }
 </style>
 </head>
 <body style="margin:0;font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;background:var(--color-gray-125);">
@@ -165,52 +173,58 @@
                         <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">臺灣積體電路製造<span class="text-[11px] text-gray-450 dark:text-white/40 ml-1.5">2330</span></h2>
                     </div>
                 </div>
-                <div class="h-auto">
-                    <div class="flex flex-col w-full h-full rounded bg-transparent p-0">
-                        <div class="relative flex-grow w-full min-h-[300px]">
-                            <div class="w-full h-full touch-none">
-                                <div id="mts-chart_6" class=" Matisse xq-default.dark" mts="6" style="height: 300px;">
-                                    <div class="mts-mask"></div>
-                                    <div class="mts-view"><canvas class="mts-chartBg" width="2864" height="600" style="width: 1432px; height: 300px;"></canvas><canvas class="mts-chartFg" width="2864" height="600" style="width: 1432px; height: 300px;"></canvas><svg class="mts-svg" width="1432" height="300" style="width: 1432px; height: 300px;"></svg>
-                                        <div class="mts-sensor unselectable" unselectable="on" tabindex="0">
-                                            <div class="mts-tip">
-                                                <div class="mts-tip-rng">
-                                                    <div class="mts-tip-lineX" style="top: 7px; height: calc(100% - 7px); left: 225px; display: block;"></div>
-                                                    <div class="mts-tip-lineY" style="left: 32px; width: 1398px; top: 8px; display: block;"></div>
-                                                    <div class="mts-tip-msgX" style="top: 282px; display: none;"></div>
-                                                    <div class="mts-tip-msgY" style="left: 1433px; display: none;"></div>
-                                                    <div class="mts-tip-focus" style="display: none;">
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mts-tip-tmpl"></div>
-                                            <div class="mts-fgTxt">
-                                                <div class="mts-fgTxt-rng" style="width: 1430px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mts-sliderView hidden unselectable" unselectable="on">
-                                        <div class="mts-sldView-sld"><canvas class="mts-chartBg"></canvas><svg class="mts-svg"></svg>
-                                            <div class="mts-slider">
-                                                <div class="mts-sld-block">
-                                                    <div class="mts-sld-innerBlock"></div>
-                                                </div>
-                                                <div class="mts-sld-rngL">
-                                                    <div class="mts-sld-innerRngL"></div>
-                                                </div>
-                                                <div class="mts-sld-rngR">
-                                                    <div class="mts-sld-innerRngR"></div>
-                                                </div>
-                                                <div class="mts-sld-arrowL"></div>
-                                                <div class="mts-sld-arrowR"></div><span class="mts-sld-msgL"></span><span class="mts-sld-msgR"></span>
-                                            </div>
-                                        </div>
-                                        <div class="mts-sldView-cmd"></div>
-                                    </div>
-                                </div>
+                <!-- ── 買賣超圖表 ── -->
+                <div class="shrink-0 border-b border-gray-200">
+                    <div class="flex items-center justify-between pt-3 pb-2 gap-3">
+                        <!-- 左：兩組 segment -->
+                        <div class="flex items-center gap-2">
+                            <!-- 張數 / 金額 -->
+                            <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8"
+                                 role="radiogroup" id="stk-seg-metric">
+                                <button type="button" role="radio" aria-checked="true"
+                                        data-slot="segment-item" data-state="active" data-position="first"
+                                        class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
+                                        onclick="setStkMetric('shares',this)">
+                                    <span class="segment-text">張數</span>
+                                </button>
+                                <button type="button" role="radio" aria-checked="false"
+                                        data-slot="segment-item" data-state="inactive" data-position="last"
+                                        class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
+                                        onclick="setStkMetric('amount',this)">
+                                    <span class="segment-text">金額</span>
+                                </button>
+                            </div>
+                            <!-- 每日 / 累積 -->
+                            <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8"
+                                 role="radiogroup" id="stk-seg-agg">
+                                <button type="button" role="radio" aria-checked="true"
+                                        data-slot="segment-item" data-state="active" data-position="first"
+                                        class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
+                                        onclick="setStkAgg('daily',this)">
+                                    <span class="segment-text">每日</span>
+                                </button>
+                                <button type="button" role="radio" aria-checked="false"
+                                        data-slot="segment-item" data-state="inactive" data-position="last"
+                                        class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
+                                        onclick="setStkAgg('cumulative',this)">
+                                    <span class="segment-text">累積</span>
+                                </button>
                             </div>
                         </div>
+                        <!-- 右：日期範圍 -->
+                        <div class="flex items-center gap-0.5">
+                            <button class="stk-range-btn" data-state="inactive" onclick="setStkRange('1w',this)">近一週</button>
+                            <button class="stk-range-btn" data-state="active"   onclick="setStkRange('1m',this)">近一月</button>
+                            <button class="stk-range-btn" data-state="inactive" onclick="setStkRange('6m',this)">近半年</button>
+                            <button class="stk-range-btn" data-state="inactive" onclick="setStkRange('1y',this)">近一年</button>
+                        </div>
+                    </div>
+                    <div style="position:relative;">
+                        <div id="stk-chart-legend" style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:11px;color:#9ca3af;z-index:10;pointer-events:none;white-space:nowrap;">
+                            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:12px;height:12px;background:#6366f1;border-radius:2px;flex-shrink:0;"></span>買賣超張數</span>
+                            <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:18px;height:2px;background:#f59e0b;flex-shrink:0;"></span>收盤價</span>
+                        </div>
+                        <div id="stk-flow-chart" style="height:240px;width:100%;"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2.5 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto"><span class="text-[12px] text-gray-600 whitespace-nowrap">期間</span><button type="button" role="combobox" aria-controls="radix-:r2t:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-slot="select-trigger" data-variant="stroke" data-size="sm" class="ui-select inline-flex items-center justify-between gap-2 min-w-[68px] rounded-sm text-scope-6 leading-tool-p-6 font-medium whitespace-nowrap transition-all outline-none select-none cursor-pointer disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 px-2 py-1.5 h-7 text-[12px]"><span class="flex items-center gap-1 overflow-hidden min-w-0"><span style="pointer-events: none;">近一個月</span></span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0" data-slot="select-icon" aria-hidden="true">
@@ -1346,73 +1360,148 @@ tick(); setInterval(tick, 60000);
 <!-- ═══ TradingView Lightweight Charts ═══ -->
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <script>
-const UP_COLOR = '#26a69a', DOWN_COLOR = '#ef5350';
-const UP_VOL = 'rgba(38,166,154,0.45)', DOWN_VOL = 'rgba(239,83,80,0.45)';
-
-const CANDLE_DATA = (() => {
-  const data = []; let price = 56.0;
-  const start = new Date('2025-04-01');
-  for (let i = 0; i < 260; i++) {
-    const d = new Date(start); d.setDate(start.getDate()+i);
+// ── Mock data: TSMC (2330) 買賣超 2026/02/03–2026/04/30 ──
+const STK_FLOW_RAW = (() => {
+  const days = [];
+  for (let d = new Date('2026-02-03'); d <= new Date('2026-04-30'); d.setDate(d.getDate()+1)) {
     if (d.getDay()===0||d.getDay()===6) continue;
-    const drift = (Math.random()-0.48)*0.9;
-    const open  = +(price+(Math.random()-0.5)*0.5).toFixed(2);
-    const close = +(open+drift).toFixed(2);
-    const high  = +(Math.max(open,close)+Math.random()*0.9).toFixed(2);
-    const low   = +(Math.min(open,close)-Math.random()*0.9).toFixed(2);
-    const volume = Math.round((10000+Math.random()*30000)*(1+Math.abs(drift)*1.5));
-    data.push({time:d.toISOString().slice(0,10),open,high,low,close,volume});
-    price = close;
+    days.push(d.toISOString().slice(0,10));
   }
-  return data;
+  const n = days.length;
+  // Price path: flat/rise → dip mid-Apr → sharp rise late Apr (matches screenshot)
+  const prices = days.map((_,i) => {
+    const t = i/(n-1);
+    let p;
+    if      (t<0.22) p = 1870 + t/0.22*80;
+    else if (t<0.27) p = 1950 - (t-0.22)/0.05*60;
+    else if (t<0.52) p = 1890 + (t-0.27)/0.25*30;
+    else if (t<0.65) p = 1920 - (t-0.52)/0.13*120;
+    else             p = 1800 + (t-0.65)/0.35*500;
+    return Math.round(p + (Math.random()-0.5)*18);
+  });
+  // Daily net shares: mostly buy (red), occasional sell (green), peak late Apr
+  const rng = (lo,hi) => Math.round(lo + Math.random()*(hi-lo));
+  const shares = days.map((_,i) => {
+    const t = i/(n-1);
+    if (t>0.83&&t<0.93) return rng(1100,2100);   // big buying Apr 20-24
+    if (t>0.93)         return rng(200,600);
+    if (Math.random()<0.13) return -rng(30,200);  // ~13% sell days
+    return rng(30,450);
+  });
+  // Cumulative shares
+  let cum=0;
+  const cumShares = shares.map(s=>(cum+=s,cum));
+  // Daily amount (萬元)
+  const amounts = shares.map((s,i)=>Math.round(s*prices[i]/10));
+  // Cumulative amount
+  let cumA=0;
+  const cumAmounts = amounts.map(a=>(cumA+=a,cumA));
+  return {days,prices,shares,cumShares,amounts,cumAmounts};
 })();
 
-let chart, candleSeries, volSeries;
+let stkChart, stkBarSeries, stkPriceLine;
+let stkMetric = 'shares';   // 'shares' | 'amount'
+let stkAgg    = 'daily';    // 'daily'  | 'cumulative'
+let stkRange  = '1m';       // '1w' | '1m' | '6m' | '1y'
 
-function initKlineChart() {
-  const container = document.getElementById('kline-chart');
-  if (!container || chart) return;
-  chart = LightweightCharts.createChart(container, {
-    width: container.clientWidth, height: 300,
-    layout: { background:{color:'#131722'}, textColor:'#9ca3af' },
-    grid: { vertLines:{color:'rgba(255,255,255,.05)'}, horzLines:{color:'rgba(255,255,255,.05)'} },
+function initStkFlowChart() {
+  const container = document.getElementById('stk-flow-chart');
+  if (!container || stkChart) return;
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  const bgColor = isDark ? '#1b1b1b' : '#ffffff';
+  stkChart = LightweightCharts.createChart(container, {
+    width: container.clientWidth, height: 240,
+    layout: { background:{type:'solid',color:bgColor}, textColor: isDark?'#9ca3af':'#6b7280', fontSize:11 },
+    grid: { vertLines:{color:'rgba(128,128,128,0.08)'}, horzLines:{color:'rgba(128,128,128,0.08)'} },
     crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    rightPriceScale: { borderColor:'rgba(255,255,255,.1)' },
-    timeScale: { borderColor:'rgba(255,255,255,.1)', timeVisible:true },
+    leftPriceScale:  { visible:true,  borderColor:'rgba(128,128,128,0.2)' },
+    rightPriceScale: { visible:true,  borderColor:'rgba(128,128,128,0.2)' },
+    timeScale: { borderColor:'rgba(128,128,128,0.2)', timeVisible:false },
+    handleScroll: true, handleScale: false,
   });
-  candleSeries = chart.addCandlestickSeries({
-    upColor:UP_COLOR, downColor:DOWN_COLOR, borderVisible:false,
-    wickUpColor:UP_COLOR, wickDownColor:DOWN_COLOR,
+  stkBarSeries = stkChart.addHistogramSeries({
+    priceScaleId: 'left', base: 0,
+    priceFormat: { type:'custom', formatter: v=>Math.round(v).toLocaleString('zh-TW') },
+    lastValueVisible: false, priceLineVisible: false,
   });
-  volSeries = chart.addHistogramSeries({
-    color:UP_VOL, priceFormat:{type:'volume'}, priceScaleId:'vol',
+  stkPriceLine = stkChart.addLineSeries({
+    priceScaleId: 'right',
+    color: '#f59e0b', lineWidth: 2,
+    priceFormat: { type:'price', precision:0, minMove:1 },
+    crosshairMarkerBackgroundColor: '#f59e0b',
+    crosshairMarkerRadius: 4,
+    lastValueVisible: false, priceLineVisible: false,
   });
-  chart.priceScale('vol').applyOptions({ scaleMargins:{top:0.75,bottom:0}, borderVisible:false });
-  candleSeries.setData(CANDLE_DATA);
-  volSeries.setData(CANDLE_DATA.map(d => ({
-    time:d.time, value:d.volume, color: d.close>=d.open ? UP_VOL : DOWN_VOL,
+  updateStkChartData();
+  applyStkRange();
+  window.addEventListener('resize', ()=>{ if(stkChart) stkChart.resize(container.clientWidth,240); });
+}
+
+function updateStkChartData() {
+  if (!stkBarSeries) return;
+  const {days, prices, shares, cumShares, amounts, cumAmounts} = STK_FLOW_RAW;
+  const vals = stkMetric==='shares'
+    ? (stkAgg==='daily' ? shares    : cumShares)
+    : (stkAgg==='daily' ? amounts   : cumAmounts);
+  stkBarSeries.setData(days.map((d,i)=>({
+    time:d, value:vals[i],
+    color: vals[i]>=0 ? 'rgba(239,68,68,0.85)' : 'rgba(34,197,94,0.85)',
   })));
-  chart.timeScale().fitContent();
-  window.addEventListener('resize', () => { if(chart) chart.resize(container.clientWidth, 300); });
+  stkPriceLine.setData(days.map((d,i)=>({ time:d, value:prices[i] })));
+  // Update legend label
+  const lbl = document.querySelector('#stk-chart-legend span:first-child');
+  if (lbl) lbl.lastChild.textContent = stkMetric==='shares' ? '買賣超張數' : '買賣超金額(萬)';
 }
 
-function setKlineRange(range) {
-  document.querySelectorAll('.kline-range-btn').forEach(b => b.classList.toggle('active', b.dataset.range===range));
-  if (!chart) return;
-  const now = CANDLE_DATA[CANDLE_DATA.length-1].time;
-  const d = new Date(now);
-  if      (range==='1M') d.setMonth(d.getMonth()-1);
-  else if (range==='3M') d.setMonth(d.getMonth()-3);
-  else if (range==='6M') d.setMonth(d.getMonth()-6);
-  else if (range==='1Y') d.setFullYear(d.getFullYear()-1);
-  chart.timeScale().setVisibleRange({from:d.toISOString().slice(0,10), to:now});
+function applyStkRange() {
+  if (!stkChart) return;
+  const {days} = STK_FLOW_RAW;
+  const last = days[days.length-1];
+  const from = new Date(last);
+  if      (stkRange==='1w') from.setDate(from.getDate()-7);
+  else if (stkRange==='1m') from.setMonth(from.getMonth()-1);
+  else if (stkRange==='6m') from.setMonth(from.getMonth()-6);
+  else                      from.setFullYear(from.getFullYear()-1);
+  const fromStr = from.toISOString().slice(0,10);
+  // clamp to available data
+  const clampedFrom = fromStr < days[0] ? days[0] : fromStr;
+  stkChart.timeScale().setVisibleRange({ from: clampedFrom, to: last });
 }
 
-// Init chart when page-stock becomes visible
-const observer = new MutationObserver(() => {
-  if (document.getElementById('page-stock').classList.contains('active')) initKlineChart();
+function setStkMetric(metric, btn) {
+  stkMetric = metric;
+  _setSeg('stk-seg-metric', btn);
+  updateStkChartData();
+}
+
+function setStkAgg(agg, btn) {
+  stkAgg = agg;
+  _setSeg('stk-seg-agg', btn);
+  updateStkChartData();
+}
+
+function setStkRange(range, btn) {
+  stkRange = range;
+  document.querySelectorAll('.stk-range-btn').forEach(b => {
+    b.dataset.state = b===btn ? 'active' : 'inactive';
+  });
+  applyStkRange();
+}
+
+function _setSeg(groupId, activeBtn) {
+  document.querySelectorAll(`#${groupId} [data-slot="segment-item"]`).forEach(b => {
+    const on = b===activeBtn;
+    b.dataset.state = on ? 'active' : 'inactive';
+    b.setAttribute('aria-checked', String(on));
+    b.style.zIndex = on ? '3' : '1';
+  });
+}
+
+// Init when page-stock becomes visible
+const stkObserver = new MutationObserver(()=>{
+  if (document.getElementById('page-stock').classList.contains('active')) initStkFlowChart();
 });
-observer.observe(document.getElementById('page-stock'), {attributes:true, attributeFilter:['class']});
+stkObserver.observe(document.getElementById('page-stock'),{attributes:true,attributeFilter:['class']});
 </script>
 
 </body>
