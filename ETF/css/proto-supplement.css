@@ -281,19 +281,75 @@
   white-space: nowrap;
   /* font-size + color → rd-app.css handles via var(--tabs-text) */
 }
+/* rd-app.css dark mode overrides hug hover→gray-800 and active→theme-650,
+   but ETF page RD snapshot omits the dark override → both stay blue.
+   Restore that behavior: hover=theme-350, active=theme-550. */
 .tabs-trigger[data-variant="hug"]:hover:not([data-state="active"]) .tabs-text {
-  color: var(--color-gray-800, #262626);
+  color: var(--color-theme-350);
+}
+:root[data-theme=dark] .tabs-trigger[data-variant="hug"] {
+  --tabs-text-hover: var(--color-theme-350);
+  --tabs-text-active: var(--color-theme-550);
+  --tabs-indicator: var(--color-theme-550);
 }
 
 /* ════════════════════════════════════════════════════════════════
    TABLE UTILITIES 補充
    原因：補充 rd-app.css 中未定義或被過濾掉的 Tailwind utility classes。
    ════════════════════════════════════════════════════════════════ */
+.table-head-sort-container { gap: calc(var(--spacing) * 1.5); }
+.table-head-sort-icon-inactive { opacity: 0; }
+.table-head:hover .table-head-sort-icon-inactive { opacity: 0.5; }
+.table-head {
+  padding-inline: calc(var(--spacing) * 3);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-gray-125);
+}
+/* sticky thead 需要 border-separate；用 border-spacing:0 補回 collapse 效果 */
+#stk-list-view .table,
+#etf-list-view .table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+/* table-container 的 overflow-x:auto 會破壞垂直 sticky。
+   把 y-scroll 搬到 table-container，讓 sticky th 的 scroll ancestor 正確。 */
+#stk-list-view,
+#etf-list-view {
+  overflow-y: visible;
+  max-height: none;
+}
+#stk-list-view .table-container,
+#etf-list-view .table-container {
+  max-height: calc(var(--spacing) * 110);
+  overflow-y: auto;
+}
+/* 兩頁 summary 卡片底色統一（dark:bg-gray-125 在此編譯格式下無效，改用可靠的 data-theme selector） */
+#stk-summary-row > div,
+#etf-summary-row > div {
+  background-color: var(--color-gray-100);
+}
+[data-theme="dark"] #stk-summary-row > div,
+[data-theme="dark"] #etf-summary-row > div {
+  background-color: var(--color-gray-125);
+}
+
+.table-cell { padding-inline: calc(var(--spacing) * 3); }
+.t-status-cell { padding-left: calc(var(--spacing) * 6); }
 .table-row.bg-muted\/30 {
   background-color: var(--color-gray-125, #f7f7f7) !important; /* 斑馬紋底色 */
 }
-.table-row:hover {
-  background-color: var(--color-tint-100, #e9efff) !important; /* Hover 高亮 */
+[data-slot="table-body"] .table-row:hover {
+  background-color: var(--color-tint-100, #e9efff) !important;
+}
+/* header row hover 完全清除，只保留單格 */
+[data-slot="table-header"] .table-row:hover,
+.table-header .table-row:hover {
+  background-color: transparent !important;
+}
+.table-head:hover {
+  background-color: var(--color-tint-100) !important;
 }
 .tabular-nums {
   font-variant-numeric: tabular-nums; /* 確保數字對齊 */
@@ -301,7 +357,6 @@
 .text-rise { color: var(--color-rise, #ef1515); }
 .text-fall { color: var(--color-fall, #189e01); }
 .text-flat { color: var(--color-gray-500, #8a8a8a); }
-
 /* ════════════════════════════════════════════════════════════════
    CHIP FILTER BAR
    ════════════════════════════════════════════════════════════════ */
@@ -326,6 +381,20 @@
 .chip:hover { opacity: 1; }
 .chip-cnt { margin-left: 3px; font-size: 10px; font-weight: 700; }
 .chip-bar-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* tag 行為 override
+   - hover：text 不變，只有底色提亮
+   - active：加上與 variant text 同色的外框 */
+.tag {
+  --tag-text-hover: var(--tag-text);
+  --tag-text-active: var(--tag-text);
+  --tag-bg-hover: var(--color-gray-300);
+}
+.tag.tag-active {
+  outline: 1px solid var(--tag-text);
+  outline-offset: -1px;
+}
+
 
 /* ════════════════════════════════════════════════════════════════
    SEGMENT CONTROL (view toggle)
@@ -388,7 +457,6 @@
 .th-search-field input { font: inherit; font-size: 12px; background: transparent; color: var(--color-gray-1000); border: none; outline: none; flex: 1; min-width: 0; }
 .th-search-field-close { font-size: 11px; color: var(--color-gray-500); cursor: pointer; }
 .th-search-field-close:hover { color: var(--color-gray-1000); }
-.th-indicator { font-size: 10px; margin-left: 2px; }
 
 /* ════════════════════════════════════════════════════════════════
    SIGNAL SECTIONS
@@ -527,6 +595,26 @@
 @media (min-width: 1024px) { .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1280px) { .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 1536px) { .\32xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+/* Arbitrary width utilities (Tailwind JIT — not in rd-app.css) */
+.w-\[68px\]  { width: 68px; }
+.w-\[184px\] { width: 184px; }
+.w-\[280px\] { width: 280px; }
+
+/* ── dark: variants — rd-app.css selector has a space bug so these don't match ── */
+/* Use same :is() pattern as RD's working selectors */
+.dark\:bg-gray-125:is(.dark *,[data-dark] *,.dark,[data-dark],[data-theme=dark] *)     { background-color: var(--color-gray-125); }
+.dark\:bg-gray-150:is(.dark *,[data-dark] *,.dark,[data-dark],[data-theme=dark] *)     { background-color: var(--color-gray-150); }
+.dark\:bg-transparent:is(.dark *,[data-dark] *,.dark,[data-dark],[data-theme=dark] *)  { background-color: transparent; }
+.dark\:border-gray-250:is(.dark *,[data-dark] *,.dark,[data-dark],[data-theme=dark] *) { border-color: var(--color-gray-250); }
+
+/* ── focus / focus-visible / placeholder — missing from rd-app.css ── */
+.placeholder\:select-none::placeholder { user-select: none; }
+.focus\:border-transparent:focus       { border-color: transparent; }
+.focus\:shadow-none:focus              { box-shadow: none; }
+.focus-visible\:outline-none:focus-visible { outline: none; }
+.focus-visible\:ring-2:focus-visible   { box-shadow: 0 0 0 2px var(--color-theme-400); }
+.focus-visible\:ring-theme-400:focus-visible { box-shadow: 0 0 0 2px var(--color-theme-400); }
 
 /* gap utilities (may be missing) */
 .gap-4 { gap: 1rem; }
