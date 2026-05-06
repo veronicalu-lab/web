@@ -55,19 +55,22 @@
     /* ── 共用：兩頁的 range / period tab bar 樣式集中在這裡 ── */
     .chart-period-bar { gap: 0.25rem; border-bottom: none !important; width: auto; }
     .chart-period-bar [role="tab"] { min-width: 2em; justify-content: center; }
-    /* ── Date popover trigger ── */
-    #stk-date-trigger-btn, #etf-date-trigger-btn {
+    /* ── Date popover trigger（三頁共用） ── */
+    #stk-date-trigger-btn, #etf-date-trigger-btn, #mkt-date-trigger-btn {
       display: inline-flex; align-items: center; gap: 6px;
       background: transparent; border: none; cursor: pointer;
       color: var(--color-gray-600); font-size: 12px; padding: 0 0 8px 0;
       white-space: nowrap; transition: color 0.15s;
     }
     #stk-date-trigger-btn:hover #stk-date-label,
-    #etf-date-trigger-btn:hover #etf-date-label { color: var(--color-theme-550); }
+    #etf-date-trigger-btn:hover #etf-date-label,
+    #mkt-date-trigger-btn:hover #mkt-date-label { color: var(--color-theme-550); }
     #stk-date-trigger-btn #stk-date-label,
-    #etf-date-trigger-btn #etf-date-label { color: var(--color-gray-700); }
+    #etf-date-trigger-btn #etf-date-label,
+    #mkt-date-trigger-btn #mkt-date-label { color: var(--color-gray-700); }
     #stk-date-trigger-btn[data-custom="true"] #stk-date-label,
-    #etf-date-trigger-btn[data-custom="true"] #etf-date-label { color: var(--color-theme-550); }
+    #etf-date-trigger-btn[data-custom="true"] #etf-date-label,
+    #mkt-date-trigger-btn[data-custom="true"] #mkt-date-label { color: var(--color-theme-550); }
 
     /* ── Date Picker ── */
     #stk-datepicker {
@@ -329,6 +332,10 @@
   style="margin:0;font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;background:var(--color-gray-125);">
 
   <!-- ═══ SIDEBAR ═══ -->
+  <!-- ╔══ RD NOTE ══════════════════════════════════════════════════════════════
+       ║  ❌ PROTO ONLY — 整個 <aside class="proto-sidebar"> 在 React 版本廢棄
+       ║  正式版由 XQ App Shell 左側 Nav 提供，此處不需要實作
+       ╚═══════════════════════════════════════════════════════════════════════ -->
   <aside class="proto-sidebar">
     <div class="proto-sidebar-header">
       <div class="proto-logo">
@@ -346,6 +353,7 @@
     </nav>
 
     <!-- ── Platform & Theme toggles ── -->
+    <!-- [RD] ❌ PROTO ONLY — 平台(XQ/XQM)與主題(明/暗)切換僅供 prototype 視覺確認用，正式版由 App Shell 控制 -->
     <div class="proto-ctrl-bar">
       <div class="proto-ctrl-row">
         <span class="proto-ctrl-lbl">平台</span>
@@ -375,6 +383,12 @@
     <!-- ╔══════════════════════════════════════════════════════════════
      ║  PAGE 1  市場總覽
      ╚══════════════════════════════════════════════════════════════ -->
+    <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════════
+         ║  骨架類型：類型 A（資料頁）— 固定高度容器 + 內部捲動
+         ║  Route：/etf/market  |  API：GET /api/etf/market-overview?period=...
+         ║  Tab 切換：Radix Tabs data-variant="hug"，3 pane（市場總體觀測 ✅ / 總體大買大賣 ✅ / 關鍵異動訊號 ✅）
+         ║  篩選列：期間 <Select> + 自訂日期 <DateRangePicker>（Radix Popover）
+         ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-market" class="page active flex flex-1 flex-col">
       <div class="h-full w-full" style="">
         <div class="h-full w-full min-w-0 bg-gray-100 md:p-5">
@@ -385,55 +399,33 @@
                 </h2>
               </div>
             </div>
-            <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" aria-orientation="horizontal" data-variant="hug" id="mkt-tab-bar"
-                class="tabs-list inline-flex items-end gap-4 shrink-0 overflow-x-auto w-full" style="outline:none">
-                <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
-                  onclick="switchMktTab('mkt-overview')">
-                  <span class="tabs-text">市場總體觀測</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
-                  onclick="switchMktTab('mkt-buysell')">
-                  <span class="tabs-text">總體大買大賣</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
-                  onclick="switchMktTab('mkt-signal')">
-                  <span class="tabs-text">關鍵異動訊號</span><span class="tabs-indicator"></span>
-                </button>
+            <div class="flex items-end border-b border-gray-200 shrink-0">
+              <div dir="ltr" data-orientation="horizontal" class="flex-1 min-w-0 overflow-x-auto self-stretch">
+                <div role="tablist" aria-orientation="horizontal" data-variant="hug" id="mkt-tab-bar"
+                  class="tabs-list inline-flex items-end gap-4 h-full" style="outline:none">
+                  <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
+                    class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
+                    onclick="switchMktTab('mkt-overview')">
+                    <span class="tabs-text">市場總體觀測</span><span class="tabs-indicator"></span>
+                  </button>
+                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+                    class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
+                    onclick="switchMktTab('mkt-buysell')">
+                    <span class="tabs-text">總體大買大賣</span><span class="tabs-indicator"></span>
+                  </button>
+                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+                    class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-1 pb-4"
+                    onclick="switchMktTab('mkt-signal')">
+                    <span class="tabs-text">關鍵異動訊號</span><span class="tabs-indicator"></span>
+                  </button>
+                </div>
               </div>
+              <div id="mkt-date-control-row"
+                class="flex items-end justify-end gap-2.5 pb-1 shrink-0 overflow-x-auto ml-2"></div>
             </div>
-            <div
-              class="flex items-center gap-2.5 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
-              <span class="text-[12px] text-gray-600 whitespace-nowrap">期間</span><button type="button" role="combobox"
-                aria-controls="radix-:r3s:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed"
-                data-slot="select-trigger" data-variant="stroke" data-size="sm"
-                class="ui-select inline-flex items-center justify-between gap-2 min-w-[68px] rounded-sm text-scope-6 leading-tool-p-6 font-medium whitespace-nowrap transition-all outline-none select-none cursor-pointer disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 px-2 py-1.5 h-7 text-[12px]"><span
-                  class="flex items-center gap-1 overflow-hidden min-w-0"><span
-                    style="pointer-events: none;">近一日</span></span><svg width="16" height="16" viewBox="0 0 16 16"
-                  fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0" data-slot="select-icon"
-                  aria-hidden="true">
-                  <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg></button>
-              <div class="w-px h-4.5 bg-gray-200 shrink-0"></div>
-              <div class="ui-input-control flex h-8 items-center rounded-sm border px-2" data-variant="ghost"><button
-                  data-slot="popover-trigger" data-variant="ghost" data-size="sm"
-                  class="ui-input-trigger inline-flex items-center justify-between gap-2 min-w-0 rounded-sm border text-scope-6 leading-tool-p-6 font-medium outline-none transition-all select-none disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-transparent bg-transparent h-full px-0 py-0"
-                  type="button" data-empty="false" aria-haspopup="dialog" aria-expanded="false"
-                  aria-controls="radix-:r3t:" data-state="closed"><span class="min-w-0 truncate">2026/04/30 -
-                    2026/04/30</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-calendar size-4" aria-hidden="true">
-                    <path d="M8 2v4"></path>
-                    <path d="M16 2v4"></path>
-                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                    <path d="M3 10h18"></path>
-                  </svg></button></div>
-            </div>
+            <script>buildDateControlRow({ containerId:'mkt-date-control-row', triggerId:'mkt-date-trigger-btn', labelId:'mkt-date-label', toggleFn:'toggleMktDatePicker', barId:'mkt-period-tab-bar', setPeriodFn:'setMktPeriod' });</script>
             <div id="pane-mkt-overview" class="flex-1 overflow-auto flex flex-col">
+              <!-- [RD] Summary cards — 靜態計算值，來自 API 同一支 response；值跟隨篩選列期間變動 -->
               <div class="flex gap-2.5 py-3 border-b border-gray-200 shrink-0">
                 <div
                   class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
@@ -451,12 +443,15 @@
                 </div>
                 <div
                   class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
-                  <span class="text-[11px] text-gray-600 mb-1">區間成長/衰退檔數</span>
-                  <div class="text-[20px] font-bold tabular-nums">
-                    <div class="flex items-baseline gap-1.5"><span class="tabular-nums text-rise">↑10</span><span
-                        class="text-[14px] text-gray-400">/</span><span class="tabular-nums text-fall">↓4</span></div>
-                  </div>
-                  <div class="text-[10px] text-gray-500 mt-0.5">成長檔數 / 衰退檔數</div>
+                  <span class="text-[11px] text-gray-600 mb-1">區間成長</span>
+                  <div class="text-[20px] font-bold tabular-nums text-rise">10檔</div>
+                  <div class="text-[10px] text-gray-500 mt-0.5 tabular-nums text-rise">25.24%</div>
+                </div>
+                <div
+                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+                  <span class="text-[11px] text-gray-600 mb-1">區間衰退</span>
+                  <div class="text-[20px] font-bold tabular-nums text-fall">4檔</div>
+                  <div class="text-[10px] text-gray-500 mt-0.5 tabular-nums text-fall">12.32%</div>
                 </div>
               </div>
               <div class="flex-1 overflow-auto">
@@ -485,18 +480,74 @@
                         <th data-slot="table-head" class="table-head table-head-align-right">發行公司</th>
                       </tr>
                     </thead>
+                    <!-- [RD] tbl-mkt-overview — API: GET /api/etf/market-overview | 預設排序：今日規模(億) DESC | 欄位：名稱/規模(億)/增減(億)/增減%/淨值/漲幅%/發行公司 -->
                     <tbody id="tbl-mkt-overview" data-slot="table-body" class="table-body"></tbody>
                   </table>
                 </div>
               </div>
             </div>
-            <div id="pane-mkt-buysell" style="display:none"
-              class="flex-1 overflow-auto flex flex-col items-center justify-center">
-              <div class="py-12 text-center text-scope-6 text-gray-500">總體大買大賣 — 施工中</div>
+            <!-- ╔══ RD NOTE ═══════════════════════════════════════════════════════════════
+                 ║  pane-mkt-buysell — 總體大買大賣
+                 ║  API: GET /api/market/buy-sell-ranking?range=1d&top=20
+                 ║  Render: renderBuySell() → buildThead('tbl-buy') + buildThead('tbl-sell')
+                 ║  Sort: tbl-buy 預設 張數 DESC；tbl-sell 預設 張數 ASC
+                 ╚══════════════════════════════════════════════════════════════════════════ -->
+            <div id="pane-mkt-buysell" style="display:none" class="flex-1 overflow-auto flex flex-col">
+              <div class="buysell-wrap flex-1">
+              <!-- 買超 -->
+              <div class="buysell-col">
+                <div class="buysell-hd buy">▲ 主動ETF 買超排行 Top 10</div>
+                <div data-slot="table-container" class="table-container">
+                  <table data-slot="table" class="table">
+                    <thead data-slot="table-header" class="table-header"></thead>
+                    <!-- [RD] tbl-buy — API: GET /api/market/buy-ranking | 欄位：商品/產業/張數/佔成交量/收盤/漲跌% -->
+                    <tbody id="tbl-buy" data-slot="table-body" class="table-body"></tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- 賣超 -->
+              <div class="buysell-col">
+                <div class="buysell-hd sell">▼ 主動ETF 賣超排行 Top 10</div>
+                <div data-slot="table-container" class="table-container">
+                  <table data-slot="table" class="table">
+                    <thead data-slot="table-header" class="table-header"></thead>
+                    <!-- [RD] tbl-sell — API: GET /api/market/sell-ranking | 欄位：商品/產業/張數/佔成交量/收盤/漲跌% -->
+                    <tbody id="tbl-sell" data-slot="table-body" class="table-body"></tbody>
+                  </table>
+                </div>
+              </div>
+              </div><!-- /buysell-wrap -->
             </div>
-            <div id="pane-mkt-signal" style="display:none"
-              class="flex-1 overflow-auto flex flex-col items-center justify-center">
-              <div class="py-12 text-center text-scope-6 text-gray-500">關鍵異動訊號 — 施工中</div>
+
+            <!-- ╔══ RD NOTE ═══════════════════════════════════════════════════════════════
+                 ║  pane-mkt-signal — 關鍵異動訊號
+                 ║  API: GET /api/market/signals?range=1d
+                 ║  Chip filter: filterSig(type) — 依 <tr data-sig> 顯示/隱藏
+                 ║  Render: renderSignals() → 合併 SIG_NEW/ADD/EXIT → tbody-sig-all
+                 ║  Counts: SIG_NEW(3) / SIG_ADD(8) / SIG_EXIT(8) — 動態計算後填入 .chip-cnt
+                 ╚══════════════════════════════════════════════════════════════════════════ -->
+            <div id="pane-mkt-signal" style="display:none" class="flex-1 overflow-auto flex flex-col">
+              <!-- chip filter bar -->
+              <div class="flex items-center gap-2 py-3 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
+                <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
+                  <div data-slot="input-control" data-variant="stroke" data-size="sm" class="ui-input-control relative flex w-full items-center gap-1 rounded transition-[color,background-color,border-color,box-shadow] border min-h-7 px-2 custom-search-input-control">
+                    <span data-slot="input-prefix" class="ui-input-prefix"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg></span>
+                    <input data-slot="input" data-variant="stroke" data-size="sm" class="ui-input w-full min-w-0 flex-1 bg-transparent border-0 outline-none shadow-none font-normal transition-[color,background-color,border-color,box-shadow] placeholder:select-none focus:border-transparent focus:shadow-none disabled:pointer-events-none h-7 text-[12px]" placeholder="搜尋 ETF／股票代號名稱" type="search" oninput="sigSearchQ=this.value;renderSignals()" value="">
+                    <span data-slot="input-suffix" class="ui-input-suffix"><span data-slot="search-input-suffix" class="custom-search-input-suffix"></span></span>
+                  </div>
+                </div>
+                <button type="button" id="sig-chip-all" onclick="filterSig('all')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="blue" data-active="true" class="tag tag-active gap-1">全部<span>19</span></span></button>
+                <button type="button" id="sig-chip-new" onclick="filterSig('new')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="yellow-bright" class="tag gap-1">首次買入<span>3</span></span></button>
+                <button type="button" id="sig-chip-add" onclick="filterSig('add')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="red" class="tag gap-1">大幅加碼<span>8</span></span></button>
+                <button type="button" id="sig-chip-exit" onclick="filterSig('exit')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="gray" class="tag gap-1">完全出清<span>8</span></span></button>
+              </div>
+              <!-- [RD] tbody-sig-all — API: GET /api/market/signals | 欄位：ETF/股票/產業/關鍵異動訊號/異動張數/推估市值/訊號日期 | chip filter by data-sig="new|add|exit" on <tr> -->
+              <div data-slot="table-container" class="table-container">
+                <table data-slot="table" class="table">
+                  <thead data-slot="table-header" class="table-header"></thead>
+                  <tbody id="tbody-sig-all" data-slot="table-body" class="table-body"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -507,6 +558,11 @@
     <!-- ╔══════════════════════════════════════════════════════════════
      ║  PAGE 2  個股 → ETF持股
      ╚══════════════════════════════════════════════════════════════ -->
+    <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════════
+         ║  骨架類型：類型 B（Browse 頁）— theme-browse-page，edge-to-edge header + 自然捲動
+         ║  Route：/stock/{code}/etf-holdings  |  Header：個股名稱 + 代碼，來自 route param
+         ║  API：GET /api/stock/{code}/etf-holdings?metric=shares|amount&agg=daily|cumulative&range=1m|3m|6m|1y&from=&to=
+         ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-stock" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
@@ -518,6 +574,12 @@
         </div>
         <div class="w-full px-6 pb-6">
           <!-- ── 買賣超圖表 ── -->
+          <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════
+               ║  Chart：LightweightCharts v4，左 Y 軸 = 買賣超（histogram），右 Y 軸 = 收盤價（line）
+               ║  Segments（左）：張數/金額（metric） × 每日/累積（agg）→ 切換後 chart data 重新請求
+               ║  Tabs（右）：1月/3月/6月/1年 → 圖表 x-axis 時間視窗；與下方日期選擇器互斥
+               ║  日期選擇器：選自訂區間時，range tabs 取消選取，chart 與表格同步更新
+               ╚═════════════════════════════════════════════════════════════════════ -->
           <div class="shrink-0 border-b border-gray-200">
             <div class="flex items-center pt-3 pb-2 gap-2.5">
               <!-- 張數 / 金額 -->
@@ -590,9 +652,11 @@
               <div id="stk-flow-chart" style="height:240px;width:100%;"></div>
             </div>
           </div>
+          <!-- [RD] DateControlRow 共用元件 — 日曆（DateRangePicker）+ 日/月/季/年 Tabs；P2/P3 共用同一邏輯 -->
           <div id="stk-date-control-row"
             class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
           <script>buildDateControlRow({ containerId:'stk-date-control-row', triggerId:'stk-date-trigger-btn', labelId:'stk-date-label', toggleFn:'toggleStkDatePicker', barId:'stk-period-tab-bar', setPeriodFn:'setStkPeriod' });</script>
+          <!-- [RD] Summary cards ×6 — labels 跟隨 日/月/季/年 或自訂日期 動態切換；資料來自同一支 holdings API -->
           <div id="stk-summary-row" class="flex gap-2.5  py-3 shrink-0">
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span class="text-[11px] text-gray-600 mb-1">持有ETF數量</span>
@@ -627,6 +691,8 @@
                     class="text-gray-700">20,936,999</strong></span></div>
             </div>
           </div>
+          <!-- [RD] 篩選列：<Input> 搜尋 + 5 個狀態 <Tag> chips（全部/首次買入/加碼/減碼/完全出清）+ 右側列表/熱力圖 <Segment>
+                     Chips 為 client-side filter，不重新打 API -->
           <div
             class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
             <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
@@ -684,11 +750,15 @@
                     <th data-slot="table-head" class="table-head table-head-align-right">發行公司</th>
                   </tr>
                 </thead>
+                <!-- [RD] tbl-stk — API: GET /api/stock/{code}/etf-holdings | 預設排序：投資比率(%) DESC
+                          欄位：代號/名稱/投資比率(%)/比率增減/持有張數/張數增減/張數狀態/連續天數/資料日期/發行公司
+                          名稱欄可點擊跳轉 ETF 詳情 (goToStock)；狀態欄用 <Tag> 顯示首次買入/加碼/減碼/完全出清/無異動 -->
                 <tbody id="tbl-stk" data-slot="table-body" class="table-body"></tbody>
 
               </table>
             </div>
           </div>
+          <!-- [RD] 熱力圖 — canvas-based heatmap，資料同 tbl-stk，x=ETF代號，顏色=投資比率；點擊格子跳轉 ETF 詳情 -->
           <div id="stk-hm-view" style="display:none;position:relative;height:440px;overflow:hidden;"></div>
         </div>
       </div>
@@ -698,6 +768,12 @@
     <!-- ╔══════════════════════════════════════════════════════════════
      ║  PAGE 3  ETF → 持股狀態
      ╚══════════════════════════════════════════════════════════════ -->
+    <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════════
+         ║  骨架類型：類型 B（Browse 頁）— 與 P2 結構相同
+         ║  Route：/etf/{code}/holdings  |  Header：ETF 名稱 + 代碼，來自 route param
+         ║  API：GET /api/etf/{code}/holdings?metric=aum|count&range=1m|3m|6m|1y&period=1d|1m|3m|1y&from=&to=
+         ║  Chart：LightweightCharts v4，左 Y 軸 = 規模(億)/持股檔數（histogram，可切換），右 Y 軸 = ETF 股價（line）
+         ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-etf" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
@@ -709,6 +785,7 @@
         </div>
         <div class="w-full px-6 pb-6">
           <!-- ── 持股流向圖表 ── -->
+          <!-- [RD] Segment（左）：規模/持股檔數 — 切換後 chart 左 Y 軸資料系列替換，圖例文字同步更新 -->
           <div class="shrink-0 border-b border-gray-200">
             <div class="flex items-center pt-3 pb-2 gap-2.5">
               <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8"
@@ -764,10 +841,13 @@
             </div>
           </div>
           <!-- ── 日/月/季/年 + 日期選擇 ── -->
+          <!-- [RD] DateControlRow 共用元件 — 與 P2 完全相同，切換後 summary cards 副標題同步更新（單日/單月/單季/單年/本期） -->
           <div id="etf-date-control-row"
             class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
           <script>buildDateControlRow({ containerId:'etf-date-control-row', triggerId:'etf-date-trigger-btn', labelId:'etf-date-label', toggleFn:'toggleEtfDatePicker', barId:'etf-period-tab-bar', setPeriodFn:'setEtfPeriod' });</script>
           <!-- ── Summary cards ── -->
+          <!-- [RD] Summary cards ×4：ETF 規模 / 持股檔數 / 首次買入 / 完全出清
+                    副標題（etf-sub-aum / etf-sub-count）跟隨 period 變動；資料來自同一支 holdings API -->
           <div id="etf-summary-row" class="flex gap-2.5 py-3 shrink-0">
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span id="etf-lbl-aum" class="text-[11px] text-gray-600 mb-1">單日 ETF 規模</span>
@@ -791,6 +871,7 @@
             </div>
           </div>
           <!-- ── 搜尋 + Chip + 列表/熱力圖 ── -->
+          <!-- [RD] 篩選列：同 P2 — <Input> 搜尋 + 5 個狀態 chips（全部/首次買入/加碼/減碼/完全出清）+ 列表/熱力圖 <Segment>；client-side filter -->
           <div
             class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
             <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
@@ -832,10 +913,14 @@
             <div data-slot="table-container" class="table-container">
               <table data-slot="table" class="table">
                 <thead data-slot="table-header" class="table-header"></thead>
+                <!-- [RD] tbl-etf — API: GET /api/etf/{code}/holdings | 預設排序：投資比率(%) DESC
+                          欄位：代號/名稱/産業/投資比率(%)/市值(億)/持有張數/比率增減(%)/張數增減/股數狀態/連續天數
+                          産業欄：純文字，t-issuer 顏色；狀態欄用 <Tag>；名稱可點擊 goToStock() -->
                 <tbody id="tbl-etf" data-slot="table-body" class="table-body"></tbody>
               </table>
             </div>
           </div>
+          <!-- [RD] 熱力圖 — 同 P2，x=持股名稱，顏色=投資比率；點擊格子跳轉個股詳情 -->
           <div id="etf-hm-view" style="display:none;position:relative;height:440px;overflow:hidden;"></div>
         </div>
       </div>
@@ -844,6 +929,13 @@
     <!-- ╔══════════════════════════════════════════════════════════════
      ║  PAGE 4  美股主題投資
      ╚══════════════════════════════════════════════════════════════ -->
+    <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════════
+         ║  骨架類型：類型 B（Browse 頁）— theme-browse-page，edge-to-edge header
+         ║  Route：/us/theme  |  API：GET /api/us/themes?watchlist=true|false&view=card|list&topic=...
+         ║  Tab bar：chip variant（非 hug），每個 tab 帶 <Badge> 顯示主題數量
+         ║  右側控制：關注 <Toggle> + 卡片/列表 <Segment>
+         ║  卡片 Grid：<article> 卡片，responsive cols（1→2→3→4→5），點擊進入主題詳情
+         ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-us-theme" class="page flex flex-1 flex-col">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <!-- Page header -->
@@ -1037,30 +1129,40 @@
     ];
 
     const SIG_NEW = [
-      { etf: '00985A 主動野村台灣50', stock: '8046 南電', sector: '電子零組件', delta: +32, mv: '0.07億', date: '2026-04-20' },
-      { etf: '00995A 主動中信台灣卓越', stock: '3653 健策', sector: '電子零組件', delta: +10, mv: '0.07億', date: '2026-04-20' },
-      { etf: '00995A 主動中信台灣卓越', stock: '2474 可成', sector: '電子零組件', delta: +22, mv: '0.04億', date: '2026-04-21' },
+      { etf: '00985A 主動野村台灣50', stock: '8046 南電', sector: '電子零組件', delta: +32, mv: '0.07億', date: '2026-04-20', weight: 1.24, weightChg: +1.24 },
+      { etf: '00995A 主動中信台灣卓越', stock: '3653 健策', sector: '電子零組件', delta: +10, mv: '0.07億', date: '2026-04-20', weight: 0.88, weightChg: +0.88 },
+      { etf: '00995A 主動中信台灣卓越', stock: '2474 可成', sector: '電子零組件', delta: +22, mv: '0.04億', date: '2026-04-21', weight: 0.52, weightChg: +0.52 },
     ];
     const SIG_ADD = [
-      { etf: '00993A 主動安聯台灣', stock: '4904 遠傳', sector: '通信', delta: +104, mv: '0.10億', date: '2026-04-20' },
-      { etf: '00982A 主動群益台灣強棒', stock: '2002 中鋼', sector: '鋼鐵', delta: +344, mv: '0.08億', date: '2026-04-20' },
-      { etf: '00987A 主動台新優勢成長', stock: '3711 日月光投控', sector: '半導體', delta: +41, mv: '0.07億', date: '2026-04-20' },
-      { etf: '00985A 主動野村台灣50', stock: '8046 南電', sector: '電子零組件', delta: +32, mv: '0.07億', date: '2026-04-21' },
-      { etf: '00996A 主動兆豐台灣豐收', stock: '6770 力積電', sector: '半導體', delta: +262, mv: '0.06億', date: '2026-04-21' },
-      { etf: '00996A 主動兆豐台灣豐收', stock: '2376 技嘉', sector: '電腦週邊', delta: +18, mv: '0.06億', date: '2026-04-21' },
-      { etf: '00995A 主動中信台灣卓越', stock: '3653 健策', sector: '電子零組件', delta: +10, mv: '0.07億', date: '2026-04-21' },
-      { etf: '00995A 主動中信台灣卓越', stock: '2474 可成', sector: '電子零組件', delta: +22, mv: '0.04億', date: '2026-04-21' },
+      { etf: '00993A 主動安聯台灣', stock: '4904 遠傳', sector: '通信', delta: +104, mv: '0.10億', date: '2026-04-20', weight: 3.61, weightChg: +1.05 },
+      { etf: '00982A 主動群益台灣強棒', stock: '2002 中鋼', sector: '鋼鐵', delta: +344, mv: '0.08億', date: '2026-04-20', weight: 5.73, weightChg: +2.18 },
+      { etf: '00987A 主動台新優勢成長', stock: '3711 日月光投控', sector: '半導體', delta: +41, mv: '0.07億', date: '2026-04-20', weight: 4.12, weightChg: +0.67 },
+      { etf: '00985A 主動野村台灣50', stock: '8046 南電', sector: '電子零組件', delta: +32, mv: '0.07億', date: '2026-04-21', weight: 2.48, weightChg: +1.24 },
+      { etf: '00996A 主動兆豐台灣豐收', stock: '6770 力積電', sector: '半導體', delta: +262, mv: '0.06億', date: '2026-04-21', weight: 6.31, weightChg: +3.32 },
+      { etf: '00996A 主動兆豐台灣豐收', stock: '2376 技嘉', sector: '電腦週邊', delta: +18, mv: '0.06億', date: '2026-04-21', weight: 2.10, weightChg: +0.85 },
+      { etf: '00995A 主動中信台灣卓越', stock: '3653 健策', sector: '電子零組件', delta: +10, mv: '0.07億', date: '2026-04-21', weight: 1.76, weightChg: +0.43 },
+      { etf: '00995A 主動中信台灣卓越', stock: '2474 可成', sector: '電子零組件', delta: +22, mv: '0.04億', date: '2026-04-21', weight: 1.04, weightChg: +0.52 },
     ];
     const SIG_EXIT = [
-      { etf: '00981A 主動統一台股增長', stock: '3661 世芯-KY', sector: '半導體', delta: -189, mv: '9.37億', date: '2026-04-20' },
-      { etf: '00992A 主動群益科技創新', stock: '3661 世芯-KY', sector: '半導體', delta: -113, mv: '5.60億', date: '2026-04-20' },
-      { etf: '00991A 主動復華未來50', stock: '6669 緯穎', sector: '電腦週邊', delta: -31, mv: '1.21億', date: '2026-04-20' },
-      { etf: '00993A 主動安聯台灣', stock: '3661 世芯-KY', sector: '半導體', delta: -15, mv: '0.74億', date: '2026-04-21' },
-      { etf: '00980A 主動野村臺灣優選', stock: '3661 世芯-KY', sector: '半導體', delta: -13, mv: '0.64億', date: '2026-04-21' },
-      { etf: '00995A 主動中信台灣卓越', stock: '3661 世芯-KY', sector: '半導體', delta: -9, mv: '0.45億', date: '2026-04-21' },
-      { etf: '00982A 主動群益台灣強棒', stock: '3008 大立光', sector: '光電', delta: -16, mv: '0.42億', date: '2026-04-21' },
-      { etf: '00996A 主動兆豐台灣豐收', stock: '6669 緯穎', sector: '電腦週邊', delta: -4, mv: '0.16億', date: '2026-04-21' },
+      { etf: '00981A 主動統一台股增長', stock: '3661 世芯-KY', sector: '半導體', delta: -189, mv: '9.37億', date: '2026-04-20', weight: 0.00, weightChg: -12.24 },
+      { etf: '00992A 主動群益科技創新', stock: '3661 世芯-KY', sector: '半導體', delta: -113, mv: '5.60億', date: '2026-04-20', weight: 0.00, weightChg: -8.15 },
+      { etf: '00991A 主動復華未來50', stock: '6669 緯穎', sector: '電腦週邊', delta: -31, mv: '1.21億', date: '2026-04-20', weight: 0.00, weightChg: -3.48 },
+      { etf: '00993A 主動安聯台灣', stock: '3661 世芯-KY', sector: '半導體', delta: -15, mv: '0.74億', date: '2026-04-21', weight: 0.00, weightChg: -2.56 },
+      { etf: '00980A 主動野村臺灣優選', stock: '3661 世芯-KY', sector: '半導體', delta: -13, mv: '0.64億', date: '2026-04-21', weight: 0.00, weightChg: -1.93 },
+      { etf: '00995A 主動中信台灣卓越', stock: '3661 世芯-KY', sector: '半導體', delta: -9, mv: '0.45億', date: '2026-04-21', weight: 0.00, weightChg: -1.37 },
+      { etf: '00982A 主動群益台灣強棒', stock: '3008 大立光', sector: '光電', delta: -16, mv: '0.42億', date: '2026-04-21', weight: 0.00, weightChg: -2.11 },
+      { etf: '00996A 主動兆豐台灣豐收', stock: '6669 緯穎', sector: '電腦週邊', delta: -4, mv: '0.16億', date: '2026-04-21', weight: 0.00, weightChg: -0.98 },
     ];
+
+    // 訊號 lookup：ETF code → { new, add, exit } 數量
+    const SIG_MAP = {};
+    [{ arr: SIG_NEW, key: 'new' }, { arr: SIG_ADD, key: 'add' }, { arr: SIG_EXIT, key: 'exit' }].forEach(({ arr, key }) => {
+      arr.forEach(s => {
+        const code = s.etf.split(' ')[0];
+        if (!SIG_MAP[code]) SIG_MAP[code] = { new: 0, add: 0, exit: 0 };
+        SIG_MAP[code][key]++;
+      });
+    });
 
     const STK_DATA = [
       { name: '主動統一台股增長', code: '00981A', ratio: 1.39, ratioChg: +0.68, shares: 19943000, sharesChg: +15039000, status: 'add', date: '2026/04/13', issuer: '統一投信', isActive: true, streak: 3 },
@@ -1355,12 +1457,13 @@
         { label: '代號', val: r => r.code, left: true, style: 'width:64px;' },
         { label: '名稱', val: r => r.short, left: true, style: 'min-width:100px;' },
         { label: '發行', val: r => r.issuer, left: true, style: 'width:80px;' },
-        { label: '今日規模(億)', val: r => r.aum, style: 'width:96px;' },
-        { label: '昨日規模(億)', val: r => r.aum - r.chg, style: 'width:96px;' },
+        { label: '今日規模(億)', val: r => r.aum, style: 'width:72px;' },
+        { label: '昨日規模(億)', val: r => r.aum - r.chg, style: 'width:72px;' },
         { label: '增減(億)', val: r => r.chg, style: 'width:80px;' },
         { label: '日成長率', val: r => r.chgPct, style: 'width:76px;' },
         { label: '淨值', val: r => r.nav, style: 'width:68px;' },
         { label: '漲跌幅', val: r => r.navChg, style: 'width:72px;' },
+        { label: '關鍵異動訊號', left: true, noSort: true, style: 'min-width:160px;' },
       ],
       'tbl-buy': [
         { label: '商品', val: r => r.name, left: true, style: 'min-width:120px;' },
@@ -1378,9 +1481,17 @@
         { label: '收盤', val: r => r.close },
         { label: '漲跌%', val: r => r.chgPct },
       ],
-      'tbody-new': SIG_COLS,
-      'tbody-add': SIG_COLS,
-      'tbody-exit': SIG_COLS,
+      'tbody-sig-all': [
+        { label: 'ETF', val: r => r.etf, left: true, style: 'min-width:180px;' },
+        { label: '股票', val: r => r.stock, left: true, style: 'min-width:120px;' },
+        { label: '產業', val: r => r.sector, center: true },
+        { label: '關鍵異動訊號', val: r => ({ new: 0, add: 1, exit: 2 })[r.sigType], center: true, style: 'min-width:110px;' },
+        { label: '異動張數', val: r => r.delta },
+        { label: '均價/總金額', val: r => parseFloat(r.mv) * 1e8 / (Math.abs(r.delta) * 1000), style: 'min-width:100px;' },
+        { label: '股票權重/增加幅度', val: r => r.weight, style: 'min-width:110px;' },
+        { label: '推估市值', val: r => parseFloat(r.mv) },
+        { label: '訊號日期', val: r => r.date, left: true, style: 'min-width:90px;' },
+      ],
       'tbl-stk': [
         { label: '代號', val: r => r.code, left: true, style: 'width:70px;' },
         { label: '名稱', val: r => r.name, left: true, style: 'min-width:140px;' },
@@ -1411,9 +1522,7 @@
       'tbl-mkt-overview': { col: 3, asc: false },
       'tbl-buy': { col: 2, asc: false },
       'tbl-sell': { col: 2, asc: true },
-      'tbody-new': { col: 3, asc: false },
-      'tbody-add': { col: 3, asc: false },
-      'tbody-exit': { col: 3, asc: true },
+      'tbody-sig-all': { col: 3, asc: false },
       'tbl-stk': { col: 2, asc: false },
       'tbl-etf': { col: 3, asc: false },
     };
@@ -1422,9 +1531,7 @@
       'tbl-mkt-overview': () => renderMktOverview(),
       'tbl-buy': () => renderBuySell(),
       'tbl-sell': () => renderBuySell(),
-      'tbody-new': () => renderSigTable('tbody-new', SIG_NEW),
-      'tbody-add': () => renderSigTable('tbody-add', SIG_ADD),
-      'tbody-exit': () => renderSigTable('tbody-exit', SIG_EXIT),
+      'tbody-sig-all': () => renderSignals(),
       'tbl-stk': () => renderStkTable(),
       'tbl-etf': () => renderEtfTable(),
     };
@@ -1452,6 +1559,9 @@
         const active = i === col;
         const alignCls = c.left ? 'table-head-align-left' : c.center ? 'table-head-align-center' : 'table-head-align-right';
         const colStyle = (c.style || '').replace(/(?<!min-)width:/g, 'min-width:');
+        if (c.noSort) {
+          return `<th data-slot="table-head" class="table-head ${alignCls}" style="${colStyle}">${c.label}</th>`;
+        }
         const iconCls = active
           ? `${asc ? 'icon-arrow-up-02' : 'icon-arrow-down-02'} table-head-sort-icon`
           : 'icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive';
@@ -1487,6 +1597,15 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.chgPct)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.nav.toFixed(2)}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.navChg)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><div style="display:flex;gap:4px;flex-wrap:wrap;cursor:pointer;" onclick="switchMktTab('mkt-signal')">${(() => {
+        const s = SIG_MAP[r.code];
+        if (!s) return '';
+        return [
+          s.new  ? `<span class="tag" data-variant="yellow-bright">首次買入 ${s.new}</span>` : '',
+          s.add  ? `<span class="tag" data-variant="red">大幅加碼 ${s.add}</span>` : '',
+          s.exit ? `<span class="tag" data-variant="gray">完全出清 ${s.exit}</span>` : '',
+        ].join('');
+      })()}</div></td>
     </tr>`;
       }).join('');
     }
@@ -1512,35 +1631,75 @@
     }
 
     // ── Render: 關鍵異動訊號 ──
-    function renderSigTable(tbodyId, data) {
-      buildThead(tbodyId);
-      const sorted = sortData(data, tbodyId);
-      document.getElementById(tbodyId).innerHTML = sorted.map((d, i) => {
+    let sigSearchQ = '';
+    let _sigChipType = 'all';
+
+    const SIG_TYPE_TAG = {
+      new:  '<span class="tag" data-variant="yellow-bright">首次買入</span>',
+      add:  '<span class="tag" data-variant="red">大幅加碼</span>',
+      exit: '<span class="tag" data-variant="gray">完全出清</span>',
+    };
+
+    function renderSignals() {
+      buildThead('tbody-sig-all');
+      const allData = [
+        ...SIG_NEW.map(d => ({ ...d, sigType: 'new' })),
+        ...SIG_ADD.map(d => ({ ...d, sigType: 'add' })),
+        ...SIG_EXIT.map(d => ({ ...d, sigType: 'exit' })),
+      ];
+      const q = sigSearchQ.trim().toLowerCase();
+      const filtered = q ? allData.filter(d =>
+        d.etf.toLowerCase().includes(q) || d.stock.toLowerCase().includes(q)
+      ) : allData;
+      const { col, asc } = sortStates['tbody-sig-all'];
+      const SIG_ORDER = { new: 0, add: 1, exit: 2 };
+      const sorted = col === 3
+        ? [...filtered].sort((a, b) => {
+            const oa = SIG_ORDER[a.sigType], ob = SIG_ORDER[b.sigType];
+            if (oa !== ob) return asc ? ob - oa : oa - ob;
+            // 同組內：new/add 張數大→小；exit 減最多→減最少（最負優先）
+            return a.sigType === 'exit' ? a.delta - b.delta : b.delta - a.delta;
+          })
+        : sortData(filtered, 'tbody-sig-all');
+      document.getElementById('tbody-sig-all').innerHTML = sorted.map(d => {
         const sParts = d.stock.split(' '), sCode = sParts[0], sName = sParts.slice(1).join(' ');
         const eParts = d.etf.split(' '), eCode = eParts[0], eName = eParts.slice(1).join(' ');
-        return `<tr data-slot="table-row" class="table-row">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToEtf('${eCode}','${eName}')" style="cursor:pointer;">${d.etf}</button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToStock('${sCode}','${sName}')" style="cursor:pointer;">${d.stock}</button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="chip-sector">${d.sector}</span></td>
+        return `<tr data-slot="table-row" class="table-row" data-sig="${d.sigType}">
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToEtf('${eCode}','${eName}')" style="cursor:pointer;"><span class="tabular-nums" style="color:#6f6f6f;">${eCode}</span> ${eName}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToStock('${sCode}','${sName}')" style="cursor:pointer;"><span class="tabular-nums" style="color:#6f6f6f;">${sCode}</span> ${sName}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="chip-sector">${d.sector}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="${{ new:'yellow-bright', add:'red', exit:'gray' }[d.sigType]}" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">${{ new:'首次買入', add:'大幅加碼', exit:'完全出清' }[d.sigType]}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtDelta(d.delta)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${(() => {
+        const avgPrice = parseFloat(d.mv) * 1e8 / (Math.abs(d.delta) * 1000);
+        const totalCls = d.delta >= 0 ? 'text-rise' : 'text-fall';
+        const totalStr = (d.delta >= 0 ? '+' : '-') + d.mv;
+        return `<div style="display:flex;flex-direction:column;line-height:1.4;"><span class="tabular-nums">${avgPrice.toFixed(2)}</span><span class="tabular-nums ${totalCls}">${totalStr}</span></div>`;
+      })()}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><div style="display:flex;flex-direction:column;line-height:1.4;"><span class="tabular-nums">${d.weight.toFixed(2)}%</span><span class="tabular-nums ${d.weightChg >= 0 ? 'text-rise' : 'text-fall'}">${d.weightChg >= 0 ? '+' : ''}${d.weightChg.toFixed(2)}%</span></div></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right text-flat">${d.mv}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left text-flat">${d.date}</td>
     </tr>`;
       }).join('');
-    }
-
-    function renderSignals() {
-      renderSigTable('tbody-new', SIG_NEW);
-      renderSigTable('tbody-add', SIG_ADD);
-      renderSigTable('tbody-exit', SIG_EXIT);
+      document.querySelectorAll('#tbody-sig-all tr').forEach(row => {
+        row.style.display = (_sigChipType === 'all' || row.dataset.sig === _sigChipType) ? '' : 'none';
+      });
     }
 
     function filterSig(type) {
+      _sigChipType = type;
       ['all', 'new', 'add', 'exit'].forEach(t => {
-        document.getElementById('sig-chip-' + t).classList.toggle('inactive', t !== type);
+        const btn = document.getElementById('sig-chip-' + t);
+        if (!btn) return;
+        const span = btn.querySelector('.tag');
+        if (!span) return;
+        const isActive = t === type;
+        span.classList.toggle('tag-active', isActive);
+        if (isActive) span.setAttribute('data-active', 'true');
+        else span.removeAttribute('data-active');
       });
-      document.querySelectorAll('.signal-sec').forEach(sec => {
-        sec.style.display = (type === 'all' || sec.dataset.sig === type) ? '' : 'none';
+      document.querySelectorAll('#tbody-sig-all tr').forEach(row => {
+        row.style.display = (type === 'all' || row.dataset.sig === type) ? '' : 'none';
       });
     }
 
@@ -1718,6 +1877,38 @@
       applyEtfRange();
     }
 
+    function setMktPeriod(val, btn) {
+      document.querySelectorAll('#mkt-period-tab-bar [role="tab"]').forEach(b => {
+        const active = b === btn;
+        b.dataset.state = active ? 'active' : 'inactive';
+        b.setAttribute('aria-selected', String(active));
+      });
+      const trigger = document.getElementById('mkt-date-trigger-btn');
+      if (trigger) delete trigger.dataset.custom;
+      const sp = document.getElementById('mkt-date-label');
+      const today = new Date();
+      const fmtD = d => `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+      const offsets = { '1d': 1, '1m': 30, '3m': 89, '1y': 364 };
+      const from = new Date(today); from.setDate(today.getDate() - (offsets[val] ?? 1));
+      if (sp) sp.textContent = `${fmtD(from)} - ${fmtD(today)}`;
+    }
+
+    function toggleMktDatePicker(event) {
+      const trigger = document.getElementById('mkt-date-trigger-btn');
+      const dp = document.getElementById('stk-datepicker');
+      if (!dp || !trigger) return;
+      if (dp.style.display !== 'none' && dp._owner === 'mkt') { dp.style.display = 'none'; dp._owner = null; return; }
+      dp._owner = 'mkt';
+      dp._onConfirm = (s, e) => {
+        const label = document.getElementById('mkt-date-label');
+        if (label) label.textContent = `${s} - ${e}`;
+        if (trigger) trigger.dataset.custom = 'true';
+      };
+      dpOpen(); dp.style.display = 'block'; stkDpRender();
+      _positionDP(dp, trigger);
+      event.stopPropagation();
+    }
+
     function setEtfPeriod(val, btn) {
       document.querySelectorAll('#etf-period-tab-bar [role="tab"]').forEach(b => {
         const active = b === btn;
@@ -1775,7 +1966,7 @@
         updateEtfCardLabels('custom');
         renderEtfTable(false);
       };
-      dp.style.display = 'block';
+      dpOpen(); dp.style.display = 'block'; stkDpRender();
       _positionDP(dp, trigger);
       event.stopPropagation();
     }
@@ -2204,6 +2395,12 @@
   </script>
 
   <!-- ── Date Picker Popup ── -->
+  <!-- ╔══ RD NOTE ════════════════════════════════════════════════════════════
+       ║  自訂 DateRangePicker — P2 / P3 共用同一個 DOM 元素（_owner 模式）
+       ║  position: fixed，四邊邊界保護由 _positionDP() 處理
+       ║  選取邏輯：start → end → 再選 start（若新 start < end，則保留 end，切換到選 end 狀態）
+       ║  正式版建議改為 Radix Popover + 共用 <DateRangePicker> React component
+       ╚══════════════════════════════════════════════════════════════════════ -->
   <div id="stk-datepicker" style="display:none">
     <div class="stk-dp-top">
       <input id="stk-dp-s" class="stk-dp-input" type="text" placeholder="開始日期" readonly onclick="stkDpFocusS(event)">
@@ -2428,6 +2625,7 @@
           if (dpRM > 11) { dpRM = 0; dpRY++; }
         }
       }
+      window.dpOpen = dpOpen; // 供 toggleEtfDatePicker / toggleMktDatePicker 呼叫
 
       window.toggleStkDatePicker = function (e) {
         e && e.stopPropagation();
