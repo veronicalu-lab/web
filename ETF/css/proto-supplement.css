@@ -2,6 +2,12 @@
    proto-supplement.css
    ══════════════════════════════════════════════════════════════════ */
 
+/* ── 全站最小字級規範：12px ──────────────────────────────────────
+   proto-supplement.css 內所有 font-size 不得低於 12px。
+   rd-app.css 的 .tag 元素可能有 11px，在此強制覆蓋。
+   ─────────────────────────────────────────────────────────────── */
+.tag { font-size: 12px; }
+
 /* ── Missing Tailwind utilities — use RD's CSS var system so dark mode works ── */
 .bg-gray-125  { background-color: var(--color-gray-125); }
 .bg-gray-100  { background-color: var(--color-gray-100); }
@@ -142,7 +148,7 @@
   display: flex; flex-direction: column; gap: 2px; overflow-y: auto;
 }
 .proto-nav-label {
-  font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   color: var(--color-gray-600); padding: 10px 8px 4px;
 }
 .proto-nav-btn {
@@ -163,7 +169,7 @@
 }
 .proto-ctrl-row { display: flex; align-items: center; gap: 8px; }
 .proto-ctrl-lbl {
-  font-size: 10px; font-weight: 600; letter-spacing: .04em;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
   color: var(--color-gray-600);
   width: 26px; flex-shrink: 0;
 }
@@ -176,7 +182,7 @@
 .proto-pill-btn {
   flex: 1; text-align: center;
   padding: 4px 6px; border-radius: 4px;
-  font-size: 11px; font-weight: 500;
+  font-size: 12px; font-weight: 500;
   color: var(--color-gray-600);
   background: transparent; border: none; cursor: pointer;
   transition: background .12s, color .12s, box-shadow .12s;
@@ -196,12 +202,12 @@
   display: flex; align-items: center; gap: 8px;
 }
 .proto-badge {
-  font-size: 10px; padding: 2px 7px; border-radius: 10px;
+  font-size: 12px; padding: 2px 7px; border-radius: 10px;
   background: rgba(22,94,249,.08);
   color: var(--color-theme-550);
   border: 1px solid rgba(22,94,249,.2);
 }
-.proto-time { font-size: 11px; color: var(--color-gray-600); font-variant-numeric: tabular-nums; }
+.proto-time { font-size: 12px; color: var(--color-gray-600); font-variant-numeric: tabular-nums; }
 
 /* ════════════════════════════════════════════════════════════════
    PAGE HERO — uses RD color vars, auto dark mode
@@ -213,7 +219,7 @@
   border-bottom: 1px solid var(--color-gray-200);
 }
 .page-hero-eyebrow {
-  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
   color: var(--color-theme-550);
   margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
 }
@@ -368,7 +374,7 @@
   flex-wrap: wrap;
 }
 .chip {
-  padding: 3px 12px; border-radius: 12px; font-size: 11px; font-weight: 500;
+  padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;
   border: 1px solid transparent; cursor: pointer; white-space: nowrap; user-select: none;
   transition: opacity .15s;
 }
@@ -379,7 +385,7 @@
 .chip.c-clear  { background: var(--color-gray-150); color: var(--color-gray-600); border-color: var(--color-gray-250); }
 .chip.inactive { opacity: .45; }
 .chip:hover { opacity: 1; }
-.chip-cnt { margin-left: 3px; font-size: 10px; font-weight: 700; }
+.chip-cnt { margin-left: 3px; font-size: 12px; font-weight: 700; }
 .chip-bar-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
 /* tag 行為 override
@@ -442,9 +448,9 @@
   border-radius: 4px; cursor: pointer; overflow: hidden; transition: transform .12s; padding: 4px;
 }
 .hm-cell:hover { transform: scale(1.04); }
-.hm-name { font-size: 11px; font-weight: 700; text-align: center; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
-.hm-ratio { font-size: 10px; color: rgba(255,255,255,.8); margin-top: 2px; }
-.hm-chg { font-size: 11px; font-weight: 700; color: #fff; }
+.hm-name { font-size: 12px; font-weight: 700; text-align: center; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+.hm-ratio { font-size: 12px; color: rgba(255,255,255,.8); margin-top: 2px; }
+.hm-chg { font-size: 12px; font-weight: 700; color: #fff; }
 
 /* ════════════════════════════════════════════════════════════════
    TABLE HEAD SEARCH
@@ -452,11 +458,25 @@
 .th-label-wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .th-search-ico { font-size: 12px; color: var(--color-gray-500); cursor: pointer; padding: 2px 4px; border-radius: 3px; transition: color .12s; }
 .th-search-ico:hover { color: var(--color-theme-550); }
-.th-search-field { display: none; align-items: center; width: 100%; background: var(--color-gray-100); border: 1px solid var(--color-theme-550); border-radius: 3px; padding: 2px 6px; gap: 6px; }
+.th-search-field { display: none; position: absolute; inset: 0; align-items: center; background: var(--color-gray-100); border: 1px solid var(--color-theme-550); border-radius: 3px; padding: 2px 10px 2px calc(var(--spacing) * 3); gap: 6px; z-index: 5; }
 .th-search-field.open { display: flex; }
 .th-search-field input { font: inherit; font-size: 12px; background: transparent; color: var(--color-gray-1000); border: none; outline: none; flex: 1; min-width: 0; }
-.th-search-field-close { font-size: 11px; color: var(--color-gray-500); cursor: pointer; }
+.th-search-field-close { font-size: 12px; color: var(--color-gray-500); cursor: pointer; }
 .th-search-field-close:hover { color: var(--color-gray-1000); }
+
+/* Stock / ETF code label (second line in stacked code+name cell) */
+.cell-code { font-size: 12px; color: var(--color-gray-500); }
+
+/* ════════════════════════════════════════════════════════════════
+   INDICATOR CARD ACCENT BARS
+   ════════════════════════════════════════════════════════════════ */
+.card-accent-blue   { border-left: 3px solid var(--color-theme-500) !important; }
+.card-accent-orange { border-left: 3px solid var(--color-orange-500) !important; }
+.card-accent-red    { border-left: 3px solid var(--color-rise) !important; }
+.card-accent-green  { border-left: 3px solid var(--color-fall) !important; }
+.card-accent-gray   { border-left: 3px solid var(--color-gray-450) !important; }
+.card-accent-teal   { border-left: 3px solid var(--color-turquoise-blue-400) !important; }
+.card-accent-yellow { border-left: 3px solid var(--color-yellow-500) !important; }
 
 /* ════════════════════════════════════════════════════════════════
    SIGNAL SECTIONS
@@ -468,7 +488,7 @@
 [data-theme=dark] .signal-hd.s-new, .dark .signal-hd.s-new { background: rgba(227,170,45,.1); color: var(--color-yellow-600); }
 .signal-hd.s-add { background: rgba(239,21,21,.08); color: #c91010; }
 .signal-hd.s-exit { background: var(--color-gray-150); color: var(--color-gray-700); }
-.signal-hd .cnt { font-size: 11px; font-weight: 400; color: var(--color-gray-600); background: var(--color-gray-150); border-radius: 10px; padding: 1px 7px; }
+.signal-hd .cnt { font-size: 12px; font-weight: 400; color: var(--color-gray-600); background: var(--color-gray-150); border-radius: 10px; padding: 1px 7px; }
 
 /* ════════════════════════════════════════════════════════════════
    BUY / SELL COLUMNS
@@ -482,11 +502,13 @@
 /* ════════════════════════════════════════════════════════════════
    MISC
    ════════════════════════════════════════════════════════════════ */
-.rank-num { display: inline-block; width: 16px; height: 16px; background: var(--color-gray-150); border-radius: 3px; font-size: 10px; font-weight: 700; color: var(--color-gray-600); text-align: center; line-height: 16px; margin-right: 6px; }
-.rank-num.top3 { background: var(--color-theme-550); color: var(--color-gray-100); }
-.chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
+.rank-num { display: inline-block; width: 16px; height: 16px; background: var(--color-gray-150); border-radius: 3px; font-size: 12px; font-weight: 700; color: var(--color-gray-600); text-align: center; line-height: 16px; margin-right: 6px; }
+.rank-num.rank-gold   { background: #B8962E; color: #fff5d6; }
+.rank-num.rank-silver { background: #8A8F9A; color: #f0f1f3; }
+.rank-num.rank-bronze { background: #A0622A; color: #fce8d5; }
+.chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 12px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
 .t-name-row { display: flex; align-items: center; gap: 8px; }
-.t-code-inline { font-size: 11px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .t-name-inline { font-size: 13px; font-weight: 500; color: var(--color-gray-900); cursor: pointer; }
 .t-name-inline:hover { color: var(--color-theme-550); }
 .t-issuer { color: var(--color-gray-600); }
@@ -506,7 +528,7 @@
 .etf-tab-panel { padding: 16px; }
 .etf-info-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--color-gray-200); border: 1px solid var(--color-gray-200); border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
 .etf-info-item { background: var(--color-gray-125); padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; }
-.etf-info-lbl { font-size: 11px; color: var(--color-gray-600); }
+.etf-info-lbl { font-size: 12px; color: var(--color-gray-600); }
 .etf-info-val { font-size: 13px; color: var(--color-gray-1000); font-weight: 500; }
 .etf-strategy-box { background: var(--color-gray-125); border: 1px solid var(--color-gray-200); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: var(--color-gray-600); line-height: 1.7; margin-bottom: 14px; }
 
@@ -532,7 +554,7 @@
 .tabs-badge {
   border-radius: var(--radius-xs, 3px);
   padding: 1px 5px;
-  font-size: 10px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   color: var(--tabs-badge-text, var(--color-gray-650, #6f6f6f));
   background: var(--tabs-badge-bg, transparent);
 }

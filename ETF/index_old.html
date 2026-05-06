@@ -168,7 +168,7 @@
     }
 
     .stk-dp-wday {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--color-gray-600);
       text-align: center;
       padding: 3px 0;
@@ -426,46 +426,35 @@
             <script>buildDateControlRow({ containerId:'mkt-date-control-row', triggerId:'mkt-date-trigger-btn', labelId:'mkt-date-label', toggleFn:'toggleMktDatePicker', barId:'mkt-period-tab-bar', setPeriodFn:'setMktPeriod' });</script>
             <div id="pane-mkt-overview" class="flex-1 overflow-auto flex flex-col">
               <!-- [RD] Summary cards — 靜態計算值，來自 API 同一支 response；值跟隨篩選列期間變動 -->
-              <div class="flex gap-2.5 py-3 shrink-0">
+              <div class="flex gap-2.5 py-3 border-b border-gray-200 shrink-0">
                 <div
-                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue">
-                  <span class="text-[14px] text-gray-600 mb-1">期末總規模</span>
-                  <div class="text-[24px] font-bold tabular-nums"><span class="text-gray-800">4485.26億</span></div>
-                  <div class="text-[14px] text-gray-500 mt-0.5">期末主動式 ETF 規模加總</div>
+                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+                  <span class="text-[11px] text-gray-600 mb-1">期末總規模</span>
+                  <div class="text-[20px] font-bold tabular-nums"><span class="text-gray-800">4485.26億</span></div>
+                  <div class="text-[10px] text-gray-500 mt-0.5">期末主動式 ETF 規模加總</div>
                 </div>
                 <div
-                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-orange">
-                  <span class="text-[14px] text-gray-600 mb-1">區間增減金額</span>
-                  <div class="text-[24px] font-bold tabular-nums"><span class="tabular-nums text-rise">+34.37億</span>
+                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+                  <span class="text-[11px] text-gray-600 mb-1">區間增減金額</span>
+                  <div class="text-[20px] font-bold tabular-nums"><span class="tabular-nums text-rise">+34.37億</span>
                   </div>
-                  <div class="text-[14px] text-gray-500 mt-0.5"><span class="tabular-nums text-rise">+77.19%</span>
+                  <div class="text-[10px] text-gray-500 mt-0.5"><span class="tabular-nums text-rise">+77.19%</span>
                   </div>
                 </div>
                 <div
-                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red">
-                  <span class="text-[14px] text-gray-600 mb-1">區間成長</span>
-                  <div class="text-[24px] font-bold tabular-nums text-rise">10檔</div>
-                  <div class="text-[14px] text-gray-500 mt-0.5 tabular-nums text-rise">25.24%</div>
+                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+                  <span class="text-[11px] text-gray-600 mb-1">區間成長</span>
+                  <div class="text-[20px] font-bold tabular-nums text-rise">10檔</div>
+                  <div class="text-[10px] text-gray-500 mt-0.5 tabular-nums text-rise">25.24%</div>
                 </div>
                 <div
-                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green">
-                  <span class="text-[14px] text-gray-600 mb-1">區間衰退</span>
-                  <div class="text-[24px] font-bold tabular-nums text-fall">4檔</div>
-                  <div class="text-[14px] text-gray-500 mt-0.5 tabular-nums text-fall">12.32%</div>
+                  class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+                  <span class="text-[11px] text-gray-600 mb-1">區間衰退</span>
+                  <div class="text-[20px] font-bold tabular-nums text-fall">4檔</div>
+                  <div class="text-[10px] text-gray-500 mt-0.5 tabular-nums text-fall">12.32%</div>
                 </div>
               </div>
-              <div class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
-                <button type="button" id="mkt-chip-all"  onclick="setMktChip('all')"  class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="blue"         data-active="true" class="tag tag-active gap-1">全部<span id="mkt-cnt-all">0</span></span></button>
-                <button type="button" id="mkt-chip-new"  onclick="setMktChip('new')"  class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="yellow-bright"                class="tag gap-1">首次買入<span id="mkt-cnt-new">0</span></span></button>
-                <button type="button" id="mkt-chip-add"  onclick="setMktChip('add')"  class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="red"                         class="tag gap-1">大幅加碼<span id="mkt-cnt-add">0</span></span></button>
-                <button type="button" id="mkt-chip-exit" onclick="setMktChip('exit')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="gray"                        class="tag gap-1">完全出清<span id="mkt-cnt-exit">0</span></span></button>
-                <button type="button" id="mkt-chip-none" onclick="setMktChip('none')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="gray"                        class="tag gap-1">無訊號<span id="mkt-cnt-none">0</span></span></button>
-                <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8 ml-auto shrink-0" role="radiogroup" id="mkt-view-seg">
-                  <button type="button" role="radio" aria-checked="true"  data-slot="segment-item" data-state="active"   data-position="first" class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]" onclick="setMktViewMode('list',this)"><span class="segment-text">列表</span></button>
-                  <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="last"  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]" onclick="setMktViewMode('heatmap',this)"><span class="segment-text">熱力圖</span></button>
-                </div>
-              </div>
-              <div id="mkt-list-view" class="flex-1 overflow-auto">
+              <div class="flex-1 overflow-auto">
                 <div data-slot="table-container" class="table-container">
                   <table data-slot="table" class="table">
                     <thead data-slot="table-header" class="table-header">
@@ -496,7 +485,6 @@
                   </table>
                 </div>
               </div>
-              <div id="mkt-hm-view" style="display:none;position:relative;height:440px;overflow:hidden;"></div>
             </div>
             <!-- ╔══ RD NOTE ═══════════════════════════════════════════════════════════════
                  ║  pane-mkt-buysell — 總體大買大賣
@@ -540,7 +528,14 @@
                  ╚══════════════════════════════════════════════════════════════════════════ -->
             <div id="pane-mkt-signal" style="display:none" class="flex-1 overflow-auto flex flex-col">
               <!-- chip filter bar -->
-              <div class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
+              <div class="flex items-center gap-2 py-3 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
+                <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
+                  <div data-slot="input-control" data-variant="stroke" data-size="sm" class="ui-input-control relative flex w-full items-center gap-1 rounded transition-[color,background-color,border-color,box-shadow] border min-h-7 px-2 custom-search-input-control">
+                    <span data-slot="input-prefix" class="ui-input-prefix"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg></span>
+                    <input data-slot="input" data-variant="stroke" data-size="sm" class="ui-input w-full min-w-0 flex-1 bg-transparent border-0 outline-none shadow-none font-normal transition-[color,background-color,border-color,box-shadow] placeholder:select-none focus:border-transparent focus:shadow-none disabled:pointer-events-none h-7 text-[12px]" placeholder="搜尋 ETF／股票代號名稱" type="search" oninput="sigSearchQ=this.value;renderSignals()" value="">
+                    <span data-slot="input-suffix" class="ui-input-suffix"><span data-slot="search-input-suffix" class="custom-search-input-suffix"></span></span>
+                  </div>
+                </div>
                 <button type="button" id="sig-chip-all" onclick="filterSig('all')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="blue" data-active="true" class="tag tag-active gap-1">全部<span>19</span></span></button>
                 <button type="button" id="sig-chip-new" onclick="filterSig('new')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="yellow-bright" class="tag gap-1">首次買入<span>3</span></span></button>
                 <button type="button" id="sig-chip-add" onclick="filterSig('add')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="red" class="tag gap-1">大幅加碼<span>8</span></span></button>
@@ -571,18 +566,10 @@
     <main id="page-stock" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
-          <div class="flex items-center pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250" style="gap:16px;">
-            <div class="flex flex-col gap-3">
-              <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap"><span id="stk-hero-title">台積電</span><span id="stk-hero-code" class="text-gray-450 dark:text-white/40 ml-1.5">2330</span></h2>
-              <p class="text-scope-6 leading-tool-h-6 font-normal text-gray-600">主動式 ETF 持股狀況</p>
-            </div>
-            <div id="stk-info-card" class="ml-auto" style="background:var(--color-gray-125);border:1px solid var(--color-gray-200);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:14px;white-space:nowrap;flex-shrink:0;">
-              <div>
-                <div style="font-size:12px;color:var(--color-gray-500);margin-bottom:3px;text-align:right;">今日收盤</div>
-                <div id="stk-info-val" class="tabular-nums" style="font-size:18px;font-weight:700;line-height:1.2;">—</div>
-              </div>
-              <svg id="stk-info-icon" width="32" height="24" viewBox="0 0 32 24" fill="none"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
+          <div class="flex flex-col gap-3 pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250">
+            <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">台積電<span
+                class="text-gray-450 dark:text-white/40 ml-1.5">2330</span></h2>
+            <p class="text-scope-6 leading-tool-h-6 font-normal text-gray-600">主動式 ETF 持股狀況</p>
           </div>
         </div>
         <div class="w-full px-6 pb-6">
@@ -656,7 +643,7 @@
             </div>
             <div class="py-3" style="position:relative;">
               <div id="stk-chart-legend"
-                style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:12px;color:#9ca3af;z-index:10;pointer-events:none;white-space:nowrap;">
+                style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:11px;color:#9ca3af;z-index:10;pointer-events:none;white-space:nowrap;">
                 <span style="display:flex;align-items:center;gap:4px;"><span
                     style="display:inline-block;width:12px;height:12px;background:#6366f1;border-radius:2px;flex-shrink:0;"></span>買賣超張數</span>
                 <span style="display:flex;align-items:center;gap:4px;"><span
@@ -671,36 +658,36 @@
           <script>buildDateControlRow({ containerId:'stk-date-control-row', triggerId:'stk-date-trigger-btn', labelId:'stk-date-label', toggleFn:'toggleStkDatePicker', barId:'stk-period-tab-bar', setPeriodFn:'setStkPeriod' });</script>
           <!-- [RD] Summary cards ×6 — labels 跟隨 日/月/季/年 或自訂日期 動態切換；資料來自同一支 holdings API -->
           <div id="stk-summary-row" class="flex gap-2.5  py-3 shrink-0">
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue">
-              <span class="text-[14px] text-gray-600 mb-1">持有ETF數量</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="text-gray-800">12</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">期末持有</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">持有ETF數量</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="text-gray-800">12</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">期末持有</div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-orange">
-              <span class="text-[14px] text-gray-600 mb-1">首次買入</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="tabular-nums text-rise">1</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">區間持有，期末仍持有</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">首次買入</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="tabular-nums text-rise">1</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">區間持有，期末仍持有</div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-gray">
-              <span class="text-[14px] text-gray-600 mb-1">完全出清</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="tabular-nums text-flat">0</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">區間出清，未再買入</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">完全出清</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="tabular-nums text-flat">0</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">區間出清，未再買入</div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-teal">
-              <span class="text-[14px] text-gray-600 mb-1">佔個股總市值</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="text-gray-800">0.08%</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5"><span>總持股市值 <strong class="text-gray-700">0.4億</strong></span>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">佔個股總市值</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="text-gray-800">0.08%</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span>總持股市值 <strong class="text-gray-700">0.4億</strong></span>
               </div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-yellow">
-              <span class="text-[14px] text-gray-600 mb-1">資金流向</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="tabular-nums text-rise">+409.7億</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">區間淨買入金額</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">資金流向</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="tabular-nums text-rise">+409.7億</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">區間淨買入金額</div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red">
-              <span class="text-[14px] text-gray-600 mb-1">張數增減</span>
-              <div class="text-[24px] font-bold tabular-nums"><span class="tabular-nums text-rise">+7,877,000</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5"><span>期末持倉 <strong
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">張數增減</span>
+              <div class="text-[20px] font-bold tabular-nums"><span class="tabular-nums text-rise">+7,877,000</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span>期末持倉 <strong
                     class="text-gray-700">20,936,999</strong></span></div>
             </div>
           </div>
@@ -708,6 +695,20 @@
                      Chips 為 client-side filter，不重新打 API -->
           <div
             class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
+            <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
+              <div data-slot="input-control" data-variant="stroke" data-size="sm"
+                class="ui-input-control relative flex w-full items-center gap-1 rounded transition-[color,background-color,border-color,box-shadow] border min-h-7 px-2 custom-search-input-control">
+                <span data-slot="input-prefix" class="ui-input-prefix"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true">
+                    <path d="m21 21-4.34-4.34"></path>
+                    <circle cx="11" cy="11" r="8"></circle>
+                  </svg></span><input data-slot="input" data-variant="stroke" data-size="sm"
+                  class="ui-input w-full min-w-0 flex-1 bg-transparent border-0 outline-none shadow-none font-normal transition-[color,background-color,border-color,box-shadow] placeholder:select-none focus:border-transparent focus:shadow-none disabled:pointer-events-none h-7 text-[12px]"
+                  placeholder="搜尋名稱／代碼" type="search" oninput="stkSearchQ=this.value;renderStkTable(false)" value=""><span data-slot="input-suffix"
+                  class="ui-input-suffix"><span data-slot="search-input-suffix"
+                    class="custom-search-input-suffix"></span></span></div>
+            </div>
             <button type="button" id="stk-chip-all" onclick="setStkChip('all')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="blue" data-active="true" class="tag tag-active gap-1">全部<span id="stk-cnt-all">0</span></span></button>
             <button type="button" id="stk-chip-new" onclick="setStkChip('new')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="yellow-bright" class="tag gap-1">首次買入<span id="stk-cnt-new">0</span></span></button>
             <button type="button" id="stk-chip-add" onclick="setStkChip('add')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="red" class="tag gap-1">加碼<span id="stk-cnt-add">0</span></span></button>
@@ -776,65 +777,67 @@
     <main id="page-etf" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
-          <div class="flex items-center pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250" style="gap:16px;">
-            <div class="flex flex-col gap-3">
-              <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap"><span id="etf-hero-title">主動統一臺股增長</span><span id="etf-hero-code" class="text-gray-450 dark:text-white/40 ml-1.5">00981A</span></h2>
-              <p class="text-scope-6 leading-tool-h-6 font-normal text-gray-600">ETF 持股狀況</p>
-            </div>
-            <div id="etf-info-card" class="ml-auto" style="background:var(--color-gray-125);border:1px solid var(--color-gray-200);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:14px;white-space:nowrap;flex-shrink:0;">
-              <div>
-                <div style="font-size:12px;color:var(--color-gray-500);margin-bottom:3px;text-align:right;">今日淨值 (NAV)</div>
-                <div id="etf-info-val" class="tabular-nums" style="font-size:18px;font-weight:700;line-height:1.2;">—</div>
-              </div>
-              <svg id="etf-info-icon" width="32" height="24" viewBox="0 0 32 24" fill="none"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
+          <div class="flex flex-col gap-3 pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250">
+            <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">主動統一臺股增長<span
+                class="text-gray-450 dark:text-white/40 ml-1.5">00981A</span></h2>
+            <p class="text-scope-6 leading-tool-h-6 font-normal text-gray-600">ETF 持股狀況</p>
           </div>
         </div>
         <div class="w-full px-6 pb-6">
-          <!-- ── ETF 產業配置佔比 + 前六大增減碼分析 ── -->
-          <!-- 控制行：產業/個股 segment（左） + 時間 tabs（右） -->
-          <div class="shrink-0">
+          <!-- ── 持股流向圖表 ── -->
+          <!-- [RD] Segment（左）：規模/持股檔數 — 切換後 chart 左 Y 軸資料系列替換，圖例文字同步更新 -->
+          <div class="shrink-0 border-b border-gray-200">
             <div class="flex items-center pt-3 pb-2 gap-2.5">
-              <!-- 產業 / 股票 segment -->
-              <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8" role="radiogroup" id="etf-chg-seg">
-                <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="first" class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]" onclick="setEtfChgMode('sector',this)"><span class="segment-text">產業</span></button>
-                <button type="button" role="radio" aria-checked="true"  data-slot="segment-item" data-state="active"   data-position="last"  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]" onclick="setEtfChgMode('stock',this)"><span class="segment-text">股票</span></button>
+              <div data-slot="segment" class="segment-group inline-flex items-stretch isolate relative h-8"
+                role="radiogroup" id="etf-seg-metric">
+                <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active"
+                  data-position="first"
+                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
+                  onclick="setEtfMetric('aum',this)">
+                  <span class="segment-text">規模</span>
+                </button>
+                <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive"
+                  data-position="last"
+                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
+                  onclick="setEtfMetric('count',this)">
+                  <span class="segment-text">檔數</span>
+                </button>
               </div>
-              <!-- 1月/3月/6月/1年 tabs -->
               <div dir="ltr" data-orientation="horizontal" class="ml-auto">
-                <div role="tablist" aria-orientation="horizontal" id="etf-chart-range-tab-bar"
+                <div role="tablist" aria-orientation="horizontal" id="etf-range-tab-bar"
                   class="tabs-list inline-flex items-end chart-period-bar" style="outline:none;">
-                  <button type="button" role="tab" aria-selected="true"  data-state="active"   data-variant="hug" class="tabs-trigger etf-chart-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2" onclick="setEtfChartRange('1m',this)"><span class="tabs-text">1月</span><span class="tabs-indicator"></span></button>
-                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger etf-chart-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2" onclick="setEtfChartRange('3m',this)"><span class="tabs-text">3月</span><span class="tabs-indicator"></span></button>
-                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger etf-chart-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2" onclick="setEtfChartRange('6m',this)"><span class="tabs-text">6月</span><span class="tabs-indicator"></span></button>
-                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger etf-chart-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2" onclick="setEtfChartRange('1y',this)"><span class="tabs-text">1年</span><span class="tabs-indicator"></span></button>
+                  <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
+                    class="tabs-trigger etf-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+                    onclick="setEtfRange('1m',this)">
+                    <span class="tabs-text">1月</span><span class="tabs-indicator"></span>
+                  </button>
+                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+                    class="tabs-trigger etf-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+                    onclick="setEtfRange('3m',this)">
+                    <span class="tabs-text">3月</span><span class="tabs-indicator"></span>
+                  </button>
+                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+                    class="tabs-trigger etf-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+                    onclick="setEtfRange('6m',this)">
+                    <span class="tabs-text">6月</span><span class="tabs-indicator"></span>
+                  </button>
+                  <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+                    class="tabs-trigger etf-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+                    onclick="setEtfRange('1y',this)">
+                    <span class="tabs-text">1年</span><span class="tabs-indicator"></span>
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="shrink-0 border-b border-gray-200 pb-4" style="padding-top:16px;">
-            <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:12px;">
-              <!-- 左：產業配置 Donut -->
-              <div style="background:var(--color-gray-125);border:1px solid var(--color-gray-200);border-radius:10px;padding:16px;">
-                <div style="font-size:13px;font-weight:600;color:var(--color-gray-800);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="color:var(--color-theme-500);flex-shrink:0;"><path d="M7.5 1A6.5 6.5 0 1 0 14 7.5 6.5 6.5 0 0 0 7.5 1Zm0 10.5A4 4 0 1 1 11.5 7.5 4 4 0 0 1 7.5 11.5Z" fill="currentColor" opacity=".35"/><path d="M7.5 1v2.5A4 4 0 0 1 10.33 9.8l1.77 1.77A6.5 6.5 0 0 0 7.5 1Z" fill="currentColor"/></svg>
-                  <span id="etf-donut-title">ETF 產業配置佔比</span>
-                </div>
-                <div style="display:flex;justify-content:center;margin-bottom:10px;position:relative;">
-                  <canvas id="etf-sector-donut" width="160" height="160" style="cursor:crosshair;"></canvas>
-                </div>
-                <div id="etf-donut-tooltip" style="position:fixed;display:none;background:var(--color-gray-900,#18191d);color:var(--color-gray-50,#f9fafb);font-size:12px;padding:6px 10px;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.25);line-height:1.5;"></div>
-                <div id="etf-sector-legend" style="display:flex;flex-wrap:wrap;gap:5px 12px;"></div>
+            <div class="py-3" style="position:relative;">
+              <div id="etf-chart-legend"
+                style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:11px;color:#9ca3af;z-index:10;pointer-events:none;white-space:nowrap;">
+                <span style="display:flex;align-items:center;gap:4px;"><span id="etf-legend-bar-ico"
+                    style="display:inline-block;width:12px;height:12px;background:#6366f1;border-radius:2px;flex-shrink:0;"></span><span id="etf-legend-bar-lbl">規模(億)</span></span>
+                <span style="display:flex;align-items:center;gap:4px;"><span
+                    style="display:inline-block;width:18px;height:2px;background:#f59e0b;flex-shrink:0;"></span>ETF 股價</span>
               </div>
-              <!-- 右：增減碼分析 Bar -->
-              <div style="background:var(--color-gray-125);border:1px solid var(--color-gray-200);border-radius:10px;padding:16px;">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="color:var(--color-fall);flex-shrink:0;"><polyline points="1,11 4,7 7,9 10,4 14,6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:13px;font-weight:600;color:var(--color-gray-800);">前六大增減碼分析</span>
-                  <span style="font-size:12px;color:var(--color-gray-500);">(變動幅度 %)</span>
-                </div>
-                <div id="etf-chg-bars"></div>
-              </div>
+              <div id="etf-flow-chart" style="height:240px;width:100%;"></div>
             </div>
           </div>
           <!-- ── 日/月/季/年 + 日期選擇 ── -->
@@ -846,31 +849,45 @@
           <!-- [RD] Summary cards ×4：ETF 規模 / 持股檔數 / 首次買入 / 完全出清
                     副標題（etf-sub-aum / etf-sub-count）跟隨 period 變動；資料來自同一支 holdings API -->
           <div id="etf-summary-row" class="flex gap-2.5 py-3 shrink-0">
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue">
-              <span id="etf-lbl-aum" class="text-[14px] text-gray-600 mb-1">單日 ETF 規模</span>
-              <div class="text-[24px] font-bold tabular-nums"><span id="etf-sum-aum" class="text-gray-800">285.13億</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5"><span id="etf-sub-aum">單日淨資產總值｜較前日</span> <span id="etf-sum-aum-chg" class="tabular-nums text-rise">+2.1億</span></div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span id="etf-lbl-aum" class="text-[11px] text-gray-600 mb-1">單日 ETF 規模</span>
+              <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-aum" class="text-gray-800">285.13億</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span id="etf-sub-aum">單日淨資產總值｜較前日</span> <span id="etf-sum-aum-chg" class="tabular-nums text-rise">+2.1億</span></div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red">
-              <span class="text-[14px] text-gray-600 mb-1">持股檔數</span>
-              <div class="text-[24px] font-bold tabular-nums"><span id="etf-sum-count" class="text-gray-800">32</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5"><span id="etf-sub-count">單日持有｜較前日</span> <span id="etf-sum-count-chg" class="tabular-nums text-rise">+2檔</span></div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span class="text-[11px] text-gray-600 mb-1">持股檔數</span>
+              <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-count" class="text-gray-800">32</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span id="etf-sub-count">單日持有｜較前日</span> <span id="etf-sum-count-chg" class="tabular-nums text-rise">+2檔</span></div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-orange">
-              <span id="etf-lbl-newbuy" class="text-[14px] text-gray-600 mb-1">單日首次買入</span>
-              <div class="text-[24px] font-bold tabular-nums"><span id="etf-sum-newbuy" class="tabular-nums text-rise">1</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">區間持有，期末仍持有</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span id="etf-lbl-newbuy" class="text-[11px] text-gray-600 mb-1">單日首次買入</span>
+              <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-newbuy" class="tabular-nums text-rise">1</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">區間持有，期末仍持有</div>
             </div>
-            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-gray">
-              <span id="etf-lbl-clear" class="text-[14px] text-gray-600 mb-1">單日完全出清</span>
-              <div class="text-[24px] font-bold tabular-nums"><span id="etf-sum-clear" class="tabular-nums text-fall">1</span></div>
-              <div class="text-[14px] text-gray-500 mt-0.5">區間出清，未再買入</div>
+            <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
+              <span id="etf-lbl-clear" class="text-[11px] text-gray-600 mb-1">單日完全出清</span>
+              <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-clear" class="tabular-nums text-fall">1</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5">區間出清，未再買入</div>
             </div>
           </div>
-          <!-- ── Chip + 列表/熱力圖 ── -->
-          <!-- [RD] 篩選列：同 P2 — 5 個狀態 chips（全部/首次買入/加碼/減碼/完全出清）+ 列表/熱力圖 <Segment>；client-side filter -->
+          <!-- ── 搜尋 + Chip + 列表/熱力圖 ── -->
+          <!-- [RD] 篩選列：同 P2 — <Input> 搜尋 + 5 個狀態 chips（全部/首次買入/加碼/減碼/完全出清）+ 列表/熱力圖 <Segment>；client-side filter -->
           <div
             class="flex items-center gap-2 py-2 border-b border-gray-200 bg-gray-100 dark:bg-transparent shrink-0 overflow-x-auto">
+            <div data-slot="input-root" class="ui-input-root relative custom-search-input w-[184px] shrink-0">
+              <div data-slot="input-control" data-variant="stroke" data-size="sm"
+                class="ui-input-control relative flex w-full items-center gap-1 rounded transition-[color,background-color,border-color,box-shadow] border min-h-7 px-2 custom-search-input-control">
+                <span data-slot="input-prefix" class="ui-input-prefix"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search size-4" aria-hidden="true">
+                    <path d="m21 21-4.34-4.34"></path>
+                    <circle cx="11" cy="11" r="8"></circle>
+                  </svg></span><input data-slot="input" data-variant="stroke" data-size="sm"
+                  class="ui-input w-full min-w-0 flex-1 bg-transparent border-0 outline-none shadow-none font-normal transition-[color,background-color,border-color,box-shadow] placeholder:select-none focus:border-transparent focus:shadow-none disabled:pointer-events-none h-7 text-[12px]"
+                  placeholder="搜尋名稱／代碼" type="search" oninput="etfSearchQ=this.value;renderEtfTable(false)" value=""><span
+                  data-slot="input-suffix" class="ui-input-suffix"><span data-slot="search-input-suffix"
+                    class="custom-search-input-suffix"></span></span></div>
+            </div>
             <button type="button" id="etf-chip-all" onclick="setEtfChip('all')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="blue" data-active="true" class="tag tag-active gap-1">全部<span id="etf-cnt-all">0</span></span></button>
             <button type="button" id="etf-chip-new" onclick="setEtfChip('new')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="yellow-bright" class="tag gap-1">首次買入<span id="etf-cnt-new">0</span></span></button>
             <button type="button" id="etf-chip-add" onclick="setEtfChip('add')" class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span data-variant="red" class="tag gap-1">加碼<span id="etf-cnt-add">0</span></span></button>
@@ -1069,27 +1086,27 @@
     // DATA
     // ═══════════════════════════════════════════
     const ETF_LIST = [
-      { code: '00981A', name: '主動統一台股增長', short: '主動統一台股增長', issuer: '統一投信', strategy: '成長型', aum: 285.13, chg: +0.60, chgPct: +0.21, nav: 25.54, navChg: +2.19, trend: [-0.15, +0.08, +0.12, -0.05, +0.21] },
-      { code: '00992A', name: '主動群益科技創新', short: '群益科技創新', issuer: '群益投信', strategy: '科技型', aum: 199.85, chg: +0.49, chgPct: +0.25, nav: 16.31, navChg: +2.24, trend: [+0.10, +0.18, -0.06, +0.20, +0.25] },
-      { code: '00400A', name: '主動國泰動能高息', short: '國泰動能高息', issuer: '國泰投信', strategy: '高息型', aum: 96.12, chg: +2.21, chgPct: +2.35, nav: 12.04, navChg: +1.51, trend: [+0.80, +1.10, +1.50, +1.90, +2.35] },
-      { code: '00991A', name: '主動復華未來50', short: '復華未來50', issuer: '復華投信', strategy: '成長型', aum: 62.49, chg: +1.10, chgPct: +1.80, nav: 14.84, navChg: +0.96, trend: [-0.20, +0.40, +0.90, +1.30, +1.80] },
-      { code: '00995A', name: '主動中信台灣卓越', short: '中信台灣卓越', issuer: '中信投信', strategy: '價值型', aum: 43.56, chg: -0.23, chgPct: -0.52, nav: 14.52, navChg: +1.59, trend: [+0.30, -0.10, -0.25, -0.40, -0.52] },
-      { code: '00994A', name: '主動第一金台股優', short: '第一金台股優', issuer: '第一金投信', strategy: '成長型', aum: 31.24, chg: +1.05, chgPct: +3.47, nav: 15.42, navChg: +1.44, trend: [+1.20, +2.10, +1.80, +2.60, +3.47] },
-      { code: '00984A', name: '主動安聯台灣高息', short: '安聯台灣高息', issuer: '安聯投信', strategy: '高息型', aum: 28.95, chg: +0.12, chgPct: +0.40, nav: 13.93, navChg: +0.72, trend: [-0.30, -0.10, +0.05, +0.22, +0.40] },
-      { code: '00982A', name: '主動群益台灣強棒', short: '群益台灣強棒', issuer: '群益投信', strategy: '成長型', aum: 25.39, chg: +0.26, chgPct: +1.03, nav: 20.03, navChg: +1.98, trend: [+0.40, +0.65, +0.55, +0.80, +1.03] },
-      { code: '00401A', name: '主動摩根台灣鑫收', short: '摩根台灣鑫收', issuer: '摩根投信', strategy: '高息型', aum: 18.76, chg: +0.02, chgPct: +0.12, nav: 11.45, navChg: +0.88, trend: [-0.05, -0.08, +0.03, -0.02, +0.12] },
-      { code: '00987A', name: '主動台新優勢成長', short: '台新優勢成長', issuer: '台新投信', strategy: '成長型', aum: 18.06, chg: +0.17, chgPct: +0.96, nav: 15.28, navChg: +1.13, trend: [+0.30, +0.50, +0.70, +0.85, +0.96] },
-      { code: '00993A', name: '主動安聯台灣', short: '安聯台灣', issuer: '安聯投信', strategy: '成長型', aum: 17.90, chg: -0.31, chgPct: -1.70, nav: 14.10, navChg: +0.78, trend: [-0.50, -0.80, -1.10, -1.40, -1.70] },
-      { code: '00985A', name: '主動野村台灣50', short: '野村台灣50', issuer: '野村投信', strategy: '價值型', aum: 17.19, chg: +0.53, chgPct: +3.16, nav: 18.57, navChg: +1.64, trend: [+1.00, +1.80, +2.30, +2.70, +3.16] },
-      { code: '00980A', name: '主動野村臺灣優選', short: '野村臺灣優選', issuer: '野村投信', strategy: '成長型', aum: 17.01, chg: -0.09, chgPct: -0.51, nav: 17.01, navChg: +1.16, trend: [+0.20, -0.10, -0.30, -0.45, -0.51] },
-      { code: '00996A', name: '主動兆豐台灣豐收', short: '兆豐台灣豐收', issuer: '兆豐投信', strategy: '高息型', aum: 12.36, chg: +0.11, chgPct: +0.86, nav: 11.96, navChg: +2.39, trend: [+0.20, +0.40, +0.55, +0.70, +0.86] },
+      { code: '00981A', name: '主動統一台股增長', short: '主動統一台股增長', issuer: '統一投信', strategy: '成長型', aum: 285.13, chg: +0.60, chgPct: +0.21, nav: 25.54, navChg: +2.19 },
+      { code: '00992A', name: '主動群益科技創新', short: '群益科技創新', issuer: '群益投信', strategy: '科技型', aum: 199.85, chg: +0.49, chgPct: +0.25, nav: 16.31, navChg: +2.24 },
+      { code: '00400A', name: '主動國泰動能高息', short: '國泰動能高息', issuer: '國泰投信', strategy: '高息型', aum: 96.12, chg: +2.21, chgPct: +2.35, nav: 12.04, navChg: +1.51 },
+      { code: '00991A', name: '主動復華未來50', short: '復華未來50', issuer: '復華投信', strategy: '成長型', aum: 62.49, chg: +1.10, chgPct: +1.80, nav: 14.84, navChg: +0.96 },
+      { code: '00995A', name: '主動中信台灣卓越', short: '中信台灣卓越', issuer: '中信投信', strategy: '價值型', aum: 43.56, chg: -0.23, chgPct: -0.52, nav: 14.52, navChg: +1.59 },
+      { code: '00994A', name: '主動第一金台股優', short: '第一金台股優', issuer: '第一金投信', strategy: '成長型', aum: 31.24, chg: +1.05, chgPct: +3.47, nav: 15.42, navChg: +1.44 },
+      { code: '00984A', name: '主動安聯台灣高息', short: '安聯台灣高息', issuer: '安聯投信', strategy: '高息型', aum: 28.95, chg: +0.12, chgPct: +0.40, nav: 13.93, navChg: +0.72 },
+      { code: '00982A', name: '主動群益台灣強棒', short: '群益台灣強棒', issuer: '群益投信', strategy: '成長型', aum: 25.39, chg: +0.26, chgPct: +1.03, nav: 20.03, navChg: +1.98 },
+      { code: '00401A', name: '主動摩根台灣鑫收', short: '摩根台灣鑫收', issuer: '摩根投信', strategy: '高息型', aum: 18.76, chg: +0.02, chgPct: +0.12, nav: 11.45, navChg: +0.88 },
+      { code: '00987A', name: '主動台新優勢成長', short: '台新優勢成長', issuer: '台新投信', strategy: '成長型', aum: 18.06, chg: +0.17, chgPct: +0.96, nav: 15.28, navChg: +1.13 },
+      { code: '00993A', name: '主動安聯台灣', short: '安聯台灣', issuer: '安聯投信', strategy: '成長型', aum: 17.90, chg: -0.31, chgPct: -1.70, nav: 14.10, navChg: +0.78 },
+      { code: '00985A', name: '主動野村台灣50', short: '野村台灣50', issuer: '野村投信', strategy: '價值型', aum: 17.19, chg: +0.53, chgPct: +3.16, nav: 18.57, navChg: +1.64 },
+      { code: '00980A', name: '主動野村臺灣優選', short: '野村臺灣優選', issuer: '野村投信', strategy: '成長型', aum: 17.01, chg: -0.09, chgPct: -0.51, nav: 17.01, navChg: +1.16 },
+      { code: '00996A', name: '主動兆豐台灣豐收', short: '兆豐台灣豐收', issuer: '兆豐投信', strategy: '高息型', aum: 12.36, chg: +0.11, chgPct: +0.86, nav: 11.96, navChg: +2.39 },
     ];
 
     const BUY_TOP = [
       { rank: 1, code: '2891', name: '中信金', sector: '金融', shares: +5810, pct: '11.11%', close: 44.20, chgPct: +0.91 },
       { rank: 2, code: '2885', name: '元大金', sector: '金融', shares: +4668, pct: '11.11%', close: 44.20, chgPct: +0.91 },
       { rank: 3, code: '2892', name: '第一金', sector: '金融', shares: +3830, pct: '20.70%', close: 32.10, chgPct: +0.78 },
-      { rank: 4, code: '2615', name: '萬海', sector: '航運', shares: +1601, pct: '5.72%', close: 109.50, chgPct: +10 },
+      { rank: 4, code: '2615', name: '萬海', sector: '航運', shares: +1601, pct: '5.72%', close: 102.00, chgPct: +2.51 },
       { rank: 5, code: '2344', name: '華邦電', sector: '半導體', shares: +1340, pct: '6.09%', close: 31.80, chgPct: +1.92 },
       { rank: 6, code: '3231', name: '緯創', sector: '電腦週邊', shares: +713, pct: '1.98%', close: 168.00, chgPct: +2.44 },
       { rank: 7, code: '2002', name: '中鋼', sector: '鋼鐵', shares: +702, pct: '2.93%', close: 23.85, chgPct: +0.85 },
@@ -1101,7 +1118,7 @@
     const SELL_TOP = [
       { rank: 1, code: '3661', name: '世芯-KY', sector: '半導體', shares: -2340, pct: '8.33%', close: 495.00, chgPct: -0.60 },
       { rank: 2, code: '2330', name: '台積電', sector: '半導體', shares: -1890, pct: '1.22%', close: 848.00, chgPct: +1.44 },
-      { rank: 3, code: '6770', name: '力積電', sector: '半導體', shares: -1256, pct: '5.50%', close: 20.20, chgPct: -10 },
+      { rank: 3, code: '6770', name: '力積電', sector: '半導體', shares: -1256, pct: '5.50%', close: 22.15, chgPct: -1.33 },
       { rank: 4, code: '3443', name: '創意', sector: '半導體', shares: -892, pct: '4.88%', close: 1340.00, chgPct: -0.59 },
       { rank: 5, code: '6669', name: '緯穎', sector: '電腦週邊', shares: -563, pct: '3.21%', close: 3720.00, chgPct: -1.32 },
       { rank: 6, code: '2344', name: '華邦電', sector: '半導體', shares: -480, pct: '2.18%', close: 31.80, chgPct: +1.92 },
@@ -1161,18 +1178,18 @@
     ];
 
     const ETF_DATA = [
-      { name: '台積電', code: '2330', sector: '半導體', ratio: 9.01, ratioChg: +0.35, shares: 6256000, sharesChg: +420000, status: 'add', streak: 3, mktVal: 52.38, trend: [-0.08, -0.05, +0.12, +0.21, +0.35] },
-      { name: '台光電', code: '2383', sector: '電子零組件', ratio: 7.98, ratioChg: -0.12, shares: 3012000, sharesChg: -80000, status: 'reduce', streak: 2, mktVal: 46.42, trend: [+0.10, +0.04, -0.03, -0.09, -0.12] },
-      { name: '台達電', code: '2308', sector: '電機機械', ratio: 6.00, ratioChg: 0, shares: 4711000, sharesChg: 0, status: 'hold', streak: 8, mktVal: 34.90, trend: [0, 0, 0, 0, 0] },
-      { name: '健策', code: '3653', sector: '電子零組件', ratio: 5.77, ratioChg: +0.20, shares: 1906000, sharesChg: +150000, status: 'add', streak: 5, mktVal: 33.56, trend: [+0.05, +0.08, +0.14, +0.18, +0.20] },
-      { name: '金像電', code: '2368', sector: '電子零組件', ratio: 5.61, ratioChg: -0.08, shares: 6971000, sharesChg: -60000, status: 'reduce', streak: 4, mktVal: 32.62, trend: [-0.02, -0.05, -0.06, -0.07, -0.08] },
-      { name: '智邦', code: '2345', sector: '網路通訊', ratio: 5.57, ratioChg: -0.15, shares: 3963000, sharesChg: -120000, status: 'reduce', streak: 2, mktVal: 32.39, trend: [+0.06, +0.03, -0.04, -0.10, -0.15] },
-      { name: '奇鋐', code: '3017', sector: '電腦週邊', ratio: 5.52, ratioChg: +0.04, shares: 3272000, sharesChg: +30000, status: 'add', streak: 1, mktVal: 32.10, trend: [-0.06, +0.02, -0.03, +0.01, +0.04] },
-      { name: '貿聯-KY', code: '3665', sector: '電子零組件', ratio: 5.51, ratioChg: 0, shares: 3332000, sharesChg: 0, status: 'hold', streak: 6, mktVal: 32.04, trend: [0, 0, 0, 0, 0] },
-      { name: '旺宏', code: '2337', sector: '半導體', ratio: 3.21, ratioChg: +3.21, shares: 2100000, sharesChg: +2100000, status: 'new', streak: 0, mktVal: 18.67, trend: [0, 0, 0, 0, +3.21] },
-      { name: '晶豪科', code: '3006', sector: '半導體', ratio: 0.00, ratioChg: -1.82, shares: 0, sharesChg: -980000, status: 'clear', streak: 0, mktVal: 0, trend: [+0.20, +0.10, -0.30, -0.80, -1.82] },
-      { name: '廣達', code: '2382', sector: '電腦週邊', ratio: 3.01, ratioChg: -0.10, shares: 1820000, sharesChg: -90000, status: 'reduce', streak: 1, mktVal: 17.50, trend: [+0.05, +0.03, +0.01, -0.05, -0.10] },
-      { name: '聯發科', code: '2454', sector: '半導體', ratio: 2.88, ratioChg: +0.18, shares: 900000, sharesChg: +60000, status: 'add', streak: 2, mktVal: 16.75, trend: [-0.04, +0.02, +0.07, +0.13, +0.18] },
+      { name: '台積電', code: '2330', sector: '半導體', ratio: 9.01, ratioChg: +0.35, shares: 6256000, sharesChg: +420000, status: 'add', streak: 3, mktVal: 52.38 },
+      { name: '台光電', code: '2383', sector: '電子零組件', ratio: 7.98, ratioChg: -0.12, shares: 3012000, sharesChg: -80000, status: 'reduce', streak: 2, mktVal: 46.42 },
+      { name: '台達電', code: '2308', sector: '電機機械', ratio: 6.00, ratioChg: 0, shares: 4711000, sharesChg: 0, status: 'hold', streak: 8, mktVal: 34.90 },
+      { name: '健策', code: '3653', sector: '電子零組件', ratio: 5.77, ratioChg: +0.20, shares: 1906000, sharesChg: +150000, status: 'add', streak: 5, mktVal: 33.56 },
+      { name: '金像電', code: '2368', sector: '電子零組件', ratio: 5.61, ratioChg: -0.08, shares: 6971000, sharesChg: -60000, status: 'reduce', streak: 4, mktVal: 32.62 },
+      { name: '智邦', code: '2345', sector: '網路通訊', ratio: 5.57, ratioChg: -0.15, shares: 3963000, sharesChg: -120000, status: 'reduce', streak: 2, mktVal: 32.39 },
+      { name: '奇鋐', code: '3017', sector: '電腦週邊', ratio: 5.52, ratioChg: +0.04, shares: 3272000, sharesChg: +30000, status: 'add', streak: 1, mktVal: 32.10 },
+      { name: '貿聯-KY', code: '3665', sector: '電子零組件', ratio: 5.51, ratioChg: 0, shares: 3332000, sharesChg: 0, status: 'hold', streak: 6, mktVal: 32.04 },
+      { name: '旺宏', code: '2337', sector: '半導體', ratio: 3.21, ratioChg: +3.21, shares: 2100000, sharesChg: +2100000, status: 'new', streak: 0, mktVal: 18.67 },
+      { name: '晶豪科', code: '3006', sector: '半導體', ratio: 0.00, ratioChg: -1.82, shares: 0, sharesChg: -980000, status: 'clear', streak: 0, mktVal: 0 },
+      { name: '廣達', code: '2382', sector: '電腦週邊', ratio: 3.01, ratioChg: -0.10, shares: 1820000, sharesChg: -90000, status: 'reduce', streak: 1, mktVal: 17.50 },
+      { name: '聯發科', code: '2454', sector: '半導體', ratio: 2.88, ratioChg: +0.18, shares: 900000, sharesChg: +60000, status: 'add', streak: 2, mktVal: 16.75 },
     ];
 
     // ═══════════════════════════════════════════
@@ -1314,71 +1331,6 @@
       const s = Math.abs(n).toLocaleString('zh-TW');
       return n > 0 ? `<span class="tabular-nums text-rise">+${s}</span>` : `<span class="tabular-nums text-fall">-${s}</span>`;
     }
-    function fmtCloseChg(close, chgPct) {
-      const closeCls = chgPct > 0 ? 'text-rise' : chgPct < 0 ? 'text-fall' : 'text-flat';
-      let chgEl;
-      if (chgPct >= 10) {
-        chgEl = `<span class="tabular-nums" style="background:var(--color-rise);color:#fff;padding:0 5px;border-radius:3px;">+${chgPct.toFixed(2)}%</span>`;
-      } else if (chgPct <= -10) {
-        chgEl = `<span class="tabular-nums" style="background:var(--color-fall);color:#fff;padding:0 5px;border-radius:3px;">${chgPct.toFixed(2)}%</span>`;
-      } else {
-        chgEl = fmtPct(chgPct);
-      }
-      return `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-        <span class="tabular-nums ${closeCls}">${close.toLocaleString('zh-TW')}</span>
-        ${chgEl}
-      </div>`;
-    }
-    function fmtKBar(chgPct) {
-      const H = 28;
-      const color = chgPct > 0 ? 'var(--color-rise)' : chgPct < 0 ? 'var(--color-fall)' : 'var(--color-flat)';
-      if (chgPct >= 10) {
-        // 漲停：高體從底部往上填，無上影線，留小下影線
-        return `<div style="position:relative;display:inline-block;width:10px;height:${H}px;vertical-align:middle;">
-          <div style="position:absolute;left:50%;bottom:0;height:4px;width:1px;transform:translateX(-50%);background:${color};"></div>
-          <div style="position:absolute;left:0;right:0;top:2px;bottom:4px;background:${color};border-radius:1px;"></div>
-        </div>`;
-      }
-      if (chgPct <= -10) {
-        // 跌停：高體從頂部往下填，無下影線，留小上影線
-        return `<div style="position:relative;display:inline-block;width:10px;height:${H}px;vertical-align:middle;">
-          <div style="position:absolute;left:50%;top:0;height:4px;width:1px;transform:translateX(-50%);background:${color};"></div>
-          <div style="position:absolute;left:0;right:0;top:4px;bottom:2px;background:${color};border-radius:1px;"></div>
-        </div>`;
-      }
-      const bodyMax = 18, bodyMin = 4;
-      const bodyH = Math.max(bodyMin, Math.min(bodyMax, Math.abs(chgPct) / 3 * bodyMax));
-      const bodyTop = (H - bodyH) / 2;
-      return `<div style="position:relative;display:inline-block;width:10px;height:${H}px;vertical-align:middle;">
-        <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%);background:${color};"></div>
-        <div style="position:absolute;left:0;right:0;top:${bodyTop.toFixed(1)}px;height:${bodyH.toFixed(1)}px;background:${color};border-radius:1px;"></div>
-      </div>`;
-    }
-    function fmtRatioBar(ratio, maxRef, dispStr) {
-      if (ratio === 0) return '<span class="text-flat tabular-nums">' + (dispStr !== undefined ? dispStr : '0.00') + '</span>';
-      const barW = Math.min(ratio / maxRef * 100, 100);
-      const pct = ratio / maxRef;
-      const opacity = pct >= 0.7 ? 1 : pct >= 0.35 ? 0.55 : 0.3;
-      const display = dispStr !== undefined ? dispStr : ratio.toFixed(2);
-      const numW = dispStr !== undefined ? '42px' : '36px';
-      return `<div style="display:inline-flex;align-items:center;gap:6px;width:100%;">
-        <div style="flex:1;height:5px;background:var(--color-gray-250);border-radius:3px;overflow:hidden;">
-          <div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-theme-500);border-radius:3px;opacity:${opacity};"></div>
-        </div>
-        <span class="tabular-nums" style="width:${numW};text-align:right;flex-shrink:0;display:inline-block;">${display}</span>
-      </div>`;
-    }
-    function fmtPctBar(pctStr) {
-      const val = parseFloat(pctStr);
-      const barW = Math.min(val * 4, 100);
-      const opacity = val >= 8 ? 1 : val >= 4 ? 0.55 : 0.3;
-      return `<div style="display:inline-flex;align-items:center;gap:6px;width:100%;">
-        <div style="flex:1;height:5px;background:var(--color-gray-250);border-radius:3px;overflow:hidden;">
-          <div style="width:${barW}%;height:100%;background:var(--color-theme-500);border-radius:3px;opacity:${opacity};"></div>
-        </div>
-        <span class="tabular-nums text-flat" style="width:48px;text-align:right;flex-shrink:0;display:inline-block;">${pctStr}</span>
-      </div>`;
-    }
     function fmtDelta(n) {
       if (n === 0) return '<span class="text-flat">0</span>';
       const s = Math.abs(n).toLocaleString('zh-TW');
@@ -1393,39 +1345,6 @@
       hold:   '<span class="tag" data-variant="gray"         style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">無異動</span>',
       clear:  '<span class="tag" data-variant="gray"         style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">完全出清</span>',
     };
-
-    const SECTOR_VARIANT = {
-      '半導體':    'blue',
-      '電子零組件': 'purple-light',
-      '電腦週邊':  'purple-bright',
-      '電機機械':  'green-teal',
-      '網路通訊':  'green-bright',
-      '通信':      'green-dark',
-      '金融':      'orange',
-      '航運':      'yellow-light',
-      '鋼鐵':      'gray',
-      '塑膠':      'yellow-bright',
-      '光電':      'pink',
-    };
-    function fmtSector(s) {
-      const v = SECTOR_VARIANT[s] || 'gray';
-      return `<span class="tag" data-variant="${v}" style="cursor:default;pointer-events:none;">${s}</span>`;
-    }
-
-    function fmtTrend5(trend) {
-      if (!trend || !trend.length) return '<span class="text-flat">—</span>';
-      const maxVal = Math.max(...trend.map(Math.abs), 0.01);
-      const H = 20, barW = 7, gap = 2;
-      const W = trend.length * barW + (trend.length - 1) * gap;
-      const bars = trend.map((v, i) => {
-        const h = Math.max(3, Math.abs(v) / maxVal * H);
-        const x = i * (barW + gap);
-        const y = H - h;
-        const color = v > 0 ? 'var(--color-rise)' : v < 0 ? 'var(--color-fall)' : 'var(--color-gray-300)';
-        return `<rect x="${x}" y="${y.toFixed(1)}" width="${barW}" height="${h.toFixed(1)}" rx="1.5" fill="${color}" opacity="0.85"/>`;
-      }).join('');
-      return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;margin:auto;overflow:visible;">${bars}</svg>`;
-    }
 
     function streakCell(r) {
       if (r.status === 'new' || r.status === 'clear') return '<span class="text-flat">—</span>';
@@ -1458,45 +1377,6 @@
     // PAGE NAVIGATION
     // ═══════════════════════════════════════════
     let currentStkCode = '1303', currentEtfCode = '00981A';
-
-    const STOCK_PRICE = {
-      '2330': { close: 848.00, chgPct: +1.44 }, '1303': { close: 65.90, chgPct: +1.07 },
-      '2891': { close: 44.20, chgPct: +0.91 },  '2885': { close: 44.20, chgPct: +0.91 },
-      '2892': { close: 32.10, chgPct: +0.78 },  '2615': { close: 109.50, chgPct: +10 },
-      '2344': { close: 31.80, chgPct: +1.92 },  '3231': { close: 168.00, chgPct: +2.44 },
-      '2002': { close: 23.85, chgPct: +0.85 },  '1301': { close: 65.90, chgPct: +1.07 },
-      '4904': { close: 95.10, chgPct: +0.32 },  '6505': { close: 68.20, chgPct: +1.04 },
-      '3661': { close: 495.00, chgPct: -0.60 }, '6770': { close: 20.20, chgPct: -10 },
-      '3443': { close: 1340.00, chgPct: -0.59 },'6669': { close: 3720.00, chgPct: -1.32 },
-      '3711': { close: 182.00, chgPct: +1.39 }, '2383': { close: 382.00, chgPct: -0.52 },
-      '2308': { close: 372.00, chgPct: +0.54 }, '3653': { close: 850.00, chgPct: +1.20 },
-      '2368': { close: 88.50, chgPct: -0.22 },  '2345': { close: 325.00, chgPct: +1.88 },
-      '3017': { close: 490.00, chgPct: +0.82 }, '3665': { close: 850.00, chgPct: +0.35 },
-      '2337': { close: 47.20, chgPct: +3.28 },  '2382': { close: 290.00, chgPct: -0.34 },
-      '2454': { close: 1325.00, chgPct: +0.76 },
-    };
-
-    function updateStkInfoCard(code) {
-      const d = STOCK_PRICE[code] || { close: 0, chgPct: 0 };
-      const el = document.getElementById('stk-info-val');
-      if (!el) return;
-      const cls = d.chgPct > 0 ? 'text-rise' : d.chgPct < 0 ? 'text-fall' : 'text-flat';
-      const sign = d.chgPct > 0 ? '+' : '';
-      el.innerHTML = `<span class="${cls}">${d.close.toLocaleString('zh-TW')} <span style="font-size:14px;">(${sign}${d.chgPct.toFixed(2)}%)</span></span>`;
-      const icon = document.getElementById('stk-info-icon');
-      if (icon) icon.style.color = d.chgPct > 0 ? 'var(--color-rise)' : d.chgPct < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
-    }
-
-    function updateEtfInfoCard(code) {
-      const etf = ETF_LIST.find(e => e.code === code);
-      const el = document.getElementById('etf-info-val');
-      if (!el || !etf) return;
-      const cls = etf.navChg > 0 ? 'text-rise' : etf.navChg < 0 ? 'text-fall' : 'text-flat';
-      const sign = etf.navChg > 0 ? '+' : '';
-      el.innerHTML = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">(${sign}${etf.navChg.toFixed(2)}%)</span></span>`;
-      const icon = document.getElementById('etf-info-icon');
-      if (icon) icon.style.color = etf.navChg > 0 ? 'var(--color-rise)' : etf.navChg < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
-    }
 
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1574,35 +1454,35 @@
     ];
     const TABLE_COLS = {
       'tbl-mkt-overview': [
-        { label: '股號 / 股名', val: r => r.short, left: true, style: 'min-width:160px;', inlineSearch: 'mkt' },
+        { label: '代號', val: r => r.code, left: true, style: 'width:64px;' },
+        { label: '名稱', val: r => r.short, left: true, style: 'min-width:100px;' },
         { label: '發行', val: r => r.issuer, left: true, style: 'width:80px;' },
-        { label: '市占率', val: r => r.aum, center: true, style: 'min-width:160px;' },
         { label: '今日規模(億)', val: r => r.aum, style: 'width:72px;' },
         { label: '昨日規模(億)', val: r => r.aum - r.chg, style: 'width:72px;' },
-        { label: '增減(億) / 成長率', val: r => r.chg, style: 'width:104px;' },
-        { label: '近5日趨勢', val: r => { const t = r.trend || []; const last = t[t.length - 1] ?? 0; const lastScore = last < 0 ? 2 : last === 0 ? 1 : 0; const redCount = t.filter(v => v < 0).length; return lastScore * 10 + redCount; }, center: true, style: 'width:120px;' },
-        { label: '淨值 / 漲跌幅', val: r => r.navChg, style: 'width:96px;' },
-        { label: '', noSort: true, center: true, style: 'width:72px;' },
-        { label: '關鍵異動訊號', val: r => { const s = SIG_MAP[r.code]; return s ? (s.new ? 4 : 0) + (s.add ? 2 : 0) + (s.exit ? 1 : 0) : 0; }, left: true, style: 'min-width:160px;' },
+        { label: '增減(億)', val: r => r.chg, style: 'width:80px;' },
+        { label: '日成長率', val: r => r.chgPct, style: 'width:76px;' },
+        { label: '淨值', val: r => r.nav, style: 'width:68px;' },
+        { label: '漲跌幅', val: r => r.navChg, style: 'width:72px;' },
+        { label: '關鍵異動訊號', left: true, noSort: true, style: 'min-width:160px;' },
       ],
       'tbl-buy': [
         { label: '商品', val: r => r.name, left: true, style: 'min-width:120px;' },
-        { label: '產業', val: r => r.sector, center: true, style: 'width:80px;' },
-        { label: '張數', val: r => r.shares, style: 'width:64px;' },
-        { label: '佔成交量', val: r => parseFloat(r.pct), center: true, style: 'min-width:200px;' },
-        { label: '收盤 / 漲跌%', val: r => r.chgPct, style: 'width:80px;' },
-        { label: '', noSort: true, center: true, style: 'width:72px;' },
+        { label: '產業', val: r => r.sector, left: true },
+        { label: '張數', val: r => r.shares },
+        { label: '佔成交量', val: r => parseFloat(r.pct) },
+        { label: '收盤', val: r => r.close },
+        { label: '漲跌%', val: r => r.chgPct },
       ],
       'tbl-sell': [
         { label: '商品', val: r => r.name, left: true, style: 'min-width:120px;' },
-        { label: '產業', val: r => r.sector, center: true, style: 'width:80px;' },
-        { label: '張數', val: r => r.shares, style: 'width:64px;' },
-        { label: '佔成交量', val: r => parseFloat(r.pct), center: true, style: 'min-width:200px;' },
-        { label: '收盤 / 漲跌%', val: r => r.chgPct, style: 'width:80px;' },
-        { label: '', noSort: true, center: true, style: 'width:72px;' },
+        { label: '產業', val: r => r.sector, left: true },
+        { label: '張數', val: r => r.shares },
+        { label: '佔成交量', val: r => parseFloat(r.pct) },
+        { label: '收盤', val: r => r.close },
+        { label: '漲跌%', val: r => r.chgPct },
       ],
       'tbody-sig-all': [
-        { label: 'ETF', val: r => r.etf, left: true, style: 'min-width:180px;', inlineSearch: 'sig', searchPlaceholder: '搜尋股號 / 股名' },
+        { label: 'ETF', val: r => r.etf, left: true, style: 'min-width:180px;' },
         { label: '股票', val: r => r.stock, left: true, style: 'min-width:120px;' },
         { label: '產業', val: r => r.sector, center: true },
         { label: '關鍵異動訊號', val: r => ({ new: 0, add: 1, exit: 2 })[r.sigType], center: true, style: 'min-width:110px;' },
@@ -1613,8 +1493,9 @@
         { label: '訊號日期', val: r => r.date, left: true, style: 'min-width:90px;' },
       ],
       'tbl-stk': [
-        { label: '股號 / 股名', val: r => r.name, left: true, style: 'min-width:180px;', inlineSearch: 'stk' },
-        { label: '投資比率(%)', val: r => r.ratio, center: true, style: 'min-width:160px;' },
+        { label: '代號', val: r => r.code, left: true, style: 'width:70px;' },
+        { label: '名稱', val: r => r.name, left: true, style: 'min-width:140px;' },
+        { label: '投資比率(%)', val: r => r.ratio, style: 'width:90px;' },
         { label: '比率增減', val: r => r.ratioChg, style: 'width:80px;' },
         { label: '持有張數', val: r => r.shares, style: 'width:100px;' },
         { label: '張數增減', val: r => r.sharesChg, style: 'width:100px;' },
@@ -1624,26 +1505,26 @@
         { label: '發行公司', val: r => r.issuer, left: true, style: 'width:100px;' },
       ],
       'tbl-etf': [
-        { label: '股號 / 股名', val: r => r.name, left: true, style: 'min-width:180px;', inlineSearch: 'etf' },
+        { label: '代號', val: r => r.code, left: true, style: 'width:70px;' },
+        { label: '名稱', val: r => r.name, left: true, style: 'min-width:140px;' },
         { label: '產業', val: r => r.sector, left: true, style: 'width:100px;' },
-        { label: '投資比率(%)', val: r => r.ratio, center: true, style: 'min-width:160px;' },
+        { label: '投資比率(%)', val: r => r.ratio, style: 'width:90px;' },
         { label: '市值(億)', val: r => r.mktVal, style: 'width:80px;' },
         { label: '持有張數', val: r => r.shares, style: 'width:90px;' },
-        { label: '股數狀態', val: r => r.status, center: true, style: 'width:80px;' },
-        { label: '比率增減(%)', val: r => r.ratioChg, style: 'width:70px;' },
+        { label: '比率增減(%)', val: r => r.ratioChg, style: 'width:90px;' },
         { label: '張數增減', val: r => r.sharesChg, style: 'width:90px;' },
+        { label: '股數狀態', val: r => r.status, center: true, style: 'width:80px;' },
         { label: '連續天數', val: r => r.streak, style: 'width:80px;' },
-        { label: '近5日趨勢', val: r => { const t = r.trend || []; const last = t[t.length - 1] ?? 0; const lastScore = last < 0 ? 2 : last === 0 ? 1 : 0; const redCount = t.filter(v => v < 0).length; return lastScore * 10 + redCount; }, center: true, style: 'width:120px;' },
       ],
     };
 
     const sortStates = {
-      'tbl-mkt-overview': { col: 2, asc: false },
+      'tbl-mkt-overview': { col: 3, asc: false },
       'tbl-buy': { col: 2, asc: false },
       'tbl-sell': { col: 2, asc: true },
       'tbody-sig-all': { col: 3, asc: false },
-      'tbl-stk': { col: 1, asc: false },
-      'tbl-etf': { col: 2, asc: false },
+      'tbl-stk': { col: 2, asc: false },
+      'tbl-etf': { col: 3, asc: false },
     };
 
     const renderMap = {
@@ -1686,27 +1567,6 @@
           : 'icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive';
         const iconSpan = `<span class="${iconCls}"></span>`;
         const textSpan = `<span class="overflow-hidden text-ellipsis whitespace-nowrap">${c.label}</span>`;
-        if (c.inlineSearch) {
-          const sid = c.inlineSearch;
-          const SID = sid.charAt(0).toUpperCase() + sid.slice(1);
-          const qMap = { stk: stkSearchQ, etf: etfSearchQ, sig: sigSearchQ, mkt: mktSearchQ };
-          const rfMap = { stk: 'renderStkTable(false)', etf: 'renderEtfTable(false)', sig: 'renderSignals()', mkt: 'renderMktOverview()' };
-          const currentQ = qMap[sid] || '';
-          const isOpen = currentQ.length > 0;
-          const searchSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>`;
-          const qVar = sid === 'stk' ? 'stkSearchQ' : sid === 'etf' ? 'etfSearchQ' : sid === 'sig' ? 'sigSearchQ' : 'mktSearchQ';
-          const thOverflow = sid === 'sig' ? '' : 'overflow:hidden;';
-          const thZIndex = (sid === 'sig' && isOpen) ? 'z-index:10;' : '';
-          return `<th data-slot="table-head" class="table-head table-head-sortable ${alignCls}" style="${colStyle}${thOverflow}${thZIndex}" onclick="clickTh('${tbodyId}',${i})">` +
-            `<span id="${sid}-th-label" class="table-head-sort-container ${alignCls}"${isOpen ? ' style="display:none"' : ''}>` +
-            `<button class="th-search-ico" type="button" onclick="open${SID}ThSearch();event.stopPropagation();">${searchSvg}</button>` +
-            textSpan + iconSpan + `</span>` +
-            `<div id="${sid}-th-search" class="th-search-field${isOpen ? ' open' : ''}">` +
-            `<button class="th-search-ico" type="button" onclick="close${SID}ThSearch();event.stopPropagation();">${searchSvg}</button>` +
-            `<input type="text" placeholder="${c.searchPlaceholder || '搜尋股號 / 股名'}" onclick="event.stopPropagation();" oninput="${qVar}=this.value;${rfMap[sid]}" value="${currentQ.replace(/"/g, '&quot;')}">` +
-            `<button class="th-search-field-close" type="button" onclick="close${SID}ThSearch();event.stopPropagation();">✕</button>` +
-            `</div></th>`;
-        }
         const sortContent = `<div class="table-head-sort-container ${alignCls}">${
           c.left ? textSpan + iconSpan : iconSpan + textSpan
         }</div>`;
@@ -1722,86 +1582,28 @@
     }
 
     // ── Render: 市場總覽 ──
-    let mktSearchQ = '', mktChip = 'all', mktMode = 'list';
-
-    function setMktViewMode(m, btn) {
-      mktMode = m;
-      if (btn) _setSeg('mkt-view-seg', btn);
-      const el_list = document.getElementById('mkt-list-view'); if (el_list) el_list.style.display = m === 'list' ? '' : 'none';
-      const hm = document.getElementById('mkt-hm-view'); if (hm) hm.style.display = m === 'heatmap' ? '' : 'none';
-      if (m === 'heatmap') renderMktHeatmap();
-    }
-
-    function renderMktHeatmap() {
-      const d = ETF_LIST.filter(r => r.aum > 0);
-      renderHeatmap(d, document.getElementById('mkt-hm-view'), r => r.short, r => r.aum, r => r.chgPct, r => `goToEtf('${r.code}','${r.name}')`, r => r.code);
-    }
-
-    function setMktChip(c) {
-      mktChip = c;
-      ['all', 'new', 'add', 'exit', 'none'].forEach(k => {
-        const btn = document.getElementById('mkt-chip-' + k);
-        if (!btn) return;
-        const span = btn.querySelector('.tag');
-        if (!span) return;
-        const isActive = k === c;
-        span.classList.toggle('tag-active', isActive);
-        if (isActive) span.setAttribute('data-active', 'true');
-        else span.removeAttribute('data-active');
-      });
-      renderMktOverview();
-    }
-
-    function updateMktChipCounts() {
-      const cnts = { new: 0, add: 0, exit: 0, none: 0 };
-      ETF_LIST.forEach(r => {
-        const s = SIG_MAP[r.code];
-        if (!s || (!s.new && !s.add && !s.exit)) { cnts.none++; return; }
-        if (s.new)  cnts.new++;
-        if (s.add)  cnts.add++;
-        if (s.exit) cnts.exit++;
-      });
-      const el_cnt_all  = document.getElementById('mkt-cnt-all');  if (el_cnt_all)  el_cnt_all.textContent  = ETF_LIST.length;
-      const el_cnt_new  = document.getElementById('mkt-cnt-new');  if (el_cnt_new)  el_cnt_new.textContent  = cnts.new;
-      const el_cnt_add  = document.getElementById('mkt-cnt-add');  if (el_cnt_add)  el_cnt_add.textContent  = cnts.add;
-      const el_cnt_exit = document.getElementById('mkt-cnt-exit'); if (el_cnt_exit) el_cnt_exit.textContent = cnts.exit;
-      const el_cnt_none = document.getElementById('mkt-cnt-none'); if (el_cnt_none) el_cnt_none.textContent = cnts.none;
-    }
-
     function renderMktOverview() {
       buildThead('tbl-mkt-overview');
       const sorted = sortData(ETF_LIST, 'tbl-mkt-overview');
-      const q = mktSearchQ.trim().toLowerCase();
-      let displayed = sorted;
-      if (mktChip !== 'all') {
-        displayed = displayed.filter(r => {
-          const s = SIG_MAP[r.code];
-          if (mktChip === 'none') return !s || (!s.new && !s.add && !s.exit);
-          return s && s[mktChip] > 0;
-        });
-      }
-      if (q) displayed = displayed.filter(r => r.code.toLowerCase().includes(q) || r.short.toLowerCase().includes(q) || r.name.toLowerCase().includes(q));
-      const totalAum = ETF_LIST.reduce((s, e) => s + e.aum, 0);
-      document.getElementById('tbl-mkt-overview').innerHTML = displayed.map((r, i) => {
+      document.getElementById('tbl-mkt-overview').innerHTML = sorted.map((r, i) => {
         const aumPrev = (r.aum - r.chg).toFixed(2);
-        const mktShare = r.aum / totalAum * 100;
         return `<tr data-slot="table-row" class="table-row">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="display:inline-flex;flex-direction:column;align-items:flex-start;cursor:pointer;" onclick="goToEtf('${r.code}','${r.name}')">${r.short}<span class="tabular-nums cell-code">${r.code}</span></button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tabular-nums" style="color:#6f6f6f;">${r.code}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" class="text-left font-medium" style="color:var(--color-gray-1000);cursor:pointer;" onclick="goToEtf('${r.code}','${r.name}')">${r.short}</button></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtRatioBar(mktShare, 100, mktShare.toFixed(1) + '%')}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.aum.toFixed(2)}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums text-flat">${aumPrev}</span></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-right"><div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">${fmtNum(r.chg)}<span style="font-size:11px;opacity:0.75;">${fmtPct(r.chgPct)}</span></div></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtTrend5(r.trend)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtCloseChg(r.nav, r.navChg)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtKBar(r.navChg)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtNum(r.chg)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.chgPct)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.nav.toFixed(2)}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.navChg)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left"><div style="display:flex;gap:4px;flex-wrap:wrap;cursor:pointer;" onclick="switchMktTab('mkt-signal')">${(() => {
         const s = SIG_MAP[r.code];
         if (!s) return '';
         return [
-          s.new  ? `<span class="tag" data-variant="yellow-bright" style="outline:1px solid currentColor;outline-offset:-1px;">首次買入 ${s.new}</span>` : '',
-          s.add  ? `<span class="tag" data-variant="red" style="outline:1px solid currentColor;outline-offset:-1px;">大幅加碼 ${s.add}</span>` : '',
-          s.exit ? `<span class="tag" data-variant="gray" style="outline:1px solid currentColor;outline-offset:-1px;">完全出清 ${s.exit}</span>` : '',
+          s.new  ? `<span class="tag" data-variant="yellow-bright">首次買入 ${s.new}</span>` : '',
+          s.add  ? `<span class="tag" data-variant="red">大幅加碼 ${s.add}</span>` : '',
+          s.exit ? `<span class="tag" data-variant="gray">完全出清 ${s.exit}</span>` : '',
         ].join('');
       })()}</div></td>
     </tr>`;
@@ -1815,14 +1617,14 @@
       const mkRow = (d, i) => `
     <tr data-slot="table-row" class="table-row">
       <td data-slot="table-cell" class="table-cell table-cell-align-left">
-        <span class="rank-num ${d.rank === 1 ? 'rank-gold' : d.rank === 2 ? 'rank-silver' : d.rank === 3 ? 'rank-bronze' : ''}">${d.rank}</span>
-        <button type="button" onclick="goToStock('${d.code}','${d.name}')" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;">${d.name}<span class="tabular-nums cell-code">${d.code}</span></button>
+        <span class="rank-num ${d.rank <= 3 ? 'top3' : ''}">${d.rank}</span>
+        <button type="button" onclick="goToStock('${d.code}','${d.name}')" style="cursor:pointer;">${d.code} ${d.name}</button>
       </td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtSector(d.sector)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="chip-sector">${d.sector}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtDelta(d.shares)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtPctBar(d.pct)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtCloseChg(d.close, d.chgPct)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtKBar(d.chgPct)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right text-flat">${d.pct}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${d.close.toLocaleString('zh-TW')}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(d.chgPct)}</td>
     </tr>`;
       document.getElementById('tbl-buy').innerHTML = sortData(BUY_TOP, 'tbl-buy').map(mkRow).join('');
       document.getElementById('tbl-sell').innerHTML = sortData(SELL_TOP, 'tbl-sell').map(mkRow).join('');
@@ -1840,18 +1642,15 @@
 
     function renderSignals() {
       buildThead('tbody-sig-all');
-      if (sigSearchQ) requestAnimationFrame(_applySigSearchSpan);
       const allData = [
         ...SIG_NEW.map(d => ({ ...d, sigType: 'new' })),
         ...SIG_ADD.map(d => ({ ...d, sigType: 'add' })),
         ...SIG_EXIT.map(d => ({ ...d, sigType: 'exit' })),
       ];
       const q = sigSearchQ.trim().toLowerCase();
-      const filtered = allData.filter(d => {
-        if (_sigChipType !== 'all' && d.sigType !== _sigChipType) return false;
-        if (q && !d.etf.toLowerCase().includes(q) && !d.stock.toLowerCase().includes(q)) return false;
-        return true;
-      });
+      const filtered = q ? allData.filter(d =>
+        d.etf.toLowerCase().includes(q) || d.stock.toLowerCase().includes(q)
+      ) : allData;
       const { col, asc } = sortStates['tbody-sig-all'];
       const SIG_ORDER = { new: 0, add: 1, exit: 2 };
       const sorted = col === 3
@@ -1866,9 +1665,9 @@
         const sParts = d.stock.split(' '), sCode = sParts[0], sName = sParts.slice(1).join(' ');
         const eParts = d.etf.split(' '), eCode = eParts[0], eName = eParts.slice(1).join(' ');
         return `<tr data-slot="table-row" class="table-row" data-sig="${d.sigType}">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;" onclick="goToEtf('${eCode}','${eName}')">${eName}<span class="tabular-nums cell-code">${eCode}</span></button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;" onclick="goToStock('${sCode}','${sName}')">${sName}<span class="tabular-nums cell-code">${sCode}</span></button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtSector(d.sector)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToEtf('${eCode}','${eName}')" style="cursor:pointer;"><span class="tabular-nums" style="color:#6f6f6f;">${eCode}</span> ${eName}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" onclick="goToStock('${sCode}','${sName}')" style="cursor:pointer;"><span class="tabular-nums" style="color:#6f6f6f;">${sCode}</span> ${sName}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="chip-sector">${d.sector}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="${{ new:'yellow-bright', add:'red', exit:'gray' }[d.sigType]}" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">${{ new:'首次買入', add:'大幅加碼', exit:'完全出清' }[d.sigType]}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtDelta(d.delta)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${(() => {
@@ -1882,6 +1681,9 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-left text-flat">${d.date}</td>
     </tr>`;
       }).join('');
+      document.querySelectorAll('#tbody-sig-all tr').forEach(row => {
+        row.style.display = (_sigChipType === 'all' || row.dataset.sig === _sigChipType) ? '' : 'none';
+      });
     }
 
     function filterSig(type) {
@@ -1896,7 +1698,9 @@
         if (isActive) span.setAttribute('data-active', 'true');
         else span.removeAttribute('data-active');
       });
-      renderSignals();
+      document.querySelectorAll('#tbody-sig-all tr').forEach(row => {
+        row.style.display = (type === 'all' || row.dataset.sig === type) ? '' : 'none';
+      });
     }
 
     // ═══════════════════════════════════════════
@@ -1918,7 +1722,6 @@
       const el_stk_sec = document.getElementById('stk-hero-sector'); if (el_stk_sec) el_stk_sec.textContent = STOCK_SECTOR[code] || '—';
       const el = document.getElementById('stk-institutional');
       if (el) el.innerHTML = '<div style="font-size:12px;color:#989898;padding:6px 0;">請選擇日期後點擊查詢</div>';
-      updateStkInfoCard(code);
       showPage('stock');
     }
 
@@ -1928,9 +1731,6 @@
       const el_etf_code = document.getElementById('etf-hero-code'); if (el_etf_code) el_etf_code.textContent = code;
       const etf = ETF_LIST.find(e => e.code === code);
       const el_etf_strat = document.getElementById('etf-hero-strategy'); if (el_etf_strat) el_etf_strat.textContent = etf ? etf.strategy : '—';
-      updateEtfInfoCard(code);
-      renderEtfSectorDonut();
-      renderEtfChgBars();
       showPage('etf');
     }
 
@@ -1974,20 +1774,20 @@
       const flow = sharesChg * PRICE;
       const flowStr = (flow >= 0 ? '+' : '−') + (Math.abs(flow) / 1e8).toFixed(1) + '億';
       const chgStr = (sharesChg >= 0 ? '+' : '−') + Math.abs(sharesChg).toLocaleString('zh-TW');
-      const card = (lbl, val, sub, accent = '') => `
-    <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 px-3 py-2 ${accent}" style="min-width:120px;">
-      <span class="text-[14px] mb-1" style="color:#6f6f6f;">${lbl}</span>
-      <div class="text-[24px] font-bold tabular-nums">${val}</div>
-      <div class="text-[14px] mt-0.5" style="color:#989898;">${sub}</div>
+      const card = (lbl, val, sub) => `
+    <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 px-3 py-2" style="min-width:120px;">
+      <span class="text-[11px] mb-1" style="color:#6f6f6f;">${lbl}</span>
+      <div class="text-[20px] font-bold tabular-nums">${val}</div>
+      <div class="text-[10px] mt-0.5" style="color:#989898;">${sub}</div>
     </div>`;
       const el_sum = document.getElementById('stk-summary-row');
       if (el_sum) el_sum.innerHTML =
-        card('持有ETF數量', `<span>${holding}</span>`, '期末持有', 'card-accent-blue') +
-        card('首次買入', `<span class="text-rise">${newCount}</span>`, '區間持有，期末仍持有', 'card-accent-orange') +
-        card('完全出清', `<span class="text-fall">${clearCount}</span>`, '區間出清，未再買入', 'card-accent-gray') +
-        card('佔個股總市值', `<span>${pct}%</span>`, `總持股市值 ${(mktVal / 1e8).toFixed(1)}億`, 'card-accent-teal') +
-        card('資金流向', `<span class="${flowCls}">${flowStr}</span>`, '區間淨買入金額', 'card-accent-yellow') +
-        card('張數增減', `<span class="${flowCls}">${chgStr}</span>`, `期末持倉 ${sharesTotal.toLocaleString('zh-TW')}`, 'card-accent-red');
+        card('持有ETF數量', `<span>${holding}</span>`, '期末持有') +
+        card('首次買入', `<span class="text-rise">${newCount}</span>`, '區間持有，期末仍持有') +
+        card('完全出清', `<span class="text-fall">${clearCount}</span>`, '區間出清，未再買入') +
+        card('佔個股總市值', `<span>${pct}%</span>`, `總持股市值 ${(mktVal / 1e8).toFixed(1)}億`) +
+        card('資金流向', `<span class="${flowCls}">${flowStr}</span>`, '區間淨買入金額') +
+        card('張數增減', `<span class="${flowCls}">${chgStr}</span>`, `期末持倉 ${sharesTotal.toLocaleString('zh-TW')}`);
     }
 
     function updateStkChipCounts() {
@@ -2009,13 +1809,15 @@
         return true;
       });
       const tbody = document.getElementById('tbl-stk');
-      if (!filtered.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="9">無符合資料</td></tr>'; return; }
+      if (!filtered.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="10">無符合資料</td></tr>'; return; }
       const sorted = sortData(filtered, 'tbl-stk');
       tbody.innerHTML = sorted.map((r, i) => {
+        const ratio = r.ratio === 0 ? '<span class="text-flat">0.00</span>' : `<span class="tabular-nums">${r.ratio.toFixed(2)}</span>`;
         const shares = r.shares === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.shares.toLocaleString('zh-TW')}</span>`;
         return `<tr data-slot="table-row" class="table-row">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="display:inline-flex;flex-direction:column;align-items:flex-start;" onclick="goToEtf('${r.code}','${r.name}')">${r.name}<span class="tabular-nums cell-code">${r.code}</span></button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtRatioBar(r.ratio, 2)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tabular-nums t-code-inline">${r.code}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" class="t-name-inline" onclick="goToEtf('${r.code}','${r.name}')">${r.name}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${ratio}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtNum(r.ratioChg)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${shares}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtShares(r.sharesChg)}</td>
@@ -2220,19 +2022,20 @@
       if (!filtered.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="10">無符合資料</td></tr>'; return; }
       const sorted = sortData(filtered, 'tbl-etf');
       tbody.innerHTML = sorted.map((r, i) => {
+        const ratio = r.ratio === 0 ? '<span class="text-flat">0.00</span>' : `<span class="tabular-nums">${r.ratio.toFixed(2)}</span>`;
         const mktVal = r.mktVal === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.mktVal.toFixed(2)}</span>`;
         const shares = r.shares === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.shares.toLocaleString('zh-TW')}</span>`;
         return `<tr data-slot="table-row" class="table-row">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="display:inline-flex;flex-direction:column;align-items:flex-start;" onclick="goToStock('${r.code}','${r.name}')">${r.name}<span class="tabular-nums cell-code">${r.code}</span></button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left">${r.sector ? fmtSector(r.sector) : '—'}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtRatioBar(r.ratio, 10)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tabular-nums t-code-inline">${r.code}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" class="t-name-inline" onclick="goToStock('${r.code}','${r.name}')">${r.name}</button></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.sector || '—'}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${ratio}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${mktVal}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${shares}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${BADGE[r.status]}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtNum(r.ratioChg)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtShares(r.sharesChg)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${BADGE[r.status]}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${streakCell(r)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtTrend5(r.trend)}</td>
     </tr>`;
       }).join('');
       if (etfMode === 'heatmap') renderEtfHeatmap();
@@ -2295,14 +2098,14 @@
         const chgStr = chg === 0 ? '0.00%' : (chg > 0 ? '+' : '') + chg.toFixed(2) + '%';
         const chgCol = chg > 0 ? 'rgba(255,190,190,.95)' : chg < 0 ? 'rgba(160,235,200,.95)' : 'rgba(200,210,230,.6)';
         const cw = w - GAP, ch = h - GAP;
-        const fs = Math.max(12, Math.min(16, Math.sqrt(cw * ch) / 7));
+        const fs = Math.max(8, Math.min(16, Math.sqrt(cw * ch) / 7));
         const showSub = ch > 38 && cw > 44;
         const showCode = getCode && ch > 52 && cw > 44;
-        const codeStr = showCode ? `<div style="font-size:${Math.max(12, fs * 0.75).toFixed(1)}px;color:rgba(255,255,255,.45);white-space:nowrap;line-height:1.2;">${getCode(r)}</div>` : '';
+        const codeStr = showCode ? `<div style="font-size:${(fs * 0.75).toFixed(1)}px;color:rgba(255,255,255,.45);white-space:nowrap;line-height:1.2;">${getCode(r)}</div>` : '';
         return `<div onclick="${onCellClick(r)}" style="position:absolute;left:${x}px;top:${y}px;width:${cw}px;height:${ch}px;background:${bg};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:4px;box-sizing:border-box;">
           ${codeStr}
           <div style="font-size:${fs}px;font-weight:600;color:rgba(255,255,255,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;">${getName(r)}</div>
-          ${showSub ? `<div style="font-size:${Math.max(12, fs * 0.82).toFixed(1)}px;color:rgba(255,255,255,.6);white-space:nowrap;">${ratio.toFixed(2)}%</div><div style="font-size:${fs}px;color:${chgCol};font-weight:500;white-space:nowrap;">${chgStr}</div>` : ''}
+          ${showSub ? `<div style="font-size:${(fs * 0.82).toFixed(1)}px;color:rgba(255,255,255,.6);white-space:nowrap;">${ratio.toFixed(2)}%</div><div style="font-size:${fs}px;color:${chgCol};font-weight:500;white-space:nowrap;">${chgStr}</div>` : ''}
         </div>`;
       }).join('');
     }
@@ -2310,59 +2113,22 @@
     // ═══════════════════════════════════════════
     // THEAD SEARCH TOGGLE
     // ═══════════════════════════════════════════
-    function openMktThSearch() { document.getElementById('mkt-th-label').style.display = 'none'; const sf = document.getElementById('mkt-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
-    function closeMktThSearch() { document.getElementById('mkt-th-label').style.display = ''; const sf = document.getElementById('mkt-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; mktSearchQ = ''; renderMktOverview(); }
     function openStkThSearch() { document.getElementById('stk-th-label').style.display = 'none'; const sf = document.getElementById('stk-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
     function closeStkThSearch() { document.getElementById('stk-th-label').style.display = ''; const sf = document.getElementById('stk-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; stkSearchQ = ''; renderStkTable(); }
     function openEtfThSearch() { document.getElementById('etf-th-label').style.display = 'none'; const sf = document.getElementById('etf-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
     function closeEtfThSearch() { document.getElementById('etf-th-label').style.display = ''; const sf = document.getElementById('etf-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; etfSearchQ = ''; renderEtfTable(); }
-    function _applySigSearchSpan() {
-      const sf = document.getElementById('sig-th-search');
-      if (!sf || !sf.classList.contains('open')) return;
-      const th = sf.closest('th');
-      const nextTh = th && th.nextElementSibling;
-      if (!nextTh) return;
-      const w = th.offsetWidth + nextTh.offsetWidth;
-      if (w > 0) {
-        th.style.zIndex = '10';
-        sf.style.right = 'auto';
-        sf.style.width = w + 'px';
-      }
-    }
-    function openSigThSearch() { document.getElementById('sig-th-label').style.display = 'none'; const sf = document.getElementById('sig-th-search'); sf.classList.add('open'); _applySigSearchSpan(); sf.querySelector('input').focus(); }
-    function closeSigThSearch() { document.getElementById('sig-th-label').style.display = ''; const sf = document.getElementById('sig-th-search'); sf.classList.remove('open'); sf.style.right = ''; sf.style.width = ''; sf.querySelector('input').value = ''; sigSearchQ = ''; renderSignals(); }
 
     // ═══════════════════════════════════════════
     // INIT
-    // ── ETF chart state (must precede init calls) ──
-    const SECTOR_CHART_COLORS = {
-      '半導體': '#6366f1', '電子零組件': '#8b5cf6', '電腦週邊': '#a78bfa',
-      '電機機械': '#10b981', '網路通訊': '#34d399', '通信': '#059669',
-      '金融': '#f59e0b', '航運': '#fbbf24', '鋼鐵': '#9ca3af', '塑膠': '#fcd34d', '光電': '#f472b6',
-    };
-    const STOCK_DONUT_PALETTE = [
-      '#6366f1','#8b5cf6','#a78bfa','#10b981','#34d399','#059669',
-      '#f59e0b','#fbbf24','#f472b6','#38bdf8','#fb923c','#4ade80',
-      '#e879f9','#22d3ee','#a3e635','#facc15',
-    ];
-    let etfChgMode = 'stock';
-    let etfChartRange = '1m';
-    let etfDonutSlices = []; // [{label, sub, val, pct, color, startAngle, endAngle}]
-
     // ═══════════════════════════════════════════
     ['mkt', 'stk'].forEach(pfx => onPeriodChange(pfx));
-    updateMktChipCounts();
     renderMktOverview();
     renderBuySell();
     renderSignals();
     updateStkSummary();
     updateStkChipCounts();
     renderStkTable();
-    updateStkInfoCard(currentStkCode);
     updateEtfChipCounts();
-    updateEtfInfoCard(currentEtfCode);
-    renderEtfSectorDonut();
-    renderEtfChgBars();
     renderEtfTable();
     updateEtfCardLabels('1d');
 
@@ -2559,147 +2325,13 @@
       return { days, prices, aum, count };
     })();
 
-    // ── ETF 產業配置 + 增減碼分析圖表 ──
-    function setEtfChgMode(m, btn) {
-      etfChgMode = m;
-      _setSeg('etf-chg-seg', btn);
-      renderEtfSectorDonut();
-      renderEtfChgBars();
-    }
-    function setEtfChartRange(r, btn) {
-      etfChartRange = r;
-      document.querySelectorAll('#etf-chart-range-tab-bar .etf-chart-range-tab').forEach(b => {
-        const active = b === btn;
-        b.dataset.state = active ? 'active' : 'inactive';
-        b.setAttribute('aria-selected', String(active));
-      });
-    }
-
-    function renderEtfSectorDonut() {
-      const canvas = document.getElementById('etf-sector-donut');
-      if (!canvas) return;
-      // Update title
-      const titleEl = document.getElementById('etf-donut-title');
-      if (titleEl) titleEl.textContent = etfChgMode === 'sector' ? 'ETF 產業配置佔比' : 'ETF 個股配置佔比';
-      // Build slices
-      let slices;
-      if (etfChgMode === 'sector') {
-        const sectorMap = {};
-        ETF_DATA.forEach(r => { if (r.sector && r.ratio > 0) sectorMap[r.sector] = (sectorMap[r.sector] || 0) + r.ratio; });
-        slices = Object.entries(sectorMap).sort((a, b) => b[1] - a[1])
-          .map(([label, val]) => ({ label, val, color: SECTOR_CHART_COLORS[label] || '#d1d5db' }));
-      } else {
-        slices = [...ETF_DATA].filter(r => r.ratio > 0).sort((a, b) => b.ratio - a.ratio)
-          .map((r, i) => ({ label: r.name, sub: r.code, val: r.ratio, color: STOCK_DONUT_PALETTE[i % STOCK_DONUT_PALETTE.length] }));
-      }
-      const total = slices.reduce((s, r) => s + r.val, 0) || 1;
-      const ctx = canvas.getContext('2d');
-      const W = canvas.width, H = canvas.height, cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) / 2 - 3, rInner = R * 0.56;
-      ctx.clearRect(0, 0, W, H);
-      let angle = -Math.PI / 2;
-      // Build etfDonutSlices with angle ranges for hit testing
-      etfDonutSlices = slices.map(s => {
-        const span = (s.val / total) * 2 * Math.PI;
-        const startAngle = angle;
-        ctx.beginPath(); ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, R, angle, angle + span);
-        ctx.closePath();
-        ctx.fillStyle = s.color; ctx.fill();
-        ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.lineWidth = 1; ctx.stroke();
-        angle += span;
-        return { ...s, pct: s.val / total * 100, startAngle, endAngle: angle, R, rInner, cx, cy };
-      });
-      // Donut hole — punch transparent using compositing so card bg shows through
-      ctx.save();
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath(); ctx.arc(cx, cy, rInner, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.restore();
-      // Legend
-      const legend = document.getElementById('etf-sector-legend');
-      if (legend) legend.innerHTML = slices.map(s =>
-        `<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--color-gray-600);">
-          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${s.color};flex-shrink:0;"></span>${s.label}
-        </span>`).join('');
-    }
-
-    // Wire up donut hover tooltip (once)
-    (function() {
-      const canvas = document.getElementById('etf-sector-donut');
-      const tip = document.getElementById('etf-donut-tooltip');
-      if (!canvas || !tip) return;
-      canvas.addEventListener('mousemove', e => {
-        const rect = canvas.getBoundingClientRect();
-        // Scale mouse coords to canvas logical size
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        const mx = (e.clientX - rect.left) * scaleX;
-        const my = (e.clientY - rect.top) * scaleY;
-        if (!etfDonutSlices.length) { tip.style.display = 'none'; return; }
-        const { cx, cy, R, rInner } = etfDonutSlices[0];
-        const dx = mx - cx, dy = my - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < rInner || dist > R) { tip.style.display = 'none'; return; }
-        let a = Math.atan2(dy, dx); // -π … π
-        // Normalize to match start angle of -π/2
-        if (a < -Math.PI / 2) a += 2 * Math.PI;
-        const hit = etfDonutSlices.find(s => a >= s.startAngle && a < s.endAngle);
-        if (!hit) { tip.style.display = 'none'; return; }
-        const sub = hit.sub ? ` (${hit.sub})` : '';
-        tip.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${hit.color};margin-right:5px;flex-shrink:0;"></span><strong>${hit.label}</strong>${sub}<br><span style="color:#a0aec0;">${hit.pct.toFixed(1)}%</span>`;
-        tip.style.display = 'block';
-        tip.style.left = (e.clientX + 14) + 'px';
-        tip.style.top  = (e.clientY - 10) + 'px';
-      });
-      canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-    })();
-
-    function renderEtfChgBars() {
-      const el = document.getElementById('etf-chg-bars');
-      if (!el) return;
-      let items;
-      if (etfChgMode === 'stock') {
-        items = [...ETF_DATA].filter(r => r.ratioChg !== 0)
-          .sort((a, b) => Math.abs(b.ratioChg) - Math.abs(a.ratioChg)).slice(0, 6)
-          .map(r => ({ label: r.name, sub: r.code, val: r.ratioChg }));
-      } else {
-        const secMap = {};
-        ETF_DATA.forEach(r => { if (r.sector) secMap[r.sector] = (secMap[r.sector] || 0) + r.ratioChg; });
-        items = Object.entries(secMap).map(([s, v]) => ({ label: s, val: +v.toFixed(2) }))
-          .filter(r => r.val !== 0).sort((a, b) => Math.abs(b.val) - Math.abs(a.val)).slice(0, 6);
-      }
-      const maxVal = Math.max(...items.map(r => Math.abs(r.val)), 0.01);
-      const BAR_MAX_H = 90;
-      el.innerHTML = `<div style="display:flex;gap:6px;height:${BAR_MAX_H + 52}px;">` +
-        items.map(item => {
-          const barH = Math.max(6, Math.abs(item.val) / maxVal * BAR_MAX_H);
-          const isRise = item.val > 0;
-          const color = isRise ? 'var(--color-rise)' : 'var(--color-fall)';
-          const sign = isRise ? '+' : '';
-          const nameHtml = (etfChgMode === 'stock' && item.sub)
-            ? `${item.label}<br><span style="font-size:10px;color:var(--color-gray-450);">${item.sub}</span>`
-            : item.label;
-          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;">
-            <div style="flex:1;"></div>
-            <span class="tabular-nums" style="font-size:11px;font-weight:600;color:${color};margin-bottom:4px;white-space:nowrap;">${sign}${item.val.toFixed(2)}%</span>
-            <div style="width:100%;height:${barH.toFixed(0)}px;background:${color};border-radius:4px 4px 2px 2px;opacity:0.85;flex-shrink:0;"></div>
-            <div style="height:32px;width:100%;text-align:center;font-size:11px;color:var(--color-gray-600);line-height:1.3;margin-top:5px;overflow:hidden;">${nameHtml}</div>
-          </div>`;
-        }).join('') + '</div>';
-    }
-
-    // Trigger new charts when page-etf becomes visible via sidebar nav
+    // Init when page-etf becomes visible
+    let etfChart = null, etfBarSeries = null, etfPriceLine = null;
     const etfObserver = new MutationObserver(() => {
-      if (document.getElementById('page-etf').classList.contains('active')) {
-        renderEtfSectorDonut();
-        renderEtfChgBars();
-      }
+      if (document.getElementById('page-etf').classList.contains('active')) initEtfFlowChart();
     });
     etfObserver.observe(document.getElementById('page-etf'), { attributes: true, attributeFilter: ['class'] });
 
-    // Legacy chart refs kept to avoid reference errors in remaining old code
-    let etfChart = null, etfBarSeries = null, etfPriceLine = null;
     function initEtfFlowChart() {
       const container = document.getElementById('etf-flow-chart');
       if (!container || etfChart) return;
@@ -2978,9 +2610,9 @@
           });
         }
 
-        if (activeId === 'market') { updateMktChipCounts(); renderMktOverview(); if (mktMode === 'heatmap') renderMktHeatmap(); renderBuySell(); if (typeof renderSignals === 'function') renderSignals(); }
+        if (activeId === 'market') { renderMktOverview(); renderBuySell(); if (typeof renderSignals === 'function') renderSignals(); }
         if (activeId === 'stock') { updateStkSummary(); updateStkChipCounts(); renderStkTable(false); if (typeof renderStkHeatmap === 'function') renderStkHeatmap(); }
-        if (activeId === 'etf') { updateEtfChipCounts(); renderEtfTable(false); if (typeof renderEtfHeatmap === 'function') renderEtfHeatmap(); renderEtfSectorDonut(); renderEtfChgBars(); const etfP = document.getElementById('etf-period'); if (etfP) updateEtfCardLabels('custom'); }
+        if (activeId === 'etf') { updateEtfChipCounts(); renderEtfTable(false); if (typeof renderEtfHeatmap === 'function') renderEtfHeatmap(); const etfP = document.getElementById('etf-period'); if (etfP) updateEtfCardLabels('custom'); }
         if (activeId === 'us-theme') { renderUsThemes(); }
       };
 
