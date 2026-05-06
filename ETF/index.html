@@ -52,8 +52,9 @@
       display: none !important;
     }
 
-    /* ── Period tab-bar：inline 用，不要全寬 border-bottom ── */
-    #stk-period-tab-bar { border-bottom: none; width: auto; }
+    /* ── 共用：兩頁的 range / period tab bar 樣式集中在這裡 ── */
+    .chart-period-bar { gap: 0.25rem; border-bottom: none !important; width: auto; }
+    .chart-period-bar [role="tab"] { min-width: 2em; justify-content: center; }
     /* ── Date popover trigger ── */
     #stk-date-trigger-btn, #etf-date-trigger-btn {
       display: inline-flex; align-items: center; gap: 6px;
@@ -184,6 +185,11 @@
       justify-content: center;
     }
 
+    /* dark 預設 */
+    #stk-datepicker { --dp-range-bg: rgba(99, 132, 220, 0.22); }
+    /* light mode */
+    [data-theme="light"] #stk-datepicker { --dp-range-bg: rgba(59, 130, 246, 0.13); }
+
     .stk-dp-cell.in-range::before,
     .stk-dp-cell.rng-s::before,
     .stk-dp-cell.rng-e::before {
@@ -193,20 +199,12 @@
       bottom: 3px;
       left: 0;
       right: 0;
-      background: var(--color-theme-950);
+      background: var(--dp-range-bg);
     }
 
-    .stk-dp-cell.rng-s::before {
-      left: 50%;
-    }
-
-    .stk-dp-cell.rng-e::before {
-      right: 50%;
-    }
-
-    .stk-dp-cell.rng-s.rng-e::before {
-      display: none;
-    }
+    .stk-dp-cell.rng-s::before { left: 50%; }
+    .stk-dp-cell.rng-e::before { right: 50%; }
+    .stk-dp-cell.rng-s.rng-e::before { display: none; }
 
     .stk-dp-day {
       width: 28px;
@@ -281,6 +279,50 @@
       background: var(--color-theme-600);
     }
   </style>
+  <script>
+    /* ══ 共用元件：日曆 + 日月季年 tab bar ══
+       以後要改結構或樣式，只需改這一個函式，兩頁自動連動。
+       cfg: { containerId, triggerId, labelId, toggleFn, barId, setPeriodFn } */
+    function buildDateControlRow(cfg) {
+      const container = document.getElementById(cfg.containerId);
+      if (!container) return;
+      const periods = [
+        { val: '1d', label: '日', active: true },
+        { val: '1m', label: '月' },
+        { val: '3m', label: '季' },
+        { val: '1y', label: '年' },
+      ];
+      const tabs = periods.map(p =>
+        `<button type="button" role="tab" aria-selected="${p.active ? 'true' : 'false'}" data-state="${p.active ? 'active' : 'inactive'}" data-variant="hug"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+          onclick="${cfg.setPeriodFn}('${p.val}',this)">
+          <span class="tabs-text">${p.label}</span><span class="tabs-indicator"></span>
+        </button>`
+      ).join('');
+      const p2 = n => String(n).padStart(2, '0');
+      const fmt = d => `${d.getFullYear()}/${p2(d.getMonth()+1)}/${p2(d.getDate())}`;
+      const today = new Date();
+      const yest  = new Date(today); yest.setDate(today.getDate() - 1);
+      container.innerHTML = `
+        <button type="button" id="${cfg.triggerId}" data-slot="popover-trigger" onclick="${cfg.toggleFn}(event)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-calendar size-4" aria-hidden="true">
+            <path d="M8 2v4"></path><path d="M16 2v4"></path>
+            <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+            <path d="M3 10h18"></path>
+          </svg>
+          <span class="whitespace-nowrap" id="${cfg.labelId}">${fmt(yest)} - ${fmt(today)}</span>
+        </button>
+        <div class="w-px h-4.5 bg-gray-200 shrink-0 mb-2"></div>
+        <div dir="ltr" data-orientation="horizontal">
+          <div role="tablist" aria-orientation="horizontal" id="${cfg.barId}"
+            class="tabs-list inline-flex items-end chart-period-bar" style="outline:none">
+            ${tabs}
+          </div>
+        </div>`;
+    }
+  </script>
 </head>
 
 <body
@@ -513,7 +555,7 @@
               <!-- 1月/3月/6月/1年 hug tabs -->
               <div dir="ltr" data-orientation="horizontal" class="ml-auto">
                 <div role="tablist" aria-orientation="horizontal" id="stk-range-tab-bar"
-                  class="tabs-list inline-flex items-end gap-4" style="outline:none; border-bottom:none; width:auto;">
+                  class="tabs-list inline-flex items-end chart-period-bar" style="outline:none;">
                   <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
                     class="tabs-trigger stk-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
                     onclick="setStkRange('1m',this)">
@@ -548,46 +590,9 @@
               <div id="stk-flow-chart" style="height:240px;width:100%;"></div>
             </div>
           </div>
-          <div
-            class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto">
-            <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" aria-orientation="horizontal" id="stk-period-tab-bar"
-                class="tabs-list inline-flex items-end gap-4" style="outline:none">
-                <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setStkPeriod('1d',this)">
-                  <span class="tabs-text">日</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setStkPeriod('1m',this)">
-                  <span class="tabs-text">月</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setStkPeriod('3m',this)">
-                  <span class="tabs-text">季</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setStkPeriod('1y',this)">
-                  <span class="tabs-text">年</span><span class="tabs-indicator"></span>
-                </button>
-              </div>
-            </div>
-            <div class="w-px h-4.5 bg-gray-200 shrink-0 mb-2"></div>
-            <button type="button" id="stk-date-trigger-btn" data-slot="popover-trigger"
-              onclick="toggleStkDatePicker(event)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-calendar size-4" aria-hidden="true">
-                <path d="M8 2v4"></path><path d="M16 2v4"></path>
-                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                <path d="M3 10h18"></path>
-              </svg>
-              <span class="whitespace-nowrap" id="stk-date-label"></span>
-            </button>
-          </div>
+          <div id="stk-date-control-row"
+            class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
+          <script>buildDateControlRow({ containerId:'stk-date-control-row', triggerId:'stk-date-trigger-btn', labelId:'stk-date-label', toggleFn:'toggleStkDatePicker', barId:'stk-period-tab-bar', setPeriodFn:'setStkPeriod' });</script>
           <div id="stk-summary-row" class="flex gap-2.5  py-3 shrink-0">
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span class="text-[11px] text-gray-600 mb-1">持有ETF數量</span>
@@ -723,7 +728,7 @@
               </div>
               <div dir="ltr" data-orientation="horizontal" class="ml-auto">
                 <div role="tablist" aria-orientation="horizontal" id="etf-range-tab-bar"
-                  class="tabs-list inline-flex items-end gap-4" style="outline:none; border-bottom:none; width:auto;">
+                  class="tabs-list inline-flex items-end chart-period-bar" style="outline:none;">
                   <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
                     class="tabs-trigger etf-range-tab group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
                     onclick="setEtfRange('1m',this)">
@@ -759,56 +764,20 @@
             </div>
           </div>
           <!-- ── 日/月/季/年 + 日期選擇 ── -->
-          <div class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto">
-            <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" aria-orientation="horizontal" id="etf-period-tab-bar"
-                class="tabs-list inline-flex items-end gap-4" style="outline:none">
-                <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setEtfPeriod('1d',this)">
-                  <span class="tabs-text">日</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setEtfPeriod('1m',this)">
-                  <span class="tabs-text">月</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setEtfPeriod('3m',this)">
-                  <span class="tabs-text">季</span><span class="tabs-indicator"></span>
-                </button>
-                <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
-                  onclick="setEtfPeriod('1y',this)">
-                  <span class="tabs-text">年</span><span class="tabs-indicator"></span>
-                </button>
-              </div>
-            </div>
-            <div class="w-px h-4.5 bg-gray-200 shrink-0 mb-2"></div>
-            <button type="button" id="etf-date-trigger-btn" data-slot="popover-trigger"
-              onclick="toggleEtfDatePicker(event)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-calendar size-4" aria-hidden="true">
-                <path d="M8 2v4"></path><path d="M16 2v4"></path>
-                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                <path d="M3 10h18"></path>
-              </svg>
-              <span class="whitespace-nowrap" id="etf-date-label"></span>
-            </button>
-          </div>
+          <div id="etf-date-control-row"
+            class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
+          <script>buildDateControlRow({ containerId:'etf-date-control-row', triggerId:'etf-date-trigger-btn', labelId:'etf-date-label', toggleFn:'toggleEtfDatePicker', barId:'etf-period-tab-bar', setPeriodFn:'setEtfPeriod' });</script>
           <!-- ── Summary cards ── -->
           <div id="etf-summary-row" class="flex gap-2.5 py-3 shrink-0">
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span id="etf-lbl-aum" class="text-[11px] text-gray-600 mb-1">單日 ETF 規模</span>
               <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-aum" class="text-gray-800">285.13億</span></div>
-              <div class="text-[10px] text-gray-500 mt-0.5">單日淨資產總值｜較前日 <span id="etf-sum-aum-chg" class="tabular-nums text-rise">+2.1億</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span id="etf-sub-aum">單日淨資產總值｜較前日</span> <span id="etf-sum-aum-chg" class="tabular-nums text-rise">+2.1億</span></div>
             </div>
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span class="text-[11px] text-gray-600 mb-1">持股檔數</span>
               <div class="text-[20px] font-bold tabular-nums"><span id="etf-sum-count" class="text-gray-800">32</span></div>
-              <div class="text-[10px] text-gray-500 mt-0.5">單日持有｜較前日 <span id="etf-sum-count-chg" class="tabular-nums text-rise">+2檔</span></div>
+              <div class="text-[10px] text-gray-500 mt-0.5"><span id="etf-sub-count">單日持有｜較前日</span> <span id="etf-sum-count-chg" class="tabular-nums text-rise">+2檔</span></div>
             </div>
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2">
               <span id="etf-lbl-newbuy" class="text-[11px] text-gray-600 mb-1">單日首次買入</span>
@@ -1768,6 +1737,30 @@
       renderEtfTable(false);
     }
 
+    /* ── 共用：datepicker 四邊邊界保護定位 ── */
+    function _positionDP(dp, trigger) {
+      const MARGIN = 8;
+      const r = trigger.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const dpW = dp.offsetWidth;
+      const dpH = dp.offsetHeight;
+      // 預設：trigger 下方
+      let top = r.bottom + 6;
+      let left = r.right - dpW; // 右對齊 trigger
+      // 左邊不能超出
+      if (left < MARGIN) left = MARGIN;
+      // 右邊不能超出
+      if (left + dpW > vw - MARGIN) left = vw - MARGIN - dpW;
+      // 下邊超出 → 翻到上方
+      if (top + dpH > vh - MARGIN) {
+        const topAbove = r.top - 6 - dpH;
+        top = topAbove >= MARGIN ? topAbove : Math.max(MARGIN, vh - MARGIN - dpH);
+      }
+      dp.style.top  = top  + 'px';
+      dp.style.left = left + 'px';
+    }
+
     function toggleEtfDatePicker(event) {
       // reuse stk date picker popup, anchored to etf trigger
       const trigger = document.getElementById('etf-date-trigger-btn');
@@ -1782,10 +1775,8 @@
         updateEtfCardLabels('custom');
         renderEtfTable(false);
       };
-      const rect = trigger.getBoundingClientRect();
-      dp.style.display = '';
-      dp.style.top = (rect.bottom + 6) + 'px';
-      dp.style.left = Math.max(8, rect.left - 200) + 'px';
+      dp.style.display = 'block';
+      _positionDP(dp, trigger);
       event.stopPropagation();
     }
 
@@ -1807,6 +1798,11 @@
       set('etf-lbl-aum', val === '1d' ? '單日 ETF 規模' : `${pfx} ETF 規模`);
       set('etf-lbl-newbuy', val === '1d' ? '單日首次買入' : `${pfx}首次買入`);
       set('etf-lbl-clear', val === '1d' ? '單日完全出清' : `${pfx}完全出清`);
+      const SUB_PFX = { '1d': '單日', '1m': '單月', '3m': '單季', '1y': '單年', 'custom': '本期' };
+      const SUB_SFX = { '1d': '較前日', '1m': '較前月', '3m': '較前季', '1y': '較前年', 'custom': '較前期' };
+      const sp = SUB_PFX[val] || '本期', ss = SUB_SFX[val] || '較前期';
+      set('etf-sub-aum',   `${sp}淨資產總值｜${ss}`);
+      set('etf-sub-count', `${sp}持有｜${ss}`);
       const mainData = {
         '1d': { aum: '285.13億', count: '32', newbuy: '1', clear: '1' },
         '1w': { aum: '281.40億', count: '32', newbuy: '2', clear: '1' },
@@ -2336,14 +2332,20 @@
         if (event) event.stopPropagation();
         const d = pd(ds); dpH = null;
         if (dpTarget === 'S') {
-          dpS = d; dpE = null; dpTarget = 'E'; // set start → move focus to end
+          if (dpE && d < dpE) {
+            // 新 start 在現有 end 之前 → 只更新 start，end 保留，切到選 end 狀態
+            dpS = d; dpTarget = 'E';
+          } else {
+            // 無 end，或點在 end 之後 → 重新選
+            dpS = d; dpE = null; dpTarget = 'E';
+          }
         } else {
-          // picking end
+          // 選 end 中
           if (!dpS || d < dpS) {
-            // clicked before start: treat as new start, re-pick end
+            // 點在 start 之前 → 當作新 start，重選 end
             dpS = d; dpE = null; dpTarget = 'E';
           } else {
-            dpE = d; dpTarget = 'S'; // both set → reset to start for next round
+            dpE = d; dpTarget = 'S';
           }
         }
         stkDpRender();
@@ -2434,17 +2436,9 @@
         if (dp.style.display !== 'block') {
           dpOpen();
           const btn = document.getElementById('stk-date-trigger-btn');
-          const r = btn.getBoundingClientRect();
           dp.style.display = 'block';
           stkDpRender();
-
-          dp.style.top = (r.bottom + 6) + 'px';
-          dp.style.left = Math.max(8, r.left - 8) + 'px';
-
-          const rect = dp.getBoundingClientRect();
-          if (rect.bottom > window.innerHeight && r.top - rect.height - 6 > 0) {
-            dp.style.top = (r.top - rect.height - 6) + 'px';
-          }
+          _positionDP(dp, btn);
         } else {
           document.getElementById('stk-datepicker').style.display = 'none';
         }
@@ -2477,17 +2471,6 @@
     })();
   </script>
 
-  <script>
-    /* ── ETF 日期 label 初始化 ── */
-    (function() {
-      var p2 = function(n) { return String(n).padStart(2, '0'); };
-      var fmt = function(d) { return d.getFullYear() + '/' + p2(d.getMonth()+1) + '/' + p2(d.getDate()); };
-      var today = new Date();
-      var from  = new Date(today); from.setDate(today.getDate() - 1);
-      var el = document.getElementById('etf-date-label');
-      if (el) el.textContent = fmt(from) + ' - ' + fmt(today);
-    })();
-  </script>
 
 </body>
 
