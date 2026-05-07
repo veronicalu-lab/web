@@ -390,10 +390,32 @@
          ║  篩選列：期間 <Select> + 自訂日期 <DateRangePicker>（Radix Popover）
          ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-market" class="page active flex flex-1 flex-col">
+      <!-- ── Page 1 compact fixed header ── -->
+      <div id="mkt-compact-hdr" style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;padding:0 20px;height:50px;gap:0;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-200);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+        <span style="font-size:17px;font-weight:700;color:var(--color-gray-900);white-space:nowrap;margin-right:20px;flex-shrink:0;">台股主動式 ETF 籌碼追蹤</span>
+        <div style="display:flex;align-items:flex-end;height:100%;gap:16px;flex-shrink:0;" id="mkt-compact-tab-bar">
+          <button type="button" role="tab" aria-selected="true"  data-state="active"   data-variant="hug" data-tab="mkt-overview" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="switchMktTab('mkt-overview')"><span class="tabs-text">市場總體觀測</span><span class="tabs-indicator"></span></button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" data-tab="mkt-buysell" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="switchMktTab('mkt-buysell')"><span class="tabs-text">總體大買大賣</span><span class="tabs-indicator"></span></button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" data-tab="mkt-signal"  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="switchMktTab('mkt-signal')"><span class="tabs-text">關鍵異動訊號</span><span class="tabs-indicator"></span></button>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:flex-end;height:100%;gap:8px;flex-shrink:0;">
+          <button type="button" style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--color-gray-700);padding-bottom:14px;background:none;border:none;cursor:pointer;white-space:nowrap;" onclick="toggleMktDatePicker(event)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+            <span id="mkt-compact-date-label"></span>
+          </button>
+          <div style="width:1px;height:18px;background:var(--color-gray-200);margin-bottom:14px;flex-shrink:0;"></div>
+          <div dir="ltr" data-orientation="horizontal"><div role="tablist" id="mkt-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar" style="outline:none;">
+            <button type="button" role="tab" aria-selected="true"  data-state="active"   data-variant="hug" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="setMktPeriod('1d',this)"><span class="tabs-text">日</span><span class="tabs-indicator"></span></button>
+            <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="setMktPeriod('1m',this)"><span class="tabs-text">月</span><span class="tabs-indicator"></span></button>
+            <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="setMktPeriod('3m',this)"><span class="tabs-text">季</span><span class="tabs-indicator"></span></button>
+            <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug" class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2" onclick="setMktPeriod('1y',this)"><span class="tabs-text">年</span><span class="tabs-indicator"></span></button>
+          </div></div>
+        </div>
+      </div>
       <div class="h-full w-full" style="">
         <div class="h-full w-full min-w-0 bg-gray-100 md:p-5">
           <div class="flex h-full min-h-0 w-full flex-col overflow-hidden">
-            <div class="flex flex-col gap-3 pt-5 pb-5.25 shrink-0">
+            <div id="mkt-full-hdr" class="flex flex-col gap-3 pt-5 pb-5.25 shrink-0">
               <div class="flex items-center gap-2.5">
                 <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">台股主動式 ETF 籌碼追蹤
                 </h2>
@@ -424,7 +446,9 @@
                 class="flex items-end justify-end gap-2.5 pb-1 shrink-0 overflow-x-auto ml-2"></div>
             </div>
             <script>buildDateControlRow({ containerId:'mkt-date-control-row', triggerId:'mkt-date-trigger-btn', labelId:'mkt-date-label', toggleFn:'toggleMktDatePicker', barId:'mkt-period-tab-bar', setPeriodFn:'setMktPeriod' });</script>
-            <div id="pane-mkt-overview" class="flex-1 overflow-auto flex flex-col">
+            <div id="pane-mkt-overview" class="flex-1 flex flex-col">
+              <!-- ── Sticky zone: cards + filter freeze below compact header ── -->
+              <div id="mkt-sticky-zone" class="sticky-zone">
               <!-- [RD] Summary cards — 靜態計算值，來自 API 同一支 response；值跟隨篩選列期間變動 -->
               <div class="flex gap-2.5 py-3 shrink-0">
                 <div
@@ -465,6 +489,7 @@
                   <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="last"  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]" onclick="setMktViewMode('heatmap',this)"><span class="segment-text">熱力圖</span></button>
                 </div>
               </div>
+              </div><!-- /mkt-sticky-zone -->
               <div id="mkt-list-view" class="flex-1 overflow-auto">
                 <div data-slot="table-container" class="table-container">
                   <table data-slot="table" class="table">
@@ -570,7 +595,7 @@
          ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-stock" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
-        <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
+        <div id="stk-full-hdr" class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
           <div class="flex items-center pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250" style="gap:16px;">
             <div class="flex flex-col gap-3">
               <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap"><span id="stk-hero-title">台積電</span><span id="stk-hero-code" class="text-gray-450 dark:text-white/40 ml-1.5">2330</span></h2>
@@ -584,6 +609,14 @@
               <svg id="stk-info-icon" width="32" height="24" viewBox="0 0 32 24" fill="none"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </div>
+        </div>
+        <!-- ── Page 2 compact fixed header ── -->
+        <div id="stk-compact-hdr" style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+          <span id="stk-compact-title" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">台積電</span>
+          <span id="stk-compact-code" style="font-size:14px;color:var(--color-gray-450);margin-left:3px;">2330</span>
+          <span style="font-size:13px;color:var(--color-gray-400);margin-left:6px;">主動式 ETF 持股狀況</span>
+          <div id="stk-compact-val" class="tabular-nums" style="margin-left:auto;font-size:16px;font-weight:700;line-height:1.2;"></div>
+          <svg id="stk-compact-icon" width="24" height="18" viewBox="0 0 32 24" fill="none" style="flex-shrink:0;color:var(--color-gray-400);"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="w-full px-6 pb-6">
           <!-- ── 買賣超圖表 ── -->
@@ -669,6 +702,8 @@
           <div id="stk-date-control-row"
             class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
           <script>buildDateControlRow({ containerId:'stk-date-control-row', triggerId:'stk-date-trigger-btn', labelId:'stk-date-label', toggleFn:'toggleStkDatePicker', barId:'stk-period-tab-bar', setPeriodFn:'setStkPeriod' });</script>
+          <!-- ── Sticky zone: cards + filter freeze below compact header ── -->
+          <div id="stk-sticky-zone" class="sticky-zone">
           <!-- [RD] Summary cards ×6 — labels 跟隨 日/月/季/年 或自訂日期 動態切換；資料來自同一支 holdings API -->
           <div id="stk-summary-row" class="flex gap-2.5  py-3 shrink-0">
             <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue">
@@ -729,6 +764,7 @@
               </button>
             </div>
           </div>
+          </div><!-- /stk-sticky-zone -->
           <div id="stk-list-view" class="max-h-110 overflow-y-auto">
             <div data-slot="table-container" class="table-container">
               <table data-slot="table" class="table">
@@ -775,7 +811,7 @@
          ╚══════════════════════════════════════════════════════════════════════ -->
     <main id="page-etf" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
-        <div class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
+        <div id="etf-full-hdr" class="flex flex-col shadow-[0px_4px_8px_0px_rgba(28,30,35,0.1)] shrink-0">
           <div class="flex items-center pt-5 pb-[21px] px-6 bg-gray-100 border-b border-gray-250" style="gap:16px;">
             <div class="flex flex-col gap-3">
               <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap"><span id="etf-hero-title">主動統一臺股增長</span><span id="etf-hero-code" class="text-gray-450 dark:text-white/40 ml-1.5">00981A</span></h2>
@@ -789,6 +825,14 @@
               <svg id="etf-info-icon" width="32" height="24" viewBox="0 0 32 24" fill="none"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </div>
+        </div>
+        <!-- ── Page 3 compact fixed header ── -->
+        <div id="etf-compact-hdr" style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+          <span id="etf-compact-title" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">主動統一臺股增長</span>
+          <span id="etf-compact-code" style="font-size:14px;color:var(--color-gray-450);margin-left:3px;">00981A</span>
+          <span style="font-size:13px;color:var(--color-gray-400);margin-left:6px;">ETF 持股狀況</span>
+          <div id="etf-compact-val" class="tabular-nums" style="margin-left:auto;font-size:16px;font-weight:700;line-height:1.2;"></div>
+          <svg id="etf-compact-icon" width="24" height="18" viewBox="0 0 32 24" fill="none" style="flex-shrink:0;color:var(--color-gray-400);"><polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="w-full px-6 pb-6">
           <!-- ── ETF 產業配置佔比 + 前六大增減碼分析 ── -->
@@ -842,6 +886,8 @@
           <div id="etf-date-control-row"
             class="flex items-end justify-end gap-2.5 pt-5 pb-1 dark:bg-transparent shrink-0 overflow-x-auto"></div>
           <script>buildDateControlRow({ containerId:'etf-date-control-row', triggerId:'etf-date-trigger-btn', labelId:'etf-date-label', toggleFn:'toggleEtfDatePicker', barId:'etf-period-tab-bar', setPeriodFn:'setEtfPeriod' });</script>
+          <!-- ── Sticky zone: cards + filter freeze below compact header ── -->
+          <div id="etf-sticky-zone" class="sticky-zone">
           <!-- ── Summary cards ── -->
           <!-- [RD] Summary cards ×4：ETF 規模 / 持股檔數 / 首次買入 / 完全出清
                     副標題（etf-sub-aum / etf-sub-count）跟隨 period 變動；資料來自同一支 holdings API -->
@@ -892,6 +938,7 @@
               </button>
             </div>
           </div>
+          </div><!-- /etf-sticky-zone -->
           <div id="etf-list-view" class="max-h-110 overflow-y-auto">
             <div data-slot="table-container" class="table-container">
               <table data-slot="table" class="table">
@@ -1482,9 +1529,13 @@
       if (!el) return;
       const cls = d.chgPct > 0 ? 'text-rise' : d.chgPct < 0 ? 'text-fall' : 'text-flat';
       const sign = d.chgPct > 0 ? '+' : '';
-      el.innerHTML = `<span class="${cls}">${d.close.toLocaleString('zh-TW')} <span style="font-size:14px;">(${sign}${d.chgPct.toFixed(2)}%)</span></span>`;
+      const valHtml = `<span class="${cls}">${d.close.toLocaleString('zh-TW')} <span style="font-size:14px;">(${sign}${d.chgPct.toFixed(2)}%)</span></span>`;
+      const iconColor = d.chgPct > 0 ? 'var(--color-rise)' : d.chgPct < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
+      el.innerHTML = valHtml;
       const icon = document.getElementById('stk-info-icon');
-      if (icon) icon.style.color = d.chgPct > 0 ? 'var(--color-rise)' : d.chgPct < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
+      if (icon) icon.style.color = iconColor;
+      const cv = document.getElementById('stk-compact-val'); if (cv) cv.innerHTML = valHtml;
+      const ci = document.getElementById('stk-compact-icon'); if (ci) ci.style.color = iconColor;
     }
 
     function updateEtfInfoCard(code) {
@@ -1493,9 +1544,13 @@
       if (!el || !etf) return;
       const cls = etf.navChg > 0 ? 'text-rise' : etf.navChg < 0 ? 'text-fall' : 'text-flat';
       const sign = etf.navChg > 0 ? '+' : '';
-      el.innerHTML = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">(${sign}${etf.navChg.toFixed(2)}%)</span></span>`;
+      const valHtml = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">(${sign}${etf.navChg.toFixed(2)}%)</span></span>`;
+      const iconColor = etf.navChg > 0 ? 'var(--color-rise)' : etf.navChg < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
+      el.innerHTML = valHtml;
       const icon = document.getElementById('etf-info-icon');
-      if (icon) icon.style.color = etf.navChg > 0 ? 'var(--color-rise)' : etf.navChg < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
+      if (icon) icon.style.color = iconColor;
+      const cv = document.getElementById('etf-compact-val'); if (cv) cv.innerHTML = valHtml;
+      const ci = document.getElementById('etf-compact-icon'); if (ci) ci.style.color = iconColor;
     }
 
     function showPage(id) {
@@ -1505,6 +1560,8 @@
         const targets = { market: '市場總覽', stock: '個股 → ETF持股', etf: 'ETF → 持股狀態', 'us-theme': '主題投資' };
         b.classList.toggle('active', b.textContent.trim() === (targets[id] || ''));
       });
+      // Hide all compact headers when switching pages
+      ['stk-compact-hdr','etf-compact-hdr','mkt-compact-hdr'].forEach(i => { const el = document.getElementById(i); if (el) el.style.display = 'none'; });
       window.scrollTo(0, 0);
       if (id === 'stock') { updateStkSummary(); updateStkChipCounts(); renderStkTable(); }
       if (id === 'etf') { updateEtfChipCounts(); renderEtfTable(); const etfP = document.getElementById('etf-period'); if (etfP) updateEtfCardLabels(etfP.value); }
@@ -1518,10 +1575,17 @@
       ['mkt-overview', 'mkt-buysell', 'mkt-signal'].forEach(p => {
         const el = document.getElementById('pane-' + p); if (el) el.style.display = p === tab ? '' : 'none';
       });
+      // Sync main tab bar (index-based)
       document.querySelectorAll('#mkt-tab-bar [role="tab"]').forEach((b, i) => {
         const isActive = ['mkt-overview', 'mkt-buysell', 'mkt-signal'][i] === tab;
         b.dataset.state = isActive ? 'active' : 'inactive';
         b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      // Sync compact tab bar (data-tab attribute)
+      document.querySelectorAll('#mkt-compact-tab-bar [role="tab"]').forEach(b => {
+        const isActive = b.dataset.tab === tab;
+        b.dataset.state = isActive ? 'active' : 'inactive';
+        b.setAttribute('aria-selected', String(isActive));
       });
     }
 
@@ -1625,7 +1689,7 @@
       ],
       'tbl-etf': [
         { label: '股號 / 股名', val: r => r.name, left: true, style: 'min-width:180px;', inlineSearch: 'etf' },
-        { label: '產業', val: r => r.sector, left: true, style: 'width:100px;' },
+        { label: '產業', val: r => r.sector, center: true, style: 'width:100px;' },
         { label: '投資比率(%)', val: r => r.ratio, center: true, style: 'min-width:160px;' },
         { label: '市值(億)', val: r => r.mktVal, style: 'width:80px;' },
         { label: '持有張數', val: r => r.shares, style: 'width:90px;' },
@@ -1915,6 +1979,8 @@
       currentStkCode = code;
       const el_stk_title = document.getElementById('stk-hero-title'); if (el_stk_title) el_stk_title.textContent = name;
       const el_stk_code = document.getElementById('stk-hero-code'); if (el_stk_code) el_stk_code.textContent = code;
+      const ct = document.getElementById('stk-compact-title'); if (ct) ct.textContent = name;
+      const cc = document.getElementById('stk-compact-code'); if (cc) cc.textContent = code;
       const el_stk_sec = document.getElementById('stk-hero-sector'); if (el_stk_sec) el_stk_sec.textContent = STOCK_SECTOR[code] || '—';
       const el = document.getElementById('stk-institutional');
       if (el) el.innerHTML = '<div style="font-size:12px;color:#989898;padding:6px 0;">請選擇日期後點擊查詢</div>';
@@ -1926,6 +1992,8 @@
       currentEtfCode = code;
       const el_etf_title = document.getElementById('etf-hero-title'); if (el_etf_title) el_etf_title.textContent = name;
       const el_etf_code = document.getElementById('etf-hero-code'); if (el_etf_code) el_etf_code.textContent = code;
+      const ct = document.getElementById('etf-compact-title'); if (ct) ct.textContent = name;
+      const cc = document.getElementById('etf-compact-code'); if (cc) cc.textContent = code;
       const etf = ETF_LIST.find(e => e.code === code);
       const el_etf_strat = document.getElementById('etf-hero-strategy'); if (el_etf_strat) el_etf_strat.textContent = etf ? etf.strategy : '—';
       updateEtfInfoCard(code);
@@ -2076,19 +2144,28 @@
     }
 
     function setMktPeriod(val, btn) {
-      document.querySelectorAll('#mkt-period-tab-bar [role="tab"]').forEach(b => {
-        const active = b === btn;
-        b.dataset.state = active ? 'active' : 'inactive';
-        b.setAttribute('aria-selected', String(active));
+      // Sync both main and compact period bars by value, not by btn reference
+      ['#mkt-period-tab-bar [role="tab"]', '#mkt-compact-period-bar [role="tab"]'].forEach(sel => {
+        document.querySelectorAll(sel).forEach(b => {
+          // Extract val from onclick attribute (e.g. setMktPeriod('1d',this))
+          const m = (b.getAttribute('onclick') || '').match(/setMktPeriod\('([^']+)'/);
+          const bVal = m ? m[1] : null;
+          const active = bVal === val;
+          b.dataset.state = active ? 'active' : 'inactive';
+          b.setAttribute('aria-selected', String(active));
+        });
       });
       const trigger = document.getElementById('mkt-date-trigger-btn');
       if (trigger) delete trigger.dataset.custom;
-      const sp = document.getElementById('mkt-date-label');
       const today = new Date();
       const fmtD = d => `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
       const offsets = { '1d': 1, '1m': 30, '3m': 89, '1y': 364 };
       const from = new Date(today); from.setDate(today.getDate() - (offsets[val] ?? 1));
-      if (sp) sp.textContent = `${fmtD(from)} - ${fmtD(today)}`;
+      const dateText = `${fmtD(from)} - ${fmtD(today)}`;
+      const sp = document.getElementById('mkt-date-label');
+      if (sp) sp.textContent = dateText;
+      const cs = document.getElementById('mkt-compact-date-label');
+      if (cs) cs.textContent = dateText;
     }
 
     function toggleMktDatePicker(event) {
@@ -2098,8 +2175,11 @@
       if (dp.style.display !== 'none' && dp._owner === 'mkt') { dp.style.display = 'none'; dp._owner = null; return; }
       dp._owner = 'mkt';
       dp._onConfirm = (s, e) => {
+        const dateText = `${s} - ${e}`;
         const label = document.getElementById('mkt-date-label');
-        if (label) label.textContent = `${s} - ${e}`;
+        if (label) label.textContent = dateText;
+        const cs = document.getElementById('mkt-compact-date-label');
+        if (cs) cs.textContent = dateText;
         if (trigger) trigger.dataset.custom = 'true';
       };
       dpOpen(); dp.style.display = 'block'; stkDpRender();
@@ -2224,7 +2304,7 @@
         const shares = r.shares === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.shares.toLocaleString('zh-TW')}</span>`;
         return `<tr data-slot="table-row" class="table-row">
       <td data-slot="table-cell" class="table-cell table-cell-align-left"><button type="button" style="display:inline-flex;flex-direction:column;align-items:flex-start;" onclick="goToStock('${r.code}','${r.name}')">${r.name}<span class="tabular-nums cell-code">${r.code}</span></button></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left">${r.sector ? fmtSector(r.sector) : '—'}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${r.sector ? fmtSector(r.sector) : '—'}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${fmtRatioBar(r.ratio, 10)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${mktVal}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${shares}</td>
@@ -2698,6 +2778,22 @@
     });
     etfObserver.observe(document.getElementById('page-etf'), { attributes: true, attributeFilter: ['class'] });
 
+    // ── Compact sticky headers (pages 2 & 3) ──
+    (function() {
+      function makeCompactObs(fullHdrId, compactId, pageId) {
+        const fullHdr = document.getElementById(fullHdrId);
+        const compact = document.getElementById(compactId);
+        if (!fullHdr || !compact) return;
+        new IntersectionObserver(([entry]) => {
+          const active = document.getElementById(pageId).classList.contains('active');
+          compact.style.display = (!entry.isIntersecting && active) ? 'flex' : 'none';
+        }, { threshold: 0 }).observe(fullHdr);
+      }
+      makeCompactObs('stk-full-hdr', 'stk-compact-hdr', 'page-stock');
+      makeCompactObs('etf-full-hdr', 'etf-compact-hdr', 'page-etf');
+      makeCompactObs('mkt-full-hdr', 'mkt-compact-hdr', 'page-market');
+    })();
+
     // Legacy chart refs kept to avoid reference errors in remaining old code
     let etfChart = null, etfBarSeries = null, etfPriceLine = null;
     function initEtfFlowChart() {
@@ -3033,6 +3129,24 @@
         dpLY = ref.getFullYear(); dpLM = ref.getMonth();
         dpRY = dpLY; dpRM = dpLM + 1;
         if (dpRM > 11) { dpRM = 0; dpRY++; }
+
+        // Initialize compact date label from main date label
+        const mktLbl = document.getElementById('mkt-date-label');
+        const mktCLbl = document.getElementById('mkt-compact-date-label');
+        if (mktLbl && mktCLbl) mktCLbl.textContent = mktLbl.textContent;
+
+        // Set mkt table thead sticky top = compact-hdr(50px) + mkt-sticky-zone height
+        function updateMktTheadTop() {
+          const zone = document.getElementById('mkt-sticky-zone');
+          const thead = document.querySelector('#mkt-list-view .table-header');
+          if (!zone || !thead) return;
+          thead.style.position = 'sticky';
+          thead.style.top = (50 + zone.offsetHeight) + 'px';
+          thead.style.zIndex = '10';
+          thead.style.background = 'var(--color-gray-125)';
+        }
+        // Run after first render cycle
+        requestAnimationFrame(updateMktTheadTop);
       });
     })();
   </script>

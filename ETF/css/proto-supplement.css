@@ -652,3 +652,21 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
+
+
+/* ── Sticky freeze zone: metric cards + filter row, appears below compact header ── */
+.sticky-zone {
+  position: sticky;
+  top: 50px;
+  z-index: 20;
+  background: var(--color-gray-125);
+}
+
+/* ── Sticky thead within internal-scroll table containers (pages 2 & 3) ── */
+#stk-list-view .table-header,
+#etf-list-view .table-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-gray-125);
+}
