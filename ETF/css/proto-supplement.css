@@ -85,12 +85,14 @@
 .pointer-events-none { pointer-events: none; }
 .line-clamp-2 {
   overflow: hidden; display: -webkit-box;
-  -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
 }
 
 /* ── Multi-page prototype routing ── */
 .page { display: none; }
 .page.active { display: flex; flex-direction: column; min-height: 100vh; }
+/* overflow-hidden → clip：保留裁切但不建立 scroll container，讓 sticky 穿透到頁面捲動 */
+#mkt-layout { overflow: clip; }
 
 /* ── US themes page layout ── */
 .theme-browse-page  { display: flex; flex-direction: column; }
@@ -315,7 +317,9 @@
 }
 /* sticky thead 需要 border-separate；用 border-spacing:0 補回 collapse 效果 */
 #stk-list-view .table,
-#etf-list-view .table {
+#etf-list-view .table,
+#mkt-list-view .table,
+#sig-scroll .table {
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -330,6 +334,11 @@
 #etf-list-view .table-container {
   max-height: calc(var(--spacing) * 110);
   overflow-y: auto;
+}
+/* Mkt overview & signal pane — no max-height, page scroll lets IntersectionObserver fire */
+#mkt-list-view .table-container,
+#sig-scroll .table-container {
+  overflow-y: visible;
 }
 /* 兩頁 summary 卡片底色統一（dark:bg-gray-125 在此編譯格式下無效，改用可靠的 data-theme selector） */
 #stk-summary-row > div,
@@ -502,10 +511,8 @@
 /* ════════════════════════════════════════════════════════════════
    MISC
    ════════════════════════════════════════════════════════════════ */
-.rank-num { display: inline-block; width: 16px; height: 16px; background: var(--color-gray-150); border-radius: 3px; font-size: 12px; font-weight: 700; color: var(--color-gray-600); text-align: center; line-height: 16px; margin-right: 6px; }
-.rank-num.rank-gold   { background: #B8962E; color: #fff5d6; }
-.rank-num.rank-silver { background: #8A8F9A; color: #f0f1f3; }
-.rank-num.rank-bronze { background: #A0622A; color: #fce8d5; }
+.rank-num { display: inline-block; width: 16px; height: 16px; background: var(--color-gray-250); border-radius: 3px; font-size: 12px; font-weight: 700; color: var(--color-gray-700); text-align: center; line-height: 16px; margin-right: 6px; }
+.rank-num.rank-top { background: var(--color-theme-500); color: #fff; }
 .chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 12px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
 .t-name-row { display: flex; align-items: center; gap: 8px; }
 .t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
@@ -650,7 +657,7 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; line-clamp: 3;
 }
 
 
@@ -662,11 +669,28 @@
   background: var(--color-gray-125);
 }
 
-/* ── Sticky thead within internal-scroll table containers (pages 2 & 3) ── */
+/* ── Sticky thead — pages 2 & 3 (internal scroll, top:0 within table-container) ── */
 #stk-list-view .table-header,
 #etf-list-view .table-header {
   position: sticky;
   top: 0;
   z-index: 10;
   background: var(--color-gray-125);
+}
+
+
+/* 關鍵異動訊號 tag 強制套色 */
+tr[data-sig="new"] td:first-child span {
+  background: color-mix(in srgb, var(--xq-red-600) 60%, transparent) !important;
+  color: #fff !important;
+  outline: 1px solid var(--xq-red-600) !important;
+  outline-offset: -1px !important;
+  font-weight: 400 !important;
+}
+tr[data-sig="exit"] td:first-child span {
+  background: color-mix(in srgb, var(--color-fall) 60%, transparent) !important;
+  color: #fff !important;
+  outline: 1px solid var(--color-fall) !important;
+  outline-offset: -1px !important;
+  font-weight: 400 !important;
 }
