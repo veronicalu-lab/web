@@ -666,7 +666,7 @@
   position: sticky;
   top: 50px;
   z-index: 20;
-  background: var(--color-gray-125);
+  background: var(--color-gray-100);
 }
 
 /* ── Sticky thead — pages 2 & 3 (internal scroll, top:0 within table-container) ── */
