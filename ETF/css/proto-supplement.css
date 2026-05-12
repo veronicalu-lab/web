@@ -23,14 +23,24 @@
 }
 
 /* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
-/* Table border：rd-app.css 用 --color-gray-200（dark = #262626），
-   在深色背景（#151515）幾乎不可見；改用 --color-gray-300（dark = #3d3d3d）
-   讓分隔線清楚顯示，不改 light mode（gray-200 = #e1e1e1 已足夠）。         */
-:root                { --comp-table-border: var(--color-gray-300); }
+/* Table border：rd-app.css 的 .table-row 在 @layer components 裡。
+   proto-supplement.css 無 @layer，依 CSS 規格 unlayered 永遠蓋過 layered。
+   但保險起見改用 td (table-cell) border，不依賴 tr border 的渲染行為。
+   dark  → #494949  light → var(--color-gray-200)                           */
+:root                { --comp-table-border: #262626; }   /* dark = var(--color-gray-200) */
 [data-theme="light"] { --comp-table-border: var(--color-gray-200); }
 
-[data-slot="table-body"] .table-row {
-  border-bottom-color: var(--comp-table-border);
+/* Layer 2 — Semantic */
+:root                { --hover-bg: #1C2232; }
+[data-theme="light"] { --hover-bg: var(--color-tint-100); }
+
+/* Layer 3 — Component */
+:root                { --comp-table-row-hover: var(--hover-bg); }
+
+/* td border-bottom 最可靠（不依賴 border-collapse 對 tr 的渲染行為）
+   同時覆蓋 tr 以防 Safari 差異                                               */
+[data-slot="table-body"] .table-cell {
+  border-bottom: 1px solid var(--comp-table-border);
 }
 
 /* ── 全站最小字級規範：12px ──────────────────────────────────────
@@ -387,7 +397,7 @@
   background-color: var(--color-gray-125, #f7f7f7) !important; /* 斑馬紋底色 */
 }
 [data-slot="table-body"] .table-row:hover {
-  background-color: var(--color-tint-100, #e9efff) !important;
+  background-color: var(--comp-table-row-hover) !important;
 }
 /* header row hover 完全清除，只保留單格 */
 [data-slot="table-header"] .table-row:hover,
@@ -395,7 +405,7 @@
   background-color: transparent !important;
 }
 .table-head:hover {
-  background-color: var(--color-tint-100) !important;
+  background-color: var(--comp-table-row-hover) !important;
 }
 .tabular-nums {
   font-variant-numeric: tabular-nums; /* 確保數字對齊 */
@@ -409,7 +419,6 @@
 .chip-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 16px;
-  border-bottom: 1px solid var(--color-gray-200);
   background: var(--color-gray-100);
   flex-wrap: wrap;
 }
@@ -713,6 +722,45 @@
   top: 0;
   z-index: 10;
   background: var(--color-gray-125);
+}
+
+/* ── Sticky left columns — 名稱欄位水平固定 ────────────────────────────────
+   thead 的 th 用 z-index:12（高於 sticky-top thead z-index:10 + body z-index:2）
+   tbody 的 td 用 z-index:2；hover 時更新背景色跟隨 row
+   box-shadow 往右延伸 4px 作為視覺分隔；中間欄的 shadow 被下一欄的 background 蓋住，
+   只有最右邊的 sticky 欄才能看見 shadow —— 不需在 JS 裡特別標 last 欄           */
+.sticky-col {
+  position: sticky;
+  z-index: 5;
+  background: var(--color-gray-125);
+  box-shadow: 4px 0 6px -2px rgba(0,0,0,0.45);
+}
+[data-slot="table-header"] .sticky-col {
+  z-index: 12;
+  background: var(--color-gray-125);
+  box-shadow: 4px 0 6px -2px rgba(0,0,0,0.45);
+}
+[data-theme="light"] .sticky-col {
+  box-shadow: 4px 0 6px -2px rgba(0,0,0,0.12);
+}
+[data-slot="table-body"] .table-row:hover .sticky-col {
+  background: var(--comp-table-row-hover);
+}
+
+/* ── Gap bridge: tbl-stk 勾選欄和名稱欄之間的透明縫隙補丁 ─────────────
+   table-layout:auto 下，checkbox 欄實際寬度可能略小於宣告的 60px。
+   ::after 往右延伸 8px，確保不管實際欄寬多少，都不會透出後方捲動內容。
+   hover 時跟隨 row 的背景色。                                            */
+#stk-list-view .sticky-col:first-child::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: -8px;
+  width: 8px;
+  background: var(--color-gray-125);
+}
+#stk-list-view [data-slot="table-body"] .table-row:hover .sticky-col:first-child::after {
+  background: var(--comp-table-row-hover);
 }
 
 
