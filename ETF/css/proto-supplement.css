@@ -2,6 +2,37 @@
    proto-supplement.css
    ══════════════════════════════════════════════════════════════════ */
 
+/* ── Proto blue palette override — design spec: #85B8FF ─────────
+   覆蓋 rd-app.css 的 --xq-theme-* 鏈；proto-supplement.css 載入較晚，
+   相同選擇器優先。只需改 xq-theme 端，--color-theme-* 自動跟。
+   ─────────────────────────────────────────────────────────────── */
+/* 只覆蓋互動色（文字/邊框用的 400–600），背景用的 100–350 保留
+   讓 dark mode active-bg（--xq-theme-150 dark = #101f3b）不受影響
+   --xq-blue-* 控制 data-variant="blue" tag（全部 chip）的文字色       */
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  --xq-theme-400: #9AC5FF;
+  --xq-theme-450: #8FBBFF;
+  --xq-theme-500: #85B8FF;   /* ← design spec 主要互動色 */
+  --xq-theme-550: #75ADFF;
+  --xq-theme-600: #65A2FF;
+
+  --xq-blue-500: #85B8FF;    /* 全部 chip text（light mode & fallback） */
+  --xq-blue-650: #85B8FF;    /* 全部 chip text（dark mode override） */
+}
+
+/* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
+/* Table border：rd-app.css 用 --color-gray-200（dark = #262626），
+   在深色背景（#151515）幾乎不可見；改用 --color-gray-300（dark = #3d3d3d）
+   讓分隔線清楚顯示，不改 light mode（gray-200 = #e1e1e1 已足夠）。         */
+:root                { --comp-table-border: var(--color-gray-300); }
+[data-theme="light"] { --comp-table-border: var(--color-gray-200); }
+
+[data-slot="table-body"] .table-row {
+  border-bottom-color: var(--comp-table-border);
+}
+
 /* ── 全站最小字級規範：12px ──────────────────────────────────────
    proto-supplement.css 內所有 font-size 不得低於 12px。
    rd-app.css 的 .tag 元素可能有 11px，在此強制覆蓋。
@@ -511,8 +542,14 @@
 /* ════════════════════════════════════════════════════════════════
    MISC
    ════════════════════════════════════════════════════════════════ */
-.rank-num { display: inline-block; width: 16px; height: 16px; background: var(--color-gray-250); border-radius: 3px; font-size: 12px; font-weight: 700; color: var(--color-gray-700); text-align: center; line-height: 16px; margin-right: 6px; }
-.rank-num.rank-top { background: var(--color-theme-500); color: #fff; }
+/* ── Rank badge — unified component ── */
+.rank-badge { display: inline-flex; align-items: center; justify-content: center;
+              width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+              font-size: 12px; font-weight: 700; vertical-align: middle; margin-right: 4px;
+              background: var(--color-gray-250); color: var(--color-gray-600); }
+.rank-badge.rank-top  { background: var(--color-theme-500); color: #fff; }
+.rank-badge.rank-buy  { background: color-mix(in srgb, var(--xq-red-600) 15%, transparent); color: var(--xq-red-600); }
+.rank-badge.rank-sell { background: color-mix(in srgb, var(--color-fall) 15%, transparent); color: var(--color-fall); }
 .chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 12px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
 .t-name-row { display: flex; align-items: center; gap: 8px; }
 .t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
@@ -694,3 +731,46 @@ tr[data-sig="exit"] td:first-child span {
   outline-offset: -1px !important;
   font-weight: 400 !important;
 }
+
+/* ── Clickable table rows — name turns blue on hover ── */
+.table-row[onclick]:hover .row-name { color: var(--color-theme-500); }
+
+/* ── Table checkbox ── */
+.stk-cb {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; flex-shrink: 0;
+  border: 1.5px solid var(--color-gray-400);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.1s, border-color 0.1s;
+  vertical-align: middle;
+}
+.stk-cb:checked {
+  background: var(--color-theme-500);
+  border-color: var(--color-theme-500);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+}
+.stk-cb:indeterminate {
+  background: var(--color-theme-500);
+  border-color: var(--color-theme-500);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23000' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+}
+
+/* ── Signal table — 可點擊 td ── */
+.sig-link-cell { cursor: pointer; }
+.sig-link-cell:hover span:not(.sig-sub) { color: var(--color-theme-500) !important; }
+
+/* ── ETF 加減碼分析 bar chart ── */
+.chg-bar-val  { font-size: 14px; font-weight: 600; color: var(--color-gray-1000); margin-bottom: 4px; white-space: nowrap; }
+.chg-bar-name { font-size: 13px; color: var(--color-gray-600); line-height: 1.3; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+.chg-bar-code { font-size: 12px; color: var(--color-gray-450); }
+.chg-bar-tag  { font-size: 12px; padding: 2px 4px; border-radius: 2px; margin-bottom: 2px; line-height: 1; }
+/* .chg-bar-rank → merged into .rank-badge */
