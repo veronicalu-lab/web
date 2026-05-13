@@ -625,6 +625,10 @@
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       data-variant="red" class="tag gap-1" style="height:28px;">大幅加碼<span
                         id="mkt-cnt-add">0</span></span></button>
+                  <button type="button" id="mkt-chip-reduce" onclick="setMktChip('reduce')"
+                    class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
+                      data-variant="green-teal" class="tag gap-1" style="height:28px;">大幅減碼<span
+                        id="mkt-cnt-reduce">0</span></span></button>
                   <button type="button" id="mkt-chip-exit" onclick="setMktChip('exit')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-clear-tag"
@@ -654,8 +658,9 @@
                               class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span><span
                               class="overflow-hidden text-ellipsis whitespace-nowrap">增減%</span></div>
                         </th>
-                        <th data-slot="table-head" class="table-head table-head-align-right">淨值</th>
+                        <th data-slot="table-head" class="table-head table-head-align-right">收盤</th>
                         <th data-slot="table-head" class="table-head table-head-align-right">漲幅%</th>
+                        <th data-slot="table-head" class="table-head table-head-align-right">折溢價%</th>
                         <th data-slot="table-head" class="table-head table-head-align-right">發行公司</th>
                       </tr>
                     </thead>
@@ -722,6 +727,9 @@
                   <button type="button" id="sig-chip-add" onclick="filterSig('add')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       data-variant="red" class="tag gap-1" style="height:28px;">大幅加碼<span>8</span></span></button>
+                  <button type="button" id="sig-chip-reduce" onclick="filterSig('reduce')"
+                    class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
+                      data-variant="green-teal" class="tag gap-1" style="height:28px;">大幅減碼<span>5</span></span></button>
                   <button type="button" id="sig-chip-exit" onclick="filterSig('exit')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-clear-tag"
@@ -1043,22 +1051,6 @@
               <button type="button" id="stk-chip-clear" onclick="setStkChip('clear')"><span class="tag gap-1 chip-clear-tag"
                   style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span
                     id="stk-cnt-clear">0</span></span></button>
-              <div data-slot="segment"
-                class="segment-group inline-flex items-stretch isolate relative h-8 ml-auto shrink-0" role="radiogroup"
-                id="stk-view-seg">
-                <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active"
-                  data-position="first"
-                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
-                  onclick="setStkViewMode('list',this)">
-                  <span class="segment-text">列表</span>
-                </button>
-                <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive"
-                  data-position="last"
-                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
-                  onclick="setStkViewMode('heatmap',this)">
-                  <span class="segment-text">熱力圖</span>
-                </button>
-              </div>
             </div>
           </div><!-- /stk-sticky-zone -->
           <div id="stk-list-view" class="max-h-110 overflow-y-auto">
@@ -1358,22 +1350,6 @@
               <button type="button" id="etf-chip-clear" onclick="setEtfChip('clear')"><span class="tag gap-1 chip-clear-tag"
                   style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span
                     id="etf-cnt-clear">0</span></span></button>
-              <div data-slot="segment"
-                class="segment-group inline-flex items-stretch isolate relative h-8 ml-auto shrink-0" role="radiogroup"
-                id="etf-view-seg">
-                <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active"
-                  data-position="first"
-                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
-                  onclick="setEtfViewMode('list',this)">
-                  <span class="segment-text">列表</span>
-                </button>
-                <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive"
-                  data-position="last"
-                  class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
-                  onclick="setEtfViewMode('heatmap',this)">
-                  <span class="segment-text">熱力圖</span>
-                </button>
-              </div>
             </div>
           </div><!-- /etf-sticky-zone -->
           <div id="etf-list-view" class="max-h-110 overflow-y-auto">
@@ -1553,20 +1529,20 @@
     // DATA
     // ═══════════════════════════════════════════
     const ETF_LIST = [
-      { code: '00981A', name: '主動統一台股增長', short: '主動統一台股增長', issuer: '統一投信', strategy: '成長型', aum: 285.13, chg: +0.60, chgPct: +0.21, nav: 25.54, navChg: +2.19, trend: [-0.15, +0.08, +0.12, -0.05, +0.21] },
-      { code: '00992A', name: '主動群益科技創新', short: '群益科技創新', issuer: '群益投信', strategy: '科技型', aum: 199.85, chg: +0.49, chgPct: +0.25, nav: 16.31, navChg: +2.24, trend: [+0.10, +0.18, -0.06, +0.20, +0.25] },
-      { code: '00400A', name: '主動國泰動能高息', short: '國泰動能高息', issuer: '國泰投信', strategy: '高息型', aum: 96.12, chg: +2.21, chgPct: +2.35, nav: 12.04, navChg: +1.51, trend: [+0.80, +1.10, +1.50, +1.90, +2.35] },
-      { code: '00991A', name: '主動復華未來50', short: '復華未來50', issuer: '復華投信', strategy: '成長型', aum: 62.49, chg: +1.10, chgPct: +1.80, nav: 14.84, navChg: +0.96, trend: [-0.20, +0.40, +0.90, +1.30, +1.80] },
-      { code: '00995A', name: '主動中信台灣卓越', short: '中信台灣卓越', issuer: '中信投信', strategy: '價值型', aum: 43.56, chg: -0.23, chgPct: -0.52, nav: 14.52, navChg: +1.59, trend: [+0.30, -0.10, -0.25, -0.40, -0.52] },
-      { code: '00994A', name: '主動第一金台股優', short: '第一金台股優', issuer: '第一金投信', strategy: '成長型', aum: 31.24, chg: +1.05, chgPct: +3.47, nav: 15.42, navChg: +1.44, trend: [+1.20, +2.10, +1.80, +2.60, +3.47] },
-      { code: '00984A', name: '主動安聯台灣高息', short: '安聯台灣高息', issuer: '安聯投信', strategy: '高息型', aum: 28.95, chg: +0.12, chgPct: +0.40, nav: 13.93, navChg: +0.72, trend: [-0.30, -0.10, +0.05, +0.22, +0.40] },
-      { code: '00982A', name: '主動群益台灣強棒', short: '群益台灣強棒', issuer: '群益投信', strategy: '成長型', aum: 25.39, chg: +0.26, chgPct: +1.03, nav: 20.03, navChg: +1.98, trend: [+0.40, +0.65, +0.55, +0.80, +1.03] },
-      { code: '00401A', name: '主動摩根台灣鑫收', short: '摩根台灣鑫收', issuer: '摩根投信', strategy: '高息型', aum: 18.76, chg: +0.02, chgPct: +0.12, nav: 11.45, navChg: +0.88, trend: [-0.05, -0.08, +0.03, -0.02, +0.12] },
-      { code: '00987A', name: '主動台新優勢成長', short: '台新優勢成長', issuer: '台新投信', strategy: '成長型', aum: 18.06, chg: +0.17, chgPct: +0.96, nav: 15.28, navChg: +1.13, trend: [+0.30, +0.50, +0.70, +0.85, +0.96] },
-      { code: '00993A', name: '主動安聯台灣', short: '安聯台灣', issuer: '安聯投信', strategy: '成長型', aum: 17.90, chg: -0.31, chgPct: -1.70, nav: 14.10, navChg: +0.78, trend: [-0.50, -0.80, -1.10, -1.40, -1.70] },
-      { code: '00985A', name: '主動野村台灣50', short: '野村台灣50', issuer: '野村投信', strategy: '價值型', aum: 17.19, chg: +0.53, chgPct: +3.16, nav: 18.57, navChg: +1.64, trend: [+1.00, +1.80, +2.30, +2.70, +3.16] },
-      { code: '00980A', name: '主動野村臺灣優選', short: '野村臺灣優選', issuer: '野村投信', strategy: '成長型', aum: 17.01, chg: -0.09, chgPct: -0.51, nav: 17.01, navChg: +1.16, trend: [+0.20, -0.10, -0.30, -0.45, -0.51] },
-      { code: '00996A', name: '主動兆豐台灣豐收', short: '兆豐台灣豐收', issuer: '兆豐投信', strategy: '高息型', aum: 12.36, chg: +0.11, chgPct: +0.86, nav: 11.96, navChg: +2.39, trend: [+0.20, +0.40, +0.55, +0.70, +0.86] },
+      { code: '00981A', name: '主動統一台股增長', short: '主動統一台股增長', issuer: '統一投信', strategy: '成長型', aum: 285.13, chg: +0.60, chgPct: +0.21, nav: 25.54, navChg: +2.19, trend: [-0.15, +0.08, +0.12, -0.05, +0.21], close: 25.60, premium: +0.23 },
+      { code: '00992A', name: '主動群益科技創新', short: '群益科技創新', issuer: '群益投信', strategy: '科技型', aum: 199.85, chg: +0.49, chgPct: +0.25, nav: 16.31, navChg: +2.24, trend: [+0.10, +0.18, -0.06, +0.20, +0.25], close: 16.28, premium: -0.18 },
+      { code: '00400A', name: '主動國泰動能高息', short: '國泰動能高息', issuer: '國泰投信', strategy: '高息型', aum: 96.12, chg: +2.21, chgPct: +2.35, nav: 12.04, navChg: +1.51, trend: [+0.80, +1.10, +1.50, +1.90, +2.35], close: 12.10, premium: +0.50 },
+      { code: '00991A', name: '主動復華未來50', short: '復華未來50', issuer: '復華投信', strategy: '成長型', aum: 62.49, chg: +1.10, chgPct: +1.80, nav: 14.84, navChg: +0.96, trend: [-0.20, +0.40, +0.90, +1.30, +1.80], close: 14.79, premium: -0.34 },
+      { code: '00995A', name: '主動中信台灣卓越', short: '中信台灣卓越', issuer: '中信投信', strategy: '價值型', aum: 43.56, chg: -0.23, chgPct: -0.52, nav: 14.52, navChg: +1.59, trend: [+0.30, -0.10, -0.25, -0.40, -0.52], close: 14.58, premium: +0.41 },
+      { code: '00994A', name: '主動第一金台股優', short: '第一金台股優', issuer: '第一金投信', strategy: '成長型', aum: 31.24, chg: +1.05, chgPct: +3.47, nav: 15.42, navChg: +1.44, trend: [+1.20, +2.10, +1.80, +2.60, +3.47], close: 15.35, premium: -0.45 },
+      { code: '00984A', name: '主動安聯台灣高息', short: '安聯台灣高息', issuer: '安聯投信', strategy: '高息型', aum: 28.95, chg: +0.12, chgPct: +0.40, nav: 13.93, navChg: +0.72, trend: [-0.30, -0.10, +0.05, +0.22, +0.40], close: 13.96, premium: +0.22 },
+      { code: '00982A', name: '主動群益台灣強棒', short: '群益台灣強棒', issuer: '群益投信', strategy: '成長型', aum: 25.39, chg: +0.26, chgPct: +1.03, nav: 20.03, navChg: +1.98, trend: [+0.40, +0.65, +0.55, +0.80, +1.03], close: 20.09, premium: +0.30 },
+      { code: '00401A', name: '主動摩根台灣鑫收', short: '摩根台灣鑫收', issuer: '摩根投信', strategy: '高息型', aum: 18.76, chg: +0.02, chgPct: +0.12, nav: 11.45, navChg: +0.88, trend: [-0.05, -0.08, +0.03, -0.02, +0.12], close: 11.42, premium: -0.26 },
+      { code: '00987A', name: '主動台新優勢成長', short: '台新優勢成長', issuer: '台新投信', strategy: '成長型', aum: 18.06, chg: +0.17, chgPct: +0.96, nav: 15.28, navChg: +1.13, trend: [+0.30, +0.50, +0.70, +0.85, +0.96], close: 15.31, premium: +0.20 },
+      { code: '00993A', name: '主動安聯台灣', short: '安聯台灣', issuer: '安聯投信', strategy: '成長型', aum: 17.90, chg: -0.31, chgPct: -1.70, nav: 14.10, navChg: +0.78, trend: [-0.50, -0.80, -1.10, -1.40, -1.70], close: 14.06, premium: -0.28 },
+      { code: '00985A', name: '主動野村台灣50', short: '野村台灣50', issuer: '野村投信', strategy: '價值型', aum: 17.19, chg: +0.53, chgPct: +3.16, nav: 18.57, navChg: +1.64, trend: [+1.00, +1.80, +2.30, +2.70, +3.16], close: 18.62, premium: +0.27 },
+      { code: '00980A', name: '主動野村臺灣優選', short: '野村臺灣優選', issuer: '野村投信', strategy: '成長型', aum: 17.01, chg: -0.09, chgPct: -0.51, nav: 17.01, navChg: +1.16, trend: [+0.20, -0.10, -0.30, -0.45, -0.51], close: 16.97, premium: -0.24 },
+      { code: '00996A', name: '主動兆豐台灣豐收', short: '兆豐台灣豐收', issuer: '兆豐投信', strategy: '高息型', aum: 12.36, chg: +0.11, chgPct: +0.86, nav: 11.96, navChg: +2.39, trend: [+0.20, +0.40, +0.55, +0.70, +0.86], close: 12.00, premium: +0.33 },
     ];
 
     const BUY_TOP = [
@@ -1621,16 +1597,23 @@
       { etf: '00982A 主動群益台灣強棒', stock: '3008 大立光', sector: '光電', delta: -16, mv: '0.42億', date: '2026-04-21', weight: 0.00, weightChg: -2.11, close: 2510.0, chgPct: -0.79 },
       { etf: '00996A 主動兆豐台灣豐收', stock: '6669 緯穎', sector: '電腦週邊', delta: -4, mv: '0.16億', date: '2026-04-21', weight: 0.00, weightChg: -0.98, close: 3680.0, chgPct: -1.08 },
     ];
+    const SIG_REDUCE = [
+      { etf: '00984A 主動安聯台灣高息', stock: '2330 台積電', sector: '半導體', delta: -245, mv: '2.08億', date: '2026-04-20', weight: 3.12, weightChg: -4.20, close: 848.0, chgPct: +1.44 },
+      { etf: '00993A 主動安聯台灣', stock: '3443 創意', sector: '半導體', delta: -88, mv: '1.18億', date: '2026-04-20', weight: 1.95, weightChg: -3.65, close: 1340.0, chgPct: -0.59 },
+      { etf: '00985A 主動野村台灣50', stock: '6669 緯穎', sector: '電腦週邊', delta: -42, mv: '1.56億', date: '2026-04-21', weight: 2.44, weightChg: -3.10, close: 3720.0, chgPct: -1.32 },
+      { etf: '00987A 主動台新優勢成長', stock: '2382 廣達', sector: '電腦週邊', delta: -120, mv: '0.46億', date: '2026-04-21', weight: 1.80, weightChg: -2.85, close: 380.0, chgPct: +0.79 },
+      { etf: '00982A 主動群益台灣強棒', stock: '2308 台達電', sector: '電機機械', delta: -95, mv: '0.36億', date: '2026-04-22', weight: 2.10, weightChg: -2.40, close: 380.0, chgPct: +0.79 },
+    ];
 
     // 訊號 lookup：ETF code → { new, add, exit } 數量
     const SIG_MAP = {};
     const SIG_STOCKS_MAP = {};
-    [{ arr: SIG_NEW, key: 'new' }, { arr: SIG_ADD, key: 'add' }, { arr: SIG_EXIT, key: 'exit' }].forEach(({ arr, key }) => {
+    [{ arr: SIG_NEW, key: 'new' }, { arr: SIG_ADD, key: 'add' }, { arr: SIG_REDUCE, key: 'reduce' }, { arr: SIG_EXIT, key: 'exit' }].forEach(({ arr, key }) => {
       arr.forEach(s => {
         const code = s.etf.split(' ')[0];
-        if (!SIG_MAP[code]) SIG_MAP[code] = { new: 0, add: 0, exit: 0 };
+        if (!SIG_MAP[code]) SIG_MAP[code] = { new: 0, add: 0, reduce: 0, exit: 0 };
         SIG_MAP[code][key]++;
-        if (!SIG_STOCKS_MAP[code]) SIG_STOCKS_MAP[code] = { new: [], add: [], exit: [] };
+        if (!SIG_STOCKS_MAP[code]) SIG_STOCKS_MAP[code] = { new: [], add: [], reduce: [], exit: [] };
         const sp = s.stock.split(' ');
         SIG_STOCKS_MAP[code][key].push({ code: sp[0], name: sp.slice(1).join(' ') });
       });
@@ -1903,9 +1886,10 @@
     // Badges — using RD's actual Tailwind utility pattern from snapshot
     const SIG_TAG_BASE = 'cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;';
     const SIG_TAG = {
-      new: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--xq-red-600);outline-offset:-1px;">首次買入</span>`,
-      add: `<span class="tag" data-variant="red" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;height:28px;">大幅加碼</span>`,
-      exit: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--color-fall);outline-offset:-1px;">完全出清</span>`,
+      new:    `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--xq-red-600);outline-offset:-1px;">首次買入</span>`,
+      add:    `<span class="tag" data-variant="red" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;height:28px;">大幅加碼</span>`,
+      reduce: `<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;height:28px;">大幅減碼</span>`,
+      exit:   `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--color-fall);outline-offset:-1px;">完全出清</span>`,
     };
     const BADGE = {
       new: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--xq-red-600);outline-offset:-1px;">首次買入</span>`,
@@ -2138,15 +2122,16 @@
         { label: '增減(億)', val: r => r.chg, style: 'width:80px;' },
         { label: '增減%', val: r => r.chgPct, style: 'width:72px;' },
         { label: '近五日增減', val: r => { const t = (r.trend || []).slice(-5); const redCount = t.filter(v => v >= 0).length; const last = t[t.length - 1] ?? 0; return redCount * 10 + (last >= 0 ? 1 : 0); }, style: 'width:80px;padding-right:4px;' },
-        { label: '淨值', val: r => r.nav, style: 'width:64px;' },
+        { label: '收盤', val: r => r.close, style: 'width:64px;' },
         { label: '漲幅%', val: r => r.navChg, style: 'width:72px;' },
+        { label: '折溢價%', val: r => r.premium, style: 'width:72px;' },
         { label: '發行公司', val: r => r.issuer, left: true, style: 'width:80px;' },
-        { label: '關鍵異動訊號', val: r => { const s = SIG_MAP[r.code]; return s ? (s.new ? 4 : 0) + (s.add ? 2 : 0) + (s.exit ? 1 : 0) : 0; }, left: true, style: 'min-width:160px;' },
+        { label: '關鍵異動訊號', val: r => { const s = SIG_MAP[r.code]; return s ? (s.new ? 8 : 0) + (s.add ? 4 : 0) + (s.reduce ? 2 : 0) + (s.exit ? 1 : 0) : 0; }, left: true, style: 'min-width:160px;' },
       ],
       'tbl-buy': [
         { label: '商品', val: r => r.name, left: true, noSort: true, style: 'min-width:120px;', stickyLeft: 0 },
         { label: '金額(萬)', val: r => Math.round(Math.abs(r.shares) * r.close / 10), left: true, hdrCenter: true, style: 'min-width:200px;' },
-        { label: '張數 / 總成交', val: r => Math.abs(r.shares), style: 'width:76px;' },
+        { label: '張數', val: r => Math.abs(r.shares), style: 'width:60px;' },
         { label: '佔成交量', val: r => parseFloat(r.pct), style: 'width:74px;' },
         { label: '收盤 / 漲跌%', val: r => r.chgPct, style: 'width:80px;' },
         { label: '產業', val: r => r.sector, left: true, style: 'width:72px;' },
@@ -2154,13 +2139,13 @@
       'tbl-sell': [
         { label: '商品', val: r => r.name, left: true, noSort: true, style: 'min-width:120px;', stickyLeft: 0 },
         { label: '金額(萬)', val: r => Math.round(Math.abs(r.shares) * r.close / 10), left: true, hdrCenter: true, style: 'min-width:200px;' },
-        { label: '張數 / 總成交', val: r => Math.abs(r.shares), style: 'width:76px;' },
+        { label: '張數', val: r => Math.abs(r.shares), style: 'width:60px;' },
         { label: '佔成交量', val: r => parseFloat(r.pct), style: 'width:74px;' },
         { label: '收盤 / 漲跌%', val: r => r.chgPct, style: 'width:80px;' },
         { label: '產業', val: r => r.sector, left: true, style: 'width:72px;' },
       ],
       'tbody-sig-all': [
-        { label: '關鍵異動訊號', val: r => ({ new: 2, add: 1, exit: 0 })[r.sigType], center: true, fixedWidth: true, style: 'width:110px;', stickyLeft: 0 },
+        { label: '關鍵異動訊號', val: r => ({ new: 3, add: 2, reduce: 1, exit: 0 })[r.sigType], center: true, fixedWidth: true, style: 'width:110px;', stickyLeft: 0 },
         { label: '股票', val: r => r.stock, left: true, style: 'min-width:120px;', inlineSearch: 'sigStock', searchPlaceholder: '搜尋代碼 / 名稱', stickyLeft: 118 },
         { label: '增減張數', val: r => r.delta, style: 'width:90px;' },
         { label: '金額(億)', val: r => parseFloat(r.mv), style: 'width:90px;' },
@@ -2333,8 +2318,8 @@
 
     function setMktChip(c) {
       mktChip = c;
-      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', exit: 'var(--color-fall)' };
-      ['all', 'new', 'add', 'exit'].forEach(k => {
+      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', reduce: 'currentColor', exit: 'var(--color-fall)' };
+      ['all', 'new', 'add', 'reduce', 'exit'].forEach(k => {
         const btn = document.getElementById('mkt-chip-' + k);
         if (!btn) return;
         const span = btn.firstElementChild;
@@ -2367,17 +2352,19 @@
     }
 
     function updateMktChipCounts() {
-      const cnts = { new: 0, add: 0, exit: 0, none: 0 };
+      const cnts = { new: 0, add: 0, reduce: 0, exit: 0, none: 0 };
       ETF_LIST.forEach(r => {
         const s = SIG_MAP[r.code];
-        if (!s || (!s.new && !s.add && !s.exit)) { cnts.none++; return; }
+        if (!s || (!s.new && !s.add && !s.reduce && !s.exit)) { cnts.none++; return; }
         if (s.new) cnts.new++;
         if (s.add) cnts.add++;
+        if (s.reduce) cnts.reduce++;
         if (s.exit) cnts.exit++;
       });
       const el_cnt_all = document.getElementById('mkt-cnt-all'); if (el_cnt_all) el_cnt_all.textContent = ETF_LIST.length;
       const el_cnt_new = document.getElementById('mkt-cnt-new'); if (el_cnt_new) el_cnt_new.textContent = cnts.new;
       const el_cnt_add = document.getElementById('mkt-cnt-add'); if (el_cnt_add) el_cnt_add.textContent = cnts.add;
+      const el_cnt_reduce = document.getElementById('mkt-cnt-reduce'); if (el_cnt_reduce) el_cnt_reduce.textContent = cnts.reduce;
       const el_cnt_exit = document.getElementById('mkt-cnt-exit'); if (el_cnt_exit) el_cnt_exit.textContent = cnts.exit;
       const el_cnt_none = document.getElementById('mkt-cnt-none'); if (el_cnt_none) el_cnt_none.textContent = cnts.none;
     }
@@ -2390,7 +2377,7 @@
       if (mktChip !== 'all') {
         displayed = displayed.filter(r => {
           const s = SIG_MAP[r.code];
-          if (mktChip === 'none') return !s || (!s.new && !s.add && !s.exit);
+          if (mktChip === 'none') return !s || (!s.new && !s.add && !s.reduce && !s.exit);
           return s && s[mktChip] > 0;
         });
       }
@@ -2403,8 +2390,9 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtNum(r.chg)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.chgPct)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right" style="padding-right:8px;">${fmtTrend5(r.trend)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.nav.toFixed(2)}</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.close.toFixed(2)}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.navChg)}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.premium)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left"><div style="display:flex;gap:8px;flex-wrap:wrap;">${(() => {
             const s = SIG_MAP[r.code];
@@ -2412,6 +2400,7 @@
             return [
               s.new ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--xq-red-600);outline-offset:-1px;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
               s.add ? `<span class="tag" data-variant="red" style="cursor:default;outline:1px solid currentColor;outline-offset:-1px;height:28px;" onmouseenter="showSigTip(event,'${r.code}','add')" onmouseleave="hideSigTip()">大幅加碼 ${s.add}</span>` : '',
+              s.reduce ? `<span class="tag" data-variant="green-teal" style="cursor:default;outline:1px solid currentColor;outline-offset:-1px;height:28px;" onmouseenter="showSigTip(event,'${r.code}','reduce')" onmouseleave="hideSigTip()">大幅減碼 ${s.reduce}</span>` : '',
               s.exit ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;outline:1px solid var(--color-fall);outline-offset:-1px;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
             ].join('');
           })()}</div></td>
@@ -2427,12 +2416,13 @@
       const sortedSell = sortData(SELL_TOP, 'tbl-sell');
       const buyAmtMax  = sortedBuy.reduce((m, r)  => Math.max(m, Math.round(Math.abs(r.shares) * r.close / 10)), 1);
       const sellAmtMax = sortedSell.reduce((m, r) => Math.max(m, Math.round(Math.abs(r.shares) * r.close / 10)), 1);
+      const sharedAmtMax = Math.max(buyAmtMax, sellAmtMax);
       const fmtAmtBar = (shares, close, amtMax, side) => {
         const amt  = Math.round(Math.abs(shares) * close / 10);
         const barW = Math.min(amt / amtMax * 100, 100);
         const color = side === 'buy' ? 'var(--color-rise)' : 'var(--color-fall)';
         return `<div style="display:flex;align-items:center;gap:8px;width:100%;">
-          <span class="tabular-nums ${side === 'buy' ? 'text-rise' : 'text-fall'}" style="width:56px;text-align:right;flex-shrink:0;">${side === 'buy' ? '+' : '-'}${amt.toLocaleString('zh-TW')}</span>
+          <span class="tabular-nums ${side === 'buy' ? 'text-rise' : 'text-fall'}" style="width:7.5ch;text-align:right;flex-shrink:0;">${side === 'buy' ? '+' : '-'}${amt.toLocaleString('zh-TW')}</span>
           <div style="width:100px;flex-shrink:0;height:5px;background:var(--color-gray-250);border-radius:3px;overflow:hidden;">
             <div style="width:${barW.toFixed(1)}%;height:100%;background:${color};border-radius:3px;"></div>
           </div>
@@ -2451,18 +2441,13 @@
         </div>
       </td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left">${fmtAmtBar(d.shares, d.close, amtMax, side)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-right">
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-          ${fmtDelta(d.shares)}
-          <span class="tabular-nums" style="font-size:11px;color:var(--color-gray-500);">${Math.round(Math.abs(d.shares) / (parseFloat(d.pct) / 100)).toLocaleString('zh-TW')}</span>
-        </div>
-      </td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtDelta(d.shares)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums">${d.pct}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtCloseChg(d.close, d.chgPct)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left">${fmtSector(d.sector)}</td>
     </tr>`;
-      document.getElementById('tbl-buy').innerHTML  = sortedBuy.map(mkRow('buy',   buyAmtMax)).join('');
-      document.getElementById('tbl-sell').innerHTML = sortedSell.map(mkRow('sell', sellAmtMax)).join('');
+      document.getElementById('tbl-buy').innerHTML  = sortedBuy.map(mkRow('buy',   sharedAmtMax)).join('');
+      document.getElementById('tbl-sell').innerHTML = sortedSell.map(mkRow('sell', sharedAmtMax)).join('');
       ['tbl-buy', 'tbl-sell'].forEach(id => {
         const col = document.getElementById(id)?.closest('.buysell-col');
         if (!col) return;
@@ -2492,9 +2477,10 @@
     let _sigChipType = 'all';
 
     const SIG_TYPE_TAG = {
-      new: '<span class="tag" data-variant="yellow-bright">首次買入</span>',
-      add: '<span class="tag" data-variant="red">大幅加碼</span>',
-      exit: '<span class="tag" data-variant="gray">完全出清</span>',
+      new:    '<span class="tag" data-variant="yellow-bright">首次買入</span>',
+      add:    '<span class="tag" data-variant="red">大幅加碼</span>',
+      reduce: '<span class="tag" data-variant="green-teal">大幅減碼</span>',
+      exit:   '<span class="tag" data-variant="gray">完全出清</span>',
     };
 
     function renderSignals() {
@@ -2503,6 +2489,7 @@
       const allData = [
         ...SIG_NEW.map(d => ({ ...d, sigType: 'new' })),
         ...SIG_ADD.map(d => ({ ...d, sigType: 'add' })),
+        ...SIG_REDUCE.map(d => ({ ...d, sigType: 'reduce' })),
         ...SIG_EXIT.map(d => ({ ...d, sigType: 'exit' })),
       ];
       const q = sigSearchQ.trim().toLowerCase();
@@ -2531,8 +2518,8 @@
 
     function filterSig(type) {
       _sigChipType = type;
-      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', exit: 'var(--color-fall)' };
-      ['all', 'new', 'add', 'exit'].forEach(t => {
+      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', reduce: 'currentColor', exit: 'var(--color-fall)' };
+      ['all', 'new', 'add', 'reduce', 'exit'].forEach(t => {
         const btn = document.getElementById('sig-chip-' + t);
         if (!btn) return;
         const span = btn.firstElementChild;
