@@ -2,24 +2,37 @@
    proto-supplement.css
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Proto blue palette override — design spec: #85B8FF ─────────
-   覆蓋 rd-app.css 的 --xq-theme-* 鏈；proto-supplement.css 載入較晚，
-   相同選擇器優先。只需改 xq-theme 端，--color-theme-* 自動跟。
-   ─────────────────────────────────────────────────────────────── */
-/* 只覆蓋互動色（文字/邊框用的 400–600），背景用的 100–350 保留
-   讓 dark mode active-bg（--xq-theme-150 dark = #101f3b）不受影響
-   --xq-blue-* 控制 data-variant="blue" tag（全部 chip）的文字色       */
-:root,
-:root[data-theme="light"],
-:root[data-theme="dark"] {
-  --xq-theme-400: #9AC5FF;
-  --xq-theme-450: #8FBBFF;
-  --xq-theme-500: #85B8FF;   /* ← design spec 主要互動色 */
-  --xq-theme-550: #75ADFF;
-  --xq-theme-600: #65A2FF;
+/* ── Proto blue palette override ────────────────────────────────
+   Dark  主色：#6597FF   Light 主色：#2862FF
+   覆蓋 rd-app.css 的 --xq-theme-* 鏈（proto-supplement.css 是 unlayered，
+   優先度永遠高於 rd-app.css 的 @layer base，不需 !important）。
+   只覆蓋互動色（文字/邊框用的 400–600），背景 100–350 保留，
+   讓 dark mode active-bg（--xq-theme-150 = #101f3b）不受影響。
+   --xq-blue-* 控制 data-variant="blue" tag（全部 chip）的文字色。  */
 
-  --xq-blue-500: #85B8FF;    /* 全部 chip text（light mode & fallback） */
-  --xq-blue-650: #85B8FF;    /* 全部 chip text（dark mode override） */
+/* Dark mode（預設 :root） */
+:root,
+:root[data-theme="dark"] {
+  --xq-theme-400: #85B3FF;
+  --xq-theme-450: #75A5FF;
+  --xq-theme-500: #6597FF;   /* ← dark 主要互動色 */
+  --xq-theme-550: #5589FF;
+  --xq-theme-600: #457BFF;
+
+  --xq-blue-500: #6597FF;
+  --xq-blue-650: #6597FF;
+}
+
+/* Light mode */
+:root[data-theme="light"] {
+  --xq-theme-400: #5086FF;
+  --xq-theme-450: #3C74FF;
+  --xq-theme-500: #2862FF;   /* ← light 主要互動色 */
+  --xq-theme-550: #2862FF;   /* 550 = 500：light mode 互動文字/indicator 主力 token */
+  --xq-theme-600: #1450FF;
+
+  --xq-blue-500: #2862FF;
+  --xq-blue-650: #2862FF;
 }
 
 /* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
@@ -36,6 +49,7 @@
 
 /* Layer 3 — Component */
 :root                { --comp-table-row-hover: var(--hover-bg); }
+:root                { --comp-sticky-col-bg: var(--color-gray-100); }  /* 三頁統一：表頭底色 = 內容格子底色 */
 
 /* td border-bottom 最可靠（不依賴 border-collapse 對 tr 的渲染行為）
    同時覆蓋 tr 以防 Safari 差異                                               */
@@ -354,7 +368,7 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: var(--color-gray-125);
+  background-color: var(--comp-sticky-col-bg);
 }
 /* sticky thead 需要 border-separate；用 border-spacing:0 補回 collapse 效果 */
 #stk-list-view .table,
@@ -381,11 +395,28 @@
 #sig-scroll .table-container {
   overflow-y: visible;
 }
-/* 兩頁 summary 卡片底色統一（dark:bg-gray-125 在此編譯格式下無效，改用可靠的 data-theme selector） */
+/* Layer 3 — Component: summary card */
+:root {
+  --comp-summary-card-h:   94px;                    /* 高度基準：page 2 實測 93.99px */
+  --comp-summary-card-val: var(--color-gray-1000);  /* 主數字顏色：同 page 2 繼承白 */
+}
+
+/* 三頁主數字統一顏色（page 1/3 靜態 span 掛 text-gray-800，覆蓋為 token） */
+#mkt-summary-row .text-gray-800,
+#stk-summary-row .text-gray-800,
+#etf-summary-row .text-gray-800 {
+  color: var(--comp-summary-card-val);
+}
+
+/* Summary 卡片：三頁統一底色 + 統一高度 */
+#mkt-summary-row > div,
 #stk-summary-row > div,
 #etf-summary-row > div {
   background-color: var(--color-gray-100);
+  height: var(--comp-summary-card-h);
+  overflow: hidden;
 }
+[data-theme="dark"] #mkt-summary-row > div,
 [data-theme="dark"] #stk-summary-row > div,
 [data-theme="dark"] #etf-summary-row > div {
   background-color: var(--color-gray-125);
@@ -527,6 +558,36 @@
 .card-accent-teal   { border-left: 3px solid var(--color-turquoise-blue-400) !important; }
 .card-accent-yellow { border-left: 3px solid var(--color-yellow-500) !important; }
 
+.card-clickable { cursor: pointer; user-select: none; transition: background .12s; }
+.card-clickable:hover { background: var(--color-gray-150) !important; }
+
+/* Label tag inside clickable card（共用元件，改這裡全頁同步） */
+.card-label { display: inline-flex; align-items: center; }
+
+/* Inner badge span — base pill shape + transition */
+.card-new-label,
+.card-clear-label {
+  border-radius: 999px;
+  padding: 1px 5px;
+  transition: background .12s, color .12s;
+}
+/* Hover: badge goes fully opaque */
+.card-clickable:hover .card-new-label   { background: var(--xq-red-600) !important; color: #fff !important; }
+.card-clickable:hover .card-clear-label { background: var(--color-fall) !important; color: #fff !important; }
+/* Selected: 60% tint + outline (同表格 tag 樣式) */
+.card-clickable.card-selected .card-new-label {
+  background: color-mix(in srgb, var(--xq-red-600) 60%, transparent) !important;
+  color: #fff !important;
+  outline: 1px solid var(--xq-red-600);
+  outline-offset: -1px;
+}
+.card-clickable.card-selected .card-clear-label {
+  background: color-mix(in srgb, var(--color-fall) 60%, transparent) !important;
+  color: #fff !important;
+  outline: 1px solid var(--color-fall);
+  outline-offset: -1px;
+}
+
 /* ════════════════════════════════════════════════════════════════
    SIGNAL SECTIONS
    ════════════════════════════════════════════════════════════════ */
@@ -543,10 +604,21 @@
    BUY / SELL COLUMNS
    ════════════════════════════════════════════════════════════════ */
 .buysell-wrap { display: flex; gap: 12px; padding: 14px 0; }
-.buysell-col { flex: 1; border: 1px solid var(--color-gray-200); border-radius: 6px; overflow: hidden; }
+.buysell-col { flex: 1; border: 1px solid var(--color-gray-200); border-radius: 6px; overflow: hidden; position: relative; }
+.buysell-fade {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 64px;
+  background: linear-gradient(to right, transparent, var(--color-gray-100));
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .15s;
+  z-index: 30;
+}
+.buysell-fade.at-end { opacity: 0; }
 .buysell-hd { padding: 8px 14px; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--color-gray-200); }
-.buysell-hd.buy  { background: rgba(239,21,21,.08); color: #c91010; }
-.buysell-hd.sell { background: rgba(24,158,1,.1); color: #147a00; }
+.buysell-hd.buy  { background: rgba(239,21,21,.08); color: var(--color-rise, #ef1515);; }
+.buysell-hd.sell { background: rgba(24,158,1,.1); color: var(--color-fall, #189e01);; }
 
 /* ════════════════════════════════════════════════════════════════
    MISC
@@ -721,28 +793,43 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--color-gray-125);
+  background: var(--comp-sticky-col-bg);
 }
 
 /* ── Sticky left columns — 名稱欄位水平固定 ────────────────────────────────
    thead 的 th 用 z-index:12（高於 sticky-top thead z-index:10 + body z-index:2）
    tbody 的 td 用 z-index:2；hover 時更新背景色跟隨 row
    box-shadow 往右延伸 4px 作為視覺分隔；中間欄的 shadow 被下一欄的 background 蓋住，
-   只有最右邊的 sticky 欄才能看見 shadow —— 不需在 JS 裡特別標 last 欄           */
+   只有最右邊的 sticky 欄才能看見 shadow —— 不需在 JS 裡特別標 last 欄
+   Page 2/3：shadow 僅在有水平捲軸時顯示（.x-scrollable 由 JS ResizeObserver 切換） */
 .sticky-col {
   position: sticky;
   z-index: 5;
-  background: var(--color-gray-125);
+  background: var(--comp-sticky-col-bg);
   box-shadow: 4px 0 6px -2px rgba(0,0,0,0.45);
 }
 [data-slot="table-header"] .sticky-col {
   z-index: 12;
-  background: var(--color-gray-125);
+  background: var(--comp-sticky-col-bg);
   box-shadow: 4px 0 6px -2px rgba(0,0,0,0.45);
 }
 [data-theme="light"] .sticky-col {
   box-shadow: 4px 0 6px -2px rgba(0,0,0,0.12);
 }
+
+/* Page 1/2/3: shadow off by default, on only when x-overflow detected */
+#mkt-list-view .sticky-col,
+#sig-scroll .sticky-col,
+#stk-list-view .sticky-col,
+#etf-list-view .sticky-col { box-shadow: none; }
+#mkt-list-view.x-scrollable .sticky-col,
+#sig-scroll.x-scrollable .sticky-col,
+#stk-list-view.x-scrollable .sticky-col,
+#etf-list-view.x-scrollable .sticky-col { box-shadow: 4px 0 6px -2px rgba(0,0,0,0.45); }
+[data-theme="light"] #mkt-list-view.x-scrollable .sticky-col,
+[data-theme="light"] #sig-scroll.x-scrollable .sticky-col,
+[data-theme="light"] #stk-list-view.x-scrollable .sticky-col,
+[data-theme="light"] #etf-list-view.x-scrollable .sticky-col { box-shadow: 4px 0 6px -2px rgba(0,0,0,0.12); }
 [data-slot="table-body"] .table-row:hover .sticky-col {
   background: var(--comp-table-row-hover);
 }
@@ -757,7 +844,7 @@
   top: 0; bottom: 0;
   right: -8px;
   width: 8px;
-  background: var(--color-gray-125);
+  background: var(--comp-sticky-col-bg);
 }
 #stk-list-view [data-slot="table-body"] .table-row:hover .sticky-col:first-child::after {
   background: var(--comp-table-row-hover);
@@ -822,3 +909,42 @@ tr[data-sig="exit"] td:first-child span {
 .chg-bar-code { font-size: 12px; color: var(--color-gray-450); }
 .chg-bar-tag  { font-size: 12px; padding: 2px 4px; border-radius: 2px; margin-bottom: 2px; line-height: 1; }
 /* .chg-bar-rank → merged into .rank-badge */
+
+/* ── 投資比率 avg marker — 擴大感應區 + hover 高亮 ── */
+.avg-mk {
+  position: absolute;
+  top: -10px; bottom: -10px;
+  width: 20px;
+  transform: translateX(-50%);
+  z-index: 3;
+  cursor: default;
+}
+.avg-mk-line {
+  position: absolute;
+  left: 50%;
+  top: 7px; bottom: 7px;   /* = -3px 超出 5px bar 上下緣，與原本一致 */
+  width: 2px;
+  background: var(--color-gray-700);
+  transform: translateX(-50%);
+  border-radius: 1px;
+  transition: top .12s, bottom .12s;
+}
+.avg-mk:hover .avg-mk-line {
+  top: 3px; bottom: 3px;   /* 往上下各多延伸 4px */
+}
+
+/* ── 首次買入 / 完全出清 chip buttons — 已選取邊線（同表格 tag 樣式） ── */
+.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-600);  outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--color-fall);  outline-offset: -1px; }
+
+/* ── 首次買入 / 完全出清 chip buttons — hover 全不透明（共用元件，改這裡全頁同步） ── */
+.chip-new-tag,
+.chip-clear-tag {
+  transition: background .12s;
+}
+button:hover .chip-new-tag {
+  background: var(--xq-red-600) !important;
+}
+button:hover .chip-clear-tag {
+  background: var(--color-fall) !important;
+}
