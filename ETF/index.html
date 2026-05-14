@@ -460,10 +460,6 @@
       </div>
     </div>
 
-    <div class="proto-sidebar-footer">
-      <span class="proto-badge">盤後更新</span>
-      <span class="proto-time" id="navTime"></span>
-    </div>
   </aside>
 
   <!-- ═══ MAIN CONTENT ═══ -->
@@ -2645,22 +2641,21 @@
       const d = stkSelected.size > 0 ? STK_DATA.filter(r => stkSelected.has(r.code)) : STK_DATA;
       const days = window.stkCurrentDays ?? 1;
 
-      // 模擬不同天數的數據變化 (讓 Prototype 切換日期時數值會動)
-      const scale = 1 + (days - 1) * 0.1;
-      const holding = Math.round(d.filter(r => r.status !== 'clear').length * (0.98 + (days-1)*0.005));
+      // 第二行：固定為當下狀態，不隨期間改變
+      const holding = d.filter(r => r.status !== 'clear').length;
       const newItems = d.filter(r => r.status === 'new');
       const clearItems = d.filter(r => r.status === 'clear');
-      
-      const newCount = Math.round(newItems.length * scale);
-      const clearCount = Math.round(clearItems.length * (1 + (days - 1) * 0.08));
-      const netCount = newCount - clearCount;
+      const sharesTotal = Math.round(d.reduce((s, r) => s + r.shares, 0));
 
-      const sharesTotal = Math.round(d.reduce((s, r) => s + r.shares, 0) * (1 + (days-1)*0.002));
-      const sharesChg = Math.round(d.reduce((s, r) => s + r.sharesChg, 0) * (1 + (days-1)*0.4));
-      
       const PRICE = 72, MKTCAP = 73e9;
       const mktVal = sharesTotal * PRICE;
       const pct = (mktVal / MKTCAP * 100).toFixed(2);
+
+      // 第三行：隨期間變動的異動量
+      const sharesChg = Math.round(d.reduce((s, r) => s + r.sharesChg, 0) * (1 + (days-1)*0.4));
+      const newCount = Math.round(newItems.length * (1 + (days-1)*0.1));
+      const clearCount = Math.round(clearItems.length * (1 + (days-1)*0.08));
+      const netCount = newCount - clearCount;
       const flow = sharesChg * PRICE;
       const pctChg = (flow / MKTCAP * 100).toFixed(2);
 
@@ -2691,7 +2686,7 @@
       const accentCls = (n, def) => n > 0 ? 'card-accent-red' : n < 0 ? 'card-accent-green' : 'card-accent-gray';
 
       const SUB_PREFIX = { 1: '較前日', 2: '較前2日', 3: '較前3日', 5: '較前5日', 10: '較前10日' };
-      const subPrefix = isCustom ? '較前期' : (SUB_PREFIX[days] || `較前${days}日`);
+      const subPrefix = isCustom ? '期間' : (SUB_PREFIX[days] || `較前${days}日`);
 
       const el_sum = document.getElementById('stk-summary-row');
       if (el_sum) {
@@ -2974,6 +2969,7 @@
         const cs = document.getElementById('etf-compact-date-label');
         if (cs) cs.textContent = dateText;
         if (trigger) trigger.dataset.custom = 'true';
+        etfRange = 'custom';
         ['#etf-period-tab-bar [role="tab"]', '#etf-compact-period-bar [role="tab"]'].forEach(sel => {
           document.querySelectorAll(sel).forEach(b => { b.dataset.state = 'inactive'; b.setAttribute('aria-selected', 'false'); });
         });
@@ -3017,7 +3013,7 @@
       setHtml('etf-lbl-clear', `${pfx}${badgeClear}`);
       set('etf-lbl-aum', `ETF規模`);
 
-      const SUB_SFX = { '1d': '較前日', '2d': '較2日前', '3d': '較3日前', '5d': '較5日前', '10d': '較10日前', 'custom': '較前期' };
+      const SUB_SFX = { '1d': '較前日', '2d': '較2日前', '3d': '較3日前', '5d': '較5日前', '10d': '較10日前', 'custom': '期間' };
       const ss = SUB_SFX[val] || '較前期';
       set('etf-sub-aum', ss);
       set('etf-sub-count', ss);
@@ -3025,12 +3021,12 @@
       const mktVal = (n) => (n > 0 ? '+' : '') + n;
       const sep = ' <span style="color:var(--color-gray-600);">|</span> ';
       const mainData = {
-        '1d': { aum: 285.13, aumChg: 2.1, count: 32, countChg: 2, newbuy: 1, clear: 1, newSub: `+120張${sep}+0.8億`, clearSub: `-85張${sep}-0.6億` },
-        '2d': { aum: 284.50, aumChg: -0.6, count: 32, countChg: 0, newbuy: 2, clear: 1, newSub: `+250張${sep}+1.8億`, clearSub: `-85張${sep}-0.6億` },
-        '3d': { aum: 283.80, aumChg: -1.3, count: 31, countChg: -1, newbuy: 2, clear: 2, newSub: `+250張${sep}+1.8億`, clearSub: `-170張${sep}-1.2億` },
-        '5d': { aum: 281.40, aumChg: -3.7, count: 31, countChg: -1, newbuy: 3, clear: 2, newSub: `+420張${sep}+3.1億`, clearSub: `-170張${sep}-1.2億` },
-        '10d': { aum: 277.20, aumChg: -7.9, count: 30, countChg: -2, newbuy: 4, clear: 3, newSub: `+680張${sep}+5.2億`, clearSub: `-320張${sep}-2.4億` },
-        'custom': { aum: 285.13, aumChg: 2.1, count: 32, countChg: 2, newbuy: 1, clear: 1, newSub: `+120張${sep}+0.8億`, clearSub: `-85張${sep}-0.6億` },
+        '1d':     { aum: 285.13, aumChg: +2.1,  count: 32, countChg: +2, newbuy: 1, clear: 1, newSub: `+120張${sep}+0.8億`,  clearSub: `-85張${sep}-0.6億` },
+        '2d':     { aum: 285.13, aumChg: +1.5,  count: 32, countChg: +2, newbuy: 2, clear: 1, newSub: `+250張${sep}+1.8億`,  clearSub: `-85張${sep}-0.6億` },
+        '3d':     { aum: 285.13, aumChg: -0.8,  count: 32, countChg: +1, newbuy: 2, clear: 2, newSub: `+250張${sep}+1.8億`,  clearSub: `-170張${sep}-1.2億` },
+        '5d':     { aum: 285.13, aumChg: +3.7,  count: 32, countChg: +1, newbuy: 3, clear: 2, newSub: `+420張${sep}+3.1億`,  clearSub: `-170張${sep}-1.2億` },
+        '10d':    { aum: 285.13, aumChg: -7.9,  count: 32, countChg: -2, newbuy: 4, clear: 3, newSub: `+680張${sep}+5.2億`,  clearSub: `-320張${sep}-2.4億` },
+        'custom': { aum: 285.13, aumChg: +2.1,  count: 32, countChg: +2, newbuy: 1, clear: 1, newSub: `+120張${sep}+0.8億`,  clearSub: `-85張${sep}-0.6億` },
       };
       const m = mainData[val] || mainData['1d'];
       const dur = 600;
@@ -3256,13 +3252,6 @@
     });
     _syncBuySellOverflow();
 
-    // Live clock
-    function tick() {
-      const n = new Date();
-      const el = document.getElementById('navTime');
-      if (el) el.textContent = n.getFullYear() + '/' + String(n.getMonth() + 1).padStart(2, '0') + '/' + String(n.getDate()).padStart(2, '0') + ' ' + String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0');
-    }
-    tick(); setInterval(tick, 60000);
   </script>
 
   <!-- ═══ TradingView Lightweight Charts ═══ -->
@@ -4276,7 +4265,7 @@
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) {
           const h = today.getHours();
-          utEl.textContent = `更新時間：${fmtD(today)} ${h}:00`;
+          utEl.textContent = `檔案更新時間：${fmtD(today)} ${h}:00`;
         }
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
         const lbl = document.getElementById('stk-date-label');
