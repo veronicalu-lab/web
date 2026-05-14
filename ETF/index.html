@@ -2205,28 +2205,94 @@
       'tbl-etf': () => renderEtfTable(),
     };
 
+    // 各表格預設排序優先序（點擊欄位時躍升為第一順位，其餘維持此順序）
+    const SORT_ORDERS = {
+      'tbl-mkt-overview': [
+        // 0=名稱, 1=規模, 2=增減(億), 3=增減%, 4=近5日, 5=收盤, 6=漲幅%, 7=折溢價%, 8=發行公司, 9=關鍵異動訊號
+        { col: 1, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 6, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: false },
+        { col: 7, asc: false },
+        { col: 9, asc: false },
+        { col: 8, asc: true  },
+        { col: 0, asc: true  },
+      ],
+      'tbl-buy': [
+        // 0=商品, 1=金額, 2=張數, 3=佔成交量, 4=漲跌%, 5=產業
+        { col: 1, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: true  },
+        { col: 0, asc: true  },
+      ],
+      'tbl-sell': [
+        { col: 1, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: true  },
+        { col: 0, asc: true  },
+      ],
+      'tbody-sig-all': [
+        // 0=關鍵異動訊號, 1=股票, 2=增減張數, 3=金額, 4=收盤/漲跌%, 5=產業, 6=ETF, 7=日期
+        { col: 0, asc: false },
+        { col: 7, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: true  },
+        { col: 1, asc: true  },
+        { col: 6, asc: true  },
+      ],
+      'tbl-stk': [
+        // 0=名稱, 1=關鍵訊號, 2=比率增減, 3=投資比率, 4=張數增減, 5=持有張數, 6=折溢價%, 7=發行公司, 8=資料日期
+        { col: 1, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: false },
+        { col: 6, asc: false },
+        { col: 8, asc: false },
+        { col: 7, asc: true  },
+        { col: 0, asc: true  },
+      ],
+      'tbl-etf': [
+        // 0=名稱, 1=關鍵訊號, 2=比率增減, 3=投資比率, 4=張數增減, 5=持有張數, 6=市值, 7=產業
+        { col: 1, asc: false },
+        { col: 2, asc: false },
+        { col: 3, asc: false },
+        { col: 4, asc: false },
+        { col: 5, asc: false },
+        { col: 6, asc: false },
+        { col: 7, asc: true  },
+        { col: 0, asc: true  },
+      ],
+    };
+
     function sortData(data, tbodyId) {
       const { col, asc } = sortStates[tbodyId];
       const cols = TABLE_COLS[tbodyId];
       if (!cols || col == null) return data;
+      const defaultOrder = SORT_ORDERS[tbodyId] || [];
+      const keys = [{ col, asc }, ...defaultOrder.filter(k => k.col !== col)];
       return [...data].sort((a, b) => {
-        const va = cols[col].val(a), vb = cols[col].val(b);
-        let res = 0;
-        if (typeof va === 'number' && typeof vb === 'number') {
-          res = asc ? va - vb : vb - va;
-        } else {
-          res = asc
-            ? String(va ?? '').localeCompare(String(vb ?? ''), 'zh-TW')
-            : String(vb ?? '').localeCompare(String(va ?? ''), 'zh-TW');
+        for (const k of keys) {
+          const va = cols[k.col].val(a), vb = cols[k.col].val(b);
+          let res = 0;
+          if (typeof va === 'number' && typeof vb === 'number') {
+            res = k.asc ? va - vb : vb - va;
+          } else {
+            res = k.asc
+              ? String(va ?? '').localeCompare(String(vb ?? ''), 'zh-TW')
+              : String(vb ?? '').localeCompare(String(va ?? ''), 'zh-TW');
+          }
+          if (res !== 0) return res;
         }
-        if (res === 0 && tbodyId === 'tbody-sig-all' && col === 0) {
-          const sA = String(a.stock ?? ''), sB = String(b.stock ?? '');
-          const sRes = sA.localeCompare(sB, 'zh-TW');
-          if (sRes !== 0) return sRes;
-          const dA = String(a.date ?? ''), dB = String(b.date ?? '');
-          return dB.localeCompare(dA);
-        }
-        return res;
+        return 0;
       });
     }
 
@@ -4262,11 +4328,9 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
+        const FILE_UPDATED = '2026/05/14 11:43';
         const utEl = document.getElementById('sidebar-update-time');
-        if (utEl) {
-          const h = today.getHours();
-          utEl.textContent = `檔案更新時間：${fmtD(today)} ${h}:00`;
-        }
+        if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
         const lbl = document.getElementById('stk-date-label');
         if (lbl) lbl.textContent = `${fmtD(yesterday)} - ${fmtD(today)}`;
