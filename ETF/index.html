@@ -775,15 +775,15 @@
                 <polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.6"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap" style="line-height:1.1;">
                   <span id="stk-hero-title">台積電</span>
-                  <span id="stk-hero-code" class="text-gray-450" style="margin-left:2px;">2330</span>
+                  <span id="stk-hero-code" class="text-gray-550" style="margin-left:2px;">2330</span>
                 </h2>
-                <div style="display:flex;align-items:center;gap:6px;">
+                <div style="display:flex;align-items:flex-end;gap:6px;">
                   <span id="stk-info-val" class="tabular-nums"
-                    style="font-size:18px;font-weight:700;color:var(--color-rise);"></span>
-                  <span id="stk-info-chg" class="tabular-nums" style="font-size:14px;color:var(--color-rise);"></span>
+                    style="font-size:22px;font-weight:700;line-height:1;color:var(--color-rise);"></span>
+                  <span id="stk-info-chg" class="tabular-nums" style="font-size:14px;line-height:1;color:var(--color-rise);"></span>
                 </div>
               </div>
             </div>
@@ -838,12 +838,12 @@
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span id="stk-compact-title" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">台積電</span>
-          <span id="stk-compact-code" style="font-size:14px;color:var(--color-gray-450);margin-left:2px;">2330</span>
+          <span id="stk-compact-code" style="font-size:19px;color:var(--color-gray-550);margin-left:-2px;">2330</span>
           <div id="stk-compact-val" class="tabular-nums" style="font-size:16px;font-weight:700;line-height:1.2;"></div>
           <!-- 範圍篩選區 -->
-          <div style="margin-left:auto;display:flex;align-items:flex-end;height:100%;gap:8px;flex-shrink:0;">
+          <div style="margin-left:auto;display:flex;align-items:center;height:100%;gap:8px;flex-shrink:0;">
             <button type="button"
-              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);padding-bottom:8px;background:none;border:none;cursor:pointer;white-space:nowrap;"
+              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;"
               onclick="toggleStkDatePicker(event)">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -854,28 +854,28 @@
               </svg>
               <span id="stk-compact-date-label"></span>
             </button>
-            <div style="width:1px;height:18px;background:var(--color-gray-200);margin-bottom:14px;flex-shrink:0;"></div>
+            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;"></div>
             <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" id="stk-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar"
+              <div role="tablist" id="stk-compact-period-bar" class="tabs-list inline-flex items-center chart-period-bar"
                 style="outline:none;">
                 <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setStkPeriod('1d',this)"><span class="tabs-text">1日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setStkPeriod('2d',this)"><span class="tabs-text">2日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setStkPeriod('3d',this)"><span class="tabs-text">3日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setStkPeriod('5d',this)"><span class="tabs-text">5日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setStkPeriod('10d',this)"><span class="tabs-text">10日</span><span
                     class="tabs-indicator"></span></button>
               </div>
@@ -919,10 +919,10 @@
                ║  日期選擇器：選自訂區間時，range tabs 取消選取，chart 與表格同步更新
                ╚═════════════════════════════════════════════════════════════════════ -->
           <div class="shrink-0">
-            <div class="pt-3 pb-2" style="position:relative;">
+            <div class="pt-3 pb-2">
               <!-- 整合的圖表頂部控制列與圖例 -->
               <div id="stk-chart-top-bar"
-                style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:12px;z-index:10;">
+                style="display:flex;align-items:center;gap:12px;padding:0 0 8px;">
                 <!-- 張數 / 金額 -->
                 <div data-slot="segment" class="segment-group shrink-0 inline-flex items-stretch isolate relative h-7"
                   role="radiogroup" id="stk-seg-metric">
@@ -965,7 +965,10 @@
                       id="stk-legend-val2" class="font-bold">--</span></span>
                 </div>
               </div>
-              <div id="stk-flow-chart" style="height:240px;width:100%;"></div>
+              <div style="position:relative;width:100%;">
+                <div id="stk-range-bg" style="position:absolute;top:0;height:200px;pointer-events:none;background:rgba(99,132,220,0.10);display:none;z-index:0;"></div>
+                <div id="stk-flow-chart" style="height:200px;width:100%;position:relative;z-index:1;background:transparent;"></div>
+              </div>
             </div>
 
             <div class="flex items-center pb-3 w-full">
@@ -1112,15 +1115,17 @@
                 <polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.6"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <h2 class="text-scope-1 leading-tool-b-1 font-medium whitespace-nowrap">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <h2 class="text-scope-1 leading-tool-b-1 font-medium whitespace-nowrap" style="line-height:1.1;">
                   <span id="etf-hero-code" class="text-gray-1000">00981A</span>
-                  <span id="etf-hero-title" class="text-gray-450" style="margin-left:2px;">主動統一臺股增長</span>
+                  <span id="etf-hero-title" class="text-gray-550" style="margin-left:2px;">主動統一臺股增長</span>
                 </h2>
-                <div style="display:flex;align-items:center;gap:6px;">
+                <div style="display:flex;align-items:flex-end;gap:6px;">
                   <span id="etf-info-val" class="tabular-nums"
-                    style="font-size:18px;font-weight:700;color:var(--color-rise);">—</span>
-                  <span id="etf-info-chg" class="tabular-nums" style="font-size:14px;color:var(--color-rise);"></span>
+                    style="font-size:22px;font-weight:700;line-height:1;color:var(--color-rise);">—</span>
+                  <span id="etf-info-chg" class="tabular-nums" style="font-size:14px;line-height:1;color:var(--color-rise);"></span>
+                  <span style="color:var(--color-gray-300);font-size:14px;font-weight:300;line-height:1;margin:0 -2px;">│</span>
+                  <span id="etf-info-premium" class="tabular-nums" style="font-size:14px;line-height:1;"></span>
                 </div>
               </div>
             </div>
@@ -1176,12 +1181,12 @@
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span id="etf-compact-code" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">00981A</span>
-          <span id="etf-compact-title" style="font-size:14px;color:var(--color-gray-450);margin-left:2px;">主動統一臺股增長</span>
+          <span id="etf-compact-title" style="font-size:19px;color:var(--color-gray-550);margin-left:-2px;">主動統一臺股增長</span>
           <div id="etf-compact-val" class="tabular-nums" style="font-size:16px;font-weight:700;line-height:1.2;"></div>
           <!-- 範圍篩選區 -->
-          <div style="margin-left:auto;display:flex;align-items:flex-end;height:100%;gap:8px;flex-shrink:0;">
+          <div style="margin-left:auto;display:flex;align-items:center;height:100%;gap:8px;flex-shrink:0;">
             <button type="button"
-              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);padding-bottom:8px;background:none;border:none;cursor:pointer;white-space:nowrap;"
+              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;"
               onclick="toggleEtfDatePicker(event)">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1192,28 +1197,28 @@
               </svg>
               <span id="etf-compact-date-label"></span>
             </button>
-            <div style="width:1px;height:18px;background:var(--color-gray-200);margin-bottom:14px;flex-shrink:0;"></div>
+            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;"></div>
             <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" id="etf-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar"
+              <div role="tablist" id="etf-compact-period-bar" class="tabs-list inline-flex items-center chart-period-bar"
                 style="outline:none;">
                 <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setEtfPeriod('1d',this)"><span class="tabs-text">1日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setEtfPeriod('2d',this)"><span class="tabs-text">2日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setEtfPeriod('3d',this)"><span class="tabs-text">3日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setEtfPeriod('5d',this)"><span class="tabs-text">5日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
                   onclick="setEtfPeriod('10d',this)"><span class="tabs-text">10日</span><span
                     class="tabs-indicator"></span></button>
               </div>
@@ -1626,6 +1631,8 @@
       { name: '元大台灣50', code: '0050', ratio: 0.85, ratioChg: 0, shares: 5200000, sharesChg: 0, status: 'hold', date: '2026/04/13', issuer: '元大投信', isActive: false, streak: 8, price: 148.50, premium: -0.08 },
       { name: '富邦台50', code: '006208', ratio: 0.42, ratioChg: +0.10, shares: 2100000, sharesChg: +500000, status: 'add', date: '2026/04/13', issuer: '富邦投信', isActive: false, streak: 2, price: 82.30, premium: +0.22 },
       { name: '國泰永續高股息', code: '00878', ratio: 0.31, ratioChg: -0.08, shares: 1800000, sharesChg: -400000, status: 'reduce', date: '2026/04/13', issuer: '國泰投信', isActive: false, streak: 3, price: 19.85, premium: -0.35 },
+      { name: '群益台灣精選高息', code: '00919', ratio: 0, ratioChg: 0, shares: 0, sharesChg: 0, status: 'pending', date: null, issuer: '群益投信', isActive: false, streak: 0, price: 0, premium: 0 },
+      { name: '永豐ESG低碳高息', code: '00930', ratio: 0, ratioChg: 0, shares: 0, sharesChg: 0, status: 'pending', date: null, issuer: '永豐投信', isActive: false, streak: 0, price: 0, premium: 0 },
     ];
 
     const ETF_DATA = [
@@ -1641,6 +1648,8 @@
       { name: '晶豪科', code: '3006', sector: '半導體', ratio: 0.00, ratioChg: -1.82, shares: 0, sharesChg: -980000, status: 'clear', streak: 0, mktVal: 0, trend: [+0.20, +0.10, -0.30, -0.80, -1.82] },
       { name: '廣達', code: '2382', sector: '電腦週邊', ratio: 3.01, ratioChg: -0.10, shares: 1820000, sharesChg: -90000, status: 'reduce', streak: 1, mktVal: 17.50, trend: [+0.05, +0.03, +0.01, -0.05, -0.10] },
       { name: '聯發科', code: '2454', sector: '半導體', ratio: 2.88, ratioChg: +0.18, shares: 900000, sharesChg: +60000, status: 'add', streak: 2, mktVal: 16.75, trend: [-0.04, +0.02, +0.07, +0.13, +0.18] },
+      { name: '鴻海', code: '2317', sector: '電腦週邊', ratio: 0, ratioChg: 0, shares: 0, sharesChg: 0, status: 'pending', streak: 0, mktVal: 0, trend: [] },
+      { name: '緯創', code: '3231', sector: '電子零組件', ratio: 0, ratioChg: 0, shares: 0, sharesChg: 0, status: 'pending', streak: 0, mktVal: 0, trend: [] },
     ];
 
     // ═══════════════════════════════════════════
@@ -1988,10 +1997,10 @@
       el.textContent = d.close.toLocaleString('zh-TW');
       el.style.color = iconColor;
       const chgEl = document.getElementById('stk-info-chg');
-      if (chgEl) { chgEl.textContent = `(${sign}${d.chgPct.toFixed(2)}%)`; chgEl.style.color = iconColor; }
+      if (chgEl) { chgEl.textContent = `${sign}${d.chgPct.toFixed(2)}%`; chgEl.style.color = iconColor; }
       const icon = document.getElementById('stk-info-icon');
       if (icon) icon.style.color = iconColor;
-      const valHtml = `<span class="${cls}">${d.close.toLocaleString('zh-TW')} <span style="font-size:14px;">(${sign}${d.chgPct.toFixed(2)}%)</span></span>`;
+      const valHtml = `<span class="${cls}">${d.close.toLocaleString('zh-TW')} <span style="font-size:14px;">${sign}${d.chgPct.toFixed(2)}%</span></span>`;
       const cv = document.getElementById('stk-compact-val'); if (cv) cv.innerHTML = valHtml;
       const ci = document.getElementById('stk-compact-icon'); if (ci) ci.style.color = iconColor;
     }
@@ -2006,10 +2015,18 @@
       el.textContent = etf.nav.toFixed(2);
       el.style.color = iconColor;
       const chgEl = document.getElementById('etf-info-chg');
-      if (chgEl) { chgEl.textContent = `(${sign}${etf.navChg.toFixed(2)}%)`; chgEl.style.color = iconColor; }
+      if (chgEl) { chgEl.textContent = `${sign}${etf.navChg.toFixed(2)}%`; chgEl.style.color = iconColor; }
       const icon = document.getElementById('etf-info-icon');
       if (icon) icon.style.color = iconColor;
-      const valHtml = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">(${sign}${etf.navChg.toFixed(2)}%)</span></span>`;
+      // 折溢價
+      const p = etf.premium ?? 0;
+      const pSign = p > 0 ? '+' : '';
+      const pColor = p > 0 ? 'var(--color-rise)' : p < 0 ? 'var(--color-fall)' : 'var(--color-gray-400)';
+      const premEl = document.getElementById('etf-info-premium');
+      if (premEl) {
+        premEl.innerHTML = `<span style="color:var(--color-gray-500);">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span>`;
+      }
+      const valHtml = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">${sign}${etf.navChg.toFixed(2)}%</span></span><span class="tabular-nums" style="font-size:14px;margin-left:6px;"><span style="color:var(--color-gray-500);font-weight:400;">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span></span>`;
       const cv = document.getElementById('etf-compact-val'); if (cv) cv.innerHTML = valHtml;
       const ci = document.getElementById('etf-compact-icon'); if (ci) ci.style.color = iconColor;
     }
@@ -2209,16 +2226,16 @@
     const SORT_ORDERS = {
       'tbl-mkt-overview': [
         // 0=名稱, 1=規模, 2=增減(億), 3=增減%, 4=近5日, 5=收盤, 6=漲幅%, 7=折溢價%, 8=發行公司, 9=關鍵異動訊號
-        { col: 1, asc: false },
-        { col: 2, asc: false },
-        { col: 3, asc: false },
-        { col: 6, asc: false },
-        { col: 4, asc: false },
-        { col: 5, asc: false },
-        { col: 7, asc: false },
-        { col: 9, asc: false },
-        { col: 8, asc: true  },
-        { col: 0, asc: true  },
+        { col: 1, asc: false },  // 規模(億)
+        { col: 2, asc: false },  // 增減(億)
+        { col: 3, asc: false },  // 增減%
+        { col: 6, asc: false },  // 漲幅%
+        { col: 4, asc: false },  // 近5日（redCount*10+last符號，值越大越前）
+        { col: 7, asc: false },  // 折溢價%
+        { col: 5, asc: false },  // 收盤價
+        { col: 9, asc: false },  // 關鍵異動訊號
+        { col: 8, asc: true  },  // 發行公司
+        { col: 0, asc: true  },  // 名稱
       ],
       'tbl-buy': [
         // 0=商品, 1=金額, 2=張數, 3=佔成交量, 4=漲跌%, 5=產業
@@ -2639,22 +2656,36 @@
     let stkChip = 'all', stkMode = 'list', stkSearchQ = '';
     let stkSelected = new Set();
 
+    function _getStkVisibleCodes() {
+      const q = stkSearchQ.toLowerCase();
+      return STK_DATA.filter(r => {
+        if (r.status === 'pending') return false;
+        if (stkChip !== 'all' && r.status !== stkChip) return false;
+        if (q && !r.name.includes(q) && !r.code.toLowerCase().includes(q)) return false;
+        return true;
+      }).map(r => r.code);
+    }
     function _syncStkCheckAll() {
       const cb = document.getElementById('stk-check-all');
       if (!cb) return;
+      const visible = _getStkVisibleCodes();
+      const selCount = visible.filter(c => stkSelected.has(c)).length;
       cb.indeterminate = false;
-      cb.checked = stkSelected.size === STK_DATA.length;
+      cb.checked = visible.length > 0 && selCount === visible.length;
     }
     function toggleStkRow(code, el) {
       if (el.checked) stkSelected.add(code); else stkSelected.delete(code);
       _syncStkCheckAll();
       updateStkSummary();
+      updateStkChartData();
     }
     function toggleStkAll(el) {
-      if (el.checked) STK_DATA.forEach(r => stkSelected.add(r.code));
-      else stkSelected.clear();
+      const visible = _getStkVisibleCodes();
+      if (el.checked) visible.forEach(c => stkSelected.add(c));
+      else visible.forEach(c => stkSelected.delete(c));
       renderStkTable(false);
       updateStkSummary();
+      updateStkChartData();
     }
 
     function setStkChip(c) {
@@ -2746,8 +2777,8 @@
       const isCustom = trigger && trigger.dataset.custom === 'true';
       const periodPrefix = isCustom ? '期間' : `近${days}日`;
 
-      const badgeNew = `<span class="card-new-label" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);color:#fff;border-radius:999px;padding:2px 6px;font-size:12px;margin-left:4px;line-height:1;">首次買入</span>`;
-      const badgeClear = `<span class="card-clear-label" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;border-radius:999px;padding:2px 6px;font-size:12px;margin-left:4px;line-height:1;">完全出清</span>`;
+      const badgeNew = `<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>`;
+      const badgeClear = `<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>`;
 
       const accentCls = (n, def) => n > 0 ? 'card-accent-red' : n < 0 ? 'card-accent-green' : 'card-accent-gray';
 
@@ -2811,9 +2842,11 @@
         if (q && !r.name.includes(q) && !r.code.toLowerCase().includes(q)) return false;
         return true;
       });
+      const pendingItems = filtered.filter(r => r.status === 'pending');
+      const normalItems  = filtered.filter(r => r.status !== 'pending');
       const tbody = document.getElementById('tbl-stk');
-      if (!filtered.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="10">無符合資料</td></tr>'; return; }
-      const sorted = sortData(filtered, 'tbl-stk');
+      if (!normalItems.length && !pendingItems.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="10">無符合資料</td></tr>'; return; }
+      const sorted = sortData(normalItems, 'tbl-stk');
       const _rNZ = sorted.map(r => r.ratio).filter(v => v > 0);
       const ratioMax = _rNZ.length ? Math.max(..._rNZ) : 1;
       const ratioMin = _rNZ.length ? Math.min(..._rNZ) : 0;
@@ -2843,7 +2876,18 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left text-flat">${r.date}</td>
     </tr>`;
-      }).join('');
+      }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
+      <td data-slot="table-cell" class="table-cell sticky-col" style="width:60px;padding:0 8px 0 16px;left:0"><input type="checkbox" class="stk-cb" disabled style="opacity:0.6;cursor:not-allowed;"></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span style="color:var(--color-gray-500);font-size:12px;">${r.name}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left text-flat">—</td>
+    </tr>`).join('');
       if (stkMode === 'heatmap') renderStkHeatmap();
       requestAnimationFrame(() => typeof syncXScroll === 'function' && syncXScroll('stk-list-view'));
     }
@@ -3072,8 +3116,8 @@
         el.classList.add(cls);
       };
 
-      const badgeNew = `<span class="card-new-label" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);color:#fff;border-radius:999px;padding:2px 6px;font-size:12px;margin-left:4px;line-height:1;">首次買入</span>`;
-      const badgeClear = `<span class="card-clear-label" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;border-radius:999px;padding:2px 6px;font-size:12px;margin-left:4px;line-height:1;">完全出清</span>`;
+      const badgeNew = `<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>`;
+      const badgeClear = `<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>`;
 
       setHtml('etf-lbl-newbuy', `${pfx}${badgeNew}`);
       setHtml('etf-lbl-clear', `${pfx}${badgeClear}`);
@@ -3138,9 +3182,11 @@
         if (q && !r.name.includes(q) && !r.code.toLowerCase().includes(q)) return false;
         return true;
       });
+      const pendingItems = filtered.filter(r => r.status === 'pending');
+      const normalItems  = filtered.filter(r => r.status !== 'pending');
       const tbody = document.getElementById('tbl-etf');
-      if (!filtered.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="9">無符合資料</td></tr>'; return; }
-      const sorted = sortData(filtered, 'tbl-etf');
+      if (!normalItems.length && !pendingItems.length) { tbody.innerHTML = '<tr class="empty-cell"><td colspan="9">無符合資料</td></tr>'; return; }
+      const sorted = sortData(normalItems, 'tbl-etf');
       const _eNZ = sorted.map(r => r.ratio).filter(v => v > 0);
       const etfRatioMax = _eNZ.length ? Math.max(..._eNZ) : 1;
       const etfRatioMin = _eNZ.length ? Math.min(..._eNZ) : 0;
@@ -3164,7 +3210,16 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${mktVal}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left">${r.sector ? fmtSector(r.sector) : '—'}</td>
     </tr>`;
-      }).join('');
+      }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="row-name">${r.name}</span><span class="tabular-nums cell-code">${r.code}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left">${r.sector ? fmtSector(r.sector) : '—'}</td>
+    </tr>`).join('');
       if (etfMode === 'heatmap') renderEtfHeatmap();
       requestAnimationFrame(() => typeof syncXScroll === 'function' && syncXScroll('etf-list-view'));
     }
@@ -3326,29 +3381,33 @@
     // ── Mock data: TSMC (2330) 買賣超 2026/02/03–2026/04/30 ──
     const STK_FLOW_RAW = (() => {
       const days = [];
-      for (let d = new Date('2026-02-03'); d <= new Date('2026-04-30'); d.setDate(d.getDate() + 1)) {
+      for (let d = new Date('2026-02-03'); d <= new Date('2026-05-14'); d.setDate(d.getDate() + 1)) {
         if (d.getDay() === 0 || d.getDay() === 6) continue;
         days.push(d.toISOString().slice(0, 10));
       }
       const n = days.length;
-      // Price path: flat/rise → dip mid-Apr → sharp rise late Apr (matches screenshot)
+      // Price path: flat/rise → dip mid-Apr → sharp rise late Apr → pullback early May → recovery mid-May
       const prices = days.map((_, i) => {
         const t = i / (n - 1);
         let p;
-        if (t < 0.22) p = 1870 + t / 0.22 * 80;
-        else if (t < 0.27) p = 1950 - (t - 0.22) / 0.05 * 60;
-        else if (t < 0.52) p = 1890 + (t - 0.27) / 0.25 * 30;
-        else if (t < 0.65) p = 1920 - (t - 0.52) / 0.13 * 120;
-        else p = 1800 + (t - 0.65) / 0.35 * 500;
+        if (t < 0.20) p = 1870 + t / 0.20 * 80;
+        else if (t < 0.25) p = 1950 - (t - 0.20) / 0.05 * 60;
+        else if (t < 0.48) p = 1890 + (t - 0.25) / 0.23 * 30;
+        else if (t < 0.60) p = 1920 - (t - 0.48) / 0.12 * 120;
+        else if (t < 0.80) p = 1800 + (t - 0.60) / 0.20 * 500;
+        else if (t < 0.88) p = 2300 - (t - 0.80) / 0.08 * 180;
+        else p = 2120 + (t - 0.88) / 0.12 * 160;
         return Math.round(p + (Math.random() - 0.5) * 18);
       });
-      // Daily net shares: mostly buy (red), occasional sell (green), peak late Apr
+      // Daily net shares: mostly buy (red), occasional sell (green), peak late Apr, mild sell early May, buy back mid-May
       const rng = (lo, hi) => Math.round(lo + Math.random() * (hi - lo));
       const shares = days.map((_, i) => {
         const t = i / (n - 1);
-        if (t > 0.83 && t < 0.93) return rng(1100, 2100);   // big buying Apr 20-24
-        if (t > 0.93) return rng(200, 600);
-        if (Math.random() < 0.13) return -rng(30, 200);  // ~13% sell days
+        if (t > 0.76 && t < 0.86) return rng(1100, 2100);  // big buying Apr 20-24
+        if (t > 0.86 && t < 0.92) return rng(200, 600);    // late Apr
+        if (t > 0.92 && t < 0.96) return -rng(80, 350);    // early May selling
+        if (t > 0.96) return rng(100, 500);                 // mid-May recovery buying
+        if (Math.random() < 0.13) return -rng(30, 200);
         return rng(30, 450);
       });
       // Daily amount (萬元)
@@ -3361,17 +3420,19 @@
     })();
 
     let stkChart, stkBarSeries, stkPriceLine;
+    let stkYMin = 0, stkYMax = 1;
     let stkNavChart, stkNavSeries;
     let stkMetric = 'shares';  // 'shares' | 'amount'
     let stkAgg = 'daily';      // 'daily' | 'cumulative'
     let stkRange = '1m';
+    let stkSelStart = '', stkSelEnd = '';
 
     function initStkFlowChart() {
       const container = document.getElementById('stk-flow-chart');
       if (!container || stkChart) return;
       const isDark = document.documentElement.dataset.theme === 'dark';
       stkChart = LightweightCharts.createChart(container, {
-        width: container.clientWidth, height: 240,
+        width: container.clientWidth, height: 200,
         layout: { background: { type: 'solid', color: 'transparent' }, textColor: isDark ? '#9ca3af' : '#6b7280', fontSize: 11 },
         grid: { vertLines: { color: 'rgba(128,128,128,0.08)' }, horzLines: { color: 'rgba(128,128,128,0.08)' } },
         crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
@@ -3384,6 +3445,7 @@
         priceScaleId: 'left', base: 0,
         priceFormat: { type: 'custom', formatter: v => Math.round(v).toLocaleString('zh-TW') },
         lastValueVisible: false, priceLineVisible: false,
+        autoscaleInfoProvider: () => ({ priceRange: { minValue: stkYMin, maxValue: stkYMax } }),
       });
       stkPriceLine = stkChart.addLineSeries({
         priceScaleId: 'right',
@@ -3395,6 +3457,7 @@
       });
       container.addEventListener('pointerdown', clearStkRangeTabs);
       container.addEventListener('wheel', clearStkRangeTabs, { passive: true });
+      stkChart.timeScale().subscribeVisibleTimeRangeChange(() => updateStkRangeBg());
       initStkNavInteraction();
       setupStkCrosshair();
       updateStkChartData();
@@ -3404,7 +3467,7 @@
       const ro = new ResizeObserver(entries => {
         for (let entry of entries) {
           if (entry.target === container && stkChart) {
-            stkChart.resize(entry.contentRect.width, 240);
+            stkChart.resize(entry.contentRect.width, 200);
           } else if (entry.target === navContainer && stkNavChart) {
             stkNavChart.resize(entry.contentRect.width, 32);
             stkNavChart.timeScale().fitContent();
@@ -3601,39 +3664,102 @@
       });
     }
 
+    function updateStkRangeBg() {
+      const bg = document.getElementById('stk-range-bg');
+      if (!bg || !stkChart) return;
+      if (!stkSelStart || !stkSelEnd) { bg.style.display = 'none'; return; }
+      const ts = stkChart.timeScale();
+      const allDays = STK_FLOW_RAW.days;
+      // clamp to nearest available trading day
+      const clampStart = allDays.find(d => d >= stkSelStart) || allDays[0];
+      const clampEnd = [...allDays].reverse().find(d => d <= stkSelEnd) || allDays[allDays.length - 1];
+      let x1 = ts.timeToCoordinate(clampStart);
+      let x2 = ts.timeToCoordinate(clampEnd);
+      if (x1 === null || x2 === null) {
+        // 選取日期超出可見範圍 → 擴展圖表視窗讓日期進入畫面
+        // subscribeVisibleTimeRangeChange 會再呼叫 updateStkRangeBg
+        try {
+          const vr = ts.getVisibleRange();
+          const newFrom = vr ? (clampStart < vr.from ? clampStart : vr.from) : clampStart;
+          const newTo   = vr ? (clampEnd   > vr.to   ? clampEnd   : vr.to)   : clampEnd;
+          ts.setVisibleRange({ from: newFrom, to: newTo });
+        } catch (_) {}
+        return;
+      }
+
+      // timeToCoordinate 是 chart pane 座標，需加上左側 price scale 的寬度
+      let paneOffset = 0;
+      const chartEl = document.getElementById('stk-flow-chart');
+      if (chartEl) {
+        const chartRect = chartEl.getBoundingClientRect();
+        const canvases = Array.from(chartEl.querySelectorAll('canvas'));
+        const mainCanvas = canvases.reduce((best, c) =>
+          c.offsetWidth > (best ? best.offsetWidth : 0) ? c : best, null);
+        if (mainCanvas) paneOffset = mainCanvas.getBoundingClientRect().left - chartRect.left;
+      }
+
+      // 半格寬度：取相鄰兩天的間距
+      let halfBar = 6;
+      const idx = allDays.indexOf(clampStart);
+      if (idx >= 1) {
+        const xPrev = ts.timeToCoordinate(allDays[idx - 1]);
+        if (xPrev !== null) halfBar = Math.abs(x1 - xPrev) / 2;
+      } else if (idx + 1 < allDays.length) {
+        const xNext = ts.timeToCoordinate(allDays[idx + 1]);
+        if (xNext !== null) halfBar = Math.abs(xNext - x1) / 2;
+      }
+
+      bg.style.left  = (paneOffset + Math.min(x1, x2) - halfBar) + 'px';
+      bg.style.width = (Math.abs(x2 - x1) + halfBar * 2) + 'px';
+      bg.style.display = 'block';
+    }
+
     function updateStkChartData() {
       if (!stkBarSeries) return;
       const { days, prices, shares, cumShares, amounts, cumAmounts } = STK_FLOW_RAW;
-      const vals = stkMetric === 'shares'
+
+      // 按選取商品的持倉比率縮放數值
+      const nonPending = STK_DATA.filter(r => r.status !== 'pending');
+      const totalRatio = nonPending.reduce((s, r) => s + Math.max(r.ratio, 0), 0);
+      const activeSet = stkSelected.size > 0 ? nonPending.filter(r => stkSelected.has(r.code)) : nonPending;
+      const activeRatio = activeSet.reduce((s, r) => s + Math.max(r.ratio, 0), 0);
+      const scale = totalRatio > 0 ? activeRatio / totalRatio : 1;
+
+      const rawVals = stkMetric === 'shares'
         ? (stkAgg === 'daily' ? shares : cumShares)
         : (stkAgg === 'daily' ? amounts : cumAmounts);
+      stkYMin = Math.min(0, ...rawVals);
+      stkYMax = Math.max(0, ...rawVals);
+      const vals = rawVals.map(v => Math.round(v * scale));
+
       const labelEl = document.getElementById('stk-date-label');
-      let selStart = '', selEnd = '';
+      stkSelStart = ''; stkSelEnd = '';
       if (labelEl && labelEl.textContent) {
         const parts = labelEl.textContent.split('-');
         if (parts.length >= 2) {
-          selStart = parts[0].trim().replace(/\//g, '-');
-          selEnd = parts[1].trim().replace(/\//g, '-');
+          stkSelStart = parts[0].trim().replace(/\//g, '-');
+          stkSelEnd = parts[1].trim().replace(/\//g, '-');
         }
       }
 
-      stkBarSeries.setData(days.map((d, i) => {
-        const inRange = (!selStart || d >= selStart) && (!selEnd || d <= selEnd);
-        const baseColor = vals[i] >= 0 ? 'rgba(239,68,68,' : 'rgba(34,197,94,';
-        const opacity = inRange ? '0.85)' : '0.15)';
-        return {
-          time: d, value: vals[i],
-          color: baseColor + opacity,
-        };
-      }));
+      // 自訂日期時，同步更新圖表可見範圍
+      const stkTrigger = document.getElementById('stk-date-trigger-btn');
+      if (stkSelStart && stkSelEnd && stkTrigger && stkTrigger.dataset.custom === 'true' && stkChart) {
+        stkChart.timeScale().setVisibleRange({ from: stkSelStart, to: stkSelEnd });
+      }
+
+      stkBarSeries.setData(days.map((d, i) => ({
+        time: d, value: vals[i],
+        color: vals[i] >= 0 ? 'rgba(239,68,68,0.85)' : 'rgba(34,197,94,0.85)',
+      })));
       const lineData = days.map((d, i) => ({ time: d, value: prices[i] }));
       stkPriceLine.setData(lineData);
       if (stkNavSeries) {
         stkNavSeries.setData(lineData);
-        // Ensure nav chart always shows full range initially
         stkNavChart.timeScale().fitContent();
       }
       updateStkLegendValues(null, null, null);
+      requestAnimationFrame(updateStkRangeBg);
     }
 
     function applyStkRange() {
@@ -3681,8 +3807,7 @@
       if (trigger) delete trigger.dataset.custom;
       const offsets = { '1d': 1, '2d': 2, '3d': 3, '5d': 5, '10d': 10 };
       window.stkCurrentDays = offsets[val] ?? 1;
-      const lastDataDayStr = typeof STK_FLOW_RAW !== 'undefined' ? STK_FLOW_RAW.days[STK_FLOW_RAW.days.length - 1] : null;
-      const today = lastDataDayStr ? new Date(lastDataDayStr) : new Date();
+      const today = new Date();
       const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
       const from = new Date(today); from.setDate(today.getDate() - (window.stkCurrentDays) + 1);
       const dateText = `${fmtD(from)} - ${fmtD(today)}`;
@@ -3947,9 +4072,9 @@
 
           let tagHtml = '';
           if (index === 5 && item.label) {
-            tagHtml = `<span class="chg-bar-tag" style="background:color-mix(in srgb,var(--xq-red-600) 15%,transparent);color:var(--xq-red-600);">首次買入</span>`;
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);">首次買入</span>`;
           } else if (item.status === 'clear') {
-            tagHtml = `<span class="chg-bar-tag" style="background:color-mix(in srgb,var(--color-fall) 15%,transparent);color:var(--color-fall);">完全出清</span>`;
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);">完全出清</span>`;
           }
 
           return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;justify-content:flex-end;">
@@ -4328,7 +4453,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/14 11:43';
+        const FILE_UPDATED = '2026/05/14 15:31';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
