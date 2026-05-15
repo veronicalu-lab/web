@@ -90,6 +90,7 @@
 :root                { --comp-table-title-text:  var(--color-gray-800); }  /* Table/TitleText_Default */
 :root                { --comp-table-stock-name:  var(--color-gray-1000); } /* Table/Stock_name（商品上欄）*/
 :root                { --comp-table-stock-num:   var(--color-gray-800); }  /* Table/Stock_num（商品下欄）*/
+[data-theme="light"] { --comp-table-stock-num:   var(--color-gray-600); }
 :root                { --comp-sticky-col-bg:     var(--color-gray-100); }
 
 /* 表頭底線與內容格子底線：由 index.html <style> 統一套用 --comp-table-border */
