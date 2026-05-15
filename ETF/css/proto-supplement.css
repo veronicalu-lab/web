@@ -1028,10 +1028,20 @@ tr[data-sig="exit"] td:first-child span {
 .stk-cb:checked {
   background: var(--color-theme-500);
   border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px 10px;
+}
+.stk-cb:checked:disabled {
+  background: var(--color-gray-400);
+  border-color: var(--color-gray-400);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.stk-cb:not(:checked):disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 .stk-cb:not(:disabled):hover {
   border-color: var(--color-theme-500);
@@ -1039,7 +1049,7 @@ tr[data-sig="exit"] td:first-child span {
 .stk-cb:indeterminate {
   background: var(--color-theme-500);
   border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23000' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px 10px;
