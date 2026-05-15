@@ -79,26 +79,63 @@
    ════════════════════════════════════════════════════════════════ */
 
 /* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
-/* Table border：rd-app.css 的 .table-row 在 @layer components 裡。
-   proto-supplement.css 無 @layer，依 CSS 規格 unlayered 永遠蓋過 layered。
-   但保險起見改用 td (table-cell) border，不依賴 tr border 的渲染行為。
-   dark  → #494949  light → var(--color-gray-200)                           */
-:root                { --comp-table-border: #262626; }   /* dark = var(--color-gray-200) */
-[data-theme="light"] { --comp-table-border: var(--color-gray-200); }
-
 /* Layer 2 — Semantic */
 :root                { --hover-bg: #1C2232; }
 [data-theme="light"] { --hover-bg: var(--color-tint-100); }
 
-/* Layer 3 — Component */
-:root                { --comp-table-row-hover: var(--hover-bg); }
-:root                { --comp-sticky-col-bg: var(--color-gray-100); }  /* 三頁統一：表頭底色 = 內容格子底色 */
+/* Layer 3 — Component: Table */
+:root                { --comp-nav-border:        var(--color-gray-250); }  /* Nav_border */
+:root                { --comp-table-border:      var(--color-gray-200); }
+:root                { --comp-table-row-hover:   var(--hover-bg); }
+:root                { --comp-table-title-text:  var(--color-gray-800); }  /* Table/TitleText_Default */
+:root                { --comp-table-stock-name:  var(--color-gray-1000); } /* Table/Stock_name（商品上欄）*/
+:root                { --comp-table-stock-num:   var(--color-gray-800); }  /* Table/Stock_num（商品下欄）*/
+:root                { --comp-sticky-col-bg:     var(--color-gray-100); }
 
-/* td border-bottom 最可靠（不依賴 border-collapse 對 tr 的渲染行為）
-   同時覆蓋 tr 以防 Safari 差異                                               */
-[data-slot="table-body"] .table-cell {
-  border-bottom: 1px solid var(--comp-table-border);
-}
+/* 表頭底線與內容格子底線：由 index.html <style> 統一套用 --comp-table-border */
+
+/* Layer 3 — Component: Btn/Primary/Fill */
+:root                { --comp-btn-primary-bg:          var(--color-theme-700); }
+[data-theme="light"] { --comp-btn-primary-bg:          var(--color-theme-500); }
+:root                { --comp-btn-primary-bg-hover:    var(--color-theme-800); }
+[data-theme="light"] { --comp-btn-primary-bg-hover:    var(--color-theme-400); }
+:root                { --comp-btn-primary-text:        var(--color-gray-100); }
+:root                { --comp-btn-primary-text-dis:    var(--color-gray-250); }
+[data-theme="light"] { --comp-btn-primary-text-dis:    var(--color-gray-600); }
+:root                { --comp-btn-primary-bg-dis:      var(--color-gray-450); }
+[data-theme="light"] { --comp-btn-primary-bg-dis:      var(--color-gray-350); }
+
+/* Layer 3 — Component: Btn/Primary/Ghost & Stroke（共用 theme 色）*/
+:root                { --comp-btn-stroke-color:        var(--color-theme-700); }
+[data-theme="light"] { --comp-btn-stroke-color:        var(--color-theme-500); }
+:root                { --comp-btn-stroke-hover:        var(--color-theme-800); }
+[data-theme="light"] { --comp-btn-stroke-hover:        var(--color-theme-400); }
+
+/* Layer 3 — Component: Btn/Secondary */
+:root                { --comp-btn-secondary-bg:        var(--color-tint-200); }
+[data-theme="light"] { --comp-btn-secondary-bg:        var(--color-gray-200); }
+:root                { --comp-btn-secondary-bg-hover:  var(--color-tint-300); }
+[data-theme="light"] { --comp-btn-secondary-bg-hover:  var(--color-gray-300); }
+:root                { --comp-btn-secondary-text:      var(--color-gray-850); }
+
+/* Layer 3 — Component: Btn/Tertiary */
+:root                { --comp-btn-tertiary-color:      var(--color-gray-700); }
+:root                { --comp-btn-tertiary-hover:      var(--color-theme-800); }
+[data-theme="light"] { --comp-btn-tertiary-hover:      var(--color-theme-400); }
+
+/* Layer 3 — Component: Btn/System/warning */
+:root                { --comp-btn-warning-color:       var(--color-red-500); }
+:root                { --comp-btn-warning-hover:       var(--color-red-600); }
+[data-theme="light"] { --comp-btn-warning-hover:       var(--color-red-400); }
+
+/* Layer 3 — Component: Btn/System/CTA/Fill */
+:root                { --comp-btn-cta-bg:              var(--color-orange-550); }
+:root                { --comp-btn-cta-bg-hover:        var(--color-orange-650); }
+[data-theme="light"] { --comp-btn-cta-bg-hover:        var(--color-orange-450); }
+:root                { --comp-btn-cta-text:            var(--color-gray-100); }
+
+/* Layer 3 — Component: Btn/System/CTA/Stroke */
+:root                { --comp-btn-cta-stroke:          var(--color-orange-550); }
 
 /* ── 全站最小字級規範：12px ──────────────────────────────────────
    proto-supplement.css 內所有 font-size 不得低於 12px。
@@ -345,7 +382,6 @@
 /* hug（Page_Horizontal）— Color_Styles: Bottom-Line = Gray-250 dark / Gray-200 light */
 .tabs-list[data-variant="hug"] {
   align-items: flex-end;
-  border-bottom: 1px solid var(--color-gray-250);
   width: 100%;
   gap: 16px;
 }
@@ -392,6 +428,9 @@
   --tabs-text-hover:  var(--color-gray-800);
   --tabs-text-active: var(--color-theme-550);
   --tabs-indicator:   var(--color-theme-550);
+}
+[data-theme="light"] .tabs-trigger[data-variant="hug"] {
+  --tabs-text-hover: var(--color-theme-350);
 }
 .tabs-trigger[data-variant="hug"] .tabs-indicator {
   inset-inline: 0; bottom: 0; height: 2px;
@@ -491,6 +530,19 @@
 }
 .table-head:hover {
   background-color: var(--comp-table-row-hover) !important;
+}
+/* 表頭文字色 — Table/TitleText_Default */
+.table-head {
+  color: var(--comp-table-title-text);
+}
+/* 商品上欄 — Table/Stock_name */
+.row-name { color: var(--comp-table-stock-name); }
+/* 商品下欄 — Table/Stock_num */
+.t-sub,
+.cell-code { color: var(--comp-table-stock-num); }
+/* rd-app.css turns sortable header text to theme-500 on hover; keep it unchanged */
+.table-head-sortable:hover {
+  color: var(--comp-table-title-text);
 }
 .tabular-nums {
   font-variant-numeric: tabular-nums; /* 確保數字對齊 */
@@ -599,11 +651,34 @@
 .th-search-field-close:hover { color: var(--color-gray-1000); }
 
 /* Stock / ETF code label (second line in stacked code+name cell) */
-.cell-code { font-size: 12px; color: var(--color-gray-500); }
+.cell-code { font-size: 12px; }
 
 /* ════════════════════════════════════════════════════════════════
    INDICATOR CARD ACCENT BARS
    ════════════════════════════════════════════════════════════════ */
+/* ETF 分佈與加減碼分析圖 */
+.etf-chart-box {
+  background: var(--color-gray-125);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 10px;
+  padding: 16px;
+}
+[data-theme="light"] .etf-chart-box {
+  background: var(--color-gray-100);
+  box-shadow: 6px 6px 12px -6px var(--color-opacity-linear-200);
+}
+
+/* 亮版卡片陰影 — 暗版不套（深色背景不需要） */
+[data-theme="light"] .card-accent-blue,
+[data-theme="light"] .card-accent-orange,
+[data-theme="light"] .card-accent-red,
+[data-theme="light"] .card-accent-green,
+[data-theme="light"] .card-accent-gray,
+[data-theme="light"] .card-accent-teal,
+[data-theme="light"] .card-accent-yellow {
+  box-shadow: 6px 6px 12px -6px var(--color-opacity-linear-200);
+}
+
 .card-accent-blue   { border-left: 3px solid var(--color-theme-500) !important; }
 .card-accent-orange { border-left: 3px solid var(--color-orange-500) !important; }
 .card-accent-red    { border-left: 3px solid var(--color-rise) !important; }
@@ -680,7 +755,7 @@
 /* ── Rank badge — unified component ── */
 .rank-badge { display: inline-flex; align-items: center; justify-content: center;
               width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
-              font-size: 12px; font-weight: 400; vertical-align: middle; margin-right: 4px;
+              font-size: 12px; font-weight: 700; vertical-align: middle; margin-right: 4px;
               background: var(--color-gray-250); color: var(--color-gray-600); }
 .rank-badge.rank-top  { background: var(--color-theme-500); color: #fff; }
 .rank-badge.rank-buy  { background: color-mix(in srgb, var(--xq-red-600) 15%, transparent); color: var(--xq-red-600); }
@@ -690,7 +765,8 @@
 .t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .t-name-inline { font-size: 13px; font-weight: 400; color: var(--color-gray-900); cursor: pointer; }
 .t-name-inline:hover { color: var(--color-theme-550); }
-.t-issuer { color: var(--color-gray-600); }
+.t-issuer,
+.t-date   { color: var(--comp-table-stock-num); }
 .text-flat { color: var(--color-gray-500); }
 .muted { color: var(--color-gray-500); }
 .empty-cell td { text-align: center; color: var(--color-gray-500); padding: 28px; }
@@ -1006,6 +1082,13 @@ tr[data-sig="exit"] td:first-child span {
 }
 
 /* ── 首次買入 / 完全出清 chip buttons — 已選取邊線（同表格 tag 樣式） ── */
+/* 全部 chip: 對齊 tab active 顏色 (theme-550) */
+#stk-chip-all .tag,
+#etf-chip-all .tag {
+  --tag-text:        var(--color-theme-550);
+  --tag-text-active: var(--color-theme-550);
+}
+
 .chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-600);  outline-offset: -1px; }
 .chip-clear-tag.tag-active { outline: 1px solid var(--color-fall);  outline-offset: -1px; }
 
