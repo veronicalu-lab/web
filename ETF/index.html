@@ -80,21 +80,13 @@
     [data-slot="table-header"] .table-head {
       background-color: var(--comp-sticky-col-bg);
     }
-    [data-slot="table-header"] .table-head {
-      border-bottom: 1px solid #3d3d3d;
-    }
-    [data-theme="light"] [data-slot="table-header"] .table-head {
-      border-bottom: 1px solid #e1e1e1;
+    [data-slot="table-header"] .table-head,
+    [data-slot="table-body"] .table-cell {
+      border-bottom: 1px solid var(--comp-table-border);
     }
     [data-slot="table-body"] .table-row,
     [data-slot="table-body"] .table-cell {
       border-top: none !important;
-    }
-    [data-slot="table-body"] .table-cell {
-      border-bottom: 1px solid #262626;
-    }
-    [data-theme="light"] [data-slot="table-body"] .table-cell {
-      border-bottom: 1px solid #e1e1e1;
     }
 
     /* ── 共用：兩頁的 range / period tab bar 樣式集中在這裡 ── */
@@ -121,7 +113,7 @@
       cursor: pointer;
       color: var(--color-gray-600);
       font-size: 13px;
-      padding: 0 0 8px 0;
+      padding: 0 0 10px 0;
       white-space: nowrap;
       transition: color 0.15s;
     }
@@ -269,6 +261,7 @@
     /* light mode */
     [data-theme="light"] #stk-datepicker {
       --dp-range-bg: rgba(59, 130, 246, 0.13);
+      background: var(--background);
     }
 
     .stk-dp-cell.in-range::before,
@@ -350,22 +343,31 @@
 
     .stk-dp-cancel {
       background: transparent;
-      color: var(--color-gray-700);
-      border: 1px solid var(--color-gray-250);
+      color: var(--comp-btn-stroke-color);
+      border: none;
+      box-shadow: inset 0 0 0 1px var(--comp-btn-stroke-color);
     }
 
     .stk-dp-cancel:hover {
-      background: var(--color-gray-200);
+      background: var(--color-theme-100);
+      box-shadow: inset 0 0 0 2px var(--comp-btn-stroke-color);
     }
 
     .stk-dp-confirm {
-      background: var(--color-theme-550);
-      color: #fff;
+      background: var(--comp-btn-primary-bg);
+      color: var(--comp-btn-primary-text);
       border: none;
     }
 
     .stk-dp-confirm:hover {
-      background: var(--color-theme-600);
+      background: var(--comp-btn-primary-bg-hover);
+    }
+
+    /* mkt-layout: 換成 overflow:clip 讓 sticky-zone 正常運作，
+       並留 12px ink-overflow margin 使卡片陰影不被裁掉 */
+    #mkt-layout {
+      overflow: clip;
+      overflow-clip-margin: 12px;
     }
   </style>
   <script>
@@ -384,7 +386,7 @@
       ];
       const tabs = periods.map(p =>
         `<button type="button" role="tab" aria-selected="${p.active ? 'true' : 'false'}" data-state="${p.active ? 'active' : 'inactive'}" data-variant="hug"
-          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-1.5 pt-0 pb-2.5"
           onclick="${cfg.setPeriodFn}('${p.val}',this)">
           <span class="tabs-text">${p.label}</span><span class="tabs-indicator"></span>
         </button>`
@@ -404,7 +406,7 @@
           </svg>
           <span class="whitespace-nowrap" id="${cfg.labelId}">${fmt(yest)} - ${fmt(today)}</span>
         </button>
-        <div class="w-px h-4.5 bg-gray-200 shrink-0 mb-2"></div>
+        <div class="w-px h-4.5 bg-gray-200 shrink-0" style="margin-bottom:10px;"></div>
         <div dir="ltr" data-orientation="horizontal">
           <div role="tablist" aria-orientation="horizontal" id="${cfg.barId}"
             class="tabs-list inline-flex items-end chart-period-bar" style="outline:none">
@@ -477,7 +479,7 @@
     <main id="page-market" class="page active flex flex-1 flex-col">
       <!-- ── Page 1 compact fixed header ── -->
       <div id="mkt-compact-hdr"
-        style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;padding:0 20px;height:50px;gap:0;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-200);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+        style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;padding:0 20px;height:50px;gap:0;background:var(--color-gray-100);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
         <span
           style="font-size:17px;font-weight:700;color:var(--color-gray-900);white-space:nowrap;margin-right:20px;flex-shrink:0;">台股主動式
           ETF 籌碼追蹤</span>
@@ -511,7 +513,7 @@
             </svg>
             <span id="mkt-compact-date-label"></span>
           </button>
-          <div style="width:1px;height:18px;background:var(--color-gray-200);margin-bottom:14px;flex-shrink:0;"></div>
+          <div style="width:1px;height:18px;background:var(--color-gray-200);margin-bottom:8px;flex-shrink:0;"></div>
           <div dir="ltr" data-orientation="horizontal">
             <div role="tablist" id="mkt-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar"
               style="outline:none;">
@@ -542,13 +544,15 @@
       <div class="h-full w-full" style="">
         <div class="h-full w-full min-w-0 bg-gray-100 md:p-5">
           <div id="mkt-layout" class="flex h-full min-h-0 w-full flex-col overflow-hidden">
-            <div id="mkt-full-hdr" class="flex flex-col gap-3 pb-3 shrink-0">
-              <div class="flex items-center gap-2.5">
-                <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">台股主動式 ETF 籌碼追蹤
-                </h2>
+            <div id="mkt-full-hdr" class="shrink-0"
+              style="background:var(--color-gray-100);border-bottom:1px solid var(--comp-nav-border);">
+              <div class="flex flex-col gap-3 pt-1 pb-3">
+                <div class="flex items-center gap-2.5">
+                  <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap">台股主動式 ETF 籌碼追蹤
+                  </h2>
+                </div>
               </div>
-            </div>
-            <div class="flex items-end border-b border-gray-200 shrink-0">
+            <div class="flex items-end shrink-0">
               <div dir="ltr" data-orientation="horizontal" class="flex-1 min-w-0 overflow-x-auto self-stretch">
                 <div role="tablist" aria-orientation="horizontal" data-variant="hug" id="mkt-tab-bar"
                   class="tabs-list inline-flex items-end gap-4 h-full" style="outline:none">
@@ -570,8 +574,9 @@
                 </div>
               </div>
               <div id="mkt-date-control-row"
-                class="flex items-end justify-end gap-2.5 pb-1 shrink-0 overflow-x-auto ml-2"></div>
+                class="flex items-end justify-end gap-2.5 shrink-0 overflow-x-auto ml-2"></div>
             </div>
+            </div><!-- /mkt-full-hdr -->
             <script>buildDateControlRow({ containerId: 'mkt-date-control-row', triggerId: 'mkt-date-trigger-btn', labelId: 'mkt-date-label', toggleFn: 'toggleMktDatePicker', barId: 'mkt-period-tab-bar', setPeriodFn: 'setMktPeriod' });</script>
             <div id="pane-mkt-overview" class="flex-1 flex flex-col">
               <div id="mkt-sticky-zone" class="sticky-zone">
@@ -759,7 +764,7 @@
     <main id="page-stock" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div id="stk-full-hdr" class="shrink-0"
-          style="background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 4px 8px rgba(28,30,35,0.1);">
+          style="background:var(--color-gray-100)">
           <div class="flex items-stretch px-6" style="height:82px;gap:16px;">
             <!-- 左：折線 icon + 名稱 + 代碼 + 價格 -->
             <div class="flex items-start" style="gap:12px;padding-top:20px;padding-bottom:12px;">
@@ -778,7 +783,7 @@
               <div style="display:flex;flex-direction:column;gap:4px;">
                 <h2 class="text-scope-1 leading-tool-b-1 font-medium text-gray-1000 whitespace-nowrap" style="line-height:1.1;">
                   <span id="stk-hero-title">台積電</span>
-                  <span id="stk-hero-code" class="text-gray-550" style="margin-left:2px;">2330</span>
+                  <span id="stk-hero-code" class="text-gray-800" style="margin-left:2px;">2330</span>
                 </h2>
                 <div style="display:flex;align-items:flex-end;gap:6px;">
                   <span id="stk-info-val" class="tabular-nums"
@@ -831,19 +836,19 @@
         </div>
         <!-- ── Page 2 compact fixed header ── -->
         <div id="stk-compact-hdr"
-          style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+          style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--comp-nav-border);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
           <svg id="stk-compact-icon" width="24" height="18" viewBox="0 0 32 24" fill="none"
             style="flex-shrink:0;color:var(--color-gray-400);">
             <polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span id="stk-compact-title" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">台積電</span>
-          <span id="stk-compact-code" style="font-size:19px;color:var(--color-gray-550);margin-left:-2px;">2330</span>
+          <span id="stk-compact-code" style="font-size:19px;color:var(--color-gray-800);margin-left:-2px;">2330</span>
           <div id="stk-compact-val" class="tabular-nums" style="font-size:16px;font-weight:700;line-height:1.2;"></div>
           <!-- 範圍篩選區 -->
-          <div style="margin-left:auto;display:flex;align-items:center;height:100%;gap:8px;flex-shrink:0;">
+          <div style="margin-left:auto;display:flex;align-items:flex-end;height:100%;gap:8px;flex-shrink:0;">
             <button type="button"
-              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;"
+              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;padding-bottom:10px;"
               onclick="toggleStkDatePicker(event)">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -854,28 +859,28 @@
               </svg>
               <span id="stk-compact-date-label"></span>
             </button>
-            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;"></div>
+            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;margin-bottom:10px;"></div>
             <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" id="stk-compact-period-bar" class="tabs-list inline-flex items-center chart-period-bar"
+              <div role="tablist" id="stk-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar"
                 style="outline:none;">
                 <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setStkPeriod('1d',this)"><span class="tabs-text">1日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setStkPeriod('2d',this)"><span class="tabs-text">2日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setStkPeriod('3d',this)"><span class="tabs-text">3日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setStkPeriod('5d',this)"><span class="tabs-text">5日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setStkPeriod('10d',this)"><span class="tabs-text">10日</span><span
                     class="tabs-indicator"></span></button>
               </div>
@@ -1099,7 +1104,7 @@
     <main id="page-etf" class="page flex flex-1 flex-col min-w-0">
       <div class="theme-browse-page w-full flex-1 bg-gray-100">
         <div id="etf-full-hdr" class="shrink-0"
-          style="background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 4px 8px rgba(28,30,35,0.1);">
+          style="background:var(--color-gray-100)">
           <div class="flex items-stretch px-6" style="height:82px;gap:16px;">
             <!-- 左：折線 icon + 名稱 + 代碼 + 價格 -->
             <div class="flex items-start" style="gap:12px;padding-top:20px;padding-bottom:12px;">
@@ -1118,7 +1123,7 @@
               <div style="display:flex;flex-direction:column;gap:4px;">
                 <h2 class="text-scope-1 leading-tool-b-1 font-medium whitespace-nowrap" style="line-height:1.1;">
                   <span id="etf-hero-code" class="text-gray-1000">00981A</span>
-                  <span id="etf-hero-title" class="text-gray-550" style="margin-left:2px;">主動統一臺股增長</span>
+                  <span id="etf-hero-title" class="text-gray-800" style="margin-left:2px;">主動統一臺股增長</span>
                 </h2>
                 <div style="display:flex;align-items:flex-end;gap:6px;">
                   <span id="etf-info-val" class="tabular-nums"
@@ -1174,19 +1179,19 @@
         </div>
         <!-- ── Page 3 compact fixed header ── -->
         <div id="etf-compact-hdr"
-          style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--color-gray-250);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+          style="display:none;position:fixed;top:0;left:16rem;right:0;z-index:49;align-items:center;gap:10px;padding:0 24px;height:50px;background:var(--color-gray-100);border-bottom:1px solid var(--comp-nav-border);box-shadow:0 2px 8px rgba(0,0,0,0.18);">
           <svg id="etf-compact-icon" width="24" height="18" viewBox="0 0 32 24" fill="none"
             style="flex-shrink:0;color:var(--color-gray-400);">
             <polyline points="0,18 5,12 10,16 16,6 21,10 26,3 31,8" stroke="currentColor" stroke-width="1.8"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span id="etf-compact-code" style="font-size:19px;font-weight:700;color:var(--color-gray-900);">00981A</span>
-          <span id="etf-compact-title" style="font-size:19px;color:var(--color-gray-550);margin-left:-2px;">主動統一臺股增長</span>
+          <span id="etf-compact-title" style="font-size:19px;color:var(--color-gray-800);margin-left:-2px;">主動統一臺股增長</span>
           <div id="etf-compact-val" class="tabular-nums" style="font-size:16px;font-weight:700;line-height:1.2;"></div>
           <!-- 範圍篩選區 -->
-          <div style="margin-left:auto;display:flex;align-items:center;height:100%;gap:8px;flex-shrink:0;">
+          <div style="margin-left:auto;display:flex;align-items:flex-end;height:100%;gap:8px;flex-shrink:0;">
             <button type="button"
-              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;"
+              style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-gray-700);background:none;border:none;cursor:pointer;white-space:nowrap;padding-bottom:10px;"
               onclick="toggleEtfDatePicker(event)">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1197,28 +1202,28 @@
               </svg>
               <span id="etf-compact-date-label"></span>
             </button>
-            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;"></div>
+            <div style="width:1px;height:18px;background:var(--color-gray-200);flex-shrink:0;margin-bottom:10px;"></div>
             <div dir="ltr" data-orientation="horizontal">
-              <div role="tablist" id="etf-compact-period-bar" class="tabs-list inline-flex items-center chart-period-bar"
+              <div role="tablist" id="etf-compact-period-bar" class="tabs-list inline-flex items-end chart-period-bar"
                 style="outline:none;">
                 <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setEtfPeriod('1d',this)"><span class="tabs-text">1日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setEtfPeriod('2d',this)"><span class="tabs-text">2日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setEtfPeriod('3d',this)"><span class="tabs-text">3日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setEtfPeriod('5d',this)"><span class="tabs-text">5日</span><span
                     class="tabs-indicator"></span></button>
                 <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
-                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 py-1"
+                  class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-2 pb-2.5"
                   onclick="setEtfPeriod('10d',this)"><span class="tabs-text">10日</span><span
                     class="tabs-indicator"></span></button>
               </div>
@@ -1278,9 +1283,8 @@
           </div>
 
           <!-- ── ETF 產業配置佔比 + 前六大增減碼分析 ── -->
-          <div class="shrink-0 pb-4 mt-3">
-            <div
-              style="background:var(--color-gray-125); border:1px solid var(--color-gray-200); border-radius:10px; padding:16px;">
+          <div class="shrink-0 pb-4 mt-1">
+            <div class="etf-chart-box">
 
               <!-- 標題與控制列 -->
               <div class="flex items-center justify-between mb-4">
@@ -1916,7 +1920,7 @@
       '光電': 'pink',
     };
     function fmtSector(s) {
-      return `<span style="color:var(--color-gray-600);">${s}</span>`;
+      return `<span class="t-sub">${s}</span>`;
     }
 
     function fmtTrend5(trend) {
@@ -2463,7 +2467,7 @@
       const totalAum = ETF_LIST.reduce((s, e) => s + e.aum, 0);
       document.getElementById('tbl-mkt-overview').innerHTML = displayed.map((r, i) => {
         return `<tr data-slot="table-row" class="table-row animate-slide-up" style="cursor:pointer;animation-delay: ${i * 0.02}s" onclick="goToEtf('${r.code}','${r.name}')">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span style="color:var(--color-gray-500);font-size:12px;">${r.short}</span></div></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.short}</span></div></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums">${r.aum.toFixed(2)}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtNum(r.chg)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtPct(r.chgPct)}</td>
@@ -2583,13 +2587,13 @@
         const sigTag = SIG_TAG[d.sigType] || '';
         return `<tr data-slot="table-row" class="table-row animate-slide-up" data-sig="${d.sigType}" style="animation-delay: ${i * 0.02}s">
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell sticky-col" style="left:0">${sigTag}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sig-link-cell sticky-col" style="left:118px" onclick="goToStock('${sCode}','${sName}')"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span>${sName}</span><span class="tabular-nums sig-sub" style="color:var(--color-gray-500);font-size:12px;">${sCode}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sig-link-cell sticky-col" style="left:118px" onclick="goToStock('${sCode}','${sName}')"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span>${sName}</span><span class="tabular-nums sig-sub t-sub" style="font-size:12px;">${sCode}</span></span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtDelta(d.delta)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="tabular-nums ${d.delta >= 0 ? 'text-rise' : 'text-fall'}">${(d.delta >= 0 ? '+' : '') + d.mv}</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right">${fmtCloseChg(d.close, d.chgPct)}</td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left">${fmtSector(d.sector)}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sig-link-cell" onclick="goToEtf('${eCode}','${eName}')"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums">${eCode}</span><span class="sig-sub" style="color:var(--color-gray-500);font-size:12px;">${eName}</span></span></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left tabular-nums">${d.date.replace(/-/g, '/')}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sig-link-cell" onclick="goToEtf('${eCode}','${eName}')"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums">${eCode}</span><span class="sig-sub t-sub" style="font-size:12px;">${eName}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left tabular-nums t-date">${d.date.replace(/-/g, '/')}</td>
     </tr>`;
       }).join('');
     }
@@ -2854,7 +2858,7 @@
         const shares = r.shares === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.shares.toLocaleString('zh-TW')}</span>`;
         return `<tr data-slot="table-row" class="table-row animate-slide-up" style="cursor:pointer;animation-delay: ${i * 0.02}s" onclick="goToEtf('${r.code}','${r.name}')">
       <td data-slot="table-cell" class="table-cell sticky-col" style="width:60px;padding:0 8px 0 16px;left:0" onclick="event.stopPropagation()"><input type="checkbox" class="stk-cb" ${stkSelected.has(r.code) ? 'checked' : ''} onchange="toggleStkRow('${r.code}',this)"></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span style="color:var(--color-gray-500);font-size:12px;">${r.name}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${(() => {
         let h = BADGE[r.status] || '';
         if (r.status !== 'new' && r.status !== 'clear' && r.streak > 0) {
@@ -2869,15 +2873,15 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right">
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
           <span class="tabular-nums ${r.premium >= 0 ? 'text-rise' : 'text-fall'}">${r.premium >= 0 ? '+' : ''}${r.premium.toFixed(2)}%</span>
-          <span class="tabular-nums" style="font-size:11px;color:var(--color-gray-500);">${r.price.toFixed(2)}</span>
+          <span class="tabular-nums t-sub" style="font-size:11px;">${r.price.toFixed(2)}</span>
         </div>
       </td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left text-flat">${r.date}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left t-date">${r.date}</td>
     </tr>`;
       }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
       <td data-slot="table-cell" class="table-cell sticky-col" style="width:60px;padding:0 8px 0 16px;left:0"><input type="checkbox" class="stk-cb" disabled style="opacity:0.6;cursor:not-allowed;"></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span style="color:var(--color-gray-500);font-size:12px;">${r.name}</span></span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="text-flat">—</span></td>
@@ -4452,7 +4456,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/15 11:09';
+        const FILE_UPDATED = '2026/05/15 16:04';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
