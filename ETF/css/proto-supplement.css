@@ -430,6 +430,7 @@
   --tabs-indicator:   var(--color-theme-550);
 }
 [data-theme="light"] .tabs-trigger[data-variant="hug"] {
+  --tabs-text:       var(--color-gray-550);
   --tabs-text-hover: var(--color-theme-350);
 }
 .tabs-trigger[data-variant="hug"] .tabs-indicator {
@@ -446,6 +447,7 @@
   padding: 0.25rem 0.75rem;
 }
 [data-theme="light"] .tabs-trigger[data-variant="chip"] {
+  --tabs-text:      var(--color-gray-550);
   background-color: var(--color-gray-150);
 }
 

@@ -1547,6 +1547,7 @@
       { code: '00985A', name: '主動野村台灣50', short: '野村台灣50', issuer: '野村投信', strategy: '價值型', aum: 17.19, chg: +0.53, chgPct: +3.16, nav: 18.57, navChg: +1.64, trend: [+1.00, +1.80, +2.30, +2.70, +3.16], close: 18.62, premium: +0.27 },
       { code: '00980A', name: '主動野村臺灣優選', short: '野村臺灣優選', issuer: '野村投信', strategy: '成長型', aum: 17.01, chg: -0.09, chgPct: -0.51, nav: 17.01, navChg: +1.16, trend: [+0.20, -0.10, -0.30, -0.45, -0.51], close: 16.97, premium: -0.24 },
       { code: '00996A', name: '主動兆豐台灣豐收', short: '兆豐台灣豐收', issuer: '兆豐投信', strategy: '高息型', aum: 12.36, chg: +0.11, chgPct: +0.86, nav: 11.96, navChg: +2.39, trend: [+0.20, +0.40, +0.55, +0.70, +0.86], close: 12.00, premium: +0.33 },
+      { code: '00997A', name: '主動永豐台股成長', short: '永豐台股成長', issuer: '永豐投信', strategy: '成長型', pending: true },
     ];
 
     const BUY_TOP = [
@@ -2453,7 +2454,8 @@
 
     function renderMktOverview() {
       buildThead('tbl-mkt-overview');
-      const sorted = sortData(ETF_LIST, 'tbl-mkt-overview');
+      const sorted = sortData(ETF_LIST.filter(r => !r.pending), 'tbl-mkt-overview');
+      const pendingItems = ETF_LIST.filter(r => r.pending);
       const q = mktSearchQ.trim().toLowerCase();
       let displayed = sorted;
       if (mktChip !== 'all') {
@@ -2464,7 +2466,7 @@
         });
       }
       if (q) displayed = displayed.filter(r => r.code.toLowerCase().includes(q) || r.short.toLowerCase().includes(q) || r.name.toLowerCase().includes(q));
-      const totalAum = ETF_LIST.reduce((s, e) => s + e.aum, 0);
+      const totalAum = ETF_LIST.filter(r => !r.pending).reduce((s, e) => s + e.aum, 0);
       document.getElementById('tbl-mkt-overview').innerHTML = displayed.map((r, i) => {
         return `<tr data-slot="table-row" class="table-row animate-slide-up" style="cursor:pointer;animation-delay: ${i * 0.02}s" onclick="goToEtf('${r.code}','${r.name}')">
       <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.short}</span></div></td>
@@ -2487,7 +2489,18 @@
             ].join('');
           })()}</div></td>
     </tr>`;
-      }).join('');
+      }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.short}</span></div></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right" style="padding-right:8px;"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="text-flat">—</span></td>
+    </tr>`).join('');
     }
 
     // ── Render: 大買大賣 ──
@@ -4456,7 +4469,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/15 16:04';
+        const FILE_UPDATED = '2026/05/15 18:21';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
