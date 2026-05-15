@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html data-platform="xq" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>色票庫</title>
+  <link rel="stylesheet" href="css/rd-app.css">
+  <link rel="stylesheet" href="css/proto-supplement.css">
+  <style>
+    /* ── Design System Shell ── */
+    body { display: flex; min-height: 100vh; margin: 0; background: var(--color-gray-125); font-family: -apple-system, sans-serif; }
+    .ds-sidebar {
+      width: 160px; flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh;
+      background: var(--color-gray-100);
+      border-right: 1px solid var(--color-gray-200);
+      display: flex; flex-direction: column;
+    }
+    .ds-logo {
+      padding: 14px;
+      font-size: 13px; font-weight: 700; color: var(--color-gray-1000);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    .ds-nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+    .ds-nav-item {
+      display: flex; align-items: center;
+      padding: 7px 10px; border-radius: 6px;
+      font-size: 13px; font-weight: 500;
+      color: var(--color-gray-600);
+      text-decoration: none;
+      transition: background .12s, color .12s;
+    }
+    .ds-nav-item:hover { background: var(--color-gray-150); color: var(--color-gray-1000); }
+    .ds-nav-item.active { background: var(--color-tint-100); color: var(--color-theme-550); font-weight: 600; }
+    .ds-ctrl {
+      padding: 12px 14px;
+      border-top: 1px solid var(--color-gray-200);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .ds-ctrl-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--color-gray-500); margin-bottom: 4px; }
+    .ds-ctrl-pills { display: flex; }
+    .ds-ctrl-pills .cl-topbar-btn { flex: 1; text-align: center; padding: 4px 6px; }
+    .ds-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    /* ── Topbar ── */
+    .cl-topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-gray-100);
+      border-bottom: 1px solid var(--color-gray-200);
+      padding: 10px 24px;
+      display: flex; align-items: center;
+    }
+    .cl-topbar-title { font-size: 15px; font-weight: 700; color: var(--color-gray-1000); }
+    .cl-topbar-btn {
+      font-size: 12px; padding: 4px 12px;
+      border-radius: 6px; border: 1px solid var(--color-gray-300);
+      background: var(--color-gray-125); color: var(--color-gray-700);
+      cursor: pointer;
+    }
+    .cl-topbar-btn.active {
+      background: var(--color-gray-250);
+      color: var(--color-gray-1000);
+      font-weight: 600;
+    }
+
+    /* ── Color palette viewer ── */
+    .cl-page { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+    .xqm-note {
+      display: none;
+      background: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
+      border: 1px solid var(--color-gray-250); border-radius: 8px;
+      padding: 10px 16px; font-size: 12px; color: var(--color-gray-600);
+      margin-bottom: 24px;
+    }
+    .pal-group { margin-bottom: 36px; }
+    .pal-group-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-gray-500);
+      padding-bottom: 8px; border-bottom: 1px solid var(--color-gray-200);
+      margin-bottom: 16px;
+    }
+    .pal-row { margin-bottom: 14px; }
+    .pal-row-header { font-size: 12px; font-weight: 600; color: var(--color-gray-600); margin-bottom: 6px; }
+    .pal-swatches { display: flex; flex-wrap: wrap; gap: 4px; }
+    .swatch { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+    .swatch-box {
+      width: 44px; height: 44px; border-radius: 6px;
+      border: 1px solid rgba(128,128,128,0.15);
+      transition: transform .1s;
+    }
+    .swatch:hover .swatch-box { transform: scale(1.08); }
+    .swatch-step { font-size: 10px; color: var(--color-gray-500); }
+    .swatch-hex  { font-size: 9px; color: var(--color-gray-400); font-family: ui-monospace,monospace; letter-spacing: -0.02em; }
+    .copied-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--color-gray-800); color: var(--color-gray-100);
+      font-size: 12px; padding: 6px 16px; border-radius: 20px;
+      opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 200;
+    }
+    .copied-toast.show { opacity: 1; }
+
+    /* 覆蓋 proto-supplement.css 的全域 sticky 表頭規則 */
+    .cl-page .table-head { position: relative; top: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="ds-sidebar">
+  <div class="ds-logo">Design System</div>
+  <nav class="ds-nav">
+    <a href="colors.html"     class="ds-nav-item active">色票庫</a>
+    <a href="components.html" class="ds-nav-item">元件庫</a>
+  </nav>
+  <div class="ds-ctrl">
+    <div>
+      <div class="ds-ctrl-lbl">Platform</div>
+      <div class="ds-ctrl-pills">
+        <button class="cl-topbar-btn active" id="btn-xq"  onclick="setPlatform('xq')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">XQ</button>
+        <button class="cl-topbar-btn"        id="btn-xqm" onclick="setPlatform('xqm')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">XQM</button>
+      </div>
+    </div>
+    <div id="theme-ctrl">
+      <div class="ds-ctrl-lbl">Theme</div>
+      <div class="ds-ctrl-pills">
+        <button class="cl-topbar-btn active" id="btn-dark"  onclick="setTheme('dark')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">Dark</button>
+        <button class="cl-topbar-btn"        id="btn-light" onclick="setTheme('light')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">Light</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="ds-main">
+<div class="cl-topbar">
+  <span class="cl-topbar-title">色票庫</span>
+</div>
+
+<div class="cl-page">
+  <div class="xqm-note" id="xqm-note">
+    ⚠️ XQM 色票值尚未設定，目前顯示與 XQ 相同。待 Figma 確認後填入 <code>proto-supplement.css</code> 的 XQM 區塊。
+  </div>
+  <div id="color-palettes"></div>
+</div>
+</div><!-- ds-main -->
+
+<div class="copied-toast" id="toast"></div>
+
+<script>
+  const GRAY_STEPS = [100,125,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+  const STD_STEPS  = [100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+  const PAL_GROUPS = [
+    { title: 'Neutral', palettes: [
+      { name: 'gray',   prefix: '--xq-gray',   steps: GRAY_STEPS },
+    ]},
+    { title: 'Brand', palettes: [
+      { name: 'theme',  prefix: '--xq-theme',  steps: STD_STEPS },
+      { name: 'tint',   prefix: '--xq-tint',   steps: STD_STEPS },
+      { name: 'blue',   prefix: '--xq-blue',   steps: STD_STEPS },
+    ]},
+    { title: 'Spectrum', palettes: [
+      { name: 'red',    prefix: '--xq-red',    steps: STD_STEPS },
+      { name: 'green',  prefix: '--xq-green',  steps: STD_STEPS },
+      { name: 'orange', prefix: '--xq-orange', steps: STD_STEPS },
+      { name: 'yellow', prefix: '--xq-yellow', steps: STD_STEPS },
+      { name: 'cyan',   prefix: '--xq-cyan',   steps: STD_STEPS },
+      { name: 'purple', prefix: '--xq-purple', steps: STD_STEPS },
+      { name: 'pink',   prefix: '--xq-pink',   steps: STD_STEPS },
+    ]},
+  ];
+
+  const _probe = document.createElement('div');
+  _probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:1px;height:1px;';
+  document.body.appendChild(_probe);
+
+  function _getHex(varName) {
+    _probe.style.backgroundColor = `var(${varName},transparent)`;
+    const rgb = getComputedStyle(_probe).backgroundColor;
+    if (!rgb || rgb === 'transparent' || rgb === 'rgba(0, 0, 0, 0)') return null;
+    const m = rgb.match(/[\d.]+/g);
+    if (!m) return null;
+    const hex = '#' + [+m[0], +m[1], +m[2]].map(n => n.toString(16).padStart(2,'0')).join('');
+    const a = m[3] !== undefined ? parseFloat(m[3]) : 1;
+    return a < 1 ? hex + Math.round(a*255).toString(16).padStart(2,'0') : hex;
+  }
+
+  function buildPalettes() {
+    const container = document.getElementById('color-palettes');
+    container.innerHTML = '';
+    PAL_GROUPS.forEach(group => {
+      const gEl = document.createElement('div');
+      gEl.className = 'pal-group';
+      gEl.innerHTML = `<div class="pal-group-title">${group.title}</div>`;
+      group.palettes.forEach(pal => {
+        const rEl = document.createElement('div');
+        rEl.className = 'pal-row';
+        rEl.innerHTML = `<div class="pal-row-header">${pal.name}</div>`;
+        const swEl = document.createElement('div');
+        swEl.className = 'pal-swatches';
+        pal.steps.forEach(step => {
+          const token = `${pal.prefix}-${step}`;
+          const hex = _getHex(token) || '—';
+          const sw = document.createElement('div');
+          sw.className = 'swatch';
+          sw.title = `點擊複製 ${token}`;
+          sw.onclick = () => copyToken(token);
+          sw.innerHTML = `
+            <div class="swatch-box" style="background:var(${token})"></div>
+            <div class="swatch-step">${step}</div>
+            <div class="swatch-hex" data-hex-for="${token}">${hex}</div>`;
+          swEl.appendChild(sw);
+        });
+        rEl.appendChild(swEl);
+        gEl.appendChild(rEl);
+      });
+      container.appendChild(gEl);
+    });
+  }
+
+  function updateHexLabels() {
+    document.querySelectorAll('[data-hex-for]').forEach(el => {
+      const h = _getHex(el.dataset.hexFor);
+      if (h) el.textContent = h;
+    });
+  }
+
+  function copyToken(token) {
+    navigator.clipboard.writeText(token).then(() => {
+      const t = document.getElementById('toast');
+      t.textContent = `已複製 ${token}`;
+      t.classList.add('show');
+      clearTimeout(t._tid);
+      t._tid = setTimeout(() => t.classList.remove('show'), 1800);
+    });
+  }
+
+  function setPlatform(p) {
+    document.documentElement.dataset.platform = p;
+    const isXqm = p === 'xqm';
+    document.getElementById('theme-ctrl').style.display = isXqm ? 'none' : '';
+    document.getElementById('xqm-note').style.display   = isXqm ? 'block' : 'none';
+    ['xq', 'xqm'].forEach(id =>
+      document.getElementById('btn-' + id).classList.toggle('active', id === p)
+    );
+    requestAnimationFrame(updateHexLabels);
+  }
+
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    ['dark', 'light'].forEach(id =>
+      document.getElementById('btn-' + id).classList.toggle('active', id === t)
+    );
+    requestAnimationFrame(updateHexLabels);
+  }
+
+  buildPalettes();
+  setPlatform('xq');
+</script>
+</body>
+</html>

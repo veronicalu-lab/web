@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html data-platform="xq" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>元件庫</title>
+  <link rel="stylesheet" href="css/rd-app.css">
+  <link rel="stylesheet" href="css/proto-supplement.css">
+  <style>
+    /* ── Design System Shell ── */
+    body { display: flex; min-height: 100vh; margin: 0; background: var(--color-gray-125); }
+    .ds-sidebar {
+      width: 160px; flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh;
+      background: var(--color-gray-100);
+      border-right: 1px solid var(--color-gray-200);
+      display: flex; flex-direction: column;
+    }
+    .ds-logo {
+      padding: 14px;
+      font-size: 13px; font-weight: 700; color: var(--color-gray-1000);
+      border-bottom: 1px solid var(--color-gray-200);
+    }
+    .ds-nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+    .ds-nav-item {
+      display: flex; align-items: center;
+      padding: 7px 10px; border-radius: 6px;
+      font-size: 13px; font-weight: 500;
+      color: var(--color-gray-600);
+      text-decoration: none;
+      transition: background .12s, color .12s;
+    }
+    .ds-nav-item:hover { background: var(--color-gray-150); color: var(--color-gray-1000); }
+    .ds-nav-item.active { background: var(--color-tint-100); color: var(--color-theme-550); font-weight: 600; }
+    .ds-ctrl {
+      padding: 12px 14px;
+      border-top: 1px solid var(--color-gray-200);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .ds-ctrl-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--color-gray-500); margin-bottom: 4px; }
+    .ds-ctrl-pills { display: flex; }
+    .ds-ctrl-pills .cl-topbar-btn { flex: 1; text-align: center; padding: 4px 6px; }
+    .ds-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    /* ── Component Library layout ── */
+    .cl-topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-gray-100);
+      border-bottom: 1px solid var(--color-gray-200);
+      padding: 10px 24px;
+      display: flex; align-items: center;
+      height: 41px; box-sizing: border-box;
+    }
+    .cl-topbar-title { font-size: 15px; font-weight: 700; color: var(--color-gray-1000); }
+    .cl-topbar-btn {
+      font-size: 12px; padding: 4px 12px;
+      border-radius: 6px; border: 1px solid var(--color-gray-300);
+      background: var(--color-gray-125); color: var(--color-gray-700);
+      cursor: pointer;
+    }
+    .cl-page { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+    .cl-section { margin-bottom: 48px; }
+    .cl-section-title {
+      font-size: 16px; font-weight: 700; color: var(--color-gray-1000);
+      padding-bottom: 10px; border-bottom: 1px solid var(--color-gray-200);
+      margin-bottom: 20px;
+    }
+    .cl-subsection { margin-bottom: 20px; }
+    .cl-sublabel {
+      font-size: 11px; font-weight: 600; color: var(--color-gray-400);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .cl-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .cl-col { display: flex; flex-direction: column; gap: 10px; }
+    .cl-swatch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cl-swatch {
+      width: 36px; height: 36px; border-radius: 6px;
+      border: 1px solid var(--color-gray-200);
+      position: relative;
+    }
+    .cl-swatch::after {
+      content: attr(data-label);
+      position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; color: var(--color-gray-400); white-space: nowrap;
+    }
+    .cl-panel {
+      background: var(--color-gray-100);
+      border: 1px solid var(--color-gray-200);
+      border-radius: 10px; padding: 16px;
+    }
+    /* 元件庫不需要 sticky 表頭 — 覆蓋 proto-supplement.css 的全域規則 */
+    .cl-panel .table-head { position: relative; top: auto; }
+
+    /* ── Section anchor nav ── */
+    .cl-anchor-nav {
+      position: sticky; top: 41px; z-index: 50;
+      background: var(--color-gray-100);
+      border-bottom: 1px solid var(--color-gray-200);
+      display: flex; align-items: center; gap: 2px;
+      padding: 0 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cl-anchor-nav::-webkit-scrollbar { display: none; }
+    .cl-anchor-item {
+      flex-shrink: 0;
+      padding: 8px 10px;
+      font-size: 12px; font-weight: 500;
+      color: var(--color-gray-600);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: color .12s, border-color .12s;
+      white-space: nowrap;
+    }
+    .cl-anchor-item:hover { color: var(--color-gray-900); }
+    .cl-anchor-item.active {
+      color: var(--color-theme-550);
+      border-bottom-color: var(--color-theme-550);
+    }
+
+    /* active state for platform/theme buttons */
+    .cl-topbar-btn.active {
+      background: var(--color-gray-250);
+      color: var(--color-gray-1000);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="ds-sidebar">
+  <div class="ds-logo">Design System</div>
+  <nav class="ds-nav">
+    <a href="colors.html"     class="ds-nav-item">色票庫</a>
+    <a href="components.html" class="ds-nav-item active">元件庫</a>
+  </nav>
+  <div class="ds-ctrl">
+    <div>
+      <div class="ds-ctrl-lbl">Platform</div>
+      <div class="ds-ctrl-pills">
+        <button class="cl-topbar-btn active" id="btn-xq"  onclick="setPlatform('xq')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">XQ</button>
+        <button class="cl-topbar-btn"        id="btn-xqm" onclick="setPlatform('xqm')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">XQM</button>
+      </div>
+    </div>
+    <div id="theme-ctrl">
+      <div class="ds-ctrl-lbl">Theme</div>
+      <div class="ds-ctrl-pills">
+        <button class="cl-topbar-btn active" id="btn-dark"  onclick="setTheme('dark')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">Dark</button>
+        <button class="cl-topbar-btn"        id="btn-light" onclick="setTheme('light')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">Light</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="ds-main">
+<div class="cl-topbar">
+  <span class="cl-topbar-title">元件庫</span>
+</div>
+
+<!-- ── Section anchor nav ── -->
+<nav class="cl-anchor-nav" id="cl-anchor-nav">
+  <a class="cl-anchor-item active" href="#s-color">Color</a>
+  <a class="cl-anchor-item" href="#s-type">Typography</a>
+  <a class="cl-anchor-item" href="#s-tag">Tag / Chip</a>
+  <a class="cl-anchor-item" href="#s-pill">sig-pill</a>
+  <a class="cl-anchor-item" href="#s-seg">Segment</a>
+  <a class="cl-anchor-item" href="#s-tab">Tab Bar</a>
+  <a class="cl-anchor-item" href="#s-check">Checkbox</a>
+  <a class="cl-anchor-item" href="#s-card">Summary Card</a>
+  <a class="cl-anchor-item" href="#s-table">Table</a>
+  <a class="cl-anchor-item" href="#s-empty">Empty State</a>
+  <a class="cl-anchor-item" href="#s-btn">Button</a>
+</nav>
+
+<div class="cl-page">
+
+  <!-- ══════════════════════════════════════════
+       1. Color Tokens
+  ══════════════════════════════════════════ -->
+  <section id="s-color" class="cl-section">
+    <div class="cl-section-title">Color Tokens</div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Rise / Fall / Flat</div>
+      <div class="cl-row">
+        <span class="text-rise tabular-nums" style="font-size:18px;">+2.45%</span>
+        <span class="text-fall tabular-nums" style="font-size:18px;">-1.23%</span>
+        <span class="text-flat tabular-nums" style="font-size:18px;">0.00%</span>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Gray Scale</div>
+      <div class="cl-swatch-row" style="padding-bottom:24px;">
+        <div class="cl-swatch" style="background:var(--color-gray-100);" data-label="100"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-125);" data-label="125"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-150);" data-label="150"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-200);" data-label="200"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-250);" data-label="250"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-300);" data-label="300"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-350);" data-label="350"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-400);" data-label="400"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-500);" data-label="500"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-600);" data-label="600"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-700);" data-label="700"></div>
+        <div class="cl-swatch" style="background:var(--color-gray-1000);" data-label="1000"></div>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Theme</div>
+      <div class="cl-swatch-row" style="padding-bottom:24px;">
+        <div class="cl-swatch" style="background:var(--color-theme-400);" data-label="400"></div>
+        <div class="cl-swatch" style="background:var(--color-theme-500);" data-label="500"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       2. Typography
+  ══════════════════════════════════════════ -->
+  <section id="s-type" class="cl-section">
+    <div class="cl-section-title">Typography</div>
+    <div class="cl-col">
+      <div style="font-size:26px;font-weight:600;color:var(--color-gray-1000);">Page Title 26px</div>
+      <div style="font-size:1.25rem;font-weight:500;color:var(--color-gray-1000);">Page Title 1.25rem</div>
+      <div style="font-size:18px;color:var(--color-gray-800);">Heading 18px</div>
+      <div style="font-size:16px;color:var(--color-gray-800);">Body 16px</div>
+      <div style="font-size:14px;color:var(--color-gray-700);">Body 14px</div>
+      <div style="font-size:13px;color:var(--color-gray-600);">Small 13px</div>
+      <div style="font-size:12px;color:var(--color-gray-500);">Caption 12px</div>
+      <div style="font-size:11px;color:var(--color-gray-400);">Micro 11px</div>
+      <div class="tabular-nums" style="font-size:22px;color:var(--color-rise);line-height:1;">
+        189.85 <span style="font-size:14px;">+2.19%</span>
+        <span style="color:var(--color-gray-300);font-size:14px;font-weight:300;margin:0 4px;">│</span>
+        <span style="font-size:14px;"><span style="color:var(--color-gray-500);">折溢價</span> <span class="text-rise">+0.23%</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       3. Tag / Chip
+  ══════════════════════════════════════════ -->
+  <section id="s-tag" class="cl-section">
+    <div class="cl-section-title">Tag / Chip</div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Status Badge — outline (表格狀態欄)</div>
+      <div class="cl-row">
+        <span class="tag" data-variant="yellow-bright" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">首次買入</span>
+        <span class="tag" data-variant="red"           style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼</span>
+        <span class="tag" data-variant="red"           style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼 3天</span>
+        <span class="tag" data-variant="green-teal"    style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼</span>
+        <span class="tag" data-variant="green-teal"    style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼 5天</span>
+        <span class="tag" data-variant="gray"          style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">持平 8天</span>
+        <span class="tag" data-variant="gray"          style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">完全出清</span>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Pending Badge — no outline</div>
+      <div class="cl-row">
+        <span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Chip — 篩選列</div>
+      <div class="cl-row">
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 tag-active" data-variant="blue" data-active="true">全部<span>12</span></span></button>
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-new-tag" style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>2</span></span></button>
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="red">加碼<span>3</span></span></button>
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="gray">持平<span>2</span></span></button>
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="green-teal">減碼<span>2</span></span></button>
+        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-clear-tag" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span>1</span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       4. sig-pill
+  ══════════════════════════════════════════ -->
+  <section id="s-pill" class="cl-section">
+    <div class="cl-section-title">sig-pill</div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">chg-bar context (分佈圖，natural flow)</div>
+      <div class="cl-row">
+        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);">首次買入</span>
+        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);">完全出清</span>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">card-label context (指標卡片，flex items-center)</div>
+      <div class="cl-row">
+        <div class="card-label" style="display:flex;align-items:center;font-size:14px;color:var(--color-gray-600);">
+          近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
+        </div>
+        <div class="card-label" style="display:flex;align-items:center;font-size:14px;color:var(--color-gray-600);">
+          近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       5. Segmented Control
+  ══════════════════════════════════════════ -->
+  <section id="s-seg" class="cl-section">
+    <div class="cl-section-title">Segmented Control</div>
+
+    <div class="cl-row">
+      <div data-slot="segment" class="segment-group shrink-0 inline-flex items-stretch isolate relative h-7" role="radiogroup">
+        <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active" data-position="first"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none mr-[-1px] rounded-l-s z-[3]">
+          <span class="segment-text">張數</span>
+        </button>
+        <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="last"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none rounded-r-s z-[1]">
+          <span class="segment-text">金額</span>
+        </button>
+      </div>
+      <div data-slot="segment" class="segment-group shrink-0 inline-flex items-stretch isolate relative h-7" role="radiogroup">
+        <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active" data-position="first"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none mr-[-1px] rounded-l-s z-[3]">
+          <span class="segment-text">每日</span>
+        </button>
+        <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="last"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none rounded-r-s z-[1]">
+          <span class="segment-text">累積</span>
+        </button>
+      </div>
+      <div data-slot="segment" class="segment-group shrink-0 inline-flex items-stretch isolate relative h-7" role="radiogroup">
+        <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active" data-position="first"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none mr-[-1px] rounded-l-s z-[3]">
+          <span class="segment-text">股票</span>
+        </button>
+        <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive" data-position="last"
+          class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none rounded-r-s z-[1]">
+          <span class="segment-text">產業</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       6. Tab Bar
+  ══════════════════════════════════════════ -->
+  <section id="s-tab" class="cl-section">
+    <div class="cl-section-title">Tab Bar</div>
+
+    <!-- hug variant -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">hug variant（頁面主分頁）</div>
+      <div style="border-bottom:1px solid var(--color-gray-250);display:inline-block;">
+        <div role="tablist" aria-orientation="horizontal" data-variant="hug"
+          class="tabs-list inline-flex items-end gap-4 h-full pt-2 min-w-max" style="outline:none;">
+          <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-1 pb-4"
+            style="outline:none;">
+            <span class="tabs-text">分頁一</span><span class="tabs-indicator"></span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-1 pb-4"
+            style="outline:none;">
+            <span class="tabs-text">分頁二</span><span class="tabs-indicator"></span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-1 pb-4"
+            style="outline:none;">
+            <span class="tabs-text">分頁三</span><span class="tabs-indicator"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- chart period bar -->
+    <div class="cl-subsection" style="margin-top:20px;">
+      <div class="cl-sublabel">chart period bar（圖表期間）</div>
+      <div role="tablist" class="tabs-list inline-flex items-end chart-period-bar" style="outline:none;">
+        <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="hug"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+          style="outline:none;">
+          <span class="tabs-text">1日</span><span class="tabs-indicator"></span>
+        </button>
+        <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+          style="outline:none;">
+          <span class="tabs-text">2日</span><span class="tabs-indicator"></span>
+        </button>
+        <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+          style="outline:none;">
+          <span class="tabs-text">5日</span><span class="tabs-indicator"></span>
+        </button>
+        <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="hug"
+          class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none gap-1.5 pt-0 pb-2"
+          style="outline:none;">
+          <span class="tabs-text">10日</span><span class="tabs-indicator"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- chip variant -->
+    <div class="cl-subsection" style="margin-top:20px;">
+      <div class="cl-sublabel">chip variant（篩選切換）</div>
+      <div dir="ltr" data-orientation="horizontal">
+        <div role="tablist" aria-orientation="horizontal" data-variant="chip"
+          class="tabs-list inline-flex items-center gap-2 p-1" style="outline:none;">
+          <button type="button" role="tab" aria-selected="true" data-state="active" data-variant="chip"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none rounded-full px-3 py-1 shadow-none"
+            style="outline:none;">
+            <span class="tabs-text">選項一</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="chip"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none rounded-full px-3 py-1 shadow-none"
+            style="outline:none;">
+            <span class="tabs-text">選項二</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state="inactive" data-variant="chip"
+            class="tabs-trigger group relative inline-flex items-center justify-center transition-all duration-200 focus-visible:outline-none rounded-full px-3 py-1 shadow-none"
+            style="outline:none;">
+            <span class="tabs-text">選項三</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       7. Checkbox
+  ══════════════════════════════════════════ -->
+  <section id="s-check" class="cl-section">
+    <div class="cl-section-title">Checkbox (stk-cb)</div>
+    <div class="cl-row">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" class="stk-cb">
+        <span style="font-size:13px;color:var(--color-gray-600);">unchecked</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" class="stk-cb" checked>
+        <span style="font-size:13px;color:var(--color-gray-600);">checked</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" class="stk-cb" disabled style="opacity:0.6;cursor:not-allowed;">
+        <span style="font-size:13px;color:var(--color-gray-400);">unchecked disabled</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="checkbox" class="stk-cb" checked disabled style="opacity:0.6;cursor:not-allowed;">
+        <span style="font-size:13px;color:var(--color-gray-400);">checked disabled</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       8. Summary Card
+  ══════════════════════════════════════════ -->
+  <section id="s-card" class="cl-section">
+    <div class="cl-section-title">Summary Card</div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">accent variants</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">no accent</div>
+          <div style="font-size:22px;font-weight:700;color:var(--color-gray-800);line-height:1.2;" class="tabular-nums">12檔</div>
+          <div style="font-size:13px;margin-top:2px;color:var(--color-gray-500);">近1日 +2檔</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-red</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-rise">+5檔</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-green</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-fall">-2檔</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-orange" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-orange</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">1,234張</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-blue</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">8.2億</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-teal" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-teal</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">2.34%</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-yellow" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-yellow</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">5.6億</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-gray" style="min-width:120px;">
+          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-gray</div>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;color:var(--color-gray-600);" class="tabular-nums">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-subsection" style="margin-top:16px;">
+      <div class="cl-sublabel">card-clickable (首次買入 / 完全出清)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
+          <span style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;display:flex;align-items:center;" class="card-label">
+            近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
+          </span>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-rise">2檔</div>
+          <div style="font-size:13px;margin-top:2px;" class="text-rise">+1,234張 | +0.9億</div>
+        </div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
+          <span style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;display:flex;align-items:center;" class="card-label">
+            近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
+          </span>
+          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-fall">1檔</div>
+          <div style="font-size:13px;margin-top:2px;" class="text-fall">-890張 | -0.4億</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       9. Table Header & Row
+  ══════════════════════════════════════════ -->
+  <section id="s-table" class="cl-section">
+    <div class="cl-section-title">Table Header &amp; Row</div>
+
+    <!-- ── Table Head variants ── -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Table Head — 可排序 / 不可排序</div>
+      <div class="cl-panel" style="padding:0;overflow:hidden;">
+        <div data-slot="table-container" class="table-container">
+          <table data-slot="table" class="table">
+            <thead data-slot="table-header" class="table-header">
+              <tr>
+                <th data-slot="table-head" class="table-head table-head-align-left" style="min-width:120px;">
+                  不可排序
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                  <div class="table-head-sort-container table-head-align-right">
+                    <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
+                    <span>可排序（預設）</span>
+                  </div>
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                  <div class="table-head-sort-container table-head-align-right">
+                    <span class="icon-arrow-up-02 table-head-sort-icon"></span>
+                    <span>排序中（升冪）</span>
+                  </div>
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                  <div class="table-head-sort-container table-head-align-right">
+                    <span class="icon-arrow-down-02 table-head-sort-icon"></span>
+                    <span>排序中（降冪）</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row variants ── -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Table Row — 狀態</div>
+    <div class="cl-panel">
+      <div data-slot="table-container" class="table-container">
+        <table data-slot="table" class="table">
+          <thead data-slot="table-header" class="table-header">
+            <tr>
+              <th data-slot="table-head" class="table-head table-head-align-left" style="min-width:140px;">名稱 / 代號</th>
+              <th data-slot="table-head" class="table-head table-head-align-center" style="min-width:110px;">狀態</th>
+              <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:80px;">
+                <div class="table-head-sort-container table-head-align-right">
+                  <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
+                  <span>數值</span>
+                </div>
+              </th>
+              <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:80px;">
+                <div class="table-head-sort-container table-head-align-right">
+                  <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
+                  <span>次要值</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody data-slot="table-body" class="table-body">
+            <tr data-slot="table-row" class="table-row" style="cursor:default;">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">旺宏</span><span class="tabular-nums cell-code">2337</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="yellow-bright" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">首次買入</span></td>
+              <td class="table-cell table-cell-align-right tabular-nums text-rise">+3.21%</td>
+              <td class="table-cell table-cell-align-right tabular-nums text-rise">+2,100張</td>
+            </tr>
+            <tr data-slot="table-row" class="table-row" style="cursor:default;">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台積電</span><span class="tabular-nums cell-code">2330</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="red" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼 3天</span></td>
+              <td class="table-cell table-cell-align-right tabular-nums text-rise">+0.35%</td>
+              <td class="table-cell table-cell-align-right tabular-nums text-rise">+420張</td>
+            </tr>
+            <tr data-slot="table-row" class="table-row" style="cursor:default;">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台光電</span><span class="tabular-nums cell-code">2383</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼 5天</span></td>
+              <td class="table-cell table-cell-align-right tabular-nums text-fall">-0.12%</td>
+              <td class="table-cell table-cell-align-right tabular-nums text-fall">-80張</td>
+            </tr>
+            <tr data-slot="table-row" class="table-row" style="cursor:default;">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台達電</span><span class="tabular-nums cell-code">2308</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">持平 8天</span></td>
+              <td class="table-cell table-cell-align-right tabular-nums text-flat">0.00%</td>
+              <td class="table-cell table-cell-align-right tabular-nums text-flat">—</td>
+            </tr>
+            <tr data-slot="table-row" class="table-row" style="cursor:default;">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">晶豪科</span><span class="tabular-nums cell-code">3006</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">完全出清</span></td>
+              <td class="table-cell table-cell-align-right tabular-nums text-fall">-1.82%</td>
+              <td class="table-cell table-cell-align-right tabular-nums text-fall">-980張</td>
+            </tr>
+            <tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
+              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">鴻海</span><span class="tabular-nums cell-code">2317</span></span></td>
+              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+              <td class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+              <td class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
+            </tr>
+            <tr class="empty-cell">
+              <td colspan="4">無符合資料</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div><!-- cl-subsection -->
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       10. Empty State
+  ══════════════════════════════════════════ -->
+  <section id="s-empty" class="cl-section">
+    <div class="cl-section-title">Empty State</div>
+    <div class="cl-panel">
+      <div class="empty-view" style="display:flex;">
+        <div class="empty-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="empty-title">資料尚未更新</div>
+        <div class="empty-sub">今日持股資料尚未發布<br>請稍後再查詢</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       Button
+       ══════════════════════════════════════════ -->
+  <section id="s-btn" class="cl-section">
+    <div class="cl-section-title">Button</div>
+
+    <!-- shared base style -->
+    <style>
+      .cmp-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        height: 32px; padding: 0 16px; border-radius: 6px;
+        font-size: 13px; font-weight: 400; cursor: pointer;
+        border: none; transition: background .12s, color .12s, box-shadow .12s;
+        white-space: nowrap;
+      }
+      .cmp-btn:disabled { cursor: not-allowed; }
+
+      /* Primary / Fill */
+      .cmp-btn-primary-fill            { background: var(--comp-btn-primary-bg);     color: var(--comp-btn-primary-text); }
+      .cmp-btn-primary-fill:hover      { background: var(--comp-btn-primary-bg-hover); }
+      .cmp-btn-primary-fill:disabled   { background: var(--comp-btn-primary-bg-dis); color: var(--comp-btn-primary-text-dis); }
+
+      /* Primary / Ghost */
+      .cmp-btn-primary-ghost           { background: transparent; color: var(--comp-btn-stroke-color); }
+      .cmp-btn-primary-ghost:hover     { color: var(--comp-btn-stroke-hover); }
+      .cmp-btn-primary-ghost:disabled  { color: var(--comp-btn-primary-bg-dis); }
+
+      /* Primary / Stroke */
+      .cmp-btn-primary-stroke          { background: transparent; color: var(--comp-btn-stroke-color); box-shadow: inset 0 0 0 1px var(--comp-btn-stroke-color); }
+      .cmp-btn-primary-stroke:hover    { color: var(--comp-btn-stroke-hover); box-shadow: inset 0 0 0 2px var(--comp-btn-stroke-hover); background: var(--color-theme-100); }
+      .cmp-btn-primary-stroke:disabled { color: var(--comp-btn-primary-bg-dis); box-shadow: inset 0 0 0 1px var(--comp-btn-primary-bg-dis); }
+
+      /* Secondary */
+      .cmp-btn-secondary               { background: var(--comp-btn-secondary-bg);   color: var(--comp-btn-secondary-text); }
+      .cmp-btn-secondary:hover         { background: var(--comp-btn-secondary-bg-hover); }
+      .cmp-btn-secondary:disabled      { background: var(--comp-btn-primary-bg-dis); color: var(--comp-btn-primary-text-dis); }
+
+      /* Tertiary */
+      .cmp-btn-tertiary                { background: transparent; color: var(--comp-btn-tertiary-color); }
+      .cmp-btn-tertiary:hover          { color: var(--comp-btn-tertiary-hover); }
+      .cmp-btn-tertiary:disabled       { color: var(--comp-btn-primary-bg-dis); }
+
+      /* System / Warning */
+      .cmp-btn-warning                 { background: transparent; color: var(--comp-btn-warning-color); box-shadow: inset 0 0 0 1px var(--comp-btn-warning-color); }
+      .cmp-btn-warning:hover           { color: var(--comp-btn-warning-hover); box-shadow: inset 0 0 0 2px var(--comp-btn-warning-hover); }
+      .cmp-btn-warning:disabled        { color: var(--comp-btn-primary-bg-dis); box-shadow: inset 0 0 0 1px var(--comp-btn-primary-bg-dis); }
+
+      /* System / CTA / Fill */
+      .cmp-btn-cta-fill                { background: var(--comp-btn-cta-bg);    color: var(--comp-btn-cta-text); }
+      .cmp-btn-cta-fill:hover          { background: var(--comp-btn-cta-bg-hover); }
+      .cmp-btn-cta-fill:disabled       { background: var(--comp-btn-primary-bg-dis); color: var(--comp-btn-primary-text-dis); }
+
+      /* System / CTA / Stroke */
+      .cmp-btn-cta-stroke              { background: transparent; color: var(--comp-btn-cta-stroke); box-shadow: inset 0 0 0 1px var(--comp-btn-cta-stroke); }
+      .cmp-btn-cta-stroke:hover        { box-shadow: inset 0 0 0 2px var(--comp-btn-cta-stroke); }
+      .cmp-btn-cta-stroke:disabled     { color: var(--comp-btn-primary-bg-dis); box-shadow: inset 0 0 0 1px var(--comp-btn-primary-bg-dis); }
+    </style>
+
+    <!-- Primary -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Primary / Fill</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-primary-fill">Default</button>
+        <button class="cmp-btn cmp-btn-primary-fill" style="background:var(--comp-btn-primary-bg-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-primary-fill" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Primary / Ghost</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-primary-ghost">Default</button>
+        <button class="cmp-btn cmp-btn-primary-ghost" style="color:var(--comp-btn-stroke-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-primary-ghost" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Primary / Stroke</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-primary-stroke">Default</button>
+        <button class="cmp-btn cmp-btn-primary-stroke" style="color:var(--comp-btn-stroke-hover);box-shadow:inset 0 0 0 2px var(--comp-btn-stroke-hover);background:var(--color-theme-100);">Hover</button>
+        <button class="cmp-btn cmp-btn-primary-stroke" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Secondary</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-secondary">Default</button>
+        <button class="cmp-btn cmp-btn-secondary" style="background:var(--comp-btn-secondary-bg-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-secondary" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- Tertiary -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Tertiary</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-tertiary">Default</button>
+        <button class="cmp-btn cmp-btn-tertiary" style="color:var(--comp-btn-tertiary-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-tertiary" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- System / Warning -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">System / Warning</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-warning">Default</button>
+        <button class="cmp-btn cmp-btn-warning" style="color:var(--comp-btn-warning-hover);box-shadow:inset 0 0 0 2px var(--comp-btn-warning-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-warning" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <!-- System / CTA -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">System / CTA / Fill</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-cta-fill">Default</button>
+        <button class="cmp-btn cmp-btn-cta-fill" style="background:var(--comp-btn-cta-bg-hover);">Hover</button>
+        <button class="cmp-btn cmp-btn-cta-fill" disabled>Disabled</button>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">System / CTA / Stroke</div>
+      <div class="cl-row">
+        <button class="cmp-btn cmp-btn-cta-stroke">Default</button>
+        <button class="cmp-btn cmp-btn-cta-stroke" style="box-shadow:inset 0 0 0 2px var(--comp-btn-cta-stroke);">Hover</button>
+        <button class="cmp-btn cmp-btn-cta-stroke" disabled>Disabled</button>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+</div><!-- ds-main -->
+
+<script>
+  function setPlatform(p) {
+    document.documentElement.dataset.platform = p;
+    const isXqm = p === 'xqm';
+    document.getElementById('btn-light').style.display = isXqm ? 'none' : '';
+    if (isXqm) setTheme('dark');
+    ['xq', 'xqm'].forEach(id =>
+      document.getElementById('btn-' + id).classList.toggle('active', id === p)
+    );
+  }
+
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    ['dark', 'light'].forEach(id =>
+      document.getElementById('btn-' + id).classList.toggle('active', id === t)
+    );
+  }
+
+  setPlatform('xq');
+
+  // ── Anchor nav scroll-spy ──
+  const anchorItems = document.querySelectorAll('.cl-anchor-item');
+  const sections = [...anchorItems].map(a => document.querySelector(a.getAttribute('href')));
+
+  function getStickyH() {
+    return (document.querySelector('.cl-topbar')?.offsetHeight || 0)
+         + (document.querySelector('.cl-anchor-nav')?.offsetHeight || 0);
+  }
+
+  // Click: smooth scroll with sticky-header offset
+  anchorItems.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (!target) return;
+      const y = target.getBoundingClientRect().top + window.scrollY - getStickyH() - 16;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    });
+  });
+
+  // Scroll: update active by finding which section's top is closest above viewport
+  function updateActive() {
+    const trigger = window.scrollY + getStickyH() + 20;
+    let best = 0;
+    sections.forEach((s, i) => { if (s && s.offsetTop <= trigger) best = i; });
+    anchorItems.forEach((a, i) => a.classList.toggle('active', i === best));
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+</body>
+</html>
