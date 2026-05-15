@@ -1285,16 +1285,15 @@
               <!-- 標題與控制列 -->
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-gray-600" style="font-size:14px;">分佈與加減碼分析</h3>
-                <div data-slot="segment"
-                  class="segment-group inline-flex items-stretch isolate relative h-8 bg-gray-200 dark:bg-black p-[2px] rounded-s"
-                  role="radiogroup" id="etf-chg-seg" style="border:1px solid var(--color-gray-250);">
+                <div data-slot="segment" class="segment-group shrink-0 inline-flex items-stretch isolate relative h-7"
+                  role="radiogroup" id="etf-chg-seg">
                   <button type="button" role="radio" aria-checked="true" data-slot="segment-item" data-state="active"
                     data-position="first"
-                    class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
+                    class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] mr-[-1px] rounded-l-s z-[3]"
                     onclick="setEtfChgMode('stock',this)"><span class="segment-text">股票</span></button>
                   <button type="button" role="radio" aria-checked="false" data-slot="segment-item" data-state="inactive"
                     data-position="last"
-                    class="segment-item relative flex flex-1 items-center justify-center px-2 py-1 text-scope-6 leading-tool-b-6 font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
+                    class="segment-item relative flex flex-1 items-center justify-center px-2 py-0.5 text-scope-6 text-[13px] font-normal border border-solid outline-none transition-[color,background-color,border-color,box-shadow] rounded-r-s z-[1]"
                     onclick="setEtfChgMode('sector',this)"><span class="segment-text">產業</span></button>
                 </div>
               </div>
@@ -4453,7 +4452,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/14 16:03';
+        const FILE_UPDATED = '2026/05/15 11:09';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);

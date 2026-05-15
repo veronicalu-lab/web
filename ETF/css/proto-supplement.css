@@ -2,6 +2,23 @@
    proto-supplement.css
    ══════════════════════════════════════════════════════════════════ */
 
+/* ── xqnext icon font（local fallback）────────────────────────────
+   rd-app.css 的 @font-face 指向 /xq.next/... 伺服器路徑，本地無法載入。
+   這裡覆蓋為相對路徑的本地字型檔。                                      */
+@font-face {
+  font-family: xqnext;
+  src: url('fonts/xqnext.woff2') format('woff2'),
+       url('fonts/xqnext.woff')  format('woff'),
+       url('fonts/xqnext.ttf')   format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* rd-app.css 的 icon content 值是 double-encoded UTF-8，PUA 碼位不對。
+   以正確的 Unicode escape 覆蓋（字型中確認 U+E934/E935 存在）。        */
+.icon-arrow-up-02::before   { content: "\E935"; }
+.icon-arrow-down-02::before { content: "\E934"; }
+
 /* ── Proto blue palette override ────────────────────────────────
    Dark  主色：#6597FF   Light 主色：#2862FF
    覆蓋 rd-app.css 的 --xq-theme-* 鏈（proto-supplement.css 是 unlayered，
@@ -18,6 +35,7 @@
   --xq-theme-500: #6597FF;   /* ← dark 主要互動色 */
   --xq-theme-550: #5589FF;
   --xq-theme-600: #457BFF;
+  --xq-theme-650: #3B6FFF;   /* ← Tab indicator dark */
 
   --xq-blue-500: #6597FF;
   --xq-blue-650: #6597FF;
@@ -27,13 +45,38 @@
 :root[data-theme="light"] {
   --xq-theme-400: #5086FF;
   --xq-theme-450: #3C74FF;
-  --xq-theme-500: #2862FF;   /* ← light 主要互動色 */
+  --xq-theme-500: #2862FF;   /* ← light 主要互動色 / Tab indicator light */
   --xq-theme-550: #2862FF;   /* 550 = 500：light mode 互動文字/indicator 主力 token */
   --xq-theme-600: #1450FF;
+  --xq-theme-650: #1248F0;   /* ← Tab active text light */
 
   --xq-blue-500: #2862FF;
   --xq-blue-650: #2862FF;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   XQM Platform Token 覆蓋（單一主題，無 dark/light 切換）
+   ⚠️ TODO：色票值等待 Figma 確認後填入，解除下方註解並移除 ??? 佔位
+
+   [data-platform="xqm"] {
+     -- Gray scale
+     --xq-gray-100:  ???;   --xq-gray-125:  ???;   --xq-gray-150:  ???;
+     --xq-gray-200:  ???;   --xq-gray-250:  ???;   --xq-gray-300:  ???;
+     --xq-gray-350:  ???;   --xq-gray-400:  ???;   --xq-gray-500:  ???;
+     --xq-gray-600:  ???;   --xq-gray-700:  ???;   --xq-gray-800:  ???;
+     --xq-gray-1000: ???;
+
+     -- Theme / accent (brand color)
+     --xq-theme-400: ???;   --xq-theme-450: ???;   --xq-theme-500: ???;
+     --xq-theme-550: ???;   --xq-theme-600: ???;
+     --xq-blue-500:  ???;   --xq-blue-650:  ???;
+
+     -- Rise / Fall（確認是否沿用紅漲綠跌）
+     --xq-rise: ???;   --xq-fall: ???;
+
+     -- Typography density（確認字級規範）
+   }
+   ════════════════════════════════════════════════════════════════ */
 
 /* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
 /* Table border：rd-app.css 的 .table-row 在 @layer components 裡。
@@ -276,7 +319,7 @@
   border-bottom: 1px solid var(--color-gray-200);
 }
 .page-hero-eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
   color: var(--color-theme-550);
   margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
 }
@@ -285,13 +328,13 @@
   cursor: pointer; letter-spacing: 0; text-transform: none; font-weight: 400;
 }
 .page-hero-back:hover { color: var(--color-gray-1000); }
-.page-hero-main { font-size: 16px; font-weight: 700; color: var(--color-gray-1000); }
+.page-hero-main { font-size: 16px; font-weight: 400; color: var(--color-gray-1000); }
 .page-hero-sub {
   font-size: 12px; color: var(--color-gray-600); margin-top: 4px;
   display: flex; align-items: center; gap: 0;
 }
 .page-hero-sep { margin: 0 8px; }
-.page-hero-title { font-size: 24px; font-weight: 800; line-height: 1.2; }
+.page-hero-title { font-size: 24px; font-weight: 400; line-height: 1.2; }
 
 /* ════════════════════════════════════════════════════════════════
    TABS & INDICATOR 補充
@@ -299,14 +342,17 @@
    動態樣式（如指示條 Indicator 的平移位移）在純 HTML 中無法自動運作。
    在此補充基礎的靜態樣式，確保原型外觀正確，不影響 RD 的組件開發。
    ════════════════════════════════════════════════════════════════ */
-/* hug variant：底線、flex-end 對齊（不動 display，由 Tailwind inline-flex/flex class 控制） */
+/* hug（Page_Horizontal）— Color_Styles: Bottom-Line = Gray-250 dark / Gray-200 light */
 .tabs-list[data-variant="hug"] {
   align-items: flex-end;
-  border-bottom: 1px solid var(--color-gray-200, #e1e1e1);
+  border-bottom: 1px solid var(--color-gray-250);
   width: 100%;
   gap: 16px;
 }
-/* chip variant list：no container background — each button handles its own bg */
+[data-theme="light"] .tabs-list[data-variant="hug"] {
+  border-bottom-color: var(--color-gray-200);
+}
+/* chip variant list */
 .tabs-list[data-variant="chip"] {
   gap: 4px;
 }
@@ -321,7 +367,6 @@
   align-items: center;
   justify-content: center;
 }
-/* hug variant — padding comes from Tailwind classes (pt-1 pb-4) on the button, not here */
 .tabs-indicator {
   position: absolute;
   bottom: -1px;
@@ -330,30 +375,39 @@
   background: transparent;
   transition: background 0.2s;
 }
-/* active indicator / text — 只套 hug variant */
-.tabs-trigger[data-variant="hug"][data-state="active"] .tabs-indicator {
-  background: var(--color-theme-550, #165ef9);
-}
-.tabs-trigger[data-variant="hug"][data-state="active"] .tabs-text {
-  color: var(--tabs-text-active, var(--color-theme-550, #165ef9));
-  font-weight: 600;
-}
 .tabs-text {
   display: block;
-  font-weight: 500;
+  font-weight: 400;
   white-space: nowrap;
-  /* font-size + color → rd-app.css handles via var(--tabs-text) */
 }
-/* rd-app.css dark mode overrides hug hover→gray-800 and active→theme-650,
-   but ETF page RD snapshot omits the dark override → both stay blue.
-   Restore that behavior: hover=theme-350, active=theme-550. */
-.tabs-trigger[data-variant="hug"]:hover:not([data-state="active"]) .tabs-text {
-  color: var(--color-theme-350);
+
+/* rd-app.css 的 hover 規則有 `: not` 語法錯誤（冒號後空格），在此補正確版本 */
+.tabs-trigger:hover:not([data-state="active"]) .tabs-text {
+  color: var(--tabs-text-hover);
 }
-:root[data-theme=dark] .tabs-trigger[data-variant="hug"] {
-  --tabs-text-hover: var(--color-theme-350);
+
+/* ── hug variant ── */
+.tabs-trigger[data-variant="hug"] {
+  --tabs-text:        var(--color-gray-650);
+  --tabs-text-hover:  var(--color-gray-800);
   --tabs-text-active: var(--color-theme-550);
-  --tabs-indicator: var(--color-theme-550);
+  --tabs-indicator:   var(--color-theme-550);
+}
+.tabs-trigger[data-variant="hug"] .tabs-indicator {
+  inset-inline: 0; bottom: 0; height: 2px;
+}
+
+/* ── chip variant ── */
+.tabs-trigger[data-variant="chip"] {
+  --tabs-text:        var(--color-gray-650);
+  --tabs-text-hover:  var(--color-gray-800);
+  --tabs-text-active: var(--color-theme-550);
+  background-color:   var(--color-gray-200);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+}
+[data-theme="light"] .tabs-trigger[data-variant="chip"] {
+  background-color: var(--color-gray-150);
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -454,7 +508,7 @@
   flex-wrap: wrap;
 }
 .chip {
-  padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;
+  padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 400;
   border: 1px solid transparent; cursor: pointer; white-space: nowrap; user-select: none;
   transition: opacity .15s;
 }
@@ -465,7 +519,7 @@
 .chip.c-clear  { background: var(--color-gray-150); color: var(--color-gray-600); border-color: var(--color-gray-250); }
 .chip.inactive { opacity: .45; }
 .chip:hover { opacity: 1; }
-.chip-cnt { margin-left: 3px; font-size: 12px; font-weight: 700; }
+.chip-cnt { margin-left: 3px; font-size: 12px; font-weight: 400; }
 .chip-bar-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
 /* tag 行為 override
@@ -492,7 +546,7 @@
   background: var(--color-gray-100);
 }
 .seg-btn {
-  padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 400;
   color: var(--color-gray-600); background: transparent; border: none; cursor: pointer;
   transition: background .12s, color .12s;
 }
@@ -509,12 +563,12 @@
   display: flex; align-items: center; gap: 2px; padding: 8px 12px 6px;
 }
 .kline-range-btn {
-  padding: 4px 8px; font-size: 13px; font-weight: 500;
+  padding: 4px 8px; font-size: 13px; font-weight: 400;
   color: rgba(255,255,255,.4); border: none; border-radius: 4px;
   background: transparent; cursor: pointer; transition: color .1s, background .1s;
 }
 .kline-range-btn:hover { color: rgba(255,255,255,.8); background: rgba(255,255,255,.06); }
-.kline-range-btn.active { color: #5b8df6; background: rgba(91,141,246,.14); font-weight: 600; }
+.kline-range-btn.active { color: #5b8df6; background: rgba(91,141,246,.14); }
 .kline-range-sep { width: 1px; height: 14px; background: rgba(255,255,255,.12); margin: 0 8px; }
 #kline-chart { height: 300px; width: 100%; }
 
@@ -528,9 +582,9 @@
   border-radius: 4px; cursor: pointer; overflow: hidden; transition: transform .12s; padding: 4px;
 }
 .hm-cell:hover { transform: scale(1.04); }
-.hm-name { font-size: 12px; font-weight: 700; text-align: center; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+.hm-name { font-size: 12px; font-weight: 400; text-align: center; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
 .hm-ratio { font-size: 12px; color: rgba(255,255,255,.8); margin-top: 2px; }
-.hm-chg { font-size: 12px; font-weight: 700; color: #fff; }
+.hm-chg { font-size: 12px; font-weight: 400; color: #fff; }
 
 /* ════════════════════════════════════════════════════════════════
    TABLE HEAD SEARCH
@@ -593,7 +647,7 @@
    ════════════════════════════════════════════════════════════════ */
 .signal-body { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; background: var(--color-gray-125); }
 .signal-sec { border: 1px solid var(--color-gray-200); border-radius: 6px; overflow: hidden; }
-.signal-hd { padding: 8px 16px; font-size: 12px; font-weight: 700; border-bottom: 1px solid var(--color-gray-200); display: flex; align-items: center; gap: 8px; }
+.signal-hd { padding: 8px 16px; font-size: 12px; font-weight: 400; border-bottom: 1px solid var(--color-gray-200); display: flex; align-items: center; gap: 8px; }
 .signal-hd.s-new { background: var(--color-orange-100); color: var(--color-orange-600); }
 [data-theme=dark] .signal-hd.s-new, .dark .signal-hd.s-new { background: rgba(227,170,45,.1); color: var(--color-yellow-600); }
 .signal-hd.s-add { background: rgba(239,21,21,.08); color: #c91010; }
@@ -616,7 +670,7 @@
   z-index: 30;
 }
 .buysell-fade.at-end { opacity: 0; }
-.buysell-hd { padding: 8px 14px; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--color-gray-200); }
+.buysell-hd { padding: 8px 14px; font-size: 12px; font-weight: 400; border-bottom: 1px solid var(--color-gray-200); }
 .buysell-hd.buy  { background: rgba(239,21,21,.08); color: var(--color-rise, #ef1515);; }
 .buysell-hd.sell { background: rgba(24,158,1,.1); color: var(--color-fall, #189e01);; }
 
@@ -626,7 +680,7 @@
 /* ── Rank badge — unified component ── */
 .rank-badge { display: inline-flex; align-items: center; justify-content: center;
               width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
-              font-size: 12px; font-weight: 700; vertical-align: middle; margin-right: 4px;
+              font-size: 12px; font-weight: 400; vertical-align: middle; margin-right: 4px;
               background: var(--color-gray-250); color: var(--color-gray-600); }
 .rank-badge.rank-top  { background: var(--color-theme-500); color: #fff; }
 .rank-badge.rank-buy  { background: color-mix(in srgb, var(--xq-red-600) 15%, transparent); color: var(--xq-red-600); }
@@ -634,7 +688,7 @@
 .chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 12px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
 .t-name-row { display: flex; align-items: center; gap: 8px; }
 .t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
-.t-name-inline { font-size: 13px; font-weight: 500; color: var(--color-gray-900); cursor: pointer; }
+.t-name-inline { font-size: 13px; font-weight: 400; color: var(--color-gray-900); cursor: pointer; }
 .t-name-inline:hover { color: var(--color-theme-550); }
 .t-issuer { color: var(--color-gray-600); }
 .text-flat { color: var(--color-gray-500); }
@@ -654,7 +708,7 @@
 .etf-info-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--color-gray-200); border: 1px solid var(--color-gray-200); border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
 .etf-info-item { background: var(--color-gray-125); padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; }
 .etf-info-lbl { font-size: 12px; color: var(--color-gray-600); }
-.etf-info-val { font-size: 13px; color: var(--color-gray-1000); font-weight: 500; }
+.etf-info-val { font-size: 13px; color: var(--color-gray-1000); font-weight: 400; }
 .etf-strategy-box { background: var(--color-gray-125); border: 1px solid var(--color-gray-200); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: var(--color-gray-600); line-height: 1.7; margin-bottom: 14px; }
 
 /* ════════════════════════════════════════════════════════════════
@@ -679,32 +733,45 @@
 .tabs-badge {
   border-radius: var(--radius-xs, 3px);
   padding: 1px 5px;
-  font-size: 12px; font-weight: 600;
+  font-size: 12px; font-weight: 400;
   color: var(--tabs-badge-text, var(--color-gray-650, #6f6f6f));
   background: var(--tabs-badge-bg, transparent);
 }
 
-/* tabs-trigger hug variant indicator layout (rd-app.css has the variables) */
-.tabs-trigger[data-variant="hug"] .tabs-indicator {
-  inset-inline: 0; bottom: 0; height: 2px;
-}
 
-/* chip variant layout only — background-color, shadow, text-color all from rd-app.css */
-.tabs-trigger[data-variant="chip"] {
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
-}
-
-/* segment-item base (card/list toggle) */
+/* segment-item — Component/Content/Segment spec */
+/* Stroke_Normal/Hover/Disable: Gray-400 (both modes) */
+/* Bg_Hover: Theme-250 | Bg_Active: Theme-150 (both modes) */
 .segment-item {
-  color: var(--segment-text, var(--color-gray-500));
-  border-color: var(--segment-border, var(--color-gray-250));
-  background-color: var(--segment-bg, transparent);
+  color:            var(--color-gray-650);   /* Text_Default dark */
+  border-color:     var(--color-gray-400);   /* Stroke_Normal */
+  background-color: transparent;
+}
+[data-theme="light"] .segment-item {
+  color: var(--color-gray-550);              /* Text_Default light */
+}
+.segment-item:hover:not([data-state="active"]):not(:disabled) {
+  background-color: var(--color-theme-250);  /* Bg_Hover */
 }
 .segment-item[data-state="active"] {
-  color: var(--segment-active-text, var(--color-theme-550));
-  background-color: var(--segment-active-bg, var(--color-tint-100));
-  border-color: var(--segment-active-border, var(--color-theme-550));
+  color:            var(--color-theme-700);  /* Text_Active dark */
+  background-color: var(--color-theme-150);  /* Bg_Active */
+  border-color:     var(--color-theme-550);  /* Stroke_Active */
+}
+[data-theme="light"] .segment-item[data-state="active"] {
+  color: var(--color-theme-500);             /* Text_Active light */
+}
+.segment-item:disabled,
+.segment-item[data-disabled] {
+  color:            var(--color-gray-750);   /* Text_Disable dark */
+  border-color:     var(--color-gray-400);   /* Stroke_Disable */
+  background-color: var(--color-gray-450);   /* Bg_Disable dark */
+  pointer-events: none;
+}
+[data-theme="light"] .segment-item:disabled,
+[data-theme="light"] .segment-item[data-disabled] {
+  color:            var(--color-gray-500);   /* Text_Disable light */
+  background-color: var(--color-gray-350);   /* Bg_Disable light */
 }
 
 /* ── Card thumbnail gradient (replaces base64 images) ── */
@@ -907,7 +974,7 @@ tr[data-sig="exit"] td:first-child span {
 .sig-link-cell:hover span:not(.sig-sub) { color: var(--color-theme-500) !important; }
 
 /* ── ETF 加減碼分析 bar chart ── */
-.chg-bar-val  { font-size: 14px; font-weight: 600; color: var(--color-gray-1000); margin-bottom: 4px; white-space: nowrap; }
+.chg-bar-val  { font-size: 14px; font-weight: 400; color: var(--color-gray-1000); margin-bottom: 4px; white-space: nowrap; }
 .chg-bar-name { font-size: 13px; color: var(--color-gray-600); line-height: 1.3; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
 .chg-bar-code { font-size: 12px; color: var(--color-gray-450); }
 .sig-pill            { display: inline-block; font-size: 12px; padding: 4px 6px; border-radius: 999px; line-height: 1; color: #fff; }
@@ -957,5 +1024,5 @@ button:hover .chip-clear-tag {
 /* ── Empty state ─────────────────────────────────────────────── */
 .empty-view  { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:56px 24px; gap:10px; }
 .empty-icon  { color:var(--color-gray-350); }
-.empty-title { font-size:15px; font-weight:600; color:var(--color-gray-700); }
+.empty-title { font-size:15px; font-weight:400; color:var(--color-gray-700); }
 .empty-sub   { font-size:13px; color:var(--color-gray-500); text-align:center; line-height:1.6; }
