@@ -1849,8 +1849,8 @@
         avgMarker = `<div class="avg-mk" style="left:${avgW.toFixed(1)}%;" title="平均值: ${avgRef.toFixed(2)}%"><div class="avg-mk-line"></div></div>`;
       }
       return `<div style="display:inline-flex;align-items:center;gap:6px;" title="${avgRef !== undefined ? '平均投資比率: ' + avgRef.toFixed(2) + '%' : ''}">
-        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-gray-250);border-radius:3px;position:relative;">
-          <div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-theme-500);border-radius:3px;position:relative;z-index:1;"></div>
+        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+          <div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>
           ${avgMarker}
         </div>
         <span class="tabular-nums ${isZero ? 'text-flat' : ''}" style="width:${numW};text-align:right;flex-shrink:0;display:inline-block;">${display}</span>
@@ -1868,8 +1868,8 @@
         avgMarker = `<div class="avg-mk" style="left:${aw.toFixed(1)}%;" title="平均: ${avgV.toFixed(2)}%"><div class="avg-mk-line"></div></div>`;
       }
       return `<div style="display:inline-flex;align-items:center;gap:6px;" title="投資比率 ${ratio.toFixed(2)}%（平均 ${avgV !== undefined ? avgV.toFixed(2) : ''}%）">
-        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-gray-250);border-radius:3px;position:relative;">
-          ${!isZero ? `<div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-theme-500);border-radius:3px;position:relative;z-index:1;"></div>` : ''}
+        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+          ${!isZero ? `<div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>` : ''}
           ${avgMarker}
         </div>
         <span class="tabular-nums ${isZero ? 'text-flat' : ''}" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">${ratio.toFixed(2)}</span>
@@ -1878,9 +1878,9 @@
     function fmtPctBar(pctStr, barColor) {
       const val = parseFloat(pctStr);
       const barW = Math.min(val * 4, 100);
-      const color = barColor || 'var(--color-theme-500)';
+      const color = barColor || 'var(--color-chart-progress-fill)';
       return `<div style="display:inline-flex;align-items:center;gap:6px;">
-        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-gray-250);border-radius:3px;overflow:hidden;">
+        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
           <div style="width:${barW}%;height:100%;background:${color};border-radius:3px;"></div>
         </div>
         <span class="tabular-nums" style="width:42px;text-align:right;flex-shrink:0;display:inline-block;">${pctStr}</span>
@@ -2035,7 +2035,10 @@
       const ci = document.getElementById('etf-compact-icon'); if (ci) ci.style.color = iconColor;
     }
 
-    function showPage(id) {
+    const _VALID_PAGES = ['market', 'stock', 'etf', 'us-theme'];
+
+    function showPage(id, _skipHistory) {
+      if (!_VALID_PAGES.includes(id)) id = 'market';
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + id).classList.add('active');
       document.querySelectorAll('.proto-nav-btn').forEach(b => {
@@ -2048,7 +2051,13 @@
       if (id === 'stock') { updateStkInfoCard(currentStkCode); updateStkSummary(); updateStkChipCounts(); renderStkTable(); }
       if (id === 'etf') { updateEtfInfoCard(currentEtfCode); updateEtfChipCounts(); renderEtfTable(); updateEtfCardLabels('1d'); }
       if (id === 'us-theme') { renderUsThemes(); }
+      if (!_skipHistory) try { history.pushState({ page: id }, '', '#' + id); } catch(e) {}
     }
+
+    // 瀏覽器上一頁 / 下一頁
+    window.addEventListener('popstate', function(e) {
+      showPage((e.state && e.state.page) || 'market', true);
+    });
 
     // ═══════════════════════════════════════════
     // PAGE 1 — 市場總覽
@@ -2361,7 +2370,7 @@
           const thOverflow = isSig ? '' : 'overflow:hidden;';
           const thZIndex = (isSig && isOpen) ? 'z-index:10;' : '';
           return `<th data-slot="table-head" class="table-head table-head-sortable ${alignCls}" style="${colStyle}${thOverflow}${thZIndex}" onclick="clickTh('${tbodyId}',${i})">` +
-            `<span id="${sid}-th-label" class="table-head-sort-container ${alignCls}"${isOpen ? ' style="display:none"' : ''}>` +
+            `<span id="${sid}-th-label" class="table-head-sort-container ${alignCls}"${isOpen ? (isSig ? ' style="display:none"' : ' style="visibility:hidden"') : ''}>` +
             `<button class="th-search-ico" type="button" onclick="open${SID}ThSearch();event.stopPropagation();">${searchSvg}</button>` +
             textSpan + iconSpan + `</span>` +
             `<div id="${sid}-th-search" class="th-search-field${isOpen ? ' open' : ''}">` +
@@ -2491,7 +2500,7 @@
     </tr>`;
       }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
       <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.short}</span></div></td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right" style="padding-right:8px;"><span class="text-flat">—</span></td>
@@ -2499,7 +2508,7 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
-      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="text-flat">—</span></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
     </tr>`).join('');
     }
 
@@ -2518,7 +2527,7 @@
         const color = side === 'buy' ? 'var(--color-rise)' : 'var(--color-fall)';
         return `<div style="display:flex;align-items:center;gap:8px;width:100%;">
           <span class="tabular-nums ${side === 'buy' ? 'text-rise' : 'text-fall'}" style="width:7.5ch;text-align:right;flex-shrink:0;">${side === 'buy' ? '+' : '-'}${amt.toLocaleString('zh-TW')}</span>
-          <div style="width:100px;flex-shrink:0;height:5px;background:var(--color-gray-250);border-radius:3px;overflow:hidden;">
+          <div style="width:100px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
             <div style="width:${barW.toFixed(1)}%;height:100%;background:${color};border-radius:3px;"></div>
           </div>
         </div>`;
@@ -3312,12 +3321,12 @@
     // ═══════════════════════════════════════════
     // THEAD SEARCH TOGGLE
     // ═══════════════════════════════════════════
-    function openMktThSearch() { document.getElementById('mkt-th-label').style.display = 'none'; const sf = document.getElementById('mkt-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
-    function closeMktThSearch() { document.getElementById('mkt-th-label').style.display = ''; const sf = document.getElementById('mkt-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; mktSearchQ = ''; renderMktOverview(); }
-    function openStkThSearch() { document.getElementById('stk-th-label').style.display = 'none'; const sf = document.getElementById('stk-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
-    function closeStkThSearch() { document.getElementById('stk-th-label').style.display = ''; const sf = document.getElementById('stk-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; stkSearchQ = ''; renderStkTable(); }
-    function openEtfThSearch() { document.getElementById('etf-th-label').style.display = 'none'; const sf = document.getElementById('etf-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
-    function closeEtfThSearch() { document.getElementById('etf-th-label').style.display = ''; const sf = document.getElementById('etf-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; etfSearchQ = ''; renderEtfTable(); }
+    function openMktThSearch() { document.getElementById('mkt-th-label').style.visibility = 'hidden'; const sf = document.getElementById('mkt-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
+    function closeMktThSearch() { document.getElementById('mkt-th-label').style.visibility = ''; const sf = document.getElementById('mkt-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; mktSearchQ = ''; renderMktOverview(); }
+    function openStkThSearch() { document.getElementById('stk-th-label').style.visibility = 'hidden'; const sf = document.getElementById('stk-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
+    function closeStkThSearch() { document.getElementById('stk-th-label').style.visibility = ''; const sf = document.getElementById('stk-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; stkSearchQ = ''; renderStkTable(); }
+    function openEtfThSearch() { document.getElementById('etf-th-label').style.visibility = 'hidden'; const sf = document.getElementById('etf-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
+    function closeEtfThSearch() { document.getElementById('etf-th-label').style.visibility = ''; const sf = document.getElementById('etf-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; etfSearchQ = ''; renderEtfTable(); }
     function openSigStockThSearch() { document.getElementById('sigStock-th-label').style.display = 'none'; const sf = document.getElementById('sigStock-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
     function closeSigStockThSearch() { document.getElementById('sigStock-th-label').style.display = ''; const sf = document.getElementById('sigStock-th-search'); sf.classList.remove('open'); sf.querySelector('input').value = ''; sigSearchQ = ''; renderSignals(); }
     function openSigEtfThSearch() { document.getElementById('sigEtf-th-label').style.display = 'none'; const sf = document.getElementById('sigEtf-th-search'); sf.classList.add('open'); sf.querySelector('input').focus(); }
@@ -3326,16 +3335,16 @@
     // ═══════════════════════════════════════════
     // INIT
     // ── ETF chart state (must precede init calls) ──
-    const SECTOR_CHART_COLORS = {
-      '半導體': '#6366f1', '電子零組件': '#8b5cf6', '電腦週邊': '#a78bfa',
-      '電機機械': '#10b981', '網路通訊': '#34d399', '通信': '#059669',
-      '金融': '#f59e0b', '航運': '#fbbf24', '鋼鐵': '#9ca3af', '塑膠': '#fcd34d', '光電': '#f472b6',
-    };
-    const STOCK_DONUT_PALETTE = [
-      '#6366f1', '#8b5cf6', '#a78bfa', '#10b981', '#34d399', '#059669',
-      '#f59e0b', '#fbbf24', '#f472b6', '#38bdf8', '#fb923c', '#4ade80',
-      '#e879f9', '#22d3ee', '#a3e635', '#facc15',
-    ];
+    // Resolve a CSS custom property through a probe element (handles var() chains; returns rgb() string usable by canvas)
+    function _resolveColor(varName) {
+      const el = document.createElement('div');
+      el.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:0;height:0;';
+      el.style.backgroundColor = `var(${varName})`;
+      document.body.appendChild(el);
+      const val = getComputedStyle(el).backgroundColor;
+      document.body.removeChild(el);
+      return val;
+    }
     let etfChgMode = 'stock';
     let etfChartRange = '1m';
     let etfDonutSlices = []; // [{label, sub, val, pct, color, startAngle, endAngle}]
@@ -3357,6 +3366,15 @@
     renderEtfChgBars();
     renderEtfTable();
     updateEtfCardLabels('1d');
+
+    // Hash routing — 在所有資料 render 完成後，依 URL hash 切換頁面
+    (function() {
+      const hash = location.hash.slice(1);
+      if (_VALID_PAGES.includes(hash) && hash !== 'market') {
+        showPage(hash, true);
+      }
+      try { history.replaceState({ page: _VALID_PAGES.includes(hash) ? hash : 'market' }, '', '#' + (_VALID_PAGES.includes(hash) ? hash : 'market')); } catch(e) {}
+    })();
 
     // ── Sticky-col shadow: only when horizontal overflow exists ──────────────
     function syncXScroll(viewId) {
@@ -3913,6 +3931,9 @@
       // Update title
       const titleEl = document.getElementById('etf-donut-title');
       if (titleEl) titleEl.textContent = etfChgMode === 'sector' ? 'ETF 產業配置佔比' : 'ETF 個股配置佔比';
+      // Resolve Chart/01~06 tokens at runtime via probe element (fully resolves var() chains for canvas)
+      const CHART_COLORS = [1,2,3,4,5,6].map(i => _resolveColor(`--color-chart-0${i}`));
+      const CHART_OTHER  = _resolveColor('--color-gray-350');
       // Build slices
       let slices;
       if (etfChgMode === 'sector') {
@@ -3922,20 +3943,20 @@
         const sectorSorted = Object.entries(sectorMap).sort((a, b) => b[1] - a[1]);
         const top5sec = sectorSorted.slice(0, 5);
         const restSec = sectorSorted.slice(5);
-        slices = top5sec.map(([label, val]) => ({ label, val, color: SECTOR_CHART_COLORS[label] || '#d1d5db' }));
+        slices = top5sec.map(([label, val], i) => ({ label, val, color: CHART_COLORS[i] || CHART_OTHER, cssVar: i < 6 ? `var(--color-chart-0${i+1})` : null }));
         if (restSec.length > 0) {
           const otherVal = restSec.reduce((s, [, v]) => s + v, 0);
-          slices.push({ label: `其他 (${restSec.length}個產業)`, val: otherVal, color: '#d1d5db' });
+          slices.push({ label: `其他 (${restSec.length}個產業)`, val: otherVal, color: CHART_OTHER, cssVar: 'var(--color-gray-350)' });
         }
       } else {
         // 個股模式：前 5 大 + 其他
         const sorted = [...ETF_DATA].filter(r => r.ratio > 0).sort((a, b) => b.ratio - a.ratio);
         const top5 = sorted.slice(0, 5);
         const rest = sorted.slice(5);
-        slices = top5.map((r, i) => ({ label: r.name, sub: r.code, val: r.ratio, color: STOCK_DONUT_PALETTE[i % STOCK_DONUT_PALETTE.length] }));
+        slices = top5.map((r, i) => ({ label: r.name, sub: r.code, val: r.ratio, color: CHART_COLORS[i] || CHART_OTHER, cssVar: i < 6 ? `var(--color-chart-0${i+1})` : null }));
         if (rest.length > 0) {
           const otherVal = rest.reduce((s, r) => s + r.ratio, 0);
-          slices.push({ label: `其他 (${rest.length}檔)`, val: otherVal, color: '#d1d5db' });
+          slices.push({ label: `其他 (${rest.length}檔)`, val: otherVal, color: CHART_OTHER, cssVar: 'var(--color-gray-350)' });
         }
       }
       const total = slices.reduce((s, r) => s + r.val, 0) || 1;
@@ -3969,7 +3990,7 @@
         legend.innerHTML = etfDonutSlices.map((s, i) =>
           `<div class="flex items-center gap-1.5 text-[13px] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 px-2 py-1.5 -mx-2 rounded transition-colors cursor-default"
                onmouseenter="redrawDonut(${i})" onmouseleave="redrawDonut(-1)">
-            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;flex-shrink:0;background:${s.color};"></span>
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;flex-shrink:0;background:${s.cssVar || s.color};"></span>
             <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.label}</span>
             <span style="font-weight:600;font-variant-numeric:tabular-nums;color:var(--color-gray-600);flex-shrink:0;">${s.pct.toFixed(2)}%</span>
           </div>`
@@ -4469,7 +4490,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/15 18:21';
+        const FILE_UPDATED = '2026/05/19 09:59';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);

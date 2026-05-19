@@ -93,6 +93,21 @@
 [data-theme="light"] { --comp-table-stock-num:   var(--color-gray-600); }
 :root                { --comp-sticky-col-bg:     var(--color-gray-100); }
 
+/* ── Chart palette — Chart/01~06 ── */
+:root {
+  --color-chart-01: var(--xq-blue-550);
+  --color-chart-02: var(--xq-cyan-550);
+  --color-chart-03: var(--xq-orange-550);
+  --color-chart-04: var(--xq-purple-550);
+  --color-chart-05: var(--xq-yellow-550);
+  --color-chart-06: var(--xq-pink-550);
+  --color-chart-progress-track: var(--color-gray-250);  /* Chart/AfterMarket/Progress/Track */
+  --color-chart-progress-fill:  var(--color-theme-550); /* Chart/AfterMarket/Progress/Fill  */
+}
+[data-theme="light"] {
+  --color-chart-02: var(--xq-cyan-600);
+}
+
 /* 表頭底線與內容格子底線：由 index.html <style> 統一套用 --comp-table-border */
 
 /* Layer 3 — Component: Btn/Primary/Fill */
@@ -137,6 +152,9 @@
 
 /* Layer 3 — Component: Btn/System/CTA/Stroke */
 :root                { --comp-btn-cta-stroke:          var(--color-orange-550); }
+
+/* Layer 3 — Component: Input（搜尋欄位字級）*/
+:root                { --comp-input-font-size:         var(--text-sm); }  /* --text-sm = 0.875rem = 14px */
 
 /* ── 全站最小字級規範：12px ──────────────────────────────────────
    proto-supplement.css 內所有 font-size 不得低於 12px。
@@ -183,6 +201,7 @@
 .min-h-8   { min-height: 2rem; }
 /* RD component base (exist in React but not in compiled rd-app.css output) */
 .ui-input-root  { position: relative; width: 100%; }
+.ui-input       { font-size: var(--comp-input-font-size); }
 .table-body     { display: table-row-group; }
 
 /* ── Missing Tailwind spacing/layout utilities (not compiled in rd-app.css) ── */
@@ -649,7 +668,7 @@
 .th-search-ico:hover { color: var(--color-theme-550); }
 .th-search-field { display: none; position: absolute; inset: 0; align-items: center; background: var(--color-gray-100); border: 1px solid var(--color-theme-550); border-radius: 3px; padding: 2px 10px 2px calc(var(--spacing) * 3); gap: 6px; z-index: 5; }
 .th-search-field.open { display: flex; }
-.th-search-field input { font: inherit; font-size: 12px; background: transparent; color: var(--color-gray-1000); border: none; outline: none; flex: 1; min-width: 0; }
+.th-search-field input { font: inherit; font-size: var(--comp-input-font-size); background: transparent; color: var(--color-gray-1000); border: none; outline: none; flex: 1; min-width: 0; }
 .th-search-field-close { font-size: 12px; color: var(--color-gray-500); cursor: pointer; }
 .th-search-field-close:hover { color: var(--color-gray-1000); }
 
@@ -1031,16 +1050,26 @@ tr[data-sig="exit"] td:first-child span {
 .stk-cb:checked {
   background: var(--color-theme-500);
   border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px 10px;
 }
+[data-theme="light"] .stk-cb:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+}
 .stk-cb:checked:disabled {
-  background: var(--color-gray-400);
+  background-color: var(--color-gray-400);
   border-color: var(--color-gray-400);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
   opacity: 0.5;
   cursor: not-allowed;
+}
+[data-theme="light"] .stk-cb:checked:disabled {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
 }
 .stk-cb:not(:checked):disabled {
   opacity: 0.4;
@@ -1052,10 +1081,13 @@ tr[data-sig="exit"] td:first-child span {
 .stk-cb:indeterminate {
   background: var(--color-theme-500);
   border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23000' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px 10px;
+}
+[data-theme="light"] .stk-cb:indeterminate {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
 }
 
 /* ── Signal table — 可點擊 td ── */

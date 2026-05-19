@@ -174,6 +174,7 @@
   <a class="cl-anchor-item" href="#s-pill">sig-pill</a>
   <a class="cl-anchor-item" href="#s-check">Checkbox</a>
   <a class="cl-anchor-item" href="#s-table">Table</a>
+  <a class="cl-anchor-item" href="#s-bar">Bar</a>
   <a class="cl-anchor-item" href="#s-search">Search Input</a>
   <a class="cl-anchor-item" href="#s-empty">Empty State</a>
 </nav>
@@ -900,19 +901,6 @@
       </div>
     </div>
 
-    <div class="cl-subsection">
-      <div class="cl-sublabel">Light mode</div>
-      <div class="cl-panel" data-theme="light" style="background:#fff;display:flex;gap:20px;align-items:center;">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <input type="checkbox" class="stk-cb" checked>
-          <span style="font-size:13px;color:#4b5563;">checked</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <input type="checkbox" class="stk-cb" checked disabled>
-          <span style="font-size:13px;color:#9ca3af;">checked disabled</span>
-        </div>
-      </div>
-    </div>
 
   </section>
 
@@ -1056,6 +1044,93 @@
       }
     </script>
     </div><!-- cl-subsection -->
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       Bar
+  ══════════════════════════════════════════ -->
+  <section id="s-bar" class="cl-section">
+    <div class="cl-section-title">Bar</div>
+
+    <!-- 金額排行 Bar — 買超 -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">金額排行 Bar — 買超</div>
+      <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+4,821</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:100%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+3,240</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:67%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+1,560</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:32%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 金額排行 Bar — 賣超 -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">金額排行 Bar — 賣超</div>
+      <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-5,034</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:100%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-2,910</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:58%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-1,280</span>
+          <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
+            <div style="width:25%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 投資比率 Bar -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">投資比率 Bar</div>
+      <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
+        <!-- 無 avg marker -->
+        <div style="display:inline-flex;align-items:center;gap:6px;">
+          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+            <div style="width:72%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>
+          </div>
+          <span class="tabular-nums" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">1.30</span>
+        </div>
+        <!-- 含 avg marker -->
+        <div style="display:inline-flex;align-items:center;gap:6px;">
+          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+            <div style="width:40%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>
+            <div class="avg-mk" style="left:58%;" title="平均值: 1.06%">
+              <div class="avg-mk-line"></div>
+            </div>
+          </div>
+          <span class="tabular-nums" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">0.73</span>
+        </div>
+        <!-- 0% 空值 -->
+        <div style="display:inline-flex;align-items:center;gap:6px;">
+          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;"></div>
+          <span class="tabular-nums text-flat" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">0.00</span>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- ══════════════════════════════════════════
