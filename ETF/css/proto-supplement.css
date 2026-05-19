@@ -88,10 +88,17 @@
 :root                { --comp-table-border:      var(--color-gray-200); }
 :root                { --comp-table-row-hover:   var(--hover-bg); }
 :root                { --comp-table-title-text:  var(--color-gray-800); }  /* Table/TitleText_Default */
+:root                { --comp-table-text:        var(--color-gray-1000); } /* Table/Text（一般數據）*/
 :root                { --comp-table-stock-name:  var(--color-gray-1000); } /* Table/Stock_name（商品上欄）*/
 :root                { --comp-table-stock-num:   var(--color-gray-800); }  /* Table/Stock_num（商品下欄）*/
 [data-theme="light"] { --comp-table-stock-num:   var(--color-gray-600); }
 :root                { --comp-sticky-col-bg:     var(--color-gray-100); }
+
+/* Content/Frame text hierarchy */
+:root { --comp-frame-text-primary:   var(--color-gray-1000); } /* Component/Content/Frame/Text_Primary   */
+:root { --comp-frame-text-subtitle:  var(--color-gray-900);  } /* Component/Content/Frame/Text_SubTitle  */
+:root { --comp-frame-text-secondary: var(--color-gray-750);  } /* Component/Content/Frame/Text_Secondary */
+:root { --comp-frame-text-tertiary:  var(--color-gray-600);  } /* Component/Content/Frame/Text_Tertiary  */
 
 /* ── Chart palette — Chart/01~06 ── */
 :root {
@@ -155,6 +162,15 @@
 
 /* Layer 3 — Component: Input（搜尋欄位字級）*/
 :root                { --comp-input-font-size:         var(--text-sm); }  /* --text-sm = 0.875rem = 14px */
+
+/* Trade 漲跌色票 */
+:root {
+  --color-trade-up:            var(--xq-red-550);
+  --color-trade-down:          var(--xq-green-550);
+  /* AfterMarket/Card/Field */
+  --color-am-card-field-label: var(--xq-gray-650);  /* AfterMarket/Card/Field/Label */
+  --color-am-card-field-meta:  var(--xq-gray-1000); /* AfterMarket/Card/Field/Meta  */
+}
 
 /* ── 全站最小字級規範：12px ──────────────────────────────────────
    proto-supplement.css 內所有 font-size 不得低於 12px。
@@ -569,8 +585,8 @@
 .tabular-nums {
   font-variant-numeric: tabular-nums; /* 確保數字對齊 */
 }
-.text-rise { color: var(--color-rise, #ef1515); }
-.text-fall { color: var(--color-fall, #189e01); }
+.text-rise, .text-up   { color: var(--color-trade-up); }
+.text-fall, .text-down { color: var(--color-trade-down); }
 .text-flat { color: var(--color-gray-500, #8a8a8a); }
 /* ════════════════════════════════════════════════════════════════
    CHIP FILTER BAR
@@ -703,8 +719,8 @@
 
 .card-accent-blue   { border-left: 3px solid var(--color-theme-500) !important; }
 .card-accent-orange { border-left: 3px solid var(--color-orange-500) !important; }
-.card-accent-red    { border-left: 3px solid var(--color-rise) !important; }
-.card-accent-green  { border-left: 3px solid var(--color-fall) !important; }
+.card-accent-red    { border-left: 3px solid var(--color-trade-up) !important; }
+.card-accent-green  { border-left: 3px solid var(--color-trade-down) !important; }
 .card-accent-gray   { border-left: 3px solid var(--color-gray-450) !important; }
 .card-accent-teal   { border-left: 3px solid var(--color-turquoise-blue-400) !important; }
 .card-accent-yellow { border-left: 3px solid var(--color-yellow-500) !important; }
@@ -713,7 +729,11 @@
 .card-clickable:hover { background: var(--color-gray-150) !important; }
 
 /* Label tag inside clickable card（共用元件，改這裡全頁同步） */
-.card-label { display: inline-flex; align-items: center; }
+.card-label       { display: inline-flex; align-items: center; }
+.card-field-label { color: var(--comp-frame-text-subtitle); }
+.card-field-sub   { color: var(--comp-frame-text-tertiary); }
+.card-field-meta  { color: var(--color-am-card-field-meta); }
+.stk-legend-title { color: var(--color-am-card-field-label); }
 
 /* Inner badge span — base pill shape + transition */
 .card-new-label,
@@ -724,7 +744,7 @@
 }
 /* Hover: badge goes fully opaque */
 .card-clickable:hover .card-new-label   { background: var(--xq-red-600) !important; color: #fff !important; }
-.card-clickable:hover .card-clear-label { background: var(--color-fall) !important; color: #fff !important; }
+.card-clickable:hover .card-clear-label { background: var(--color-trade-down) !important; color: #fff !important; }
 /* Selected: 60% tint + outline (同表格 tag 樣式) */
 .card-clickable.card-selected .card-new-label {
   background: color-mix(in srgb, var(--xq-red-600) 60%, transparent) !important;
@@ -733,9 +753,9 @@
   outline-offset: -1px;
 }
 .card-clickable.card-selected .card-clear-label {
-  background: color-mix(in srgb, var(--color-fall) 60%, transparent) !important;
+  background: color-mix(in srgb, var(--color-trade-down) 60%, transparent) !important;
   color: #fff !important;
-  outline: 1px solid var(--color-fall);
+  outline: 1px solid var(--color-trade-down);
   outline-offset: -1px;
 }
 
@@ -768,8 +788,8 @@
 }
 .buysell-fade.at-end { opacity: 0; }
 .buysell-hd { padding: 8px 14px; font-size: 12px; font-weight: 400; border-bottom: 1px solid var(--color-gray-200); }
-.buysell-hd.buy  { background: rgba(239,21,21,.08); color: var(--color-rise, #ef1515);; }
-.buysell-hd.sell { background: rgba(24,158,1,.1); color: var(--color-fall, #189e01);; }
+.buysell-hd.buy  { background: rgba(239,21,21,.08); color: var(--color-trade-up); }
+.buysell-hd.sell { background: rgba(24,158,1,.1); color: var(--color-trade-down); }
 
 /* ════════════════════════════════════════════════════════════════
    MISC
@@ -781,7 +801,7 @@
               background: var(--color-gray-250); color: var(--color-gray-600); }
 .rank-badge.rank-top  { background: var(--color-theme-500); color: #fff; }
 .rank-badge.rank-buy  { background: color-mix(in srgb, var(--xq-red-600) 15%, transparent); color: var(--xq-red-600); }
-.rank-badge.rank-sell { background: color-mix(in srgb, var(--color-fall) 15%, transparent); color: var(--color-fall); }
+.rank-badge.rank-sell { background: color-mix(in srgb, var(--color-trade-down) 15%, transparent); color: var(--color-trade-down); }
 .chip-sector { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 12px; background: var(--color-tint-100); color: var(--color-theme-550); border: 1px solid var(--color-tint-300); }
 .t-name-row { display: flex; align-items: center; gap: 8px; }
 .t-code-inline { font-size: 12px; color: var(--color-gray-500); width: 52px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
@@ -1025,9 +1045,9 @@ tr[data-sig="new"] td:first-child span {
   font-weight: 400 !important;
 }
 tr[data-sig="exit"] td:first-child span {
-  background: color-mix(in srgb, var(--color-fall) 60%, transparent) !important;
+  background: color-mix(in srgb, var(--color-trade-down) 60%, transparent) !important;
   color: #fff !important;
-  outline: 1px solid var(--color-fall) !important;
+  outline: 1px solid var(--color-trade-down) !important;
   outline-offset: -1px !important;
   font-weight: 400 !important;
 }
@@ -1096,8 +1116,8 @@ tr[data-sig="exit"] td:first-child span {
 
 /* ── ETF 加減碼分析 bar chart ── */
 .chg-bar-val  { font-size: 14px; font-weight: 400; color: var(--color-gray-1000); margin-bottom: 4px; white-space: nowrap; }
-.chg-bar-name { font-size: 13px; color: var(--color-gray-600); line-height: 1.3; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
-.chg-bar-code { font-size: 12px; color: var(--color-gray-450); }
+.chg-bar-name { font-size: 13px; color: var(--comp-table-stock-name); line-height: 1.3; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+.chg-bar-code { font-size: 12px; color: var(--comp-table-stock-num); }
 .sig-pill            { display: inline-block; font-size: 12px; padding: 4px 6px; border-radius: 999px; line-height: 1; color: #fff; }
 .card-label .sig-pill { padding: 5px 6px 3px; }  /* flex items-center 父層的光學補償 */
 .chg-bar-tag         { margin-bottom: 2px; }
@@ -1135,7 +1155,7 @@ tr[data-sig="exit"] td:first-child span {
 }
 
 .chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-600);  outline-offset: -1px; }
-.chip-clear-tag.tag-active { outline: 1px solid var(--color-fall);  outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--color-trade-down);  outline-offset: -1px; }
 
 /* ── 首次買入 / 完全出清 chip buttons — hover 全不透明（共用元件，改這裡全頁同步） ── */
 .chip-new-tag,
@@ -1146,7 +1166,7 @@ button:hover .chip-new-tag {
   background: var(--xq-red-600) !important;
 }
 button:hover .chip-clear-tag {
-  background: var(--color-fall) !important;
+  background: var(--color-trade-down) !important;
 }
 
 /* ── Empty state ─────────────────────────────────────────────── */

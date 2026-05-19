@@ -1,0 +1,145 @@
+/* =============================================================================
+   Font Variables
+   字體變數定義 — 依據 Font_Tool / Font_Content FontSize_tokens.csv
+
+   CSS Selector 對應 CSV 四個尺寸：
+     sm  → Small   （小）
+     md  → Default （一般，預設）
+     lg  → Big     （大）
+     xl  → Large   （特大）
+
+   變數命名規則：
+     --font-base        → Content FontSize_1（字體基準，step=2 遞減）
+     --font-scope-base  → Tool Scope_1（工具列字體基準，step=2 遞減）
+     --font-step        → 每個 Scope / FontSize 級別的遞減量（固定 2px）
+     --leading-c-h-base → Content LineHeigh_H/H1
+     --leading-c-b-base → Content LineHeigh_B/B1
+     --leading-c-p-base → Content LineHeigh_P/P1
+     --leading-t-h-base → Tool LineHeigh_H/H1
+     --leading-t-b-base → Tool LineHeigh_B/B1
+     --leading-t-p-base → Tool LineHeigh_P/P1
+     --font-tag-*       → Content Fixed/Tag/* 固定尺寸（隨字體大小調整）
+     --font-icon-large  → Tool Fixed/Large_icon（固定，不隨字體大小改變）
+   ============================================================================= */
+
+@layer base {
+
+  /* ---------------------------------------------------------------------------
+     Tool 固定尺寸 — 所有字體大小皆相同
+     來源：Font_Tool FontSize_tokens.csv Fixed/*
+     Fixed/Large_icon        = 220（所有尺寸一致）
+     Fixed/Large_icon_height = 200（所有尺寸一致）
+     Fixed/Input_Number_icon = 4  （所有尺寸一致）
+     --------------------------------------------------------------------------- */
+  :root {
+    --font-icon-large: 220px;
+    --font-icon-large-height: 200px;
+    --font-input-number-icon: 4px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     md — Default（一般，預設）
+     Content : FontSize_1=24  H1=24  B1=26  P1=28
+     Tool    : Scope_1=24     H1=24  B1=26  P1=28
+     Content Tag: Fontsize_S=10 LH_S=8 FontSize_M=12 LH_M=10
+                  Icon_S=12 LH_Icon_S=12 Icon_L=16 LH_Icon_L=16
+     --------------------------------------------------------------------------- */
+  :root,
+  :root[data-font-scale="md"] {
+    --font-base: 24px;
+    --font-scope-base: 24px;
+    --font-step: 2px;
+    --leading-c-h-base: 24px;
+    --leading-c-b-base: 26px;
+    --leading-c-p-base: 28px;
+    --leading-t-h-base: 24px;
+    --leading-t-b-base: 26px;
+    --leading-t-p-base: 28px;
+    --font-tag-size-s: 10px;
+    --font-tag-lh-s: 8px;
+    --font-tag-size-m: 12px;
+    --font-tag-lh-m: 10px;
+    --font-tag-icon-s: 12px;
+    --font-tag-lh-icon-s: 12px;
+    --font-tag-icon-l: 16px;
+    --font-tag-lh-icon-l: 16px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     sm — Small（小）
+     Content : FontSize_1=20  H1=20  B1=22  P1=24
+     Tool    : Scope_1=22     H1=22  B1=24  P1=26
+     Content Tag: Fontsize_S=8 LH_S=8 FontSize_M=8 LH_M=8
+                  Icon_S=12 LH_Icon_S=12 Icon_L=16 LH_Icon_L=16
+     --------------------------------------------------------------------------- */
+  :root[data-font-scale="sm"] {
+    --font-base: 20px;
+    --font-scope-base: 22px;
+    --leading-c-h-base: 20px;
+    --leading-c-b-base: 22px;
+    --leading-c-p-base: 24px;
+    --leading-t-h-base: 22px;
+    --leading-t-b-base: 24px;
+    --leading-t-p-base: 26px;
+    --font-tag-size-s: 8px;
+    --font-tag-lh-s: 8px;
+    --font-tag-size-m: 8px;
+    --font-tag-lh-m: 8px;
+    --font-tag-icon-s: 12px;
+    --font-tag-lh-icon-s: 12px;
+    --font-tag-icon-l: 16px;
+    --font-tag-lh-icon-l: 16px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     lg — Big（大）
+     Content : FontSize_1=26  H1=26  B1=28  P1=30
+     Tool    : Scope_1=26     H1=26  B1=28  P1=30
+     Content Tag: Fontsize_S=10 LH_S=10 FontSize_M=12 LH_M=12
+                  Icon_S=14 LH_Icon_S=14 Icon_L=18 LH_Icon_L=20
+     --------------------------------------------------------------------------- */
+  :root[data-font-scale="lg"] {
+    --font-base: 26px;
+    --font-scope-base: 26px;
+    --leading-c-h-base: 26px;
+    --leading-c-b-base: 28px;
+    --leading-c-p-base: 30px;
+    --leading-t-h-base: 26px;
+    --leading-t-b-base: 28px;
+    --leading-t-p-base: 30px;
+    --font-tag-size-s: 10px;
+    --font-tag-lh-s: 10px;
+    --font-tag-size-m: 12px;
+    --font-tag-lh-m: 12px;
+    --font-tag-icon-s: 14px;
+    --font-tag-lh-icon-s: 14px;
+    --font-tag-icon-l: 18px;
+    --font-tag-lh-icon-l: 20px;
+  }
+
+  /* ---------------------------------------------------------------------------
+     xl — Large（特大）
+     Content : FontSize_1=32  H1=32  B1=34  P1=36
+     Tool    : Scope_1=28     H1=28  B1=30  P1=32
+     Content Tag: Fontsize_S=12 LH_S=12 FontSize_M=14 LH_M=14
+                  Icon_S=16 LH_Icon_S=16 Icon_L=18 LH_Icon_L=20
+     --------------------------------------------------------------------------- */
+  :root[data-font-scale="xl"] {
+    --font-base: 32px;
+    --font-scope-base: 28px;
+    --leading-c-h-base: 32px;
+    --leading-c-b-base: 34px;
+    --leading-c-p-base: 36px;
+    --leading-t-h-base: 28px;
+    --leading-t-b-base: 30px;
+    --leading-t-p-base: 32px;
+    --font-tag-size-s: 12px;
+    --font-tag-lh-s: 12px;
+    --font-tag-size-m: 14px;
+    --font-tag-lh-m: 14px;
+    --font-tag-icon-s: 16px;
+    --font-tag-lh-icon-s: 16px;
+    --font-tag-icon-l: 18px;
+    --font-tag-lh-icon-l: 20px;
+  }
+}

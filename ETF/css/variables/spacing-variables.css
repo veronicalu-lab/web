@@ -1,0 +1,14 @@
+@layer base {
+  :root {
+    --xq-radius-none: 0px;
+    --xq-radius-xs: 2px;
+    --xq-radius-s: 4px;
+    --xq-radius-m: 8px;
+    --xq-radius-round: 50px;
+
+    --xq-padding-xxs: 2px;
+    --xq-padding-xs: 4px;
+    --xq-padding-s: 6px;
+    --xq-padding-m: 8px;
+  }
+}
