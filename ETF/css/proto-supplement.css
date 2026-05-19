@@ -730,7 +730,7 @@
 
 /* Label tag inside clickable card（共用元件，改這裡全頁同步） */
 .card-label       { display: inline-flex; align-items: center; }
-.card-field-label { color: var(--comp-frame-text-subtitle); }
+.card-field-label { color: var(--comp-frame-text-secondary); }
 .card-field-sub   { color: var(--comp-frame-text-tertiary); }
 .card-field-meta  { color: var(--color-am-card-field-meta); }
 .stk-legend-title { color: var(--color-am-card-field-label); }
