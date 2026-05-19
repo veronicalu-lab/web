@@ -3782,9 +3782,12 @@
         stkChart.timeScale().setVisibleRange({ from: stkSelStart, to: stkSelEnd });
       }
 
+      const _rgba = (v, a) => _resolveColor(v).replace('rgb(', 'rgba(').replace(')', `,${a})`);
+      const BAR_UP = _rgba('--color-trade-up',   '0.85');
+      const BAR_DN = _rgba('--color-trade-down', '0.85');
       stkBarSeries.setData(days.map((d, i) => ({
         time: d, value: vals[i],
-        color: vals[i] >= 0 ? 'rgba(239,68,68,0.85)' : 'rgba(34,197,94,0.85)',
+        color: vals[i] >= 0 ? BAR_UP : BAR_DN,
       })));
       const lineData = days.map((d, i) => ({ time: d, value: prices[i] }));
       stkPriceLine.setData(lineData);
@@ -4490,7 +4493,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/19 13:47';
+        const FILE_UPDATED = '2026/05/19 13:53';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
