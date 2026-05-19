@@ -620,7 +620,7 @@
                   <button type="button" id="mkt-chip-new" onclick="setMktChip('new')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-new-tag"
-                      style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                      style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
                         id="mkt-cnt-new">0</span></span></button>
                   <button type="button" id="mkt-chip-add" onclick="setMktChip('add')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -724,7 +724,7 @@
                   <button type="button" id="sig-chip-new" onclick="filterSig('new')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-new-tag"
-                      style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>3</span></span></button>
+                      style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>3</span></span></button>
                   <button type="button" id="sig-chip-add" onclick="filterSig('add')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       data-variant="red" class="tag gap-1" style="height:28px;">大幅加碼<span>8</span></span></button>
@@ -1041,7 +1041,7 @@
               <button type="button" id="stk-chip-new" onclick="setStkChip('new')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   class="tag gap-1 chip-new-tag"
-                  style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                  style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
                     id="stk-cnt-new">0</span></span></button>
               <button type="button" id="stk-chip-add" onclick="setStkChip('add')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -1240,13 +1240,13 @@
               class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red">
               <div class="text-[14px] card-field-label mb-1 flex items-center">近1個月報酬率</div>
               <div class="text-[24px] font-bold tabular-nums leading-tight"><span id="etf-sum-ret1m" class="tabular-nums text-up">+18.47%</span></div>
-              <div class="text-[14px] card-field-sub mt-0.5">0050 ROI <span class="tabular-nums text-up">+23.34%</span></div>
+              <div class="text-[14px] card-field-sub mt-0.5">同期0050 <span class="tabular-nums text-up">+23.34%</span></div>
             </div>
             <div id="etf-card-mdd"
               class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green">
               <div class="text-[14px] card-field-label mb-1 flex items-center">近1年最大區間虧損</div>
-              <div class="text-[24px] font-bold tabular-nums leading-tight"><span id="etf-sum-mdd" class="tabular-nums text-down">-8.23%</span></div>
-              <div class="text-[14px] card-field-sub mt-0.5">0050 MDD <span class="tabular-nums text-down">-13.34%</span></div>
+              <div class="text-[24px] font-bold tabular-nums leading-tight flex items-center gap-2"><span id="etf-sum-mdd" class="tabular-nums text-down">-8.23%</span><span class="tag" style="cursor:default;pointer-events:none;font-size:12px;font-weight:400;height:20px;display:inline-flex;align-items:center;border-radius:3px;background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;padding-inline:5px;">創新低</span></div>
+              <div class="text-[14px] card-field-sub mt-0.5">同期0050 <span class="tabular-nums text-down">-13.34%</span></div>
             </div>
             <div id="etf-card-aum"
               class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue">
@@ -1340,7 +1340,7 @@
               <button type="button" id="etf-chip-new" onclick="setEtfChip('new')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   class="tag gap-1 chip-new-tag"
-                  style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                  style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
                     id="etf-cnt-new">0</span></span></button>
               <button type="button" id="etf-chip-add" onclick="setEtfChip('add')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -1895,13 +1895,13 @@
     // Badges — using RD's actual Tailwind utility pattern from snapshot
     const SIG_TAG_BASE = 'cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;';
     const SIG_TAG = {
-      new:    `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
+      new:    `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
       add:    `<span class="tag" data-variant="red" style="cursor:default;pointer-events:none;height:28px;">大幅加碼</span>`,
       reduce: `<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;height:28px;">大幅減碼</span>`,
       exit:   `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;">完全出清</span>`,
     };
     const BADGE = {
-      new: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
+      new: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
       add: '<span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼</span>',
       hold: '<span class="tag" data-variant="gray"       style="cursor:default;pointer-events:none;">持平</span>',
@@ -2028,9 +2028,9 @@
       const pColor = p > 0 ? 'var(--color-trade-up)' : p < 0 ? 'var(--color-trade-down)' : 'var(--color-gray-400)';
       const premEl = document.getElementById('etf-info-premium');
       if (premEl) {
-        premEl.innerHTML = `<span style="color:var(--color-gray-500);">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span>`;
+        premEl.innerHTML = `<span style="color:var(--comp-frame-text-tertiary);">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span>`;
       }
-      const valHtml = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">${sign}${etf.navChg.toFixed(2)}%</span></span><span class="tabular-nums" style="font-size:14px;margin-left:6px;"><span style="color:var(--color-gray-500);font-weight:400;">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span></span>`;
+      const valHtml = `<span class="${cls}">${etf.nav.toFixed(2)} <span style="font-size:14px;">${sign}${etf.navChg.toFixed(2)}%</span></span><span class="tabular-nums" style="font-size:14px;margin-left:6px;"><span style="color:var(--comp-frame-text-tertiary);font-weight:400;">折溢價</span> <span style="color:${pColor};">${pSign}${p.toFixed(2)}%</span></span>`;
       const cv = document.getElementById('etf-compact-val'); if (cv) cv.innerHTML = valHtml;
       const ci = document.getElementById('etf-compact-icon'); if (ci) ci.style.color = iconColor;
     }
@@ -2410,15 +2410,14 @@
 
     function setMktChip(c) {
       mktChip = c;
-      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', reduce: 'currentColor', exit: 'var(--color-trade-down)' };
       ['all', 'new', 'add', 'reduce', 'exit'].forEach(k => {
         const btn = document.getElementById('mkt-chip-' + k);
         if (!btn) return;
         const span = btn.firstElementChild;
         if (!span) return;
         const isActive = k === c;
-        span.style.outline = isActive ? `1px solid ${OUTLINES[k]}` : 'none';
-        span.style.outlineOffset = '-1px';
+        span.style.outline = '';
+        span.classList.toggle('tag-active', isActive);
         if (isActive) span.setAttribute('data-active', 'true');
         else span.removeAttribute('data-active');
       });
@@ -2491,7 +2490,7 @@
             const s = SIG_MAP[r.code];
             if (!s) return '';
             return [
-              s.new ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
+              s.new ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
               s.add ? `<span class="tag" data-variant="red" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','add')" onmouseleave="hideSigTip()">大幅加碼 ${s.add}</span>` : '',
               s.reduce ? `<span class="tag" data-variant="green-teal" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','reduce')" onmouseleave="hideSigTip()">大幅減碼 ${s.reduce}</span>` : '',
               s.exit ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
@@ -2581,7 +2580,7 @@
     let _sigChipType = 'all';
 
     const SIG_TYPE_TAG = {
-      new:    '<span class="tag" data-variant="yellow-bright">首次買入</span>',
+      new:    '<span class="tag" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>',
       add:    '<span class="tag" data-variant="red">大幅加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal">大幅減碼</span>',
       exit:   '<span class="tag" data-variant="gray">完全出清</span>',
@@ -2622,15 +2621,14 @@
 
     function filterSig(type) {
       _sigChipType = type;
-      const OUTLINES = { all: 'currentColor', new: 'var(--xq-red-600)', add: 'currentColor', reduce: 'currentColor', exit: 'var(--color-trade-down)' };
       ['all', 'new', 'add', 'reduce', 'exit'].forEach(t => {
         const btn = document.getElementById('sig-chip-' + t);
         if (!btn) return;
         const span = btn.firstElementChild;
         if (!span) return;
         const isActive = t === type;
-        span.style.outline = isActive ? `1px solid ${OUTLINES[t]}` : 'none';
-        span.style.outlineOffset = '-1px';
+        span.style.outline = '';
+        span.classList.toggle('tag-active', isActive);
         if (isActive) span.setAttribute('data-active', 'true');
         else span.removeAttribute('data-active');
       });
@@ -2895,7 +2893,7 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-right">
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
           <span class="tabular-nums ${r.premium >= 0 ? 'text-up' : 'text-down'}">${r.premium >= 0 ? '+' : ''}${r.premium.toFixed(2)}%</span>
-          <span class="tabular-nums t-sub" style="font-size:11px;">${r.price.toFixed(2)}</span>
+          <span class="tabular-nums t-sub" style="font-size:12px;">${r.price.toFixed(2)}</span>
         </div>
       </td>
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-issuer">${r.issuer}</td>
@@ -3148,7 +3146,7 @@
       setHtml('etf-lbl-clear', `${pfx}${badgeClear}`);
       set('etf-lbl-aum', `ETF規模`);
 
-      const SUB_SFX = { '1d': '較前日', '2d': '較2日前', '3d': '較3日前', '5d': '較5日前', '10d': '較10日前', 'custom': '期間' };
+      const SUB_SFX = { '1d': '較前日', '2d': '較前2日', '3d': '較前3日', '5d': '較前5日', '10d': '較前10日', 'custom': '期間' };
       const ss = SUB_SFX[val] || '較前期';
       set('etf-sub-aum', ss);
       set('etf-sub-count', ss);
@@ -3701,7 +3699,9 @@
     function updateStkRangeBg() {
       const bg = document.getElementById('stk-range-bg');
       if (!bg || !stkChart) return;
-      if (!stkSelStart || !stkSelEnd) { bg.style.display = 'none'; return; }
+      const stkTrigger = document.getElementById('stk-date-trigger-btn');
+      const isCustom = stkTrigger && stkTrigger.dataset.custom === 'true';
+      if (!isCustom || !stkSelStart || !stkSelEnd) { bg.style.display = 'none'; return; }
       const ts = stkChart.timeScale();
       const allDays = STK_FLOW_RAW.days;
       // clamp to nearest available trading day
@@ -3710,14 +3710,11 @@
       let x1 = ts.timeToCoordinate(clampStart);
       let x2 = ts.timeToCoordinate(clampEnd);
       if (x1 === null || x2 === null) {
-        // 選取日期超出可見範圍 → 擴展圖表視窗讓日期進入畫面
-        // subscribeVisibleTimeRangeChange 會再呼叫 updateStkRangeBg
+        // 座標尚未就緒，先確保日期在可見範圍內，再等下一幀重試
         try {
-          const vr = ts.getVisibleRange();
-          const newFrom = vr ? (clampStart < vr.from ? clampStart : vr.from) : clampStart;
-          const newTo   = vr ? (clampEnd   > vr.to   ? clampEnd   : vr.to)   : clampEnd;
-          ts.setVisibleRange({ from: newFrom, to: newTo });
+          ts.setVisibleRange({ from: clampStart, to: clampEnd });
         } catch (_) {}
+        requestAnimationFrame(updateStkRangeBg);
         return;
       }
 
@@ -3991,11 +3988,11 @@
       if (legend) {
         legend.style.cssText = 'flex:1;min-width:0;display:flex;flex-direction:column;gap:0;';
         legend.innerHTML = etfDonutSlices.map((s, i) =>
-          `<div class="flex items-center gap-1.5 text-[13px] hover:bg-gray-200 dark:hover:bg-white/10 px-2 py-1.5 -mx-2 rounded transition-colors cursor-default"
+          `<div class="sector-legend-row flex items-center gap-1.5 text-[13px] px-2 py-1.5 -mx-2 rounded cursor-default"
                onmouseenter="redrawDonut(${i})" onmouseleave="redrawDonut(-1)">
             <span style="display:inline-block;width:8px;height:8px;border-radius:2px;flex-shrink:0;background:${s.cssVar || s.color};"></span>
             <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--comp-table-title-text);">${s.label}</span>
-            <span style="font-weight:600;font-variant-numeric:tabular-nums;color:var(--comp-table-text);flex-shrink:0;">${s.pct.toFixed(2)}%</span>
+            <span style="font-weight:400;font-variant-numeric:tabular-nums;color:var(--comp-table-text);flex-shrink:0;">${s.pct.toFixed(2)}%</span>
           </div>`
         ).join('');
       }
@@ -4493,7 +4490,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/19 13:53';
+        const FILE_UPDATED = '2026/05/19 19:45';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
