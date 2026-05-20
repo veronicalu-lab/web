@@ -94,11 +94,32 @@
 [data-theme="light"] { --comp-table-stock-num:   var(--color-gray-600); }
 :root                { --comp-sticky-col-bg:     var(--color-gray-100); }
 
+/* Button radius */
+:root { --comp-btn-radius: 4px; }
+
 /* Content/Frame text hierarchy */
 :root { --comp-frame-text-primary:   var(--color-gray-1000); } /* Component/Content/Frame/Text_Primary   */
 :root { --comp-frame-text-subtitle:  var(--color-gray-900);  } /* Component/Content/Frame/Text_SubTitle  */
 :root { --comp-frame-text-secondary: var(--color-gray-750);  } /* Component/Content/Frame/Text_Secondary */
 :root { --comp-frame-text-tertiary:  var(--color-gray-600);  } /* Component/Content/Frame/Text_Tertiary  */
+
+/* ── Tooltip tokens — Component/Content/Popup/Tooltip_* ── */
+:root                { --comp-tooltip-bg:       var(--color-gray-300);  } /* dark:  Gray-300 */
+[data-theme="light"] { --comp-tooltip-bg:       var(--color-gray-150);  } /* light: Gray-150 */
+:root                { --comp-tooltip-bg-2:     var(--color-gray-450);  } /* dark:  Gray-450 */
+[data-theme="light"] { --comp-tooltip-bg-2:     var(--color-gray-250);  } /* light: Gray-250 */
+:root                { --comp-tooltip-text:     var(--color-gray-1000); } /* both:  Gray-1000 */
+:root                { --comp-tooltip-text-sec: var(--color-gray-800);  } /* both:  Gray-800 */
+
+/* ── Datepicker tokens ── */
+:root {
+  --comp-dp-text:       var(--color-gray-850);         /* Text_default   Gray/Gray-850      */
+  --comp-dp-text-dis:   var(--color-gray-600);         /* Text_disable   Gray/Gray-600      */
+  --comp-dp-text-active:var(--color-tint-100);         /* Text_active    Tint/Tint-100      */
+  --comp-dp-bg-active:  var(--color-vibrant-blue-700); /* Bg_active      Vibrant_Blue-700   */
+  --comp-dp-bg-range:   var(--color-tint-600);         /* Bg_range       Tint/Tint-600      */
+  --comp-dp-bg-hover:   var(--color-tint-300);         /* Bg_hover       Tint/Tint-300      */
+}
 
 /* ── Chart palette — Chart/01~06 ── */
 :root {
@@ -166,7 +187,15 @@
 /* Trade 漲跌色票 */
 :root {
   --color-trade-up:            var(--xq-red-550);
+  --color-trade-up-dark-100:   var(--xq-red-450);
+  --color-trade-up-dark-200:   var(--xq-red-200);
+  --color-trade-up-dark-300:   var(--xq-red-150);
+  --color-trade-up-dark-400:   var(--xq-red-100);
   --color-trade-down:          var(--xq-green-550);
+  --color-trade-down-dark-100: var(--xq-green-450);
+  --color-trade-down-dark-200: var(--xq-green-200);
+  --color-trade-down-dark-300: var(--xq-green-150);
+  --color-trade-down-dark-400: var(--xq-green-100);
   /* AfterMarket/Card/Field */
   --color-am-card-field-label: var(--xq-gray-650);  /* AfterMarket/Card/Field/Label */
   --color-am-card-field-meta:  var(--xq-gray-1000); /* AfterMarket/Card/Field/Meta  */
@@ -620,6 +649,9 @@
   --tag-text-active: var(--tag-text);
   --tag-bg-hover: var(--color-gray-300);
 }
+[data-theme="light"] .tag {
+  --tag-bg-hover: var(--color-gray-200);
+}
 .tag.tag-active {
   outline: 1px solid var(--tag-text);
   outline-offset: -1px;
@@ -752,17 +784,17 @@
   display: inline-flex !important;
   align-items: center;
   color: #fff !important;
-  outline-width: 2px;
+  outline-width: 1px;
   outline-style: solid;
-  outline-offset: -2px;
+  outline-offset: -1px;
 }
 .card-clickable.card-selected .card-new-label {
-  background: color-mix(in srgb, var(--color-trade-up) 60%, transparent) !important;
-  outline-color: var(--color-trade-up);
+  background: var(--color-trade-up-dark-100) !important;
+  outline-color: var(--xq-red-650);
 }
 .card-clickable.card-selected .card-clear-label {
-  background: color-mix(in srgb, var(--color-trade-down) 60%, transparent) !important;
-  outline-color: var(--color-trade-down);
+  background: var(--color-trade-down-dark-100) !important;
+  outline-color: var(--xq-green-650);
 }
 .card-clickable.card-selected .card-new-label::before,
 .card-clickable.card-selected .card-clear-label::before {
@@ -1068,9 +1100,9 @@ tr[data-sig="new"] td:first-child span {
   font-weight: 400 !important;
 }
 tr[data-sig="exit"] td:first-child span {
-  background: color-mix(in srgb, var(--color-trade-down) 60%, transparent) !important;
+  background: var(--color-trade-down-dark-100) !important;
   color: #fff !important;
-  outline: 1px solid var(--color-trade-down) !important;
+  outline: 1px solid currentColor !important;
   outline-offset: -1px !important;
   font-weight: 400 !important;
 }
@@ -1134,7 +1166,8 @@ tr[data-sig="exit"] td:first-child span {
 .chg-bar-code { font-size: 12px; color: var(--comp-table-stock-num); }
 .sig-pill            { display: inline-block; font-size: 12px; padding: 4px 6px; border-radius: 999px; line-height: 1; color: #fff; }
 .card-label .sig-pill { padding: 5px 10px 3px; }  /* flex items-center 父層的光學補償 */
-.chg-bar-tag         { margin-bottom: 2px; }
+.chg-bar-tag         { margin-bottom: 8px; }
+.chg-bar-tag.sig-pill { padding-left: 10px; padding-right: 10px; }
 /* .chg-bar-rank → merged into .rank-badge */
 
 /* ── 投資比率 avg marker — 擴大感應區 + hover 高亮 ── */
@@ -1168,8 +1201,8 @@ tr[data-sig="exit"] td:first-child span {
   --tag-text-active: var(--color-theme-550);
 }
 
-.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-600);  outline-offset: -1px; }
-.chip-clear-tag.tag-active { outline: 1px solid var(--color-trade-down);  outline-offset: -1px; }
+.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650);   outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650); outline-offset: -1px; }
 
 /* ── Filter chip — 高度 + flex 對齊 ── */
 [id$="-chip-all"] .tag,
@@ -1222,8 +1255,12 @@ tr[data-sig="exit"] td:first-child span {
 }
 
 /* 首次買入 / 完全出清 active 邊線用固定顏色（override currentColor） */
-.chip-new-tag.tag-active   { outline: 1px solid var(--color-trade-up)   !important; outline-offset: -1px; }
-.chip-clear-tag.tag-active { outline: 1px solid var(--color-trade-down) !important; outline-offset: -1px; }
+.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650)   !important; outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650) !important; outline-offset: -1px; }
+
+/* ── 加碼 / 減碼 filter chip — 文字色改用 trade 色票 ── */
+[id$="-chip-add"]    .tag { color: var(--color-trade-up); }
+[id$="-chip-reduce"] .tag { color: var(--color-trade-down); }
 
 /* ── 首次買入 / 完全出清 chip buttons — hover 全不透明（共用元件，改這裡全頁同步） ── */
 .chip-new-tag,
@@ -1235,6 +1272,15 @@ button:hover .chip-new-tag {
 }
 button:hover .chip-clear-tag {
   background: var(--color-trade-down) !important;
+}
+
+/* ── 加減碼分析 Bar chart hover ── */
+.chg-bar-col {
+  cursor: default;
+  transition: opacity .15s;
+}
+.chg-bars-wrap:has(.chg-bar-col:hover) .chg-bar-col:not(:hover) {
+  opacity: 0.5;
 }
 
 /* ── Empty state ─────────────────────────────────────────────── */

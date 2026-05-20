@@ -161,7 +161,7 @@
     .stk-dp-input {
       flex: 1;
       height: 28px;
-      border-radius: 6px;
+      border-radius: var(--comp-btn-radius);
       border: 1px solid var(--color-gray-250);
       background: var(--color-gray-100);
       color: var(--color-gray-900);
@@ -296,7 +296,7 @@
       cursor: pointer;
       background: transparent;
       font-size: 13px !important;
-      color: var(--color-gray-900);
+      color: var(--comp-dp-text);
       position: relative;
       z-index: 1;
       display: flex;
@@ -319,7 +319,7 @@
     }
 
     .stk-dp-day.is-out {
-      color: var(--color-gray-600);
+      color: var(--comp-dp-text-dis);
       opacity: .4;
     }
 
@@ -335,7 +335,7 @@
     .stk-dp-fbtn {
       height: 28px;
       padding: 0 14px;
-      border-radius: 6px;
+      border-radius: var(--comp-btn-radius);
       font-size: 12px;
       cursor: pointer;
       transition: background .1s;
@@ -620,7 +620,7 @@
                   <button type="button" id="mkt-chip-new" onclick="setMktChip('new')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-new-tag"
-                      style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                      style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;height:28px;">首次買入<span
                         id="mkt-cnt-new">0</span></span></button>
                   <button type="button" id="mkt-chip-add" onclick="setMktChip('add')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -633,7 +633,7 @@
                   <button type="button" id="mkt-chip-exit" onclick="setMktChip('exit')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-clear-tag"
-                      style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span
+                      style="background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;height:28px;">完全出清<span
                         id="mkt-cnt-exit">0</span></span></button>
 
                 </div>
@@ -724,7 +724,7 @@
                   <button type="button" id="sig-chip-new" onclick="filterSig('new')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-new-tag"
-                      style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>3</span></span></button>
+                      style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;height:28px;">首次買入<span>3</span></span></button>
                   <button type="button" id="sig-chip-add" onclick="filterSig('add')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       data-variant="red" class="tag gap-1" style="height:28px;">大幅加碼<span>8</span></span></button>
@@ -734,7 +734,7 @@
                   <button type="button" id="sig-chip-exit" onclick="filterSig('exit')"
                     class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                       class="tag gap-1 chip-clear-tag"
-                      style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span>8</span></span></button>
+                      style="background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;height:28px;">完全出清<span>8</span></span></button>
                 </div>
               </div><!-- end sig-sticky-zone -->
               <!-- [RD] tbody-sig-all — API: GET /api/market/signals | 欄位：ETF/股票/產業/關鍵異動訊號/異動張數/推估市值/訊號日期 | chip filter by data-sig="new|add|exit" on <tr> -->
@@ -1041,7 +1041,7 @@
               <button type="button" id="stk-chip-new" onclick="setStkChip('new')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   class="tag gap-1 chip-new-tag"
-                  style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                  style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;height:28px;">首次買入<span
                     id="stk-cnt-new">0</span></span></button>
               <button type="button" id="stk-chip-add" onclick="setStkChip('add')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -1053,7 +1053,7 @@
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   data-variant="green-teal" class="tag gap-1">減碼<span id="stk-cnt-reduce">0</span></span></button>
               <button type="button" id="stk-chip-clear" onclick="setStkChip('clear')"><span class="tag gap-1 chip-clear-tag"
-                  style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span
+                  style="background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;height:28px;">完全出清<span
                     id="stk-cnt-clear">0</span></span></button>
             </div>
           </div><!-- /stk-sticky-zone -->
@@ -1245,7 +1245,7 @@
             <div id="etf-card-mdd"
               class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green">
               <div class="text-[14px] card-field-label mb-1 flex items-center">近1年最大區間虧損</div>
-              <div class="text-[24px] font-bold tabular-nums leading-tight flex items-center gap-2"><span id="etf-sum-mdd" class="tabular-nums text-down">-8.23%</span><span class="tag" style="cursor:default;pointer-events:none;font-size:12px;font-weight:400;height:20px;display:inline-flex;align-items:center;border-radius:3px;background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;padding-inline:5px;">創新低</span></div>
+              <div class="text-[24px] font-bold tabular-nums leading-tight flex items-center gap-2"><span id="etf-sum-mdd" class="tabular-nums text-down">-8.23%</span><span class="tag" style="cursor:default;pointer-events:none;font-size:12px;font-weight:400;height:20px;display:inline-flex;align-items:center;border-radius:3px;background:var(--color-trade-down-dark-100);color:#fff;padding-inline:5px;">創新低</span></div>
               <div class="text-[14px] card-field-sub mt-0.5">同期0050 <span class="tabular-nums text-down">-13.34%</span></div>
             </div>
             <div id="etf-card-aum"
@@ -1314,7 +1314,7 @@
                   <div id="etf-sector-legend" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
                   </div>
                   <div id="etf-donut-tooltip"
-                    style="position:fixed;display:none;background:var(--color-gray-100);color:var(--color-gray-1000);border:1px solid var(--color-gray-200);font-size:12px;padding:6px 10px;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.12);line-height:1.5;">
+                    style="position:fixed;display:none;background:var(--comp-tooltip-bg);color:var(--comp-tooltip-text);border:1px solid var(--color-gray-400);font-size:12px;padding:6px 10px;border-radius:4px;pointer-events:none;white-space:nowrap;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.12);line-height:1.5;">
                   </div>
                 </div>
 
@@ -1340,7 +1340,7 @@
               <button type="button" id="etf-chip-new" onclick="setEtfChip('new')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   class="tag gap-1 chip-new-tag"
-                  style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span
+                  style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;height:28px;">首次買入<span
                     id="etf-cnt-new">0</span></span></button>
               <button type="button" id="etf-chip-add" onclick="setEtfChip('add')"
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
@@ -1352,7 +1352,7 @@
                 class="shrink-0 rounded-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-400"><span
                   data-variant="green-teal" class="tag gap-1">減碼<span id="etf-cnt-reduce">0</span></span></button>
               <button type="button" id="etf-chip-clear" onclick="setEtfChip('clear')"><span class="tag gap-1 chip-clear-tag"
-                  style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span
+                  style="background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;height:28px;">完全出清<span
                     id="etf-cnt-clear">0</span></span></button>
             </div>
           </div><!-- /etf-sticky-zone -->
@@ -1895,17 +1895,17 @@
     // Badges — using RD's actual Tailwind utility pattern from snapshot
     const SIG_TAG_BASE = 'cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;';
     const SIG_TAG = {
-      new:    `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
+      new:    `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
       add:    `<span class="tag" data-variant="red" style="cursor:default;pointer-events:none;height:28px;">大幅加碼</span>`,
       reduce: `<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;height:28px;">大幅減碼</span>`,
-      exit:   `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;">完全出清</span>`,
+      exit:   `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
     };
     const BADGE = {
-      new: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>`,
+      new: `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
       add: '<span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼</span>',
       hold: '<span class="tag" data-variant="gray"       style="cursor:default;pointer-events:none;">持平</span>',
-      clear: `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;">完全出清</span>`,
+      clear: `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
     };
     const SECTOR_VARIANT = {
       '半導體': 'blue',
@@ -2428,7 +2428,7 @@
       const stocks = (SIG_STOCKS_MAP[etfCode] || {})[sigType] || [];
       if (!stocks.length) return;
       const tip = document.getElementById('sig-hover-tip');
-      tip.innerHTML = stocks.map(s => `<span style="font-variant-numeric:tabular-nums;color:var(--color-gray-500);margin-right:4px;">${s.code}</span>${s.name}`).join('<br>');
+      tip.innerHTML = stocks.map(s => `<span style="font-variant-numeric:tabular-nums;color:var(--comp-tooltip-text-sec);margin-right:4px;">${s.code}</span>${s.name}`).join('<br>');
       tip.style.display = 'block';
       const rect = e.target.getBoundingClientRect();
       const tipW = 160;
@@ -2439,6 +2439,75 @@
     }
     function hideSigTip() {
       const tip = document.getElementById('sig-hover-tip');
+      if (tip) tip.style.display = 'none';
+    }
+
+    let _chgBarItems = [];
+    function showChgBarTip(e, idx) {
+      const d = _chgBarItems[idx];
+      if (!d || !d.label) return;
+      const tip = document.getElementById('chg-bar-tip');
+      if (!tip) return;
+      const isLeft = idx < 3;
+      const rank = isLeft ? 3 - idx : idx - 2;
+      const _stag = (txt, bg) => `<span style="display:inline-flex;align-items:center;background:${bg};color:#fff;font-size:11px;font-weight:500;padding:2px 6px 0;height:16px;border-radius:3px;vertical-align:middle;margin-left:6px;">${txt}</span>`;
+      const rankClass = !isLeft ? 'rank-buy' : 'rank-sell';
+      const typeColor = !isLeft ? 'var(--color-trade-up)' : 'var(--color-trade-down)';
+      const typeLabel = !isLeft ? '加碼' : '減碼';
+      let statusTag = '';
+      if (idx === 5 && d.label) statusTag = _stag('首次買入', 'var(--color-trade-up-dark-100)');
+      if (d.status === 'clear') statusTag = _stag('完全出清', 'var(--color-trade-down-dark-100)');
+      const titleHtml = `<span class="rank-badge ${rankClass}" style="margin-right:6px;">${rank}</span><span style="color:${typeColor};font-weight:600;">${typeLabel}</span>${statusTag}`;
+      const sign = d.val > 0 ? '+' : '';
+      const chgColor = d.val >= 0 ? 'var(--color-trade-up)' : 'var(--color-trade-down)';
+      let html = `<div style="font-weight:600;margin-bottom:6px;display:flex;align-items:center;">${titleHtml}</div>`;
+      if (etfChgMode === 'stock' && d.sub) {
+        html += `<div style="margin-bottom:4px;"><strong>${d.label}</strong>${d.sub ? ` (${d.sub})` : ''}</div>`;
+        const row = ETF_DATA.find(r => r.code === d.sub);
+        const pairs = [['增減比率', `${sign}${d.val.toFixed(2)}%`, chgColor]];
+        if (row) {
+          pairs.push(['投資比率', `${row.ratio.toFixed(2)}%`, '']);
+          const sc = row.sharesChg / 1000;
+          const scColor = sc >= 0 ? 'var(--color-trade-up)' : 'var(--color-trade-down)';
+          pairs.push(['張數增減', `${sc >= 0 ? '+' : ''}${sc.toLocaleString('zh-TW')}張`, scColor]);
+          pairs.push(['持有張數', `${(row.shares / 1000).toLocaleString('zh-TW')}張`, '']);
+        }
+        html += pairs.map(([l, v, c]) =>
+          `<div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">${l}</span><span class="tabular-nums"${c ? ` style="color:${c};"` : ''}>${v}</span></div>`
+        ).join('');
+      } else {
+        // 產業模式：加總該產業所有股票
+        const secRows = ETF_DATA.filter(r => r.sector === d.label);
+        const secRatio    = secRows.reduce((s, r) => s + r.ratio, 0);
+        const secSharesChg = secRows.reduce((s, r) => s + r.sharesChg, 0);
+        const secShares   = secRows.reduce((s, r) => s + r.shares, 0);
+        html += `<div style="margin-bottom:4px;">${d.label}</div>`;
+        const secPairs = [['增減比率', `${sign}${d.val.toFixed(2)}%`, chgColor]];
+        secPairs.push(['投資比率', `${secRatio.toFixed(2)}%`, '']);
+        const sc = secSharesChg / 1000;
+        secPairs.push(['張數增減', `${sc >= 0 ? '+' : ''}${sc.toLocaleString('zh-TW')}張`, sc >= 0 ? 'var(--color-trade-up)' : 'var(--color-trade-down)']);
+        secPairs.push(['持有張數', `${(secShares / 1000).toLocaleString('zh-TW')}張`, '']);
+        html += secPairs.map(([l, v, c]) =>
+          `<div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">${l}</span><span class="tabular-nums"${c ? ` style="color:${c};"` : ''}>${v}</span></div>`
+        ).join('');
+      }
+      tip.innerHTML = html;
+      tip.style.display = 'block';
+      _posChgBarTip(e);
+    }
+    function _posChgBarTip(e) {
+      const tip = document.getElementById('chg-bar-tip');
+      if (!tip || tip.style.display === 'none') return;
+      const pad = 8;
+      let x = e.clientX + 14;
+      let y = e.clientY + 14;
+      if (x + tip.offsetWidth + pad > window.innerWidth) x = e.clientX - tip.offsetWidth - 14;
+      if (y + tip.offsetHeight + pad > window.innerHeight) y = e.clientY - tip.offsetHeight - 14;
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
+    }
+    function hideChgBarTip() {
+      const tip = document.getElementById('chg-bar-tip');
       if (tip) tip.style.display = 'none';
     }
 
@@ -2490,10 +2559,10 @@
             const s = SIG_MAP[r.code];
             if (!s) return '';
             return [
-              s.new ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
+              s.new ? `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
               s.add ? `<span class="tag" data-variant="red" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','add')" onmouseleave="hideSigTip()">大幅加碼 ${s.add}</span>` : '',
               s.reduce ? `<span class="tag" data-variant="green-teal" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','reduce')" onmouseleave="hideSigTip()">大幅減碼 ${s.reduce}</span>` : '',
-              s.exit ? `<span style="${SIG_TAG_BASE}background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
+              s.exit ? `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
             ].join('');
           })()}</div></td>
     </tr>`;
@@ -2580,7 +2649,7 @@
     let _sigChipType = 'all';
 
     const SIG_TYPE_TAG = {
-      new:    '<span class="tag" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);color:#fff;font-weight:400;">首次買入</span>',
+      new:    '<span class="tag" style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>',
       add:    '<span class="tag" data-variant="red">大幅加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal">大幅減碼</span>',
       exit:   '<span class="tag" data-variant="gray">完全出清</span>',
@@ -2800,8 +2869,8 @@
       const isCustom = trigger && trigger.dataset.custom === 'true';
       const periodPrefix = isCustom ? '期間' : `近${days}日`;
 
-      const badgeNew = `<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>`;
-      const badgeClear = `<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>`;
+      const badgeNew = `<span class="card-new-label sig-pill" style="background:var(--color-trade-up-dark-100);margin:-2px 0 -2px 4px;">首次買入</span>`;
+      const badgeClear = `<span class="card-clear-label sig-pill" style="background:var(--color-trade-down-dark-100);margin:-2px 0 -2px 4px;">完全出清</span>`;
 
       const accentCls = (n, def) => n > 0 ? 'card-accent-red' : n < 0 ? 'card-accent-green' : 'card-accent-gray';
 
@@ -3139,8 +3208,8 @@
         el.classList.add(cls);
       };
 
-      const badgeNew = `<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>`;
-      const badgeClear = `<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>`;
+      const badgeNew = `<span class="card-new-label sig-pill" style="background:var(--color-trade-up-dark-100);margin:-2px 0 -2px 4px;">首次買入</span>`;
+      const badgeClear = `<span class="card-clear-label sig-pill" style="background:var(--color-trade-down-dark-100);margin:-2px 0 -2px 4px;">完全出清</span>`;
 
       setHtml('etf-lbl-newbuy', `${pfx}${badgeNew}`);
       setHtml('etf-lbl-clear', `${pfx}${badgeClear}`);
@@ -3991,7 +4060,7 @@
           `<div class="sector-legend-row flex items-center gap-1.5 text-[13px] px-2 py-1.5 -mx-2 rounded cursor-default"
                onmouseenter="redrawDonut(${i})" onmouseleave="redrawDonut(-1)">
             <span style="display:inline-block;width:8px;height:8px;border-radius:2px;flex-shrink:0;background:${s.cssVar || s.color};"></span>
-            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--comp-table-title-text);">${s.label}</span>
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--comp-table-stock-name);">${s.label}${s.sub ? `<span style="color:var(--comp-table-stock-num);margin-left:3px;font-size:12px;">${s.sub}</span>` : ''}</span>
             <span style="font-weight:400;font-variant-numeric:tabular-nums;color:var(--comp-table-text);flex-shrink:0;">${s.pct.toFixed(2)}%</span>
           </div>`
         ).join('');
@@ -4049,7 +4118,7 @@
         if (hitIdx !== lastHovIdx) { lastHovIdx = hitIdx; redrawDonut(hitIdx); }
         const hit = etfDonutSlices[hitIdx];
         const sub = hit.sub ? ` (${hit.sub})` : '';
-        tip.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${hit.color};flex-shrink:0;"></span><strong>${hit.label}</strong>${sub}</span><br><span style="color:var(--color-gray-500);">${hit.pct.toFixed(1)}%</span>`;
+        tip.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${hit.cssVar || hit.color};flex-shrink:0;"></span><strong>${hit.label}</strong>${sub}</span><br><span style="color:var(--comp-tooltip-text-sec);">${hit.pct.toFixed(1)}%</span>`;
         tip.style.display = 'block';
         tip.style.left = (e.clientX + 14) + 'px';
         tip.style.top = (e.clientY - 10) + 'px';
@@ -4090,10 +4159,11 @@
       }
 
       const items = [...leftItems, ...rightItems];
+      _chgBarItems = items;
       const maxVal = Math.max(...items.map(r => Math.abs(r.val)), 0.01);
       const BAR_MAX_H = 100;
 
-      el.innerHTML = `<div style="display:flex;gap:8px;height:${BAR_MAX_H + 52}px;align-items:flex-end;">` +
+      el.innerHTML = `<div class="chg-bars-wrap" style="display:flex;gap:8px;height:${BAR_MAX_H + 52}px;align-items:flex-end;">` +
         items.map((item, index) => {
           const barH = Math.max(item.val === 0 && !item.label ? 0 : 2, Math.abs(item.val) / maxVal * BAR_MAX_H);
           const isLeft = index < 3;
@@ -4109,14 +4179,14 @@
 
           let tagHtml = '';
           if (index === 5 && item.label) {
-            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);">首次買入</span>`;
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-up-dark-100);">首次買入</span>`;
           } else if (item.status === 'clear') {
-            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);">完全出清</span>`;
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-down-dark-100);">完全出清</span>`;
           }
 
-          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;justify-content:flex-end;">
+          return `<div class="chg-bar-col" style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;justify-content:flex-end;" onmouseenter="showChgBarTip(event,${index})" onmousemove="_posChgBarTip(event)" onmouseleave="hideChgBarTip()">
             ${tagHtml}
-            <span class="tabular-nums chg-bar-val">${valText}</span>
+            <span class="tabular-nums chg-bar-val" style="color:${color};">${valText}</span>
             <div style="width:100%;height:${barH.toFixed(0)}px;background:${color};border-radius:2px 2px 0 0;flex-shrink:0;"></div>
             <div style="display:inline-flex;align-items:center;gap:4px;margin-top:5px;min-height:32px;max-width:100%;overflow:hidden;">
               <div style="flex-shrink:0;">${rankBadge}</div>
@@ -4490,7 +4560,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/19 19:45';
+        const FILE_UPDATED = '2026/05/20 13:10';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
@@ -4525,7 +4595,10 @@
 
 
   <div id="sig-hover-tip"
-    style="display:none;position:fixed;z-index:1000;background:var(--color-gray-100);border:1px solid var(--color-gray-250);border-radius:8px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--color-gray-900);pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:120px;">
+    style="display:none;position:fixed;z-index:1000;background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:120px;">
+  </div>
+  <div id="chg-bar-tip"
+    style="display:none;position:fixed;z-index:1000;background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:140px;">
   </div>
 </body>
 
