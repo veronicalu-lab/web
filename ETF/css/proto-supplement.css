@@ -1217,13 +1217,13 @@ tr[data-sig="exit"] td:first-child span {
 [id$="-chip-reduce"] .tag-active,
 [id$="-chip-clear"] .tag-active,
 [id$="-chip-exit"] .tag-active {
-  outline: 2px solid currentColor !important;
-  outline-offset: -2px;
+  outline: 1px solid currentColor !important;
+  outline-offset: -1px;
 }
 
 /* 首次買入 / 完全出清 active 邊線用固定顏色（override currentColor） */
-.chip-new-tag.tag-active   { outline: 2px solid var(--color-trade-up)   !important; outline-offset: -2px; }
-.chip-clear-tag.tag-active { outline: 2px solid var(--color-trade-down) !important; outline-offset: -2px; }
+.chip-new-tag.tag-active   { outline: 1px solid var(--color-trade-up)   !important; outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--color-trade-down) !important; outline-offset: -1px; }
 
 /* ── 首次買入 / 完全出清 chip buttons — hover 全不透明（共用元件，改這裡全頁同步） ── */
 .chip-new-tag,
