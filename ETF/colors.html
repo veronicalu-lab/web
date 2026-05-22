@@ -64,14 +64,7 @@
     }
 
     /* ── Color palette viewer ── */
-    .cl-page { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
-    .xqm-note {
-      display: none;
-      background: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
-      border: 1px solid var(--color-gray-250); border-radius: 8px;
-      padding: 10px 16px; font-size: 12px; color: var(--color-gray-600);
-      margin-bottom: 24px;
-    }
+    .cl-page { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
     .pal-group { margin-bottom: 36px; }
     .pal-group-title {
       font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
@@ -79,8 +72,25 @@
       padding-bottom: 8px; border-bottom: 1px solid var(--color-gray-200);
       margin-bottom: 16px;
     }
-    .pal-row { margin-bottom: 14px; }
-    .pal-row-header { font-size: 12px; font-weight: 600; color: var(--color-gray-600); margin-bottom: 6px; }
+    .pal-row { margin-bottom: 20px; }
+    .pal-row-header {
+      font-size: 12px; font-weight: 600; color: var(--color-gray-600);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .pal-row-header.is-used { color: var(--color-gray-1000); }
+    .pal-used-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--color-theme-500); flex-shrink: 0;
+    }
+    /* Platform rows */
+    .pal-platform-block { display: flex; flex-direction: column; gap: 6px; }
+    .pal-platform-row   { display: flex; align-items: flex-start; gap: 6px; }
+    .pal-plat-lbl {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-gray-500); width: 36px; flex-shrink: 0; padding-top: 16px;
+    }
+    .pal-plat-xqm { color: #a78bfa; }
+    /* Swatches */
     .pal-swatches { display: flex; flex-wrap: wrap; gap: 4px; }
     .swatch { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
     .swatch-box {
@@ -91,6 +101,9 @@
     .swatch:hover .swatch-box { transform: scale(1.08); }
     .swatch-step { font-size: 10px; color: var(--color-gray-500); }
     .swatch-hex  { font-size: 9px; color: var(--color-gray-400); font-family: ui-monospace,monospace; letter-spacing: -0.02em; }
+    /* XQM row: dashed border signals "pending definition" */
+    .swatch-xqm .swatch-box { border: 1px dashed rgba(167,139,250,0.45) !important; }
+    .swatch-note { font-size: 8px; color: var(--color-gray-500); text-align: center; max-width: 52px; line-height: 1.2; }
     .copied-toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: var(--color-gray-800); color: var(--color-gray-100);
@@ -116,8 +129,8 @@
     <div>
       <div class="ds-ctrl-lbl">Platform</div>
       <div class="ds-ctrl-pills">
-        <button class="cl-topbar-btn active" id="btn-xq"  onclick="setPlatform('xq')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">XQ</button>
-        <button class="cl-topbar-btn"        id="btn-xqm" onclick="setPlatform('xqm')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">XQM</button>
+        <button class="cl-topbar-btn active" id="btn-xq"  onclick="setPlatformView('xq')"  style="border-radius:6px 0 0 6px;border-right-width:0.5px;">XQ</button>
+        <button class="cl-topbar-btn"        id="btn-xqm" onclick="setPlatformView('xqm')" style="border-radius:0 6px 6px 0;border-left-width:0.5px;">XQM</button>
       </div>
     </div>
     <div id="theme-ctrl">
@@ -137,10 +150,10 @@
 </div>
 
 <div class="cl-page">
-  <div class="xqm-note" id="xqm-note">
-    ⚠️ XQM 色票值尚未設定，目前顯示與 XQ 相同。待 Figma 確認後填入 <code>proto-supplement.css</code> 的 XQM 區塊。
-  </div>
   <div id="color-palettes"></div>
+  <div id="xqm-section" style="display:none;">
+    <div id="xqm-palettes"></div>
+  </div>
 </div>
 </div><!-- ds-main -->
 
@@ -169,6 +182,7 @@
     ]},
   ];
 
+
   const _probe = document.createElement('div');
   _probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:1px;height:1px;';
   document.body.appendChild(_probe);
@@ -184,6 +198,15 @@
     return a < 1 ? hex + Math.round(a*255).toString(16).padStart(2,'0') : hex;
   }
 
+  /* 暫時切換 data-platform 來計算特定平台的色票值 */
+  function _getHexFor(platform, varName) {
+    const prev = document.documentElement.dataset.platform;
+    document.documentElement.dataset.platform = platform;
+    const hex = _getHex(varName);
+    document.documentElement.dataset.platform = prev;
+    return hex;
+  }
+
   function buildPalettes() {
     const container = document.getElementById('color-palettes');
     container.innerHTML = '';
@@ -194,22 +217,30 @@
       group.palettes.forEach(pal => {
         const rEl = document.createElement('div');
         rEl.className = 'pal-row';
-        rEl.innerHTML = `<div class="pal-row-header">${pal.name}</div>`;
+
+        const hdrEl = document.createElement('div');
+        hdrEl.className = 'pal-row-header';
+        hdrEl.appendChild(document.createTextNode(pal.name));
+        rEl.appendChild(hdrEl);
+
         const swEl = document.createElement('div');
         swEl.className = 'pal-swatches';
+
         pal.steps.forEach(step => {
           const token = `${pal.prefix}-${step}`;
-          const hex = _getHex(token) || '—';
-          const sw = document.createElement('div');
+          const hex   = _getHexFor('xq', token);
+          const bg    = hex || 'transparent';
+          const sw    = document.createElement('div');
           sw.className = 'swatch';
           sw.title = `點擊複製 ${token}`;
           sw.onclick = () => copyToken(token);
           sw.innerHTML = `
-            <div class="swatch-box" style="background:var(${token})"></div>
+            <div class="swatch-box" style="background:${bg}"></div>
             <div class="swatch-step">${step}</div>
-            <div class="swatch-hex" data-hex-for="${token}">${hex}</div>`;
+            <div class="swatch-hex">${hex || '—'}</div>`;
           swEl.appendChild(sw);
         });
+
         rEl.appendChild(swEl);
         gEl.appendChild(rEl);
       });
@@ -217,10 +248,103 @@
     });
   }
 
-  function updateHexLabels() {
-    document.querySelectorAll('[data-hex-for]').forEach(el => {
-      const h = _getHex(el.dataset.hexFor);
-      if (h) el.textContent = h;
+  /* ── XQM 專屬色票 ── */
+  const XQM_GROUPS = [
+    { title: 'Main color_gray', tokens: [
+      { s:'01', v:'--xqm-gray-01', note:'System_bg / List_bg' },
+      { s:'02', v:'--xqm-gray-02', note:'Nav_bg / Table_even' },
+      { s:'03', v:'--xqm-gray-03' },
+      { s:'04', v:'--xqm-gray-04', note:'Float menu / List_line' },
+      { s:'05', v:'--xqm-gray-05', note:'行情欄' },
+      { s:'06', v:'--xqm-gray-06', note:'List_focus' },
+      { s:'07', v:'--xqm-gray-07', note:'Disable / Placeholder' },
+      { s:'08', v:'--xqm-gray-08' },
+      { s:'09', v:'--xqm-gray-09', note:'Inactive_hold' },
+      { s:'10', v:'--xqm-gray-10', note:'Inactive' },
+      { s:'11', v:'--xqm-gray-11', note:'Popup_border' },
+      { s:'12', v:'--xqm-gray-12', note:'Text_normal' },
+      { s:'13', v:'--xqm-gray-13', note:'Text' },
+      { s:'14', v:'--xqm-gray-14', note:'Text white' },
+    ]},
+    { title: 'Main color_blue', tokens: [
+      { s:'01', v:'--xqm-blue-01', note:'盤後_選單_btn' },
+      { s:'02', v:'--xqm-blue-02', note:'盤後_選單_bg' },
+      { s:'03', v:'--xqm-blue-03', note:'card' },
+      { s:'04', v:'--xqm-blue-04', note:'Table_title' },
+      { s:'05', v:'--xqm-blue-05', note:'block' },
+      { s:'06', v:'--xqm-blue-06', note:'Table_sub_title' },
+      { s:'07', v:'--xqm-blue-07', note:'Float_menu_n' },
+      { s:'08', v:'--xqm-blue-08' },
+      { s:'09', v:'--xqm-blue-09' },
+      { s:'10', v:'--xqm-blue-10', note:'Float_menu_focus' },
+      { s:'11', v:'--xqm-blue-11', note:'Float_menu_focus' },
+    ]},
+    { title: 'Sub color', tokens: [
+      { s:'01',   v:'--xqm-sub-01' },
+      { s:'01_h', v:'--xqm-sub-01-h' },
+      { s:'02',   v:'--xqm-sub-02' },
+      { s:'02_h', v:'--xqm-sub-02-h' },
+      { s:'03',   v:'--xqm-sub-03' },
+      { s:'03_h', v:'--xqm-sub-03-h' },
+      { s:'04',   v:'--xqm-sub-04' },
+      { s:'04_h', v:'--xqm-sub-04-h' },
+    ]},
+    { title: 'Stock & Trade', tokens: [
+      { s:'Up',         v:'--xqm-trade-up' },
+      { s:'Up_h',       v:'--xqm-trade-up-h' },
+      { s:'Up_dis',     v:'--xqm-trade-up-disable' },
+      { s:'Up_50%',     v:'--xqm-trade-up-50' },
+      { s:'Up_75%',     v:'--xqm-trade-up-75' },
+      { s:'Up_vol',     v:'--xqm-trade-up-volume' },
+      { s:'Up_vol_f',   v:'--xqm-trade-up-volume-f' },
+      { s:'Down',       v:'--xqm-trade-down' },
+      { s:'Down_h',     v:'--xqm-trade-down-h' },
+      { s:'Down_dis',   v:'--xqm-trade-down-disable' },
+      { s:'Down_50%',   v:'--xqm-trade-down-50' },
+      { s:'Down_75%',   v:'--xqm-trade-down-75' },
+      { s:'Down_vol',   v:'--xqm-trade-down-volume' },
+      { s:'Down_vol_f', v:'--xqm-trade-down-volume-f' },
+    ]},
+    { title: 'System color', tokens: [
+      { s:'Active',    v:'--xqm-active',    note:'Icon/Text/Btn' },
+      { s:'Active_h',  v:'--xqm-active-h' },
+      { s:'Active_02', v:'--xqm-active-02', note:'快速下單btn' },
+      { s:'CTA',       v:'--xqm-cta',       note:'Btn/Link' },
+      { s:'CTA_h',     v:'--xqm-cta-h' },
+      { s:'Alert',     v:'--xqm-alert' },
+      { s:'Warning',   v:'--xqm-warning' },
+      { s:'Success',   v:'--xqm-success' },
+      { s:'Count',     v:'--xqm-count',     note:'圖表count' },
+      { s:'Empty',     v:'--xqm-empty',     note:'icon' },
+      { s:'Tooltips',  v:'--xqm-tooltip',   note:'icon' },
+    ]},
+  ];
+
+  function buildXqmPalettes() {
+    const container = document.getElementById('xqm-palettes');
+    container.innerHTML = '';
+    XQM_GROUPS.forEach(group => {
+      const gEl = document.createElement('div');
+      gEl.className = 'pal-group';
+      gEl.innerHTML = `<div class="pal-group-title">${group.title}</div>`;
+      const swEl = document.createElement('div');
+      swEl.className = 'pal-swatches';
+      group.tokens.forEach(({ s, v, note }) => {
+        const hex = _getHexFor('xqm', v);
+        const bg  = hex || 'transparent';
+        const sw  = document.createElement('div');
+        sw.className = 'swatch';
+        sw.title = `點擊複製 ${v}`;
+        sw.onclick = () => copyToken(v);
+        sw.innerHTML = `
+          <div class="swatch-box" style="background:${bg};border:1px solid rgba(128,128,128,0.15)"></div>
+          <div class="swatch-step">${s}</div>
+          ${note ? `<div class="swatch-note">${note}</div>` : ''}
+          <div class="swatch-hex">${hex || '—'}</div>`;
+        swEl.appendChild(sw);
+      });
+      gEl.appendChild(swEl);
+      container.appendChild(gEl);
     });
   }
 
@@ -234,15 +358,14 @@
     });
   }
 
-  function setPlatform(p) {
+  function setPlatformView(p) {
     document.documentElement.dataset.platform = p;
-    const isXqm = p === 'xqm';
-    document.getElementById('theme-ctrl').style.display = isXqm ? 'none' : '';
-    document.getElementById('xqm-note').style.display   = isXqm ? 'block' : 'none';
-    ['xq', 'xqm'].forEach(id =>
-      document.getElementById('btn-' + id).classList.toggle('active', id === p)
-    );
-    requestAnimationFrame(updateHexLabels);
+    document.getElementById('btn-xq').classList.toggle('active', p === 'xq');
+    document.getElementById('btn-xqm').classList.toggle('active', p === 'xqm');
+    document.getElementById('color-palettes').style.display = p === 'xqm' ? 'none' : '';
+    document.getElementById('xqm-section').style.display    = p === 'xqm' ? '' : 'none';
+    document.getElementById('btn-light').style.display      = p === 'xqm' ? 'none' : '';
+    if (p === 'xqm') { setTheme('dark'); }
   }
 
   function setTheme(t) {
@@ -250,11 +373,12 @@
     ['dark', 'light'].forEach(id =>
       document.getElementById('btn-' + id).classList.toggle('active', id === t)
     );
-    requestAnimationFrame(updateHexLabels);
+    buildPalettes();
+    buildXqmPalettes();
   }
 
   buildPalettes();
-  setPlatform('xq');
+  buildXqmPalettes();
 </script>
 </body>
 </html>
