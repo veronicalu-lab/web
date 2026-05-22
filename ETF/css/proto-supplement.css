@@ -54,29 +54,177 @@
   --xq-blue-650: #2862FF;
 }
 
+/* ── Component token 預設值（必須在 XQM block 之前，否則會蓋掉 XQM override）── */
+:root { --comp-table-header-bg: transparent; }
+
+/* ── Typography tokens ──────────────────────────────────────────
+   :root = XQNext  /  [data-platform="xq"] = XQ
+   XQM overrides are inside [data-platform="xqm"] block below.   */
+:root {
+  --f-family:     system-ui, -apple-system, sans-serif;
+  --f-weight:     400;
+  --f-xs:         11px;   /* Micro */
+  --f-sm:         12px;   /* Caption */
+  --f-base:       13px;   /* Small / menu */
+  --f-md:         14px;   /* Body secondary */
+  --f-lg:         18px;   /* Heading */
+  --f-xl:         18px;   /* Heading large */
+  --f-page-title: 1.25rem;
+}
+
+[data-platform="xq"] {
+  --f-xs:         12px;
+  --f-sm:         14px;
+  --f-base:       16px;
+  --f-md:         16px;
+  --f-lg:         18px;
+  --f-xl:         18px;
+  --f-page-title: 26px;
+}
+
 /* ════════════════════════════════════════════════════════════════
-   XQM Platform Token 覆蓋（單一主題，無 dark/light 切換）
-   ⚠️ TODO：色票值等待 Figma 確認後填入，解除下方註解並移除 ??? 佔位
-
-   [data-platform="xqm"] {
-     -- Gray scale
-     --xq-gray-100:  ???;   --xq-gray-125:  ???;   --xq-gray-150:  ???;
-     --xq-gray-200:  ???;   --xq-gray-250:  ???;   --xq-gray-300:  ???;
-     --xq-gray-350:  ???;   --xq-gray-400:  ???;   --xq-gray-500:  ???;
-     --xq-gray-600:  ???;   --xq-gray-700:  ???;   --xq-gray-800:  ???;
-     --xq-gray-1000: ???;
-
-     -- Theme / accent (brand color)
-     --xq-theme-400: ???;   --xq-theme-450: ???;   --xq-theme-500: ???;
-     --xq-theme-550: ???;   --xq-theme-600: ???;
-     --xq-blue-500:  ???;   --xq-blue-650:  ???;
-
-     -- Rise / Fall（確認是否沿用紅漲綠跌）
-     --xq-rise: ???;   --xq-fall: ???;
-
-     -- Typography density（確認字級規範）
-   }
+   XQM Platform Token（單一主題，無 dark/light 切換）
+   Layer 1 — XQM Primitive（照 XQM 原始命名）
+   Layer 2 — Semantic 對應（讓 component 不用改）
    ════════════════════════════════════════════════════════════════ */
+[data-platform="xqm"] {
+
+  /* ── Main color_gray ── */
+  --xqm-gray-01: #000000;  /* System_bg / List_bg / Table_odd */
+  --xqm-gray-02: #161616;  /* Nav_bg / Table_even */
+  --xqm-gray-03: #1D1D1D;
+  --xqm-gray-04: #262626;  /* Float menu_n / List_line */
+  --xqm-gray-05: #2D2D2D;  /* 行情欄 */
+  --xqm-gray-06: #333333;  /* List_focus */
+  --xqm-gray-07: #4E4E4E;  /* Disable / Text_placeholder */
+  --xqm-gray-08: #666666;
+  --xqm-gray-09: #747474;  /* Inactive_hold */
+  --xqm-gray-10: #898989;  /* Inactive */
+  --xqm-gray-11: #989898;  /* Tlock_unchange / Popup_border */
+  --xqm-gray-12: #B3B3B3;  /* Icon_normal / Text_normal */
+  --xqm-gray-13: #DDDDDD;  /* Text */
+  --xqm-gray-14: #FFFFFF;  /* Text white */
+
+  /* ── Main color_blue ── */
+  --xqm-blue-01: #0A0D13;  /* 盤後_選單_btn */
+  --xqm-blue-02: #0D0F12;  /* 盤後_選單_bg */
+  --xqm-blue-03: #16181D;  /* card */
+  --xqm-blue-04: #1B1F22;  /* 盤後_選單_btn_h / Table_title */
+  --xqm-blue-05: #1E2328;  /* block */
+  --xqm-blue-06: #292B2D;  /* Table_sub_title */
+  --xqm-blue-07: #181E28;  /* Float_menu_n */
+  --xqm-blue-08: #1C232F;
+  --xqm-blue-09: #202836;
+  --xqm-blue-10: #1F2A3E;  /* Float_menu_focus */
+  --xqm-blue-11: #213566;  /* Float_menu_focus */
+
+  /* ── Sub color ── */
+  --xqm-sub-01:   #005A78;
+  --xqm-sub-01-h: #004860;
+  --xqm-sub-02:   #007896;
+  --xqm-sub-02-h: #006078;
+  --xqm-sub-03:   #0FA1B8;
+  --xqm-sub-03-h: #0C8193;
+  --xqm-sub-04:   #78C8C8;
+  --xqm-sub-04-h: #5AA5A5;
+
+  /* ── Stock&Trade color_Default ── */
+  --xqm-trade-up:            #DE2358;
+  --xqm-trade-up-h:          #A02346;
+  --xqm-trade-up-disable:    #440B1B;  /* 閃電下單_刷貨 */
+  --xqm-trade-up-50:         rgba(222,35,88,0.5);   /* 盤後 */
+  --xqm-trade-up-75:         rgba(222,35,88,0.75);
+  --xqm-trade-up-volume:     #720A27;  /* 值量 */
+  --xqm-trade-up-volume-f:   #F37297;
+  --xqm-trade-down:          #0AA446;
+  --xqm-trade-down-h:        #195F32;
+  --xqm-trade-down-disable:  #002E20;  /* 閃電下單_刷費 */
+  --xqm-trade-down-50:       rgba(10,164,70,0.5);   /* 盤後 */
+  --xqm-trade-down-75:       rgba(10,164,70,0.75);
+  --xqm-trade-down-volume:   #014E3B;  /* 值量 */
+  --xqm-trade-down-volume-f: #81FDDF;
+
+  /* ── System color ── */
+  --xqm-active:    #79C8FF;  /* Icon / Text / Btn */
+  --xqm-active-h:  #5AA0CD;
+  --xqm-active-02: #A0CDFA;  /* 快速下單 btn */
+  --xqm-cta:       #FA960F;  /* Icon / Text / Btn / Link */
+  --xqm-cta-h:     #EB8700;
+  --xqm-alert:     #EB1450;
+  --xqm-warning:   #FFC80A;
+  --xqm-success:   #6EBB1F;
+  --xqm-count:     #2373AA;  /* 圖表 count */
+  --xqm-empty:     #FCC573;  /* icon */
+  --xqm-tooltip:   #FAE673;  /* icon */
+
+  /* ── Layer 1 — XQM Typography Primitives ── */
+  --xqm-font-count: 'Roboto', sans-serif;
+  --xqm-font-text:  'PingFang TC', 'PingFang SC', -apple-system, sans-serif;
+
+  /* Size scale */
+  --xqm-fs-o1: 36px;  /* O1 — 大數字展示 */
+  --xqm-fs-h0: 32px;  /* H0 — Count L1 (Roboto Regular) */
+  --xqm-fs-h1: 26px;  /* H1 — Count L1 Medium / 盤後_count L1 */
+  --xqm-fs-h2: 24px;  /* H2 — Count L2 / 盤後_count L2 */
+  --xqm-fs-h3: 22px;  /* H3 — Count L3 / Nav L */
+  --xqm-fs-h4: 20px;  /* H4 — Count L4 / Nav M / BTN L1 / List L1 */
+  --xqm-fs-h5: 18px;  /* H5 — Count L5 / BTN L2 / Tab L1 / Card title */
+  --xqm-fs-h6: 16px;  /* H6 — Count L6 / Menu L2 / Tab L2 / Input L2 */
+  --xqm-fs-h7: 14px;  /* H7 — Count L7 / Menu L3 / Tab L3/card */
+  --xqm-fs-h8: 12px;  /* H8 — Date / Description / Card tag */
+  --xqm-fs-h9: 10px;  /* H9 — Count L9 / Chart label */
+
+  /* Line heights — tight (Count / heading) */
+  --xqm-lh-o1: 38px;
+  --xqm-lh-h0: 38px;
+  --xqm-lh-h1: 28px;
+  --xqm-lh-h2: 26px;
+  --xqm-lh-h3: 24px;
+  --xqm-lh-h4: 22px;
+  --xqm-lh-h5: 20px;
+  --xqm-lh-h6: 18px;
+  --xqm-lh-h7: 16px;
+  --xqm-lh-h8: 14px;
+  --xqm-lh-h9: 12px;
+
+  /* Line heights — expanded (PingFang paragraph / special variants) */
+  --xqm-lh-h4-dp: 32px;  /* H4_DatePicker — 日期選擇器數字 */
+  --xqm-lh-h4-p:  24px;  /* H4_P — 段落 */
+  --xqm-lh-h5-p:  22px;  /* H5_P — 段落 */
+  --xqm-lh-h5-p2: 24px;  /* H5_P2 — 段落加大 */
+  --xqm-lh-h6-p:  20px;  /* H6_P — Table text 段落 */
+  --xqm-lh-h6-p2: 22px;  /* H6_P_R2 — 段落加大 */
+  --xqm-lh-h7-p:  18px;  /* H7_P — Table text/贊後 */
+  --xqm-lh-h8-p:  16px;  /* H8_P — Tooltips */
+
+  /* ── Layer 2 — Semantic 對應 ── */
+  /* Color */
+  --color-gray-800:   var(--xqm-gray-12);
+  --color-gray-1000:  var(--xqm-gray-14);
+  --color-trade-up:   var(--xqm-trade-up);
+  --color-trade-down: var(--xqm-trade-down);
+  --color-blue-550:   var(--xqm-active);
+  /* Typography — override rd-app.css 的 --font-sans 鏈，讓全頁字型跟著切換 */
+  --font-sans:    'PingFang TC', 'PingFang SC', ui-sans-serif, system-ui, sans-serif;
+  --font-count:   'Roboto', sans-serif;
+  --f-family:     var(--xqm-font-text);
+  --f-weight:     500;
+  --f-xs:         var(--xqm-fs-h9);   /* 10px */
+  --f-sm:         var(--xqm-fs-h8);   /* 12px — description, tag */
+  --f-base:       var(--xqm-fs-h7);   /* 14px — menu, tab, card */
+  --f-md:         var(--xqm-fs-h6);   /* 16px — body, menu L2 */
+  --f-lg:         var(--xqm-fs-h5);   /* 18px — button, section title */
+  --f-xl:         var(--xqm-fs-h4);   /* 20px — nav, page heading */
+  --f-page-title: var(--xqm-fs-h3);   /* 22px — page title / nav L */
+  /* ── Layer 3 — Component overrides ── */
+  --comp-sticky-col-bg:   var(--xqm-blue-04);
+  --comp-table-header-bg: var(--xqm-blue-04);
+}
+
+/* XQM 數字元素套 Roboto */
+[data-platform="xqm"] .tabular-nums {
+  font-family: var(--font-count, 'Roboto', sans-serif);
+}
 
 /* ── Layer 3 — Component tokens（覆蓋或補充 rd-app.css 的預設值）── */
 /* Layer 2 — Semantic */
@@ -291,6 +439,40 @@
 /* ── Multi-page prototype routing ── */
 .page { display: none; }
 .page.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── XQM 手機框預覽 ── */
+body.is-xqm #proto-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-gray-250);
+  padding: 24px 0 48px;
+}
+body.is-xqm .page.active {
+  width: 390px;
+  max-width: 390px;
+  min-height: 100vh;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.32);
+  flex-shrink: 0;
+}
+/* compact header 用 position:fixed + left:16rem，在手機框內會跑掉 */
+body.is-xqm [id$="-compact-hdr"] { display: none !important; }
+/* md:p-5 依瀏覽器寬度觸發，手機框整體不需要 padding */
+@media (min-width: 768px) {
+  body.is-xqm .md\:p-5 { padding: 0 !important; }
+}
+/* header 和卡片區保留側邊 padding；list view 滿版不需要加 */
+body.is-xqm #mkt-full-hdr,
+body.is-xqm #mkt-sticky-zone { padding-inline: 1.25rem; }
+/* 個股 / ETF：px-6 容器內，list view 用負 margin 撐滿 (px-6 = 1.5rem) */
+body.is-xqm #stk-list-view,
+body.is-xqm #etf-list-view {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  width: calc(100% + 3rem);
+}
 /* overflow-hidden → clip：保留裁切但不建立 scroll container，讓 sticky 穿透到頁面捲動 */
 #mkt-layout { overflow: clip; }
 
@@ -597,6 +779,10 @@
 }
 .table-head:hover {
   background-color: var(--comp-table-row-hover) !important;
+}
+/* 表頭背景色 */
+.table-header, .table-head {
+  background-color: var(--comp-table-header-bg);
 }
 /* 表頭文字色 — Table/TitleText_Default */
 .table-head {
@@ -1288,3 +1474,12 @@ button:hover .chip-clear-tag {
 .empty-icon  { color:var(--color-gray-350); }
 .empty-title { font-size:15px; font-weight:400; color:var(--color-gray-700); }
 .empty-sub   { font-size:13px; color:var(--color-gray-500); text-align:center; line-height:1.6; }
+
+/* ════════════════════════════════════════════════════════════════
+   XQM Component Overrides
+   !! 必須放在檔案最底部，確保在所有 :root 定義之後 !!
+   ════════════════════════════════════════════════════════════════ */
+[data-platform="xqm"] {
+  --comp-sticky-col-bg:   var(--xqm-blue-04);
+  --comp-table-header-bg: var(--xqm-blue-04);
+}
