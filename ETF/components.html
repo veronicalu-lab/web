@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>元件庫</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/rd-app.css">
   <link rel="stylesheet" href="css/proto-supplement.css">
   <style>
@@ -125,9 +128,43 @@
       color: var(--color-gray-1000);
       font-weight: 600;
     }
+
+    /* Typography showcase */
+    .type-xqm-only { display: none; }
+    [data-platform="xqm"] .type-xqm-only { display: block; }
+    .type-row {
+      display: flex; align-items: baseline; gap: 16px; padding: 3px 0;
+      border-bottom: 1px solid var(--color-gray-150);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-label {
+      font-size: 11px; color: var(--color-gray-500);
+      min-width: 220px; flex-shrink: 0; font-family: monospace;
+    }
+    .type-note { font-size: 10px; color: var(--color-gray-400); margin-top: 1px; }
   </style>
 </head>
 <body>
+
+<!--
+  ⚠️  INLINE STYLE RULE — 請務必遵守
+  ─────────────────────────────────────────────────────────────────────
+  component 的視覺屬性（顏色、字級、字重、尺寸）不得用 inline style 硬寫。
+  這會讓 XQM Platform 切換失效：CSS [data-platform="xqm"] 規則無法蓋過 inline style。
+
+  正確做法：
+    1. 在 proto-supplement.css 定義 CSS class（例如 .card-field-sub）
+    2. 在 :root 定義 token（--comp-xxx-yyy: 14px）
+    3. 在 [data-platform="xqm"] block override token（--comp-xxx-yyy: var(--xqm-fs-h7)）
+    4. 元素加 class，不寫 style="font-size:..."
+
+  允許用 inline style 的情況（純 layout、不跨 platform）：
+    - display / flex 屬性 / gap / overflow（不影響視覺規格）
+    - min-width / max-width（欄寬結構，不同於視覺）
+    - margin-top / margin-bottom（間距微調）
+    - cursor / pointer-events（行為）
+  ─────────────────────────────────────────────────────────────────────
+-->
 
 <!-- ── Sidebar ── -->
 <aside class="ds-sidebar">
@@ -177,6 +214,7 @@
   <a class="cl-anchor-item" href="#s-bar">Bar</a>
   <a class="cl-anchor-item" href="#s-search">Search Input</a>
   <a class="cl-anchor-item" href="#s-empty">Empty State</a>
+  <a class="cl-anchor-item" href="#s-tooltip">Tooltip</a>
 </nav>
 
 <div class="cl-page">
@@ -188,10 +226,10 @@
     <div class="cl-section-title">Color Tokens</div>
 
     <div class="cl-subsection">
-      <div class="cl-sublabel">Rise / Fall / Flat</div>
+      <div class="cl-sublabel">Up / Down / Flat</div>
       <div class="cl-row">
-        <span class="text-rise tabular-nums" style="font-size:18px;">+2.45%</span>
-        <span class="text-fall tabular-nums" style="font-size:18px;">-1.23%</span>
+        <span class="text-up tabular-nums" style="font-size:18px;">+2.45%</span>
+        <span class="text-down tabular-nums" style="font-size:18px;">-1.23%</span>
         <span class="text-flat tabular-nums" style="font-size:18px;">0.00%</span>
       </div>
     </div>
@@ -221,6 +259,17 @@
         <div class="cl-swatch" style="background:var(--color-theme-500);" data-label="500"></div>
       </div>
     </div>
+
+    <div class="cl-subsection type-xqm-only">
+      <div class="cl-sublabel">XQM — Other color</div>
+      <div class="cl-swatch-row" style="padding-bottom:8px;">
+        <div class="cl-swatch" style="background:var(--xqm-other-01);outline:1px solid var(--color-gray-200);outline-offset:-1px;" data-label="other-01 · 5%"></div>
+        <div class="cl-swatch" style="background:var(--xqm-other-02);outline:1px solid var(--color-gray-200);outline-offset:-1px;" data-label="other-02 · 10%"></div>
+        <div class="cl-swatch" style="background:var(--xqm-other-03);outline:1px solid var(--color-gray-200);outline-offset:-1px;" data-label="other-03 · 15%"></div>
+        <div class="cl-swatch" style="background:var(--xqm-other-04);outline:1px solid var(--color-gray-200);outline-offset:-1px;" data-label="other-04 · 30%"></div>
+        <div class="cl-swatch" style="background:var(--xqm-other-05);outline:1px solid var(--color-gray-200);outline-offset:-1px;" data-label="other-05 · 75% black"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ══════════════════════════════════════════
@@ -228,19 +277,136 @@
   ══════════════════════════════════════════ -->
   <section id="s-type" class="cl-section">
     <div class="cl-section-title">Typography</div>
-    <div class="cl-col">
-      <div style="font-size:26px;font-weight:600;color:var(--color-gray-1000);">Page Title 26px</div>
-      <div style="font-size:1.25rem;font-weight:500;color:var(--color-gray-1000);">Page Title 1.25rem</div>
-      <div style="font-size:18px;color:var(--color-gray-800);">Heading 18px</div>
-      <div style="font-size:16px;color:var(--color-gray-800);">Body 16px</div>
-      <div style="font-size:14px;color:var(--color-gray-700);">Body 14px</div>
-      <div style="font-size:13px;color:var(--color-gray-600);">Small 13px</div>
-      <div style="font-size:12px;color:var(--color-gray-500);">Caption 12px</div>
-      <div style="font-size:11px;color:var(--color-gray-400);">Micro 11px</div>
-      <div class="tabular-nums" style="font-size:22px;color:var(--color-rise);line-height:1;">
+
+    <!-- XQM only: Roboto Count scale -->
+    <div class="cl-subsection type-xqm-only">
+      <div class="cl-sublabel">Count / Number — Roboto</div>
+      <div class="cl-col" style="gap:0;">
+        <div class="type-row">
+          <span class="type-label">O1 · 36 / 38 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-o1,36px);line-height:var(--xqm-lh-o1,38px);font-weight:500;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H0 · 32 / 38 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h0,32px);line-height:var(--xqm-lh-h0,38px);font-weight:400;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H1 · 26 / 28 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h1,26px);line-height:var(--xqm-lh-h1,28px);font-weight:500;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H2 · 24 / 26 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h2,24px);line-height:var(--xqm-lh-h2,26px);font-weight:500;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H3 · 22 / 24 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h3,22px);line-height:var(--xqm-lh-h3,24px);font-weight:500;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H3_R · 22 / 24 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h3,22px);line-height:var(--xqm-lh-h3,24px);font-weight:400;color:var(--color-gray-800);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H4 · 20 / 22 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h4,20px);line-height:var(--xqm-lh-h4,22px);font-weight:500;color:var(--color-gray-1000);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H4_R · 20 / 22 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h4,20px);line-height:var(--xqm-lh-h4,22px);font-weight:400;color:var(--color-gray-800);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H5 · 18 / 20 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h5,18px);line-height:var(--xqm-lh-h5,20px);font-weight:500;color:var(--color-gray-800);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H5_R · 18 / 20 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h5,18px);line-height:var(--xqm-lh-h5,20px);font-weight:400;color:var(--color-gray-700);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H6 · 16 / 18 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h6,16px);line-height:var(--xqm-lh-h6,18px);font-weight:500;color:var(--color-gray-800);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H6_R · 16 / 18 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h6,16px);line-height:var(--xqm-lh-h6,18px);font-weight:400;color:var(--color-gray-700);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H7 · 14 / 16 · Medium</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h7,14px);line-height:var(--xqm-lh-h7,16px);font-weight:500;color:var(--color-gray-700);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H7_R · 14 / 16 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h7,14px);line-height:var(--xqm-lh-h7,16px);font-weight:400;color:var(--color-gray-600);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H8 · 12 / 14 · Medium · Date</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h8,12px);line-height:var(--xqm-lh-h8,14px);font-weight:500;color:var(--color-gray-600);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H8_R · 12 / 14 · Regular</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h8,12px);line-height:var(--xqm-lh-h8,14px);font-weight:400;color:var(--color-gray-500);">12,345.67</span>
+        </div>
+        <div class="type-row">
+          <span class="type-label">H9 · 10 / 12 · Medium · Chart</span>
+          <span class="tabular-nums" style="font-family:var(--xqm-font-count,'Roboto',sans-serif);font-size:var(--xqm-fs-h9,10px);line-height:var(--xqm-lh-h9,12px);font-weight:500;color:var(--color-gray-500);">12,345.67</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Token-based text scale (自動對應平台) -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Text Scale — 自動對應平台字級</div>
+      <div class="cl-col" style="gap:0;">
+        <div class="type-row">
+          <div class="type-label">--f-page-title · Medium<div class="type-note">Page title / Nav L</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-page-title);font-weight:500;color:var(--color-gray-1000);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-xl · Medium<div class="type-note">Nav M / 大標題</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-xl);font-weight:500;color:var(--color-gray-1000);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-lg · Medium<div class="type-note">BTN L2 / Section title</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-lg);font-weight:500;color:var(--color-gray-1000);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-md · Medium<div class="type-note">Body / Input L2</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-md);font-weight:500;color:var(--color-gray-800);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-md · Regular<div class="type-note">Body / Table text</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-md);font-weight:400;color:var(--color-gray-800);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-base · Medium<div class="type-note">Menu / Card label</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-base);font-weight:500;color:var(--color-gray-800);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-base · Regular<div class="type-note">Menu / Tab</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-base);font-weight:400;color:var(--color-gray-700);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-sm · Medium<div class="type-note">Caption / Tag</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-sm);font-weight:500;color:var(--color-gray-600);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-sm · Regular<div class="type-note">Description / Card tag</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-sm);font-weight:400;color:var(--color-gray-500);">文字樣式 Aa1234</span>
+        </div>
+        <div class="type-row">
+          <div class="type-label">--f-xs · Medium<div class="type-note">Micro / Chart label</div></div>
+          <span style="font-family:var(--f-family);font-size:var(--f-xs);font-weight:500;color:var(--color-gray-500);">文字樣式 Aa1234</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 數字展示 -->
+    <div class="cl-subsection">
+      <div class="cl-sublabel">數字展示</div>
+      <div class="tabular-nums" style="font-size:22px;color:var(--color-trade-up);line-height:1;">
         189.85 <span style="font-size:14px;">+2.19%</span>
         <span style="color:var(--color-gray-300);font-size:14px;font-weight:300;margin:0 4px;">│</span>
-        <span style="font-size:14px;"><span style="color:var(--color-gray-500);">折溢價</span> <span class="text-rise">+0.23%</span></span>
+        <span style="font-size:14px;"><span style="color:var(--color-gray-500);">折溢價</span> <span class="text-up">+0.23%</span></span>
       </div>
     </div>
   </section>
@@ -422,10 +588,11 @@
         border-bottom: 1px solid var(--color-gray-200);
       }
       .dp-input {
-        flex: 1; height: 28px; border-radius: 6px;
+        flex: 1; height: 28px; border-radius: var(--comp-btn-radius);
         border: 1px solid var(--color-gray-250);
         background: var(--color-gray-100); color: var(--color-gray-900);
         font-size: 12px; text-align: center; outline: none; cursor: default;
+        transition: border-color .15s;
       }
       .dp-input.is-active { border-color: var(--color-theme-400); }
       .dp-sep { color: var(--color-gray-600); font-size: 14px; flex-shrink: 0; }
@@ -462,30 +629,36 @@
       .dp-day {
         width: 28px; height: 28px; border-radius: 50%; border: none;
         cursor: pointer; background: transparent; font-size: 13px;
-        color: var(--color-gray-900); position: relative; z-index: 1;
+        color: var(--comp-dp-text); position: relative; z-index: 1;
         display: flex; align-items: center; justify-content: center;
         transition: background .1s, color .1s;
       }
       .dp-day:hover { background: var(--color-gray-250); }
       .dp-day.is-today { font-weight: 700; }
       .dp-day.is-sel { background: var(--color-theme-550) !important; color: #fff !important; }
-      .dp-day.is-out { color: var(--color-gray-600); opacity: .4; }
+      .dp-day.is-out { color: var(--comp-dp-text-dis); opacity: .4; }
       .dp-footer {
         display: flex; justify-content: flex-end; gap: 8px;
         padding-top: 12px; margin-top: 10px;
         border-top: 1px solid var(--color-gray-200);
       }
       .dp-fbtn {
-        height: 28px; padding: 0 14px; border-radius: 6px;
-        font-size: 12px; cursor: default; border: none;
+        height: 28px; padding: 0 14px; border-radius: var(--comp-btn-radius);
+        font-size: 12px; cursor: pointer; border: none;
+        transition: background .1s;
       }
       .dp-cancel {
         background: transparent; color: var(--comp-btn-stroke-color);
         box-shadow: inset 0 0 0 1px var(--comp-btn-stroke-color);
       }
+      .dp-cancel:hover {
+        background: var(--color-theme-100);
+        box-shadow: inset 0 0 0 2px var(--comp-btn-stroke-color);
+      }
       .dp-confirm {
         background: var(--comp-btn-primary-bg); color: var(--comp-btn-primary-text);
       }
+      .dp-confirm:hover { background: var(--comp-btn-primary-bg-hover); }
     </style>
 
     <div class="cl-subsection">
@@ -575,7 +748,7 @@
     <style>
       .cmp-btn {
         display: inline-flex; align-items: center; justify-content: center;
-        height: 32px; padding: 0 16px; border-radius: 6px;
+        height: 32px; padding: 0 16px; border-radius: var(--comp-btn-radius);
         font-size: 13px; font-weight: 400; cursor: pointer;
         border: none; transition: background .12s, color .12s, box-shadow .12s;
         white-space: nowrap;
@@ -711,38 +884,38 @@
     <div class="cl-subsection">
       <div class="cl-sublabel">accent variants</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">no accent</div>
-          <div style="font-size:22px;font-weight:700;color:var(--color-gray-800);line-height:1.2;" class="tabular-nums">12檔</div>
-          <div style="font-size:13px;margin-top:2px;color:var(--color-gray-500);">近1日 +2檔</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">no accent</div>
+          <div class="tabular-nums card-field-meta summary-card-value">12檔</div>
+          <div class="card-field-sub" style="margin-top:2px;color:var(--color-gray-500);">近1日 +2檔</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-red</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-rise">+5檔</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-red" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-red</div>
+          <div class="tabular-nums text-up summary-card-value">+5檔</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-green</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-fall">-2檔</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-green" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-green</div>
+          <div class="tabular-nums text-down summary-card-value">-2檔</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-orange" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-orange</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">1,234張</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-orange" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-orange</div>
+          <div class="tabular-nums summary-card-value">1,234張</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-blue" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-blue</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">8.2億</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-blue" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-blue</div>
+          <div class="tabular-nums summary-card-value">8.2億</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-teal" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-teal</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">2.34%</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-teal" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-teal</div>
+          <div class="tabular-nums summary-card-value">2.34%</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-yellow" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-yellow</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums">5.6億</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-yellow" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-yellow</div>
+          <div class="tabular-nums summary-card-value">5.6億</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-gray" style="min-width:120px;">
-          <div style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;">accent-gray</div>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;color:var(--color-gray-600);" class="tabular-nums">—</div>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-gray" style="min-width:120px;">
+          <div class="card-field-label" style="margin-bottom:4px;">accent-gray</div>
+          <div class="tabular-nums card-field-meta summary-card-value">—</div>
         </div>
       </div>
     </div>
@@ -750,19 +923,19 @@
     <div class="cl-subsection" style="margin-top:16px;">
       <div class="cl-sublabel">card-clickable (首次買入 / 完全出清)</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-red card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
-          <span style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;display:flex;align-items:center;" class="card-label">
-            近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-red card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
+          <span class="card-label card-field-label" style="margin-bottom:4px;display:flex;align-items:center;">
+            近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
           </span>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-rise">2檔</div>
-          <div style="font-size:13px;margin-top:2px;" class="text-rise">+1,234張 | +0.9億</div>
+          <div class="tabular-nums text-up summary-card-value">2檔</div>
+          <div class="card-field-sub text-up" style="margin-top:2px;">+1,234張 | +0.9億</div>
         </div>
-        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 card-accent-green card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
-          <span style="font-size:14px;color:var(--color-gray-600);margin-bottom:4px;display:flex;align-items:center;" class="card-label">
-            近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
+        <div class="flex-1 flex flex-col rounded-md border border-gray-200 bg-gray-100 dark:bg-gray-125 px-3 py-2 summary-card card-accent-green card-clickable" style="min-width:140px;max-width:220px;cursor:pointer;">
+          <span class="card-label card-field-label" style="margin-bottom:4px;display:flex;align-items:center;">
+            近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
           </span>
-          <div style="font-size:22px;font-weight:700;line-height:1.2;" class="tabular-nums text-fall">1檔</div>
-          <div style="font-size:13px;margin-top:2px;" class="text-fall">-890張 | -0.4億</div>
+          <div class="tabular-nums text-down summary-card-value">1檔</div>
+          <div class="card-field-sub text-down" style="margin-top:2px;">-890張 | -0.4億</div>
         </div>
       </div>
     </div>
@@ -815,15 +988,15 @@
     <div class="cl-section-title">Tag / Chip</div>
 
     <div class="cl-subsection">
-      <div class="cl-sublabel">Status Badge — outline (表格狀態欄)</div>
+      <div class="cl-sublabel">Status Badge (表格狀態欄)</div>
       <div class="cl-row">
-        <span class="tag" data-variant="yellow-bright" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">首次買入</span>
-        <span class="tag" data-variant="red"           style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼</span>
-        <span class="tag" data-variant="red"           style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼 3天</span>
-        <span class="tag" data-variant="green-teal"    style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼</span>
-        <span class="tag" data-variant="green-teal"    style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼 5天</span>
-        <span class="tag" data-variant="gray"          style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">持平 8天</span>
-        <span class="tag" data-variant="gray"          style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">完全出清</span>
+        <span class="sig-pill" style="cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-weight:400;white-space:nowrap;background:var(--color-trade-up-dark-100);color:#fff;">首次買入</span>
+        <span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼</span>
+        <span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼 3天</span>
+        <span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼</span>
+        <span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼 5天</span>
+        <span class="tag" data-variant="gray"       style="cursor:default;pointer-events:none;">持平 8天</span>
+        <span class="sig-pill" style="cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-weight:400;white-space:nowrap;background:var(--color-trade-down-dark-100);color:#fff;">完全出清</span>
       </div>
     </div>
 
@@ -837,12 +1010,12 @@
     <div class="cl-subsection">
       <div class="cl-sublabel">Chip — 篩選列</div>
       <div class="cl-row">
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 tag-active" data-variant="blue" data-active="true">全部<span>12</span></span></button>
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-new-tag" style="background:color-mix(in srgb,var(--xq-red-600) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>2</span></span></button>
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="red">加碼<span>3</span></span></button>
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="gray">持平<span>2</span></span></button>
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="green-teal">減碼<span>2</span></span></button>
-        <button type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-clear-tag" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span>1</span></span></button>
+        <button id="demo-chip-all"    type="button" class="shrink-0 rounded-50"><span class="tag gap-1 tag-active" data-variant="blue" data-active="true">全部<span>12</span></span></button>
+        <button id="demo-chip-new"    type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-new-tag" style="background:color-mix(in srgb,var(--color-trade-up-dark-100) 60%,transparent);color:#fff;font-weight:400;height:28px;">首次買入<span>2</span></span></button>
+        <button id="demo-chip-add"    type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="red">加碼<span>3</span></span></button>
+        <button id="demo-chip-hold"   type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="gray">持平<span>2</span></span></button>
+        <button id="demo-chip-reduce" type="button" class="shrink-0 rounded-50"><span class="tag gap-1" data-variant="green-teal">減碼<span>2</span></span></button>
+        <button id="demo-chip-clear"  type="button" class="shrink-0 rounded-50"><span class="tag gap-1 chip-clear-tag" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);color:#fff;font-weight:400;height:28px;">完全出清<span>1</span></span></button>
       </div>
     </div>
   </section>
@@ -856,19 +1029,19 @@
     <div class="cl-subsection">
       <div class="cl-sublabel">chg-bar context (分佈圖，natural flow)</div>
       <div class="cl-row">
-        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);">首次買入</span>
-        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);">完全出清</span>
+        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);">首次買入</span>
+        <span class="sig-pill chg-bar-tag" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);">完全出清</span>
       </div>
     </div>
 
     <div class="cl-subsection">
       <div class="cl-sublabel">card-label context (指標卡片，flex items-center)</div>
       <div class="cl-row">
-        <div class="card-label" style="display:flex;align-items:center;font-size:14px;color:var(--color-gray-600);">
-          近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-rise) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
+        <div class="card-label card-field-label" style="display:flex;align-items:center;">
+          近1日<span class="card-new-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-up) 60%,transparent);margin:-2px 0 -2px 4px;">首次買入</span>
         </div>
-        <div class="card-label" style="display:flex;align-items:center;font-size:14px;color:var(--color-gray-600);">
-          近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-fall) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
+        <div class="card-label card-field-label" style="display:flex;align-items:center;">
+          近1日<span class="card-clear-label sig-pill" style="background:color-mix(in srgb,var(--color-trade-down) 60%,transparent);margin:-2px 0 -2px 4px;">完全出清</span>
         </div>
       </div>
     </div>
@@ -917,23 +1090,66 @@
         <div data-slot="table-container" class="table-container">
           <table data-slot="table" class="table">
             <thead data-slot="table-header" class="table-header">
+              <!-- 置左 -->
               <tr>
-                <th data-slot="table-head" class="table-head table-head-align-left" style="min-width:140px;">
-                  不可排序
+                <th data-slot="table-head" class="table-head table-head-align-left" style="min-width:130px;">不可排序</th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-left" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-left">
+                    <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
+                    <span>可排序（預設）</span>
+                  </div>
                 </th>
-                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-left" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-left">
+                    <span class="icon-arrow-up-02 table-head-sort-icon"></span>
+                    <span>排序中（升冪）</span>
+                  </div>
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-left" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-left">
+                    <span class="icon-arrow-down-02 table-head-sort-icon"></span>
+                    <span>排序中（降冪）</span>
+                  </div>
+                </th>
+              </tr>
+              <!-- 置中 -->
+              <tr>
+                <th data-slot="table-head" class="table-head table-head-align-center" style="min-width:130px;">不可排序</th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-center" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-center">
+                    <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
+                    <span>可排序（預設）</span>
+                  </div>
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-center" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-center">
+                    <span class="icon-arrow-up-02 table-head-sort-icon"></span>
+                    <span>排序中（升冪）</span>
+                  </div>
+                </th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-center" style="min-width:130px;">
+                  <div class="table-head-sort-container table-head-align-center">
+                    <span class="icon-arrow-down-02 table-head-sort-icon"></span>
+                    <span>排序中（降冪）</span>
+                  </div>
+                </th>
+              </tr>
+              <!-- 置右 -->
+              <tr>
+                <th data-slot="table-head" class="table-head table-head-align-right" style="min-width:130px;">不可排序</th>
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:130px;">
                   <div class="table-head-sort-container table-head-align-right">
                     <span class="icon-arrow-down-02 table-head-sort-icon table-head-sort-icon-inactive"></span>
                     <span>可排序（預設）</span>
                   </div>
                 </th>
-                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:130px;">
                   <div class="table-head-sort-container table-head-align-right">
                     <span class="icon-arrow-up-02 table-head-sort-icon"></span>
                     <span>排序中（升冪）</span>
                   </div>
                 </th>
-                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:120px;">
+                <th data-slot="table-head" class="table-head table-head-sortable table-head-align-right" style="min-width:130px;">
                   <div class="table-head-sort-container table-head-align-right">
                     <span class="icon-arrow-down-02 table-head-sort-icon"></span>
                     <span>排序中（降冪）</span>
@@ -987,38 +1203,38 @@
           </thead>
           <tbody data-slot="table-body" class="table-body">
             <tr data-slot="table-row" class="table-row" style="cursor:pointer;" onclick="">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">旺宏</span><span class="tabular-nums cell-code">2337</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="yellow-bright" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">首次買入</span></td>
-              <td class="table-cell table-cell-align-right tabular-nums text-rise">+3.21%</td>
-              <td class="table-cell table-cell-align-right tabular-nums text-rise">+2,100張</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">旺宏</span><span class="tabular-nums cell-code">2337</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="sig-pill" style="cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-weight:400;white-space:nowrap;background:var(--color-trade-up-dark-100);color:#fff;">首次買入</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-up">+3.21%</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-up">+2,100張</td>
             </tr>
             <tr data-slot="table-row" class="table-row" style="cursor:pointer;" onclick="">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台積電</span><span class="tabular-nums cell-code">2330</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="red" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">加碼 3天</span></td>
-              <td class="table-cell table-cell-align-right tabular-nums text-rise">+0.35%</td>
-              <td class="table-cell table-cell-align-right tabular-nums text-rise">+420張</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台積電</span><span class="tabular-nums cell-code">2330</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="red" style="cursor:default;pointer-events:none;">加碼 3天</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-up">+0.35%</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-up">+420張</td>
             </tr>
             <tr data-slot="table-row" class="table-row" style="cursor:pointer;" onclick="">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台光電</span><span class="tabular-nums cell-code">2383</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">減碼 5天</span></td>
-              <td class="table-cell table-cell-align-right tabular-nums text-fall">-0.12%</td>
-              <td class="table-cell table-cell-align-right tabular-nums text-fall">-80張</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台光電</span><span class="tabular-nums cell-code">2383</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼 5天</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-down">-0.12%</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-down">-80張</td>
             </tr>
             <tr data-slot="table-row" class="table-row" style="cursor:pointer;" onclick="">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台達電</span><span class="tabular-nums cell-code">2308</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">持平 8天</span></td>
-              <td class="table-cell table-cell-align-right tabular-nums text-flat">0.00%</td>
-              <td class="table-cell table-cell-align-right tabular-nums text-flat">—</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">台達電</span><span class="tabular-nums cell-code">2308</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">持平 8天</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-flat">0.00%</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-flat">—</td>
             </tr>
             <tr data-slot="table-row" class="table-row" style="cursor:pointer;" onclick="">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">晶豪科</span><span class="tabular-nums cell-code">3006</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;outline:1px solid currentColor;outline-offset:-1px;">完全出清</span></td>
-              <td class="table-cell table-cell-align-right tabular-nums text-fall">-1.82%</td>
-              <td class="table-cell table-cell-align-right tabular-nums text-fall">-980張</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">晶豪科</span><span class="tabular-nums cell-code">3006</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="sig-pill" style="cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-weight:400;white-space:nowrap;background:var(--color-trade-down-dark-100);color:#fff;">完全出清</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-down">-1.82%</td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-right tabular-nums text-down">-980張</td>
             </tr>
             <tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
-              <td class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">鴻海</span><span class="tabular-nums cell-code">2317</span></span></td>
-              <td class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-left"><span style="display:flex;flex-direction:column;align-items:flex-start;"><span class="row-name">鴻海</span><span class="tabular-nums cell-code">2317</span></span></td>
+              <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
               <td class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
               <td class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
             </tr>
@@ -1057,21 +1273,21 @@
       <div class="cl-sublabel">金額排行 Bar — 買超</div>
       <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+4,821</span>
+          <span class="tabular-nums text-up" style="width:7.5ch;text-align:right;flex-shrink:0;">+4,821</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:100%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+            <div style="width:100%;height:100%;background:var(--color-trade-up);border-radius:3px;"></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+3,240</span>
+          <span class="tabular-nums text-up" style="width:7.5ch;text-align:right;flex-shrink:0;">+3,240</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:67%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+            <div style="width:67%;height:100%;background:var(--color-trade-up);border-radius:3px;"></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-rise" style="width:7.5ch;text-align:right;flex-shrink:0;">+1,560</span>
+          <span class="tabular-nums text-up" style="width:7.5ch;text-align:right;flex-shrink:0;">+1,560</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:32%;height:100%;background:var(--color-rise);border-radius:3px;"></div>
+            <div style="width:32%;height:100%;background:var(--color-trade-up);border-radius:3px;"></div>
           </div>
         </div>
       </div>
@@ -1082,21 +1298,21 @@
       <div class="cl-sublabel">金額排行 Bar — 賣超</div>
       <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-5,034</span>
+          <span class="tabular-nums text-down" style="width:7.5ch;text-align:right;flex-shrink:0;">-5,034</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:100%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+            <div style="width:100%;height:100%;background:var(--color-trade-down);border-radius:3px;"></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-2,910</span>
+          <span class="tabular-nums text-down" style="width:7.5ch;text-align:right;flex-shrink:0;">-2,910</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:58%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+            <div style="width:58%;height:100%;background:var(--color-trade-down);border-radius:3px;"></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="tabular-nums text-fall" style="width:7.5ch;text-align:right;flex-shrink:0;">-1,280</span>
+          <span class="tabular-nums text-down" style="width:7.5ch;text-align:right;flex-shrink:0;">-1,280</span>
           <div style="width:120px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
-            <div style="width:25%;height:100%;background:var(--color-fall);border-radius:3px;"></div>
+            <div style="width:25%;height:100%;background:var(--color-trade-down);border-radius:3px;"></div>
           </div>
         </div>
       </div>
@@ -1108,14 +1324,14 @@
       <div class="cl-panel" style="display:flex;flex-direction:column;gap:14px;">
         <!-- 無 avg marker -->
         <div style="display:inline-flex;align-items:center;gap:6px;">
-          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+          <div class="ratio-bar-track" style="flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
             <div style="width:72%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>
           </div>
           <span class="tabular-nums" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">1.30</span>
         </div>
         <!-- 含 avg marker -->
         <div style="display:inline-flex;align-items:center;gap:6px;">
-          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+          <div class="ratio-bar-track" style="flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
             <div style="width:40%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>
             <div class="avg-mk" style="left:58%;" title="平均值: 1.06%">
               <div class="avg-mk-line"></div>
@@ -1125,7 +1341,7 @@
         </div>
         <!-- 0% 空值 -->
         <div style="display:inline-flex;align-items:center;gap:6px;">
-          <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;"></div>
+          <div class="ratio-bar-track" style="flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;"></div>
           <span class="tabular-nums text-flat" style="width:36px;text-align:right;flex-shrink:0;display:inline-block;">0.00</span>
         </div>
       </div>
@@ -1212,6 +1428,87 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════════
+       Tooltip
+  ══════════════════════════════════════════ -->
+  <section id="s-tooltip" class="cl-section">
+    <div class="cl-section-title">Tooltip</div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Simple — 股票清單（sig-hover-tip）</div>
+      <div class="cl-row" style="align-items:flex-start;gap:24px;">
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:120px;display:inline-block;">
+          <span style="font-variant-numeric:tabular-nums;color:var(--comp-tooltip-text-sec);margin-right:4px;">2330</span>台積電<br>
+          <span style="font-variant-numeric:tabular-nums;color:var(--comp-tooltip-text-sec);margin-right:4px;">2337</span>旺宏
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Rich — 圓餅圖 hover（etf-donut-tooltip）</div>
+      <div class="cl-row" style="align-items:flex-start;gap:24px;">
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:6px 10px;font-size:12px;color:var(--comp-tooltip-text);box-shadow:0 2px 8px rgba(0,0,0,0.12);line-height:1.5;display:inline-block;white-space:nowrap;">
+          <span style="display:inline-flex;align-items:center;gap:5px;">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--color-chart-01);flex-shrink:0;"></span>
+            <strong>半導體</strong>
+          </span><br>
+          <span style="color:var(--comp-tooltip-text-sec);">34.2%</span>
+        </div>
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:6px 10px;font-size:12px;color:var(--comp-tooltip-text);box-shadow:0 2px 8px rgba(0,0,0,0.12);line-height:1.5;display:inline-block;white-space:nowrap;">
+          <span style="display:inline-flex;align-items:center;gap:5px;">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--color-chart-02);flex-shrink:0;"></span>
+            <strong>旺宏</strong> (2337)
+          </span><br>
+          <span style="color:var(--comp-tooltip-text-sec);">12.8%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-subsection">
+      <div class="cl-sublabel">Data — 加減碼分析（chg-bar-tip）</div>
+      <div class="cl-row" style="align-items:flex-start;gap:24px;flex-wrap:wrap;">
+        <!-- 加碼 -->
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:160px;display:inline-block;">
+          <div style="font-weight:600;margin-bottom:6px;display:flex;align-items:center;">
+            <span class="rank-badge rank-buy" style="margin-right:6px;">1</span>
+            <span style="color:var(--color-trade-up);font-weight:600;">加碼</span>
+          </div>
+          <div style="margin-bottom:4px;"><strong>台積電</strong> (2330)</div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">增減比率</span><span class="tabular-nums" style="color:var(--color-trade-up);">+0.35%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">投資比率</span><span class="tabular-nums">9.01%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">張數增減</span><span class="tabular-nums" style="color:var(--color-trade-up);">+420張</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">持有張數</span><span class="tabular-nums">6,256張</span></div>
+        </div>
+        <!-- 首次買入 -->
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:160px;display:inline-block;">
+          <div style="font-weight:600;margin-bottom:6px;display:flex;align-items:center;">
+            <span class="rank-badge rank-buy" style="margin-right:6px;">3</span>
+            <span style="color:var(--color-trade-up);font-weight:600;">加碼</span>
+            <span style="display:inline-flex;align-items:center;background:var(--color-trade-up-dark-100);color:#fff;font-size:11px;font-weight:500;padding:2px 6px 0;height:16px;border-radius:3px;vertical-align:middle;margin-left:6px;">首次買入</span>
+          </div>
+          <div style="margin-bottom:4px;"><strong>旺宏</strong> (2337)</div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">增減比率</span><span class="tabular-nums" style="color:var(--color-trade-up);">+3.21%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">投資比率</span><span class="tabular-nums">3.21%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">張數增減</span><span class="tabular-nums" style="color:var(--color-trade-up);">+2,100張</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">持有張數</span><span class="tabular-nums">2,100張</span></div>
+        </div>
+        <!-- 減碼含完全出清 -->
+        <div style="background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:160px;display:inline-block;">
+          <div style="font-weight:600;margin-bottom:6px;display:flex;align-items:center;">
+            <span class="rank-badge rank-sell" style="margin-right:6px;">1</span>
+            <span style="color:var(--color-trade-down);font-weight:600;">減碼</span>
+            <span style="display:inline-flex;align-items:center;background:var(--color-trade-down-dark-100);color:#fff;font-size:11px;font-weight:500;padding:2px 6px 0;height:16px;border-radius:3px;vertical-align:middle;margin-left:6px;">完全出清</span>
+          </div>
+          <div style="margin-bottom:4px;"><strong>晶豪科</strong> (3006)</div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">增減比率</span><span class="tabular-nums" style="color:var(--color-trade-down);">-1.82%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">投資比率</span><span class="tabular-nums">0.00%</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">張數增減</span><span class="tabular-nums" style="color:var(--color-trade-down);">-980張</span></div>
+          <div style="display:flex;justify-content:space-between;gap:16px;"><span style="color:var(--comp-tooltip-text-sec);">持有張數</span><span class="tabular-nums">0張</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 </div><!-- ds-main -->
 
@@ -1224,6 +1521,9 @@
     ['xq', 'xqm'].forEach(id =>
       document.getElementById('btn-' + id).classList.toggle('active', id === p)
     );
+    document.querySelectorAll('.type-xqm-only').forEach(el => {
+      el.style.display = isXqm ? '' : 'none';
+    });
   }
 
   function setTheme(t) {

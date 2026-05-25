@@ -5,9 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UI版-台股主動式ETF籌碼追蹤</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/rd-app.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/proto-supplement.css">
@@ -82,12 +79,6 @@
     [data-slot="table-header"],
     [data-slot="table-header"] .table-head {
       background-color: var(--comp-sticky-col-bg);
-    }
-    [data-platform="xqm"] [data-slot="table-header"],
-    [data-platform="xqm"] [data-slot="table-header"] .table-head,
-    [data-platform="xqm"] .table-header,
-    [data-platform="xqm"] .table-head {
-      background-color: var(--xqm-blue-04) !important;
     }
     [data-slot="table-header"] .table-head,
     [data-slot="table-body"] .table-cell {
@@ -427,7 +418,7 @@
 </head>
 
 <body
-  style="margin:0;font-family:var(--font-sans);font-weight:var(--f-weight);font-size:13px;background:var(--color-gray-125);">
+  style="margin:0;font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;background:var(--color-gray-125);">
 
   <!-- ═══ SIDEBAR ═══ -->
   <!-- ╔══ RD NOTE ══════════════════════════════════════════════════════════════
@@ -474,7 +465,7 @@
   </aside>
 
   <!-- ═══ MAIN CONTENT ═══ -->
-  <div id="proto-main" style="margin-left:16rem;">
+  <div style="margin-left:16rem;">
 
     <!-- ╔══════════════════════════════════════════════════════════════
      ║  PAGE 1  市場總覽
@@ -550,7 +541,7 @@
           </div>
         </div>
       </div>
-      <div class="h-full w-full">
+      <div class="h-full w-full" style="">
         <div class="h-full w-full min-w-0 bg-gray-100 md:p-5">
           <div id="mkt-layout" class="flex h-full min-h-0 w-full flex-col overflow-hidden">
             <div id="mkt-full-hdr" class="shrink-0"
@@ -1312,22 +1303,23 @@
               </div>
 
               <!-- 圖表區塊 -->
-              <div id="etf-charts-wrap">
-                <!-- Donut：產業配置 -->
-                <div id="etf-donut-section">
-                  <div style="flex-shrink:0; position:relative;">
+              <div style="display:flex; gap:64px; align-items:stretch; height:185px;">
+                <!-- 左：產業配置 Donut -->
+                <div
+                  style="padding:16px 0; display:flex; align-items:center; justify-content:center; gap:16px; flex:1;">
+                  <div style="flex-shrink:0;position:relative;padding:0 16px;">
                     <canvas id="etf-sector-donut" width="120" height="120"
                       style="display:block;"></canvas>
                   </div>
-                  <div id="etf-sector-legend" style="flex:1; min-width:0; display:flex; flex-direction:column; gap:5px;">
+                  <div id="etf-sector-legend" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
                   </div>
                   <div id="etf-donut-tooltip"
                     style="position:fixed;display:none;background:var(--comp-tooltip-bg);color:var(--comp-tooltip-text);border:1px solid var(--color-gray-400);font-size:12px;padding:6px 10px;border-radius:4px;pointer-events:none;white-space:nowrap;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.12);line-height:1.5;">
                   </div>
                 </div>
 
-                <!-- Bar：加減碼分析 -->
-                <div id="etf-bars-section">
+                <!-- 右：增減碼分析 Bar -->
+                <div style="flex:2.5; display:flex; align-items:flex-end; padding-bottom:0px; min-width:0;">
                   <div id="etf-chg-bars" style="width:100%;"></div>
                 </div>
               </div>
@@ -1865,8 +1857,6 @@
       </div>`;
     }
     function fmtRatioBarInterp(ratio, minV, maxV, avgV) {
-      const _xqm = document.documentElement.dataset.platform === 'xqm';
-      const _barPx = _xqm ? 50 : 80;
       const isZero = ratio === 0;
       let barW = 0;
       if (!isZero) {
@@ -1878,7 +1868,7 @@
         avgMarker = `<div class="avg-mk" style="left:${aw.toFixed(1)}%;" title="平均: ${avgV.toFixed(2)}%"><div class="avg-mk-line"></div></div>`;
       }
       return `<div style="display:inline-flex;align-items:center;gap:6px;" title="投資比率 ${ratio.toFixed(2)}%（平均 ${avgV !== undefined ? avgV.toFixed(2) : ''}%）">
-        <div style="width:${_barPx}px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
+        <div style="width:80px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;position:relative;">
           ${!isZero ? `<div style="width:${barW.toFixed(1)}%;height:100%;background:var(--color-chart-progress-fill);border-radius:3px;position:relative;z-index:1;"></div>` : ''}
           ${avgMarker}
         </div>
@@ -1905,17 +1895,17 @@
     // Badges — using RD's actual Tailwind utility pattern from snapshot
     const SIG_TAG_BASE = 'cursor:default;display:inline-flex;align-items:center;height:28px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;';
     const SIG_TAG = {
-      new:    `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
-      add:    '<span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;height:28px;">大幅加碼</span>',
-      reduce: '<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;height:28px;">大幅減碼</span>',
-      exit:   `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
+      new:    `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
+      add:    `<span class="tag" data-variant="red" style="cursor:default;pointer-events:none;height:28px;">大幅加碼</span>`,
+      reduce: `<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;height:28px;">大幅減碼</span>`,
+      exit:   `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
     };
     const BADGE = {
-      new:    `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
-      add:    '<span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼</span>',
+      new: `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
+      add: '<span class="tag" data-variant="red"        style="cursor:default;pointer-events:none;">加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal" style="cursor:default;pointer-events:none;">減碼</span>',
-      hold:   '<span class="tag" data-variant="gray"       style="cursor:default;pointer-events:none;">持平</span>',
-      clear:  `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
+      hold: '<span class="tag" data-variant="gray"       style="cursor:default;pointer-events:none;">持平</span>',
+      clear: `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
     };
     const SECTOR_VARIANT = {
       '半導體': 'blue',
@@ -1931,7 +1921,7 @@
       '光電': 'pink',
     };
     function fmtSector(s) {
-      return `<span class="t-sub t-sector">${s}</span>`;
+      return `<span class="t-sub">${s}</span>`;
     }
 
     function fmtTrend5(trend) {
@@ -1970,11 +1960,13 @@
     }
 
     function setPlatform(p) {
-      document.documentElement.dataset.platform = p;
-      document.body.classList.toggle('is-xqm', p === 'xqm');
+      if (p === 'xqm') {
+        document.documentElement.removeAttribute('data-platform');
+      } else {
+        document.documentElement.dataset.platform = p;
+      }
       document.getElementById('ctrl-xq').classList.toggle('active', p === 'xq');
       document.getElementById('ctrl-xqm').classList.toggle('active', p === 'xqm');
-      renderEtfSectorDonut();
     }
 
     // ═══════════════════════════════════════════
@@ -2189,7 +2181,7 @@
         { label: '日期', val: r => r.date, left: true, style: 'min-width:90px;' },
       ],
       'tbl-stk': [
-        { label: '代碼 / 名稱', val: r => r.name, left: true, style: 'min-width:180px;', inlineSearch: 'stk', stickyLeft: 0 },
+        { label: '代碼 / 名稱', val: r => r.name, left: true, style: 'min-width:180px;', inlineSearch: 'stk', stickyLeft: 60 },
         { label: '關鍵訊號', val: r => {
             if (r.status === 'new') return 100000;
             if (r.status === 'add') return 80000 + r.streak;
@@ -2340,21 +2332,22 @@
       if (!cols || !el) return;
       const thead = el.closest('table').querySelector('thead');
       const { col, asc } = sortStates[tbodyId];
-      const checkTh = ''; // checkbox merged into name column
+      const checkTh = tbodyId === 'tbl-stk'
+        ? `<th data-slot="table-head" class="table-head sticky-col" style="width:60px;padding:0 8px 0 16px;left:0;z-index:12;background:var(--comp-sticky-col-bg);text-align:left;">` +
+          `<input type="checkbox" id="stk-check-all" class="stk-cb" onchange="toggleStkAll(this)" onclick="event.stopPropagation()"></th>`
+        : '';
       // compute left offsets for sticky cols in this table
       const stickyOffsets = (() => {
         const offsets = {};
         let left = 0;
-        if (checkTh) left = 44; // checkbox col width
+        if (checkTh) left = 60; // checkbox col width
         cols.forEach((c, i) => { if (c.stickyLeft !== undefined) { offsets[i] = c.stickyLeft !== null ? c.stickyLeft : left; } });
         return offsets;
       })();
       thead.innerHTML = '<tr data-slot="table-row" class="table-row">' + checkTh + cols.map((c, i) => {
         const active = i === col;
         const alignCls = c.hdrCenter ? 'table-head-align-center' : c.left ? 'table-head-align-left' : c.center ? 'table-head-align-center' : 'table-head-align-right';
-        const noLeftPad = checkTh && i === 0 && (i in stickyOffsets);
-        const stickyPad = (tbodyId === 'tbl-stk' && i === 0) ? 'padding-left:12px;' : (noLeftPad ? 'padding-left:0;' : '');
-        const stickyStyle = i in stickyOffsets ? `position:sticky;left:${stickyOffsets[i]}px;z-index:12;background:var(--comp-sticky-col-bg);${stickyPad}` : '';
+        const stickyStyle = i in stickyOffsets ? `position:sticky;left:${stickyOffsets[i]}px;z-index:12;background:var(--comp-sticky-col-bg);` : '';
         const colStyle = (c.fixedWidth ? (c.style || '') : (c.style || '').replace(/(?<!min-)width:/g, 'min-width:')) + stickyStyle;
         if (c.noSort) {
           return `<th data-slot="table-head" class="table-head ${alignCls}" style="${colStyle}">${c.label}</th>`;
@@ -2376,12 +2369,8 @@
           const qVar = sid === 'stk' ? 'stkSearchQ' : sid === 'etf' ? 'etfSearchQ' : isSig ? 'sigSearchQ' : 'mktSearchQ';
           const thOverflow = isSig ? '' : 'overflow:hidden;';
           const thZIndex = (isSig && isOpen) ? 'z-index:10;' : '';
-          const stkcbHtml = (tbodyId === 'tbl-stk' && i === 0)
-            ? `<input type="checkbox" id="stk-check-all" class="stk-cb" onchange="toggleStkAll(this)" onclick="event.stopPropagation();" style="flex-shrink:0;margin-right:14px;">`
-            : '';
           return `<th data-slot="table-head" class="table-head table-head-sortable ${alignCls}" style="${colStyle}${thOverflow}${thZIndex}" onclick="clickTh('${tbodyId}',${i})">` +
             `<span id="${sid}-th-label" class="table-head-sort-container ${alignCls}"${isOpen ? (isSig ? ' style="display:none"' : ' style="visibility:hidden"') : ''}>` +
-            stkcbHtml +
             `<button class="th-search-ico" type="button" onclick="open${SID}ThSearch();event.stopPropagation();">${searchSvg}</button>` +
             textSpan + iconSpan + `</span>` +
             `<div id="${sid}-th-search" class="th-search-field${isOpen ? ' open' : ''}">` +
@@ -2570,10 +2559,10 @@
             const s = SIG_MAP[r.code];
             if (!s) return '';
             return [
-              s.new ? `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
+              s.new ? `<span style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','new')" onmouseleave="hideSigTip()">首次買入 ${s.new}</span>` : '',
               s.add ? `<span class="tag" data-variant="red" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','add')" onmouseleave="hideSigTip()">大幅加碼 ${s.add}</span>` : '',
               s.reduce ? `<span class="tag" data-variant="green-teal" style="cursor:default;height:28px;" onmouseenter="showSigTip(event,'${r.code}','reduce')" onmouseleave="hideSigTip()">大幅減碼 ${s.reduce}</span>` : '',
-              s.exit ? `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
+              s.exit ? `<span style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;" onmouseenter="showSigTip(event,'${r.code}','exit')" onmouseleave="hideSigTip()">完全出清 ${s.exit}</span>` : '',
             ].join('');
           })()}</div></td>
     </tr>`;
@@ -2604,7 +2593,7 @@
         const amt  = Math.round(Math.abs(shares) * close / 10);
         const barW = Math.min(amt / amtMax * 100, 100);
         const color = side === 'buy' ? 'var(--color-trade-up)' : 'var(--color-trade-down)';
-        return `<div style="display:flex;align-items:center;gap:16px;width:100%;">
+        return `<div style="display:flex;align-items:center;gap:8px;width:100%;">
           <span class="tabular-nums ${side === 'buy' ? 'text-up' : 'text-down'}" style="width:7.5ch;text-align:right;flex-shrink:0;">${side === 'buy' ? '+' : '-'}${amt.toLocaleString('zh-TW')}</span>
           <div style="width:100px;flex-shrink:0;height:5px;background:var(--color-chart-progress-track);border-radius:3px;overflow:hidden;">
             <div style="width:${barW.toFixed(1)}%;height:100%;background:${color};border-radius:3px;"></div>
@@ -2660,10 +2649,10 @@
     let _sigChipType = 'all';
 
     const SIG_TYPE_TAG = {
-      new:    `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>`,
+      new:    '<span class="tag" style="background:var(--color-trade-up-dark-100);color:#fff;font-weight:400;">首次買入</span>',
       add:    '<span class="tag" data-variant="red">大幅加碼</span>',
       reduce: '<span class="tag" data-variant="green-teal">大幅減碼</span>',
-      exit:   `<span class="sig-pill" style="${SIG_TAG_BASE}background:var(--color-trade-down-dark-100);color:#fff;font-weight:400;">完全出清</span>`,
+      exit:   '<span class="tag" data-variant="gray">完全出清</span>',
     };
 
     function renderSignals() {
@@ -2957,7 +2946,8 @@
       tbody.innerHTML = sorted.map((r, i) => {
         const shares = r.shares === 0 ? '<span class="text-flat">—</span>' : `<span class="tabular-nums">${r.shares.toLocaleString('zh-TW')}</span>`;
         return `<tr data-slot="table-row" class="table-row animate-slide-up" style="cursor:pointer;animation-delay: ${i * 0.02}s" onclick="goToEtf('${r.code}','${r.name}')">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:flex;align-items:center;gap:16px;"><input type="checkbox" class="stk-cb" ${stkSelected.has(r.code) ? 'checked' : ''} onchange="toggleStkRow('${r.code}',this)" onclick="event.stopPropagation();" style="flex-shrink:0;"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></div></td>
+      <td data-slot="table-cell" class="table-cell sticky-col" style="width:60px;padding:0 8px 0 16px;left:0" onclick="event.stopPropagation()"><input type="checkbox" class="stk-cb" ${stkSelected.has(r.code) ? 'checked' : ''} onchange="toggleStkRow('${r.code}',this)"></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell">${(() => {
         let h = BADGE[r.status] || '';
         if (r.status !== 'new' && r.status !== 'clear' && r.streak > 0) {
@@ -2979,7 +2969,8 @@
       <td data-slot="table-cell" class="table-cell table-cell-align-left t-date">${r.date}</td>
     </tr>`;
       }).join('') + pendingItems.map(r => `<tr data-slot="table-row" class="table-row" style="opacity:0.6;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();">
-      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:0"><div style="display:flex;align-items:center;gap:16px;"><input type="checkbox" class="stk-cb" disabled style="flex-shrink:0;opacity:0.6;cursor:not-allowed;"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></div></td>
+      <td data-slot="table-cell" class="table-cell sticky-col" style="width:60px;padding:0 8px 0 16px;left:0"><input type="checkbox" class="stk-cb" disabled style="opacity:0.6;cursor:not-allowed;"></td>
+      <td data-slot="table-cell" class="table-cell table-cell-align-left sticky-col" style="left:60px"><span style="display:inline-flex;flex-direction:column;align-items:flex-start;"><span class="tabular-nums row-name">${r.code}</span><span class="t-sub" style="font-size:12px;">${r.name}</span></span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="tag" data-variant="gray" style="cursor:default;pointer-events:none;">資料尚未更新</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-right"><span class="text-flat">—</span></td>
       <td data-slot="table-cell" class="table-cell table-cell-align-center t-status-cell"><span class="text-flat">—</span></td>
@@ -4010,10 +4001,8 @@
       const titleEl = document.getElementById('etf-donut-title');
       if (titleEl) titleEl.textContent = etfChgMode === 'sector' ? 'ETF 產業配置佔比' : 'ETF 個股配置佔比';
       // Resolve Chart/01~06 tokens at runtime via probe element (fully resolves var() chains for canvas)
-      const _donutIsXqm = document.documentElement.dataset.platform === 'xqm';
       const CHART_COLORS = [1,2,3,4,5,6].map(i => _resolveColor(`--color-chart-0${i}`));
-      const CHART_OTHER  = _resolveColor(_donutIsXqm ? '--xqm-gray-08' : '--color-gray-550');
-      const _otherCssVar = _donutIsXqm ? 'var(--xqm-gray-08)' : 'var(--color-gray-550)';
+      const CHART_OTHER  = _resolveColor('--color-gray-550');
       // Build slices
       let slices;
       if (etfChgMode === 'sector') {
@@ -4026,7 +4015,7 @@
         slices = top5sec.map(([label, val], i) => ({ label, val, color: CHART_COLORS[i] || CHART_OTHER, cssVar: i < 6 ? `var(--color-chart-0${i+1})` : null }));
         if (restSec.length > 0) {
           const otherVal = restSec.reduce((s, [, v]) => s + v, 0);
-          slices.push({ label: `其他 (${restSec.length}個產業)`, val: otherVal, color: CHART_OTHER, cssVar: _otherCssVar });
+          slices.push({ label: `其他 (${restSec.length}個產業)`, val: otherVal, color: CHART_OTHER, cssVar: 'var(--color-gray-550)' });
         }
       } else {
         // 個股模式：前 5 大 + 其他
@@ -4036,13 +4025,13 @@
         slices = top5.map((r, i) => ({ label: r.name, sub: r.code, val: r.ratio, color: CHART_COLORS[i] || CHART_OTHER, cssVar: i < 6 ? `var(--color-chart-0${i+1})` : null }));
         if (rest.length > 0) {
           const otherVal = rest.reduce((s, r) => s + r.ratio, 0);
-          slices.push({ label: `其他 (${rest.length}檔)`, val: otherVal, color: CHART_OTHER, cssVar: _otherCssVar });
+          slices.push({ label: `其他 (${rest.length}檔)`, val: otherVal, color: CHART_OTHER, cssVar: 'var(--color-gray-550)' });
         }
       }
       const total = slices.reduce((s, r) => s + r.val, 0) || 1;
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height, cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) / 2 - 3, rInner = R * (_donutIsXqm ? 0.38 : 0.56);
+      const R = Math.min(W, H) / 2 - 3, rInner = R * 0.56;
       ctx.clearRect(0, 0, W, H);
       let angle = -Math.PI / 2;
       // Build etfDonutSlices with angle ranges for hit testing
@@ -4172,58 +4161,29 @@
       const items = [...leftItems, ...rightItems];
       _chgBarItems = items;
       const maxVal = Math.max(...items.map(r => Math.abs(r.val)), 0.01);
-      const _isXqm = document.documentElement.dataset.platform === 'xqm';
-      const BAR_MAX_H = _isXqm ? 36 : 100;
-      const _barGap  = _isXqm ? 12 : 8;
+      const BAR_MAX_H = 100;
 
-      if (_isXqm) {
-        // XQM：過濾掉空欄，以實際渲染順序決定中間分隔
-        const _xqmFilled = items.map((item, origIdx) => ({ item, origIdx })).filter(({ item }) => item.label);
-        const _splitAt = _xqmFilled.findIndex(({ origIdx }) => origIdx >= 3); // 第一個正值欄的 renderIdx
-        const _xqmHtml = _xqmFilled.map(({ item, origIdx }, renderIdx) => {
-          const isLeft = origIdx < 3;
-          const color = isLeft ? 'var(--color-trade-down)' : 'var(--color-trade-up)';
-          const barH = Math.max(2, Math.abs(item.val) / maxVal * BAR_MAX_H);
-          const sign = item.val > 0 ? '+' : '';
-          const valText = `${sign}${item.val.toFixed(2)}%`;
-          const rank = isLeft ? 3 - origIdx : origIdx - 2;
-          const rankBadge = rank > 0 ? `<span class="rank-badge ${isLeft ? 'rank-sell' : 'rank-buy'}">${rank}</span>` : '';
-          const namePart = (etfChgMode === 'stock' && item.sub)
-            ? `<span class="chg-bar-name" style="text-align:center;">${item.label}</span><span class="chg-bar-code" style="text-align:center;">${item.sub}</span>`
-            : `<span class="chg-bar-name" style="text-align:center;">${item.label}</span>`;
-          let _tag = '';
-          if (origIdx === 5) _tag = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-up-dark-100);">首買</span>`;
-          else if (item.status === 'clear') _tag = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-down-dark-100);">出清</span>`;
-          const colMargin = (renderIdx === _splitAt && _splitAt > 0) ? 'margin-left:12px;' : '';
-          return `<div class="chg-bar-col" style="width:42px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;${colMargin}" onmouseenter="showChgBarTip(event,${origIdx})" onmousemove="_posChgBarTip(event)" onmouseleave="hideChgBarTip()">
-            ${_tag}
-            <span class="tabular-nums chg-bar-val" style="color:${color};">${valText}</span>
-            <div style="width:42px;height:${barH.toFixed(0)}px;background:${color};border-radius:2px 2px 0 0;flex-shrink:0;"></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;width:100%;">
-              ${rankBadge}
-              ${namePart}
-            </div>
-          </div>`;
-        }).join('');
-        el.innerHTML = `<div class="chg-bars-wrap" style="display:flex;gap:${_barGap}px;align-items:flex-end;justify-content:center;">${_xqmHtml}</div>`;
-        return;
-      }
-
-      el.innerHTML = `<div class="chg-bars-wrap" style="display:flex;gap:${_barGap}px;height:${BAR_MAX_H + 54}px;align-items:flex-end;">` +
+      el.innerHTML = `<div class="chg-bars-wrap" style="display:flex;gap:8px;height:${BAR_MAX_H + 52}px;align-items:flex-end;">` +
         items.map((item, index) => {
           const barH = Math.max(item.val === 0 && !item.label ? 0 : 2, Math.abs(item.val) / maxVal * BAR_MAX_H);
           const isLeft = index < 3;
           const color = isLeft ? 'var(--color-trade-down)' : 'var(--color-trade-up)';
           const sign = item.val > 0 ? '+' : '';
-          const valText = (item.val === 0 && !item.label) ? '' : `${sign}${item.val.toFixed(2)}%`;
+          const pctSign = '%';
+          const valText = (item.val === 0 && !item.label) ? '' : `${sign}${item.val.toFixed(2)}${pctSign}`;
           const rank = item.label ? (isLeft ? 3 - index : index - 2) : 0;
           const rankBadge = rank ? `<span class="rank-badge ${isLeft ? 'rank-sell' : 'rank-buy'}">${rank}</span>` : '';
           const nameBody = (etfChgMode === 'stock' && item.sub)
             ? `${item.label}<br><span class="chg-bar-code">${item.sub}</span>`
             : item.label;
+
           let tagHtml = '';
-          if (index === 5 && item.label) tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-up-dark-100);">首次買入</span>`;
-          else if (item.status === 'clear') tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-down-dark-100);">完全出清</span>`;
+          if (index === 5 && item.label) {
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-up-dark-100);">首次買入</span>`;
+          } else if (item.status === 'clear') {
+            tagHtml = `<span class="chg-bar-tag sig-pill" style="background:var(--color-trade-down-dark-100);">完全出清</span>`;
+          }
+
           return `<div class="chg-bar-col" style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;justify-content:flex-end;" onmouseenter="showChgBarTip(event,${index})" onmousemove="_posChgBarTip(event)" onmouseleave="hideChgBarTip()">
             ${tagHtml}
             <span class="tabular-nums chg-bar-val" style="color:${color};">${valText}</span>
@@ -4600,7 +4560,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/25 09:55';
+        const FILE_UPDATED = '2026/05/20 13:10';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);

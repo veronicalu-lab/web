@@ -61,6 +61,7 @@
    :root = XQNext  /  [data-platform="xq"] = XQ
    XQM overrides are inside [data-platform="xqm"] block below.   */
 :root {
+  --page-inline-pad: 1.5rem;   /* 頁面左右 padding（XQNext/XQ = px-6） */
   --f-family:     system-ui, -apple-system, sans-serif;
   --f-weight:     400;
   --f-xs:         11px;   /* Micro */
@@ -80,6 +81,10 @@
   --f-lg:         18px;
   --f-xl:         18px;
   --f-page-title: 26px;
+  --f-weight:     500;                              /* XQ 全域字重 medium */
+  --font-sans:    -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; /* XQ 字體 */
+  --f-family:     -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --comp-summary-card-val-weight: var(--font-weight-medium); /* 數字列字重（XQ: medium=500，非 bold） */
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -157,6 +162,27 @@
   --xqm-empty:     #FCC573;  /* icon */
   --xqm-tooltip:   #FAE673;  /* icon */
 
+  /* ── Chart color（01~12 各含 _a 主色 / _b 深色） ── */
+  --xqm-chart-01-a: #FF9933;  --xqm-chart-01-b: #803F00;
+  --xqm-chart-02-a: #3364FF;  --xqm-chart-02-b: #000F80;
+  --xqm-chart-03-a: #8264FF;  --xqm-chart-03-b: #400080;
+  --xqm-chart-04-a: #00E4FF;  --xqm-chart-04-b: #007080;
+  --xqm-chart-05-a: #FF7799;  --xqm-chart-05-b: #801838;
+  --xqm-chart-06-a: #FF3344;  --xqm-chart-06-b: #801020;
+  --xqm-chart-07-a: #80FF33;  --xqm-chart-07-b: #3A6800;
+  --xqm-chart-08-a: #FF33CC;  --xqm-chart-08-b: #800068;
+  --xqm-chart-09-a: #FFD400;  --xqm-chart-09-b: #806A00;
+  --xqm-chart-10-a: #00AAC8;  --xqm-chart-10-b: #005566;
+  --xqm-chart-11-a: #2244CC;  --xqm-chart-11-b: #101060;
+  --xqm-chart-12-a: #CC44FF;  --xqm-chart-12-b: #680088;
+
+  /* ── Other color（白/黑透明層） ── */
+  --xqm-other-01: #FFFFFF0d;  /* 5%  white */
+  --xqm-other-02: #FFFFFF1a;  /* 10% white — Base */
+  --xqm-other-03: #FFFFFF26;  /* 15% white — icon_holder_bg / inputfield */
+  --xqm-other-04: #FFFFFF4d;  /* 30% white — 小工具 hold 底色 */
+  --xqm-other-05: #000000bf;  /* 75% black — Overlay */
+
   /* ── Layer 1 — XQM Typography Primitives ── */
   --xqm-font-count: 'Roboto', sans-serif;
   --xqm-font-text:  'PingFang TC', 'PingFang SC', -apple-system, sans-serif;
@@ -233,17 +259,32 @@
 
 /* Layer 3 — Component: Table */
 :root                { --comp-nav-border:        var(--color-gray-250); }  /* Nav_border */
-:root                { --comp-table-border:      var(--color-gray-200); }
+:root                { --comp-table-cell-bg:     transparent; }            /* 格子底色 */
+:root                { --comp-table-border:      var(--color-gray-200); }  /* 格子底線 */
 :root                { --comp-table-row-hover:   var(--hover-bg); }
 :root                { --comp-table-title-text:  var(--color-gray-800); }  /* Table/TitleText_Default */
+:root {
+  --comp-table-header-font-size:   var(--text-sm);          /* XQNext/XQ 預設：Tailwind text-sm (14px) */
+  --comp-table-header-lh:          normal;
+  --comp-table-header-font-weight: var(--font-weight-normal); /* 400 */
+}
 :root                { --comp-table-text:        var(--color-gray-1000); } /* Table/Text（一般數據）*/
 :root                { --comp-table-stock-name:  var(--color-gray-1000); } /* Table/Stock_name（商品上欄）*/
 :root                { --comp-table-stock-num:   var(--color-gray-800); }  /* Table/Stock_num（商品下欄）*/
+:root                { --comp-table-cell-font-size: var(--text-sm); }      /* 表格內文字級（XQNext/XQ = text-sm = .875rem）*/
+:root                { --comp-table-sub-font-size:  12px; }                /* 表格第二行小字（XQNext: 12px）*/
 [data-theme="light"] { --comp-table-stock-num:   var(--color-gray-600); }
 :root                { --comp-sticky-col-bg:     var(--color-gray-100); }
 
 /* Button radius */
 :root { --comp-btn-radius: 4px; }
+
+/* Filter chip 字級 / 間距 / 底色 */
+:root {
+  --comp-filter-chip-font-size: 12px;
+  --comp-filter-chip-pad:       14px;
+  --comp-filter-chip-bg:        transparent;
+}
 
 /* Content/Frame text hierarchy */
 :root { --comp-frame-text-primary:   var(--color-gray-1000); } /* Component/Content/Frame/Text_Primary   */
@@ -463,15 +504,28 @@ body.is-xqm [id$="-compact-hdr"] { display: none !important; }
 @media (min-width: 768px) {
   body.is-xqm .md\:p-5 { padding: 0 !important; }
 }
-/* header 和卡片區保留側邊 padding；list view 滿版不需要加 */
+/* XQM 全域左右 padding（值來自 --page-inline-pad token） */
 body.is-xqm #mkt-full-hdr,
-body.is-xqm #mkt-sticky-zone { padding-inline: 1.25rem; }
-/* 個股 / ETF：px-6 容器內，list view 用負 margin 撐滿 (px-6 = 1.5rem) */
+body.is-xqm #mkt-sticky-zone { padding-inline: var(--page-inline-pad); }
+/* 個股 / ETF：px-6 容器覆蓋為 token；list view 用負 margin 撐滿 */
+body.is-xqm .px-6 { padding-left: var(--page-inline-pad); padding-right: var(--page-inline-pad); }
 body.is-xqm #stk-list-view,
 body.is-xqm #etf-list-view {
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-  width: calc(100% + 3rem);
+  margin-left:  calc(-1 * var(--page-inline-pad));
+  margin-right: calc(-1 * var(--page-inline-pad));
+  width: calc(100% + 2 * var(--page-inline-pad));
+}
+/* XQM 指標卡片：2 欄 grid（原本 flex 一排在 390px 框內放不下） */
+body.is-xqm #mkt-summary-row,
+body.is-xqm #stk-summary-row,
+body.is-xqm #etf-summary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+body.is-xqm #mkt-summary-row > div,
+body.is-xqm #stk-summary-row > div,
+body.is-xqm #etf-summary-row > div {
+  overflow: visible;
 }
 /* overflow-hidden → clip：保留裁切但不建立 scroll container，讓 sticky 穿透到頁面捲動 */
 #mkt-layout { overflow: clip; }
@@ -739,8 +793,18 @@ body.is-xqm #etf-list-view {
 }
 /* Layer 3 — Component: summary card */
 :root {
-  --comp-summary-card-h:   94px;                    /* 高度基準：page 2 實測 93.99px */
-  --comp-summary-card-val: var(--color-gray-1000);  /* 主數字顏色：同 page 2 繼承白 */
+  --comp-summary-card-h:      94px;                                   /* 高度基準：page 2 實測 93.99px */
+  --comp-summary-card-pad:        8px 12px;                           /* 卡片 padding（py-2 px-3） */
+  --comp-summary-card-val:        var(--color-gray-1000);             /* 主數字顏色 */
+  --comp-summary-card-bg:         var(--color-gray-100);              /* light 預設底色 */
+  --comp-summary-card-border:     1px solid var(--color-gray-200);    /* 卡片邊線 */
+  --comp-summary-card-label-size:   14px;                             /* 標題列字級（H7） */
+  --comp-summary-card-val-size:     24px;                             /* 數字列字級 */
+  --comp-summary-card-sub-size:     14px;                             /* 副標列字級（H8） */
+  --comp-summary-card-val-weight:   var(--font-weight-bold);          /* 數字列字重（XQNext: bold=700） */
+}
+[data-theme="dark"] {
+  --comp-summary-card-bg:     var(--color-gray-125);                  /* dark 底色 */
 }
 
 /* 三頁主數字統一顏色（page 1/3 靜態 span 掛 text-gray-800，覆蓋為 token） */
@@ -750,22 +814,34 @@ body.is-xqm #etf-list-view {
   color: var(--comp-summary-card-val);
 }
 
-/* Summary 卡片：三頁統一底色 + 統一高度 */
+/* Summary 卡片：三頁統一底色 + 邊線 + 高度 + padding */
 #mkt-summary-row > div,
 #stk-summary-row > div,
 #etf-summary-row > div {
-  background-color: var(--color-gray-100);
+  background-color: var(--comp-summary-card-bg);
+  border: var(--comp-summary-card-border);
   height: var(--comp-summary-card-h);
+  padding: var(--comp-summary-card-pad);
   overflow: hidden;
 }
-[data-theme="dark"] #mkt-summary-row > div,
-[data-theme="dark"] #stk-summary-row > div,
-[data-theme="dark"] #etf-summary-row > div {
-  background-color: var(--color-gray-125);
+/* 數字列：用 :nth-child(2) 涵蓋有無 card-field-meta class 的所有卡片 */
+#mkt-summary-row > div > :nth-child(2),
+#stk-summary-row > div > :nth-child(2),
+#etf-summary-row > div > :nth-child(2) {
+  font-size:   var(--comp-summary-card-val-size);
+  font-weight: var(--comp-summary-card-val-weight);
 }
 
-.table-cell { padding-inline: calc(var(--spacing) * 3); }
+.table-cell {
+  padding-inline: calc(var(--spacing) * 3);
+  font-size: var(--comp-table-cell-font-size);
+  color:     var(--comp-table-text);
+}
 .t-status-cell { padding-left: calc(var(--spacing) * 6); }
+/* 格子底色：XQNext 預設 transparent，XQM 由 --comp-table-cell-bg 控制 */
+[data-slot="table-body"] .table-row {
+  background-color: var(--comp-table-cell-bg);
+}
 .table-row.bg-muted\/30 {
   background-color: var(--color-gray-125, #f7f7f7) !important; /* 斑馬紋底色 */
 }
@@ -784,15 +860,21 @@ body.is-xqm #etf-list-view {
 .table-header, .table-head {
   background-color: var(--comp-table-header-bg);
 }
-/* 表頭文字色 — Table/TitleText_Default */
+/* 表頭文字色 / 字級 — Table/TitleText_Default */
 .table-head {
-  color: var(--comp-table-title-text);
+  color:        var(--comp-table-title-text);
+  font-size:    var(--comp-table-header-font-size);
+  line-height:  var(--comp-table-header-lh);
+  font-weight:  var(--comp-table-header-font-weight);
 }
 /* 商品上欄 — Table/Stock_name */
 .row-name { color: var(--comp-table-stock-name); }
 /* 商品下欄 — Table/Stock_num */
 .t-sub,
-.cell-code { color: var(--comp-table-stock-num); }
+.cell-code {
+  color:     var(--comp-table-stock-num);
+  font-size: var(--comp-table-sub-font-size);
+}
 /* rd-app.css turns sortable header text to theme-500 on hover; keep it unchanged */
 .table-head-sortable:hover {
   color: var(--comp-table-title-text);
@@ -907,7 +989,7 @@ body.is-xqm #etf-list-view {
 .th-search-field-close:hover { color: var(--color-gray-1000); }
 
 /* Stock / ETF code label (second line in stacked code+name cell) */
-.cell-code { font-size: 12px; }
+.cell-code { font-size: var(--comp-table-sub-font-size); }
 
 /* ════════════════════════════════════════════════════════════════
    INDICATOR CARD ACCENT BARS
@@ -922,6 +1004,47 @@ body.is-xqm #etf-list-view {
 [data-theme="light"] .etf-chart-box {
   background: var(--color-gray-100);
   box-shadow: 6px 6px 12px -6px var(--color-opacity-linear-200);
+}
+
+/* ── ETF 分佈與加減碼分析：圖表區塊 layout ── */
+/* XQ / XQNext 預設：橫排（donut 左，bars 右） */
+#etf-charts-wrap {
+  display: flex;
+  gap: 64px;
+  align-items: stretch;
+  height: 185px;
+}
+#etf-donut-section {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+#etf-bars-section {
+  flex: 2.5;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+}
+/* XQM：直排，各佔全寬 */
+[data-platform="xqm"] #etf-charts-wrap {
+  flex-direction: column;
+  height: auto;
+  gap: 16px;
+}
+[data-platform="xqm"] #etf-donut-section {
+  flex: none;
+  width: 100%;
+  padding: 8px 0;
+  justify-content: flex-start;
+}
+[data-platform="xqm"] #etf-bars-section {
+  flex: none;
+  width: 100%;
+  min-height: 130px;   /* 固定高度：tag(28) + val(16) + bar(36) + label(44) + 餘量 */
+  align-items: flex-end;  /* chg-bars-wrap 靠底對齊 */
 }
 
 /* 亮版卡片陰影 — 暗版不套（深色背景不需要） */
@@ -948,8 +1071,8 @@ body.is-xqm #etf-list-view {
 
 /* Label tag inside clickable card（共用元件，改這裡全頁同步） */
 .card-label       { display: inline-flex; align-items: center; }
-.card-field-label { color: var(--comp-frame-text-secondary); }
-.card-field-sub   { color: var(--comp-frame-text-tertiary); }
+.card-field-label { color: var(--comp-frame-text-secondary); font-size: var(--comp-summary-card-label-size); }
+.card-field-sub   { color: var(--comp-frame-text-tertiary); font-size: var(--comp-summary-card-sub-size); }
 .card-field-meta  { color: var(--color-am-card-field-meta); }
 .stk-legend-title { color: var(--color-am-card-field-label); }
 .sector-legend-row:hover { background: var(--comp-table-row-hover); }
@@ -963,6 +1086,8 @@ body.is-xqm #etf-list-view {
 }
 /* Hover: badge goes fully opaque */
 .card-clickable:hover .card-new-label   { background: var(--xq-red-600) !important; color: #fff !important; }
+[data-platform="xqm"] .card-clickable:hover .card-new-label   { background: var(--xqm-trade-up-h)   !important; }
+[data-platform="xqm"] .card-clickable:hover .card-clear-label { background: var(--xqm-trade-down-h) !important; }
 .card-clickable:hover .card-clear-label { background: var(--color-trade-down) !important; color: #fff !important; }
 /* Selected: 60% tint + 2px outline + checkmark */
 .card-clickable.card-selected .card-new-label,
@@ -982,6 +1107,8 @@ body.is-xqm #etf-list-view {
   background: var(--color-trade-down-dark-100) !important;
   outline-color: var(--xq-green-650);
 }
+[data-platform="xqm"] .card-clickable.card-selected .card-new-label   { outline-color: var(--xqm-trade-up-volume-f);   }
+[data-platform="xqm"] .card-clickable.card-selected .card-clear-label { outline-color: var(--xqm-trade-down-volume-f); }
 .card-clickable.card-selected .card-new-label::before,
 .card-clickable.card-selected .card-clear-label::before {
   content: '';
@@ -1098,6 +1225,10 @@ body.is-xqm #etf-list-view {
 }
 
 
+:root { --comp-segment-font-size:   var(--f-base); }
+:root { --comp-segment-font-weight: 400; }
+:root { --comp-checkbox-color:      var(--color-theme-500); }
+
 /* segment-item — Component/Content/Segment spec */
 /* Stroke_Normal/Hover/Disable: Gray-400 (both modes) */
 /* Bg_Hover: Theme-250 | Bg_Active: Theme-150 (both modes) */
@@ -1105,6 +1236,8 @@ body.is-xqm #etf-list-view {
   color:            var(--color-gray-650);   /* Text_Default dark */
   border-color:     var(--color-gray-400);   /* Stroke_Normal */
   background-color: transparent;
+  font-size:        var(--comp-segment-font-size);
+  font-weight:      var(--comp-segment-font-weight);
 }
 [data-theme="light"] .segment-item {
   color: var(--color-gray-550);              /* Text_Default light */
@@ -1260,21 +1393,6 @@ body.is-xqm #etf-list-view {
   background: var(--comp-table-row-hover);
 }
 
-/* ── Gap bridge: tbl-stk 勾選欄和名稱欄之間的透明縫隙補丁 ─────────────
-   table-layout:auto 下，checkbox 欄實際寬度可能略小於宣告的 60px。
-   ::after 往右延伸 8px，確保不管實際欄寬多少，都不會透出後方捲動內容。
-   hover 時跟隨 row 的背景色。                                            */
-#stk-list-view .sticky-col:first-child::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0;
-  right: -8px;
-  width: 8px;
-  background: var(--comp-sticky-col-bg);
-}
-#stk-list-view [data-slot="table-body"] .table-row:hover .sticky-col:first-child::after {
-  background: var(--comp-table-row-hover);
-}
 
 
 /* 關鍵異動訊號 tag 強制套色 */
@@ -1310,9 +1428,9 @@ tr[data-sig="exit"] td:first-child span {
 }
 /* checked — white checkmark on theme background (both dark & light) */
 .stk-cb:checked {
-  background: var(--color-theme-500);
-  border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background: var(--comp-checkbox-color);
+  border-color: var(--comp-checkbox-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 11px 11px;
@@ -1331,12 +1449,12 @@ tr[data-sig="exit"] td:first-child span {
   cursor: not-allowed;
 }
 .stk-cb:not(:disabled):hover {
-  border-color: var(--color-theme-500);
+  border-color: var(--comp-checkbox-color);
 }
 .stk-cb:indeterminate {
-  background: var(--color-theme-500);
-  border-color: var(--color-theme-500);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23fff' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background: var(--comp-checkbox-color);
+  border-color: var(--comp-checkbox-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6H9.5' stroke='%23000' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 11px 11px;
@@ -1350,7 +1468,14 @@ tr[data-sig="exit"] td:first-child span {
 .chg-bar-val  { font-size: 14px; font-weight: 400; color: var(--color-gray-1000); margin-bottom: 4px; white-space: nowrap; }
 .chg-bar-name { font-size: 13px; color: var(--comp-table-stock-name); line-height: 1.3; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; text-align: center; }
 .chg-bar-code { font-size: 12px; color: var(--comp-table-stock-num); }
-.sig-pill            { display: inline-block; font-size: 12px; padding: 4px 6px; border-radius: 999px; line-height: 1; color: #fff; }
+/* XQM 加減碼 bar 圖：字級統一 H8（正/負組間隔與欄寬已在 JS 處理） */
+[data-platform="xqm"] .chg-bar-val  { font-size: var(--xqm-fs-h8) !important; }   /* 12px */
+[data-platform="xqm"] .chg-bar-name { font-size: var(--xqm-fs-h8) !important; }   /* 12px */
+[data-platform="xqm"] .chg-bar-code { font-size: var(--xqm-fs-h8) !important; }   /* 12px */
+/* XQM 圓餅圖 legend：字級 H8 */
+[data-platform="xqm"] .sector-legend-row,
+[data-platform="xqm"] .sector-legend-row span { font-size: var(--xqm-fs-h8) !important; }  /* 12px */
+.sig-pill            { display: inline-block; font-size: 12px; padding: 4px 6px; border-radius: 999px; line-height: 1; color: #fff; white-space: nowrap; }
 .card-label .sig-pill { padding: 5px 10px 3px; }  /* flex items-center 父層的光學補償 */
 .chg-bar-tag         { margin-bottom: 8px; }
 .chg-bar-tag.sig-pill { padding-left: 10px; padding-right: 10px; }
@@ -1389,6 +1514,8 @@ tr[data-sig="exit"] td:first-child span {
 
 .chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650);   outline-offset: -1px; }
 .chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650); outline-offset: -1px; }
+[data-platform="xqm"] .chip-new-tag.tag-active   { outline-color: var(--xqm-trade-up-volume-f);   }
+[data-platform="xqm"] .chip-clear-tag.tag-active { outline-color: var(--xqm-trade-down-volume-f); }
 
 /* ── Filter chip — 高度 + flex 對齊 ── */
 [id$="-chip-all"] .tag,
@@ -1401,7 +1528,8 @@ tr[data-sig="exit"] td:first-child span {
   height: 32px !important;
   display: inline-flex !important;
   align-items: center;
-  padding-inline: 14px !important;
+  padding-inline: var(--comp-filter-chip-pad) !important;
+  font-size: var(--comp-filter-chip-font-size);
 }
 
 /* ── Filter chip checkmark — active only ── */
@@ -1443,6 +1571,8 @@ tr[data-sig="exit"] td:first-child span {
 /* 首次買入 / 完全出清 active 邊線用固定顏色（override currentColor） */
 .chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650)   !important; outline-offset: -1px; }
 .chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650) !important; outline-offset: -1px; }
+[data-platform="xqm"] .chip-new-tag.tag-active   { outline-color: var(--xqm-trade-up-volume-f)   !important; }
+[data-platform="xqm"] .chip-clear-tag.tag-active { outline-color: var(--xqm-trade-down-volume-f) !important; }
 
 /* ── 加碼 / 減碼 filter chip — 文字色改用 trade 色票 ── */
 [id$="-chip-add"]    .tag { color: var(--color-trade-up); }
@@ -1456,8 +1586,14 @@ tr[data-sig="exit"] td:first-child span {
 button:hover .chip-new-tag {
   background: var(--xq-red-600) !important;
 }
+[data-platform="xqm"] button:hover .chip-new-tag {
+  background: var(--xqm-trade-up-h) !important;
+}
 button:hover .chip-clear-tag {
   background: var(--color-trade-down) !important;
+}
+[data-platform="xqm"] button:hover .chip-clear-tag {
+  background: var(--xqm-trade-down-h) !important;
 }
 
 /* ── 加減碼分析 Bar chart hover ── */
@@ -1480,6 +1616,188 @@ button:hover .chip-clear-tag {
    !! 必須放在檔案最底部，確保在所有 :root 定義之後 !!
    ════════════════════════════════════════════════════════════════ */
 [data-platform="xqm"] {
+  --page-inline-pad: 8px;      /* 手機框左右 padding */
+
   --comp-sticky-col-bg:   var(--xqm-blue-04);
   --comp-table-header-bg: var(--xqm-blue-04);
+
+  /* ── Table header 字級 / 顏色 ── */
+  --comp-table-header-font-size:   var(--xqm-fs-h6);    /* H6_P = 16px */
+  --comp-table-header-lh:          var(--xqm-lh-h6-p);  /* H6_P line-height = 20px */
+  --comp-table-header-font-weight: var(--f-weight);      /* 500 */
+  --comp-table-title-text:         var(--xqm-gray-12);  /* gray-12 = #B3B3B3 */
+
+  /* ── Table cell ── */
+  --comp-table-cell-bg:        var(--xqm-gray-02);   /* 格子底色 #161616 */
+  --comp-table-border:         var(--xqm-blue-04);   /* 格子底線 #1B1F22 */
+  --comp-table-row-hover:      var(--xqm-gray-03);   /* hover   #1D1D1D */
+  --comp-table-cell-font-size: var(--xqm-fs-h6);    /* H6 = 16px */
+  --comp-table-sub-font-size:  var(--xqm-fs-h7);    /* H7 = 14px（第二行小字）*/
+  --comp-table-text:           var(--xqm-gray-14);  /* 主文字白色 #FFFFFF */
+  --comp-table-stock-name:     var(--xqm-gray-14);  /* 商品上欄白色 */
+  --comp-table-stock-num:      var(--xqm-gray-12);  /* 商品下欄灰色 #B3B3B3 */
+
+  /* ── Trade 漲跌色 ── */
+  --color-trade-up:          var(--xqm-trade-up);    /* #DE2358 */
+  --color-trade-down:        var(--xqm-trade-down);  /* #0AA446 */
+  --color-trade-up-dark-100: var(--xqm-trade-up);    /* 首次買入 bg */
+  --color-trade-down-dark-100: var(--xqm-trade-down);/* 完全出清 bg */
+
+  /* ── Chart 色票（對應圓餅圖順序：orange→cyan→violet→lime→pink→blue）── */
+  --color-chart-01: var(--xqm-chart-01-a);  /* #FF9933 orange  */
+  --color-chart-02: var(--xqm-chart-04-a);  /* #00E4FF cyan    */
+  --color-chart-03: var(--xqm-chart-03-a);  /* #8264FF violet  */
+  --color-chart-04: var(--xqm-chart-07-a);  /* #80FF33 lime    */
+  --color-chart-05: var(--xqm-chart-05-a);  /* #FF7799 pink    */
+  --color-chart-06: var(--xqm-chart-02-a);  /* #3364FF blue    */
+
+  /* ── Active / Selected ── */
+  --color-theme-550:        var(--xqm-active);      /* tab / chip active #79C8FF */
+  --color-theme-500:        var(--xqm-active);      /* checkbox / hover border #79C8FF */
+
+  /* ── Button 藍色 ── */
+  --comp-btn-stroke-color:  var(--xqm-active);      /* stroke btn 邊框+文字 */
+  --comp-btn-stroke-hover:  var(--xqm-active-h);    /* stroke btn hover */
+  --comp-btn-primary-bg:    var(--xqm-active);      /* primary btn 背景 */
+  --comp-btn-primary-bg-hover: var(--xqm-active-h); /* primary btn hover */
+
+  /* ── Summary card ── */
+  --comp-summary-card-bg:         var(--xqm-blue-05);    /* 指標卡片底色 #1E2328 */
+  --comp-summary-card-border:     none;                   /* 無邊線 */
+  --comp-summary-card-h:          auto;                   /* 高度 hug content */
+  --comp-summary-card-pad:        4px 4px 4px 7px;        /* 卡片 padding（左補 +3px） */
+  --comp-summary-card-label-size: var(--xqm-fs-h7);      /* 標題列 H7 = 14px */
+  --comp-summary-card-val-size:   var(--xqm-fs-h6);      /* 數字列 H6 = 16px */
+  --comp-summary-card-sub-size:   var(--xqm-fs-h7);      /* 副標列 H7 = 14px */
+
+  /* ── Filter chip 字級 / 間距 / 底色 ── */
+  --comp-filter-chip-font-size: var(--xqm-fs-h6);        /* H6 = 16px */
+  --comp-filter-chip-pad:       12px;                     /* 左右 padding */
+  --comp-filter-chip-bg:        var(--xqm-other-02);     /* 底色 other-02 = #FFFFFF1a */
+
+  /* ── Segment 字級 / 字重 ── */
+  --comp-segment-font-size:   var(--xqm-fs-h6);          /* H6 = 16px */
+  --comp-segment-font-weight: var(--f-weight);            /* 500 */
+
+  /* ── Checkbox 勾選色 ── */
+  --comp-checkbox-color: var(--xqm-sub-04);              /* sub04 = #78C8C8 */
 }
+
+/* XQM body sticky 欄跟一般格子同底色（header sticky 仍保持 --comp-sticky-col-bg = blue-04） */
+[data-platform="xqm"] [data-slot="table-body"] .sticky-col,
+[data-platform="xqm"] [data-slot="table-body"] .sticky-col:first-child::after {
+  background: var(--comp-table-cell-bg) !important;
+}
+
+/* XQM chip / tag / sig-pill — inline font-weight 蓋過繼承，只有 !important 能覆蓋 */
+[data-platform="xqm"] .chip     { font-weight: var(--f-weight); }
+[data-platform="xqm"] .tag      { font-weight: var(--f-weight) !important; }
+[data-platform="xqm"] .sig-pill { font-weight: var(--f-weight) !important; }
+
+/* XQM filter chip 底色 — 覆蓋 --tag-bg（dark theme 直接寫在 .tag 上，需要更高優先度蓋過） */
+[data-platform="xqm"] [id$="-chip-all"] .tag,
+[data-platform="xqm"] [id$="-chip-new"] .tag,
+[data-platform="xqm"] [id$="-chip-add"] .tag,
+[data-platform="xqm"] [id$="-chip-hold"] .tag,
+[data-platform="xqm"] [id$="-chip-reduce"] .tag,
+[data-platform="xqm"] [id$="-chip-clear"] .tag,
+[data-platform="xqm"] [id$="-chip-exit"] .tag {
+  --tag-bg: var(--comp-filter-chip-bg);
+}
+
+/* XQM tag — 覆蓋 element-scoped --tag-text（rd-app.css 定義在 .tag 上，無法從 :root 繼承蓋過） */
+[data-platform="xqm"] .tag[data-variant="blue"] {
+  --tag-text:        var(--xqm-active);    /* #79C8FF */
+  --tag-text-hover:  var(--xqm-active-h);
+  --tag-text-active: var(--xqm-active);
+}
+[data-platform="xqm"] .tag[data-variant="red"] {
+  --tag-text: var(--xqm-trade-up);         /* 加碼 → #DE2358 */
+}
+[data-platform="xqm"] .tag[data-variant="green-teal"] {
+  --tag-text: var(--xqm-trade-down);       /* 減碼 → #0AA446 */
+}
+
+/* XQM 表格內 tag：字級 H7 + other-02 底色（filter chip 有更高優先度的 ID 規則，不受影響） */
+[data-platform="xqm"] [data-slot="table-cell"] .tag {
+  font-size: var(--xqm-fs-h7);
+  --tag-bg: var(--xqm-other-02);
+}
+/* XQM sig-pill（首次買入 / 完全出清）：字級 H7（蓋過 .sig-pill base 的 12px）*/
+[data-platform="xqm"] .sig-pill {
+  font-size: var(--xqm-fs-h7) !important;
+}
+
+/* XQM 表格排序箭頭 → gray-12（覆蓋 rd-app.css 的 --color-theme-500）*/
+[data-platform="xqm"] .table-head-sort-icon { color: var(--xqm-gray-12); }
+
+/* ── 投資比率 Bar 寬度（components.html 元件庫） ── */
+.ratio-bar-track               { width: 80px; }
+[data-platform="xqm"] .ratio-bar-track { width: 50px; }
+
+/* ── Summary Card base（供 components.html 元件庫使用） ── */
+.summary-card {
+  background-color: var(--comp-summary-card-bg);
+  border:           var(--comp-summary-card-border);
+  height:           var(--comp-summary-card-h);
+  padding:          var(--comp-summary-card-pad);
+  overflow:         hidden;
+}
+.summary-card-value {
+  font-size:   var(--comp-summary-card-val-size);
+  font-weight: var(--comp-summary-card-val-weight);
+  line-height: 1.2;
+}
+
+/* XQM Summary Card — 直接設值（規避 @layer 邊界問題，同時覆蓋 index.html 和 components.html） */
+:root[data-platform="xqm"] #mkt-summary-row > div,
+:root[data-platform="xqm"] #stk-summary-row > div,
+:root[data-platform="xqm"] #etf-summary-row > div,
+:root[data-platform="xqm"] .summary-card {
+  background-color: #1E2328 !important;  /* xqm-blue-05 */
+  border:           none    !important;  /* 含 card-accent 左邊線 */
+  height:           auto    !important;  /* hug content */
+  padding:          4px 4px 4px 7px !important;
+  overflow:         visible !important;
+}
+:root[data-platform="xqm"] #mkt-summary-row > div > :nth-child(2),
+:root[data-platform="xqm"] #stk-summary-row > div > :nth-child(2),
+:root[data-platform="xqm"] #etf-summary-row > div > :nth-child(2),
+:root[data-platform="xqm"] .summary-card-value {
+  font-size:   16px !important;  /* H6 */
+  font-weight: 700  !important;  /* bold */
+}
+
+/* XQM segment — 直接設 color/bg/border，不靠 custom property 繼承（規避 @layer 邊界問題） */
+:root[data-platform="xqm"] .segment-item {
+  color:            var(--xqm-active) !important;
+  background-color: transparent !important;
+  border-color:     var(--xqm-active) !important;
+  font-size:        var(--xqm-fs-h6) !important;
+  font-weight:      var(--f-weight) !important;
+}
+:root[data-platform="xqm"] .segment-item[data-state="active"] {
+  color:            var(--xqm-blue-01) !important;   /* 深色文字 #0A0D13 */
+  background-color: var(--xqm-active)  !important;   /* 藍底 */
+  border-color:     var(--xqm-active)  !important;
+}
+:root[data-platform="xqm"] .segment-item:hover:not([data-state="active"]) {
+  background-color: rgba(121,200,255,0.12) !important;
+}
+
+/* ── XQM ETF 表格欄寬縮小（phone viewport ≈ 359px 顯示前 3 欄）── */
+/* 覆蓋 buildThead() 生成的 inline min-width / width */
+[data-platform="xqm"] .table thead th:nth-child(1) { min-width: 80px !important; max-width: 140px !important; overflow: hidden; }
+[data-platform="xqm"] .table td:nth-child(1)       { max-width: 140px !important; overflow: hidden; }
+[data-platform="xqm"] .row-name                    { max-width: 108px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(2) { min-width:  86px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(3) { min-width:  72px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(4) { width:      84px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(5) { min-width:  72px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(6) { min-width:  72px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(7) { min-width:  72px !important; }
+[data-platform="xqm"] #etf-list-view thead th:nth-child(8) { min-width:  72px !important; }
+/* 狀態欄（col2/col4）縮小多餘 left padding，避免在窄欄中擠壓 badge */
+[data-platform="xqm"] #etf-list-view .t-status-cell { padding-left: 8px !important; }
+/* 產業欄文字 H6 */
+[data-platform="xqm"] .t-sector { font-size: var(--xqm-fs-h6) !important; }
