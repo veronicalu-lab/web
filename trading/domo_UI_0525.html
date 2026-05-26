@@ -2661,10 +2661,39 @@
     }
 
     input[type="checkbox"].row-cb {
+      appearance: none;
+      -webkit-appearance: none;
       width: 16px;
       height: 16px;
+      box-sizing: border-box;
       display: block;
-      margin: 0 auto
+      margin: 0 auto;
+      border: 1.5px solid var(--border2);
+      border-radius: 3px;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      transition: background .1s, border-color .1s;
+    }
+    input[type="checkbox"].row-cb:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    input[type="checkbox"].row-cb:checked::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 0px;
+      width: 4px;
+      height: 8px;
+      border: 2px solid var(--bg);
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+    input[type="checkbox"].row-cb:disabled {
+      opacity: 0.35;
+      cursor: default;
     }
 
     .s-tag {
