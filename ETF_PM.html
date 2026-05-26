@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>ETF 盤後頁 — XQ 電腦版示意</title>
+<link rel="stylesheet" href="mockup-styles.css">
+<style>
+  body { padding: 32px; background: #eef0f4; }
+
+  .page-title { font-size: 13px; color: var(--color-text-muted); margin-bottom: 12px; }
+
+  /* ══ 電腦版外框 ══ */
+  .desktop-panel {
+    width: 1040px;
+    background: var(--color-surface);
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  /* ── 頁面 header ── */
+  .page-header {
+    background: #1a1d23;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .back-btn { font-size: 18px; color: rgba(255,255,255,0.5); cursor: pointer; }
+  .page-title-bar { font-size: 16px; font-weight: 700; }
+
+  /* ── Sub-tabs ── */
+  .sub-tab-bar {
+    background: #1a1d23;
+    display: flex;
+    padding: 0 20px;
+    border-bottom: 1px solid #2a2d35;
+  }
+  .sub-tab {
+    padding: 9px 16px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  .sub-tab.active { color: white; border-bottom-color: var(--color-accent); font-weight: 600; }
+
+  /* ── 工具列 ── */
+  .toolbar-wrap {
+    background: white;
+    border-bottom: 1px solid var(--color-border);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .filter-lbl { font-size: 12px; color: var(--color-text-muted); white-space: nowrap; }
+  .filter-select {
+    padding: 4px 28px 4px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: #f5f6f8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 8px center;
+    font-size: 12px;
+    color: var(--color-text-primary);
+    appearance: none;
+    cursor: pointer;
+    min-width: 90px;
+  }
+  .filter-sep { width: 1px; height: 18px; background: var(--color-border); flex-shrink: 0; }
+  .date-input {
+    padding: 4px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: #f5f6f8;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    min-width: 110px;
+  }
+  .query-btn {
+    padding: 4px 16px;
+    background: var(--color-accent);
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+  }
+
+  /* ── Pane 切換 ── */
+  .pane { display: none; }
+  .pane.active { display: block; }
+
+  /* ── 統計彙總 ── */
+  .summary-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--color-border);
+    background: #f9fafb;
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .sum-card-static {
+    background: #f0f2f5;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    min-width: 180px;
+  }
+  .sum-card-static::after {
+    content: '固定';
+    position: absolute; top: 5px; right: 8px;
+    font-size: 9px; color: var(--color-text-muted);
+    background: #e0e3e8; border-radius: 3px; padding: 1px 5px;
+  }
+  .sum-card-static .lbl { font-size: 10px; color: var(--color-text-muted); margin-bottom: 4px; }
+  .sum-card-static .val { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sum-divider { width: 1px; background: var(--color-border); margin: 4px; flex-shrink: 0; }
+  .sum-card-dynamic {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .sum-card-dynamic .lbl { font-size: 10px; color: var(--color-text-muted); margin-bottom: 4px; }
+  .sum-card-dynamic .val { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sum-card-dynamic .val.up   { color: var(--color-up); }
+  .sum-card-dynamic .val.down { color: var(--color-down); }
+  .sum-card-dynamic .sub { font-size: 10px; color: var(--color-text-muted); margin-top: 3px; }
+
+  /* ── 表格（共用）── */
+  .table-wrap { overflow-x: auto; }
+  table.etf-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.etf-tbl th {
+    background: #f7f8fa; color: var(--color-text-muted); padding: 8px 12px;
+    font-weight: 500; border-bottom: 1px solid var(--color-border);
+    text-align: right; white-space: nowrap;
+  }
+  table.etf-tbl th:first-child { text-align: left; }
+  table.etf-tbl th.sorted { color: var(--color-accent); }
+  table.etf-tbl th.sorted::after { content: ' ↓'; font-size: 10px; }
+  table.etf-tbl td {
+    padding: 9px 12px; border-bottom: 1px solid var(--color-border-light);
+    text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  table.etf-tbl td:first-child { text-align: left; }
+  table.etf-tbl tr:last-child td { border-bottom: none; }
+  table.etf-tbl tbody tr:hover td { background: #f7f9ff; }
+  .etf-name { font-weight: 500; font-size: 12px; color: var(--color-text-primary); }
+  .etf-code { font-size: 10px; color: var(--color-text-muted); margin-top: 1px; }
+  a.nav-link { color: inherit; text-decoration: none; cursor: pointer; }
+  a.nav-link:hover { color: var(--color-accent); }
+  .text-up    { color: var(--color-up); }
+  .text-down  { color: var(--color-down); }
+  .text-muted { color: var(--color-text-muted); }
+
+  /* ── 買賣超：左右並排 ── */
+  .buysell-wrap { display: flex; padding: 16px 20px; background: #f9fafb; gap: 12px; }
+  .buysell-col {
+    flex: 1; background: white; border: 1px solid var(--color-border);
+    border-radius: 6px; overflow: hidden;
+  }
+  .buysell-header { padding: 8px 14px; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--color-border); }
+  .buy-header  { color: var(--color-up);   background: #fff5f5; }
+  .sell-header { color: var(--color-down); background: #f0faf4; }
+  table.bs-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.bs-tbl th {
+    background: #f7f8fa; color: var(--color-text-muted); padding: 6px 10px;
+    font-weight: 500; border-bottom: 1px solid var(--color-border);
+    text-align: right; white-space: nowrap; font-size: 11px;
+  }
+  table.bs-tbl th:first-child, table.bs-tbl th.l { text-align: left; }
+  table.bs-tbl td {
+    padding: 8px 10px; border-bottom: 1px solid var(--color-border-light);
+    text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; white-space: nowrap;
+  }
+  table.bs-tbl td:first-child { text-align: left; }
+  table.bs-tbl tr:last-child td { border-bottom: none; }
+  table.bs-tbl tbody tr:hover td { background: #f7f9ff; }
+  .rank-num {
+    display: inline-block; width: 16px; height: 16px;
+    background: #e8eeff; border-radius: 3px;
+    font-size: 10px; font-weight: 700; color: var(--color-accent);
+    text-align: center; line-height: 16px; margin-right: 6px;
+  }
+  .rank-num.top3 { background: var(--color-accent); color: white; }
+
+  /* ── 篩選 chip ── */
+  .filter-bar {
+    background: white;
+    border-bottom: 1px solid var(--color-border);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chip {
+    border-radius: 12px; padding: 3px 12px; font-size: 11px;
+    border: 1px solid transparent; cursor: pointer;
+    white-space: nowrap; user-select: none;
+  }
+  .chip.c-all   { background: var(--color-accent); color: white; }
+  .chip.c-new   { background: #dcfce7; border-color: var(--color-down); color: var(--color-down); }
+  .chip.c-add   { background: #fee2e2; border-color: var(--color-up);   color: var(--color-up); }
+  .chip.c-clear { background: #e8eeff; border-color: var(--color-accent); color: var(--color-accent); }
+  .chip.inactive { opacity: 0.45; }
+  .chip-cnt { display: inline-block; margin-left: 4px; font-size: 10px; font-weight: 700; opacity: 0.8; }
+
+  /* 產業 chip */
+  .chip-sector {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 10px; background: var(--color-accent-light);
+    color: var(--color-accent); border: 1px solid rgba(59,111,245,0.2);
+  }
+
+  /* ── 關鍵異動訊號 ── */
+  .signal-nav {
+    display: flex; gap: 10px; padding: 14px 20px;
+    border-bottom: 1px solid var(--color-border);
+    background: #f9fafb; flex-wrap: wrap;
+  }
+  .signal-nav-btn {
+    display: flex; align-items: center; gap: 8px; padding: 7px 14px;
+    background: white; border: 1px solid var(--color-border); border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .signal-nav-btn:hover { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .signal-nav-btn.active-filter { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .signal-nav-btn .count {
+    background: #f0f2f5; border-radius: 6px; padding: 1px 8px;
+    font-size: 12px; font-weight: 700; color: var(--color-text-secondary);
+  }
+  .signal-pane-body { padding: 16px 20px; background: #f9fafb; display: flex; flex-direction: column; gap: 14px; }
+  .signal-section {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .signal-head {
+    padding: 10px 20px; font-size: 13px; font-weight: 700;
+    border-bottom: 1px solid var(--color-border); display: flex; align-items: center; gap: 8px;
+  }
+  .signal-head.s-new  { background: #f0faf4; color: var(--color-down); }
+  .signal-head.s-add  { background: #fff5f5; color: var(--color-up); }
+  .signal-head.s-exit { background: #f7f8fa; color: var(--color-text-secondary); }
+  .signal-head .count {
+    font-size: 11px; font-weight: 400; color: var(--color-text-muted);
+    background: rgba(0,0,0,0.06); border-radius: 10px; padding: 1px 8px;
+  }
+  table.sig-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.sig-tbl th {
+    background: #f7f8fa; color: var(--color-text-muted); padding: 7px 14px;
+    font-weight: 500; border-bottom: 1px solid var(--color-border);
+    text-align: left; white-space: nowrap; font-size: 11px;
+  }
+  table.sig-tbl th.r { text-align: right; }
+  table.sig-tbl td { padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); font-size: 12px; white-space: nowrap; }
+  table.sig-tbl td.r { text-align: right; font-variant-numeric: tabular-nums; }
+  table.sig-tbl tr:last-child td { border-bottom: none; }
+  table.sig-tbl tbody tr:hover td { background: #f7f9ff; }
+</style>
+</head>
+<body>
+
+<div class="page-title"></div>
+
+<div class="desktop-panel">
+
+  <!-- 頁面 header -->
+  <div class="page-header">
+    <div class="header-left">
+      <span class="back-btn">‹</span>
+      <span class="page-title-bar">台股主動式 ETF 籌碼追蹤</span>
+    </div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div class="sub-tab-bar" id="subTabBar">
+    <button class="sub-tab active" onclick="switchTab('market')">市場總體觀測</button>
+    <button class="sub-tab" onclick="switchTab('buysell')">總體大買大賣</button>
+    <button class="sub-tab" onclick="switchTab('signal')">關鍵異動訊號</button>
+  </div>
+
+  <!-- 工具列（共用）-->
+  <div class="toolbar-wrap">
+    <span class="filter-lbl">期間</span>
+    <select class="filter-select" id="periodSelect" onchange="onPeriodChange()">
+      <option value="1d" selected>近一日</option>
+      <option value="1w">近一週</option>
+      <option value="1m">近一月</option>
+      <option value="3m">近三月</option>
+      <option value="6m">近六月</option>
+      <option value="1y">近一年</option>
+      <option value="custom">自訂</option>
+    </select>
+    <div class="filter-sep"></div>
+    <input type="date" class="date-input" id="dateStart" value="2026-04-22">
+    <span style="font-size:12px;color:var(--color-text-muted);">～</span>
+    <input type="date" class="date-input" id="dateEnd" value="2026-04-22">
+    <button class="query-btn">查詢</button>
+  </div>
+
+  <!-- ═══ Pane 1：全市場 ═══ -->
+  <div class="pane active" id="pane-market">
+
+    <div class="summary-section">
+      <div class="sum-card-dynamic">
+        <div class="lbl">期末總規模</div>
+        <div class="val">843.87億</div>
+        <div class="sub">期末主動式 ETF 規模加總</div>
+      </div>
+      <div class="sum-card-dynamic">
+        <div class="lbl">區間增減金額</div>
+        <div class="val up">+6.26億</div>
+        <div class="sub" style="color:var(--color-up);">+0.75%</div>
+      </div>
+      <div class="sum-card-dynamic">
+        <div class="lbl">區間規模成長/衰退檔數</div>
+        <div class="val" style="font-size:16px;">
+          <span style="color:var(--color-up);">↑ 11</span>
+          <span style="color:var(--color-text-muted);font-size:13px;margin:0 4px;">/</span>
+          <span style="color:var(--color-down);">↓ 3</span>
+        </div>
+        <div class="sub">成長檔數 / 衰退檔數</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="etf-tbl">
+        <thead>
+          <tr>
+            <th style="min-width:200px;">名稱</th>
+            <th style="width:90px;" class="sorted">規模(億)</th>
+            <th style="width:90px;">增減(億)</th>
+            <th style="width:80px;">增減%</th>
+            <th style="width:70px;">淨值</th>
+            <th style="width:70px;">漲幅%</th>
+            <th style="width:100px;">發行公司</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-market"></tbody>
+      </table>
+    </div>
+  </div><!-- /pane-market -->
+
+  <!-- ═══ Pane 2：買賣超 ═══ -->
+  <div class="pane" id="pane-buysell">
+    <div class="buysell-wrap">
+      <div class="buysell-col">
+        <div class="buysell-header buy-header">▲ 買超排行 Top 20</div>
+        <table class="bs-tbl">
+          <thead>
+            <tr>
+              <th class="l" style="min-width:130px;">商品</th>
+              <th class="l">產業</th>
+              <th class="r">張數</th>
+              <th class="r">佔成交量</th>
+              <th class="r">收盤</th>
+              <th class="r">漲跌%</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-buy"></tbody>
+        </table>
+      </div>
+      <div class="buysell-col">
+        <div class="buysell-header sell-header">▼ 賣超排行 Top 20</div>
+        <table class="bs-tbl">
+          <thead>
+            <tr>
+              <th class="l" style="min-width:130px;">商品</th>
+              <th class="l">產業</th>
+              <th class="r">張數</th>
+              <th class="r">佔成交量</th>
+              <th class="r">收盤</th>
+              <th class="r">漲跌%</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-sell"></tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /pane-buysell -->
+
+  <!-- ═══ Pane 3：關鍵異動訊號 ═══ -->
+  <div class="pane" id="pane-signal">
+
+    <div class="filter-bar">
+      <span class="chip c-all"            id="btn-all"  onclick="filterSignal('all')">● 全部 <span class="chip-cnt">19</span></span>
+      <span class="chip c-new  inactive"  id="btn-new"  onclick="filterSignal('new')">首次買入 <span class="chip-cnt">3</span></span>
+      <span class="chip c-add  inactive"  id="btn-add"  onclick="filterSignal('add')">大幅加碼 <span class="chip-cnt">8</span></span>
+      <span class="chip c-clear inactive" id="btn-exit" onclick="filterSignal('exit')">完全出清 <span class="chip-cnt">8</span></span>
+    </div>
+
+    <div class="signal-pane-body">
+
+    <!-- 首次買入 -->
+    <div class="signal-section" data-type="new">
+      <div class="signal-head s-new">🟢 首次買入 <span class="count">3 筆</span></div>
+      <table class="sig-tbl">
+        <thead><tr><th style="width:220px;">ETF</th><th style="width:160px;">股票</th><th>產業</th><th class="r">異動張數</th><th class="r">推估市值</th><th>訊號日期</th></tr></thead>
+        <tbody id="tbody-new"></tbody>
+      </table>
+    </div>
+
+    <!-- 大幅加碼 -->
+    <div class="signal-section" data-type="add">
+      <div class="signal-head s-add">🔴 大幅加碼 <span class="count">8 筆</span></div>
+      <table class="sig-tbl">
+        <thead><tr><th style="width:220px;">ETF</th><th style="width:160px;">股票</th><th>產業</th><th class="r">異動張數</th><th class="r">推估市值</th><th>訊號日期</th></tr></thead>
+        <tbody id="tbody-add"></tbody>
+      </table>
+    </div>
+
+    <!-- 完全出清 -->
+    <div class="signal-section" data-type="exit">
+      <div class="signal-head s-exit">⚪ 完全出清 <span class="count">8 筆</span></div>
+      <table class="sig-tbl">
+        <thead><tr><th style="width:220px;">ETF</th><th style="width:160px;">股票</th><th>產業</th><th class="r">異動張數</th><th class="r">推估市值</th><th>訊號日期</th></tr></thead>
+        <tbody id="tbody-exit"></tbody>
+      </table>
+    </div>
+
+    </div><!-- /signal-pane-body -->
+  </div><!-- /pane-signal -->
+
+</div><!-- /desktop-panel -->
+
+<script>
+// ════════════════════════════════════════
+// 資料（來自 previewActiveETF）
+// ════════════════════════════════════════
+const ETF_LIST = [
+  { code:'00400A', name:'主動國泰動能高息',  issuer:'國泰投信',  aum:96.12,  chg:+2.21, chgPct:+2.35, nav:12.04, navChg:+1.51 },
+  { code:'00991A', name:'主動復華未來50',    issuer:'復華投信',  aum:62.49,  chg:+1.10, chgPct:+1.80, nav:14.84, navChg:+0.96 },
+  { code:'00994A', name:'主動第一金台股優',  issuer:'第一金投信', aum:31.24,  chg:+1.05, chgPct:+3.47, nav:15.42, navChg:+1.44 },
+  { code:'00981A', name:'主動統一台股增長',  issuer:'統一投信',  aum:285.13, chg:+0.60, chgPct:+0.21, nav:25.54, navChg:+2.19 },
+  { code:'00985A', name:'主動野村台灣50',    issuer:'野村投信',  aum:17.19,  chg:+0.53, chgPct:+3.16, nav:18.57, navChg:+1.64 },
+  { code:'00992A', name:'主動群益科技創新',  issuer:'群益投信',  aum:199.85, chg:+0.49, chgPct:+0.25, nav:16.31, navChg:+2.24 },
+  { code:'00982A', name:'主動群益台灣強棒',  issuer:'群益投信',  aum:25.39,  chg:+0.26, chgPct:+1.03, nav:20.03, navChg:+1.98 },
+  { code:'00987A', name:'主動台新優勢成長',  issuer:'台新投信',  aum:18.06,  chg:+0.17, chgPct:+0.96, nav:15.28, navChg:+1.13 },
+  { code:'00984A', name:'主動安聯台灣高息',  issuer:'安聯投信',  aum:28.95,  chg:+0.12, chgPct:+0.40, nav:13.93, navChg:+0.72 },
+  { code:'00996A', name:'主動兆豐台灣豐收',  issuer:'兆豐投信',  aum:12.36,  chg:+0.11, chgPct:+0.86, nav:11.96, navChg:+2.39 },
+  { code:'00401A', name:'主動摩根台灣鑫收',  issuer:'摩根投信',  aum:18.76,  chg:+0.02, chgPct:+0.12, nav:11.45, navChg:+0.88 },
+  { code:'00980A', name:'主動野村臺灣優選',  issuer:'野村投信',  aum:17.01,  chg:-0.09, chgPct:-0.51, nav:17.01, navChg:+1.16 },
+  { code:'00995A', name:'主動中信台灣卓越',  issuer:'中信投信',  aum:43.56,  chg:-0.23, chgPct:-0.52, nav:14.52, navChg:+1.59 },
+  { code:'00993A', name:'主動安聯台灣',      issuer:'安聯投信',  aum:17.90,  chg:-0.31, chgPct:-1.70, nav:14.10, navChg:+0.78 },
+];
+
+const BUY_TOP20 = [
+  { rank:1,  code:'2891', name:'中信金',    sector:'金融',      shares:+5810, pct:'11.11%', close:44.20,  chgPct:+0.91 },
+  { rank:2,  code:'2885', name:'元大金',    sector:'金融',      shares:+4668, pct:'11.11%', close:44.20,  chgPct:+0.91 },
+  { rank:3,  code:'2892', name:'第一金',    sector:'金融',      shares:+3830, pct:'20.70%', close:32.10,  chgPct:+0.78 },
+  { rank:4,  code:'2615', name:'萬海',      sector:'航運',      shares:+1601, pct:'5.72%',  close:102.00, chgPct:+2.51 },
+  { rank:5,  code:'2344', name:'華邦電',    sector:'半導體',    shares:+1340, pct:'6.09%',  close:31.80,  chgPct:+1.92 },
+  { rank:6,  code:'3231', name:'緯創',      sector:'電腦及週邊',shares:+713,  pct:'1.98%',  close:168.00, chgPct:+2.44 },
+  { rank:7,  code:'2002', name:'中鋼',      sector:'鋼鐵',      shares:+702,  pct:'2.93%',  close:23.85,  chgPct:+0.85 },
+  { rank:8,  code:'1301', name:'台塑',      sector:'塑膠',      shares:+650,  pct:'4.48%',  close:65.90,  chgPct:+1.07 },
+  { rank:9,  code:'4904', name:'遠傳',      sector:'通信',      shares:+551,  pct:'8.48%',  close:95.10,  chgPct:+0.32 },
+  { rank:10, code:'6505', name:'台塑化',    sector:'塑膠',      shares:+373,  pct:'3.39%',  close:68.20,  chgPct:+1.04 },
+  { rank:11, code:'2884', name:'玉山金',    sector:'金融',      shares:+352,  pct:'1.35%',  close:32.40,  chgPct:+0.93 },
+  { rank:12, code:'6415', name:'矽力-KY',   sector:'半導體',    shares:+297,  pct:'14.14%', close:590.00, chgPct:+2.08 },
+  { rank:13, code:'1216', name:'統一',      sector:'食品',      shares:+268,  pct:'2.73%',  close:85.40,  chgPct:+0.59 },
+  { rank:14, code:'2412', name:'中華電',    sector:'通信',      shares:+175,  pct:'2.06%',  close:131.50, chgPct:+0.38 },
+  { rank:15, code:'3711', name:'日月光投控',sector:'半導體',    shares:+167,  pct:'0.88%',  close:182.00, chgPct:+1.39 },
+  { rank:16, code:'2474', name:'可成',      sector:'電子零組件',shares:+152,  pct:'3.62%',  close:185.00, chgPct:+1.09 },
+  { rank:17, code:'2886', name:'兆豐金',    sector:'金融',      shares:+130,  pct:'0.46%',  close:47.55,  chgPct:+0.96 },
+  { rank:18, code:'3034', name:'聯詠',      sector:'半導體',    shares:+116,  pct:'1.71%',  close:582.00, chgPct:+1.22 },
+  { rank:19, code:'5876', name:'上海商銀',  sector:'金融',      shares:+111,  pct:'2.02%',  close:56.30,  chgPct:+0.71 },
+  { rank:20, code:'2345', name:'智邦',      sector:'通信網路',  shares:+104,  pct:'1.60%',  close:915.00, chgPct:+2.23 },
+];
+
+const SELL_TOP20 = [
+  { rank:1,  code:'3661', name:'世芯-KY',   sector:'半導體',    shares:-2340, pct:'8.33%',  close:495.00,  chgPct:-0.60 },
+  { rank:2,  code:'2330', name:'台積電',    sector:'半導體',    shares:-1890, pct:'1.22%',  close:848.00,  chgPct:+1.44 },
+  { rank:3,  code:'6770', name:'力積電',    sector:'半導體',    shares:-1256, pct:'5.50%',  close:22.15,   chgPct:-1.33 },
+  { rank:4,  code:'3443', name:'創意',      sector:'半導體',    shares:-892,  pct:'4.88%',  close:1340.00, chgPct:-0.59 },
+  { rank:5,  code:'6669', name:'緯穎',      sector:'電腦及週邊',shares:-563,  pct:'3.21%',  close:3720.00, chgPct:-1.32 },
+  { rank:6,  code:'2344', name:'華邦電',    sector:'半導體',    shares:-480,  pct:'2.18%',  close:31.80,   chgPct:+1.92 },
+  { rank:7,  code:'3711', name:'日月光投控',sector:'半導體',    shares:-398,  pct:'2.10%',  close:182.00,  chgPct:+1.39 },
+  { rank:8,  code:'2308', name:'台達電',    sector:'電機機械',  shares:-352,  pct:'1.43%',  close:380.00,  chgPct:+0.79 },
+  { rank:9,  code:'3008', name:'大立光',    sector:'光電',      shares:-283,  pct:'1.85%',  close:2510.00, chgPct:-0.79 },
+  { rank:10, code:'2337', name:'旺宏',      sector:'半導體',    shares:-261,  pct:'2.74%',  close:55.20,   chgPct:-1.25 },
+  { rank:11, code:'2454', name:'聯發科',    sector:'半導體',    shares:-230,  pct:'0.63%',  close:932.00,  chgPct:+1.30 },
+  { rank:12, code:'2382', name:'廣達',      sector:'電腦及週邊',shares:-198,  pct:'1.06%',  close:270.00,  chgPct:-0.37 },
+  { rank:13, code:'2317', name:'鴻海',      sector:'電腦及週邊',shares:-180,  pct:'0.45%',  close:164.00,  chgPct:+1.55 },
+  { rank:14, code:'3045', name:'台灣大',    sector:'通信',      shares:-165,  pct:'2.75%',  close:105.00,  chgPct:0.00  },
+  { rank:15, code:'2891', name:'中信金',    sector:'金融',      shares:-155,  pct:'2.96%',  close:44.20,   chgPct:+0.91 },
+  { rank:16, code:'9910', name:'豐泰',      sector:'橡膠',      shares:-143,  pct:'3.80%',  close:233.00,  chgPct:-0.43 },
+  { rank:17, code:'2886', name:'兆豐金',    sector:'金融',      shares:-130,  pct:'0.46%',  close:47.55,   chgPct:+0.96 },
+  { rank:18, code:'5880', name:'合庫金',    sector:'金融',      shares:-119,  pct:'1.17%',  close:33.65,   chgPct:+0.60 },
+  { rank:19, code:'2002', name:'中鋼',      sector:'鋼鐵',      shares:-112,  pct:'0.47%',  close:23.85,   chgPct:+0.85 },
+  { rank:20, code:'1303', name:'南亞',      sector:'塑膠',      shares:-98,   pct:'1.02%',  close:55.70,   chgPct:+0.72 },
+];
+
+const SIG_NEW = [
+  { etf:'00985A 主動野村台灣50',       stock:'8046 南電',   sector:'電子零組件', delta:+32,   mv:'0.07 億', date:'2026-04-20' },
+  { etf:'00995A 主動中信台灣卓越',     stock:'3653 健策',   sector:'電子零組件', delta:+10,   mv:'0.07 億', date:'2026-04-20' },
+  { etf:'00995A 主動中信台灣卓越',     stock:'2474 可成',   sector:'電子零組件', delta:+22,   mv:'0.04 億', date:'2026-04-21' },
+];
+const SIG_ADD = [
+  { etf:'00993A 主動安聯台灣',         stock:'4904 遠傳',   sector:'通信',      delta:+104,  mv:'0.10 億', date:'2026-04-20' },
+  { etf:'00982A 主動群益台灣強棒',     stock:'2002 中鋼',   sector:'鋼鐵',      delta:+344,  mv:'0.08 億', date:'2026-04-20' },
+  { etf:'00987A 主動台新優勢成長',     stock:'3711 日月光投控',sector:'半導體', delta:+41,   mv:'0.07 億', date:'2026-04-20' },
+  { etf:'00985A 主動野村台灣50',       stock:'8046 南電',   sector:'電子零組件', delta:+32,   mv:'0.07 億', date:'2026-04-21' },
+  { etf:'00996A 主動兆豐台灣豐收',     stock:'6770 力積電', sector:'半導體',    delta:+262,  mv:'0.06 億', date:'2026-04-21' },
+  { etf:'00996A 主動兆豐台灣豐收',     stock:'2376 技嘉',   sector:'電腦及週邊',delta:+18,   mv:'0.06 億', date:'2026-04-21' },
+  { etf:'00995A 主動中信台灣卓越',     stock:'3653 健策',   sector:'電子零組件', delta:+10,   mv:'0.07 億', date:'2026-04-21' },
+  { etf:'00995A 主動中信台灣卓越',     stock:'2474 可成',   sector:'電子零組件', delta:+22,   mv:'0.04 億', date:'2026-04-21' },
+];
+const SIG_EXIT = [
+  { etf:'00981A 主動統一台股增長',     stock:'3661 世芯-KY',sector:'半導體',    delta:-189,  mv:'9.37 億', date:'2026-04-20' },
+  { etf:'00992A 主動群益科技創新',     stock:'3661 世芯-KY',sector:'半導體',    delta:-113,  mv:'5.60 億', date:'2026-04-20' },
+  { etf:'00991A 主動復華未來50',       stock:'6669 緯穎',   sector:'電腦及週邊',delta:-31,   mv:'1.21 億', date:'2026-04-20' },
+  { etf:'00993A 主動安聯台灣',         stock:'3661 世芯-KY',sector:'半導體',    delta:-15,   mv:'0.74 億', date:'2026-04-21' },
+  { etf:'00980A 主動野村臺灣優選',     stock:'3661 世芯-KY',sector:'半導體',    delta:-13,   mv:'0.64 億', date:'2026-04-21' },
+  { etf:'00995A 主動中信台灣卓越',     stock:'3661 世芯-KY',sector:'半導體',    delta:-9,    mv:'0.45 億', date:'2026-04-21' },
+  { etf:'00982A 主動群益台灣強棒',     stock:'3008 大立光', sector:'光電',      delta:-16,   mv:'0.42 億', date:'2026-04-21' },
+  { etf:'00996A 主動兆豐台灣豐收',     stock:'6669 緯穎',   sector:'電腦及週邊',delta:-4,    mv:'0.16 億', date:'2026-04-21' },
+];
+
+// ════════════════════════════════════════
+// 輔助
+// ════════════════════════════════════════
+function fmtChg(n, decimals=2) {
+  if (n === 0) return '<span class="text-muted">0.00</span>';
+  const s = Math.abs(n).toFixed(decimals);
+  if (n > 0) return '<span class="text-up">+' + s + '</span>';
+  return '<span class="text-down">−' + s + '</span>';
+}
+function fmtPct(n) {
+  if (n === 0) return '<span class="text-muted">0.00%</span>';
+  const s = Math.abs(n).toFixed(2) + '%';
+  if (n > 0) return '<span class="text-up">+' + s + '</span>';
+  return '<span class="text-down">−' + s + '</span>';
+}
+function fmtShares(n) {
+  const s = Math.abs(n).toLocaleString('zh-TW');
+  if (n > 0) return '<span class="text-up">+' + s + '</span>';
+  return '<span class="text-down">−' + s + '</span>';
+}
+
+// ════════════════════════════════════════
+// 渲染
+// ════════════════════════════════════════
+function renderMarket() {
+  document.getElementById('tbl-market').innerHTML = ETF_LIST.map(r => `
+    <tr>
+      <td><div class="etf-name"><a class="nav-link" href="XQ持股狀態.html">${r.name}</a></div><div class="etf-code">${r.code}</div></td>
+      <td>${r.aum.toFixed(2)}</td>
+      <td>${fmtChg(r.chg)}</td>
+      <td>${fmtPct(r.chgPct)}</td>
+      <td>${r.nav.toFixed(2)}</td>
+      <td>${fmtPct(r.navChg)}</td>
+      <td style="color:var(--color-text-muted);">${r.issuer}</td>
+    </tr>`).join('');
+}
+
+function renderBuySell() {
+  function rows(data, id) {
+    document.getElementById(id).innerHTML = data.map(r => `
+      <tr>
+        <td><span class="rank-num ${r.rank <= 3 ? 'top3' : ''}">${r.rank}</span><a class="nav-link" href="XQETF持股.html">${r.code} ${r.name}</a></td>
+        <td><span class="chip-sector">${r.sector}</span></td>
+        <td>${fmtShares(r.shares)}</td>
+        <td style="color:var(--color-text-muted);">${r.pct}</td>
+        <td>${r.close.toLocaleString('zh-TW')}</td>
+        <td>${fmtPct(r.chgPct)}</td>
+      </tr>`).join('');
+  }
+  rows(BUY_TOP20, 'tbl-buy');
+  rows(SELL_TOP20, 'tbl-sell');
+}
+
+function renderSignal() {
+  function rows(data, id) {
+    document.getElementById(id).innerHTML = data.map(r => `
+      <tr>
+        <td><a class="nav-link" href="XQ持股狀態.html">${r.etf}</a></td>
+        <td><a class="nav-link" href="XQETF持股.html">${r.stock}</a></td>
+        <td><span class="chip-sector">${r.sector}</span></td>
+        <td class="r">${fmtShares(r.delta)}</td>
+        <td class="r">${r.mv}</td>
+        <td>${r.date}</td>
+      </tr>`).join('');
+  }
+  rows(SIG_NEW,  'tbody-new');
+  rows(SIG_ADD,  'tbody-add');
+  rows(SIG_EXIT, 'tbody-exit');
+}
+
+// ════════════════════════════════════════
+// Tab / 篩選
+// ════════════════════════════════════════
+function switchTab(tab) {
+  const tabs = ['market','buysell','signal'];
+  document.querySelectorAll('.sub-tab').forEach((btn, i) => {
+    btn.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + tab).classList.add('active');
+}
+
+function filterSignal(type) {
+  ['all','new','add','exit'].forEach(t => {
+    document.getElementById('btn-' + t).classList.toggle('inactive', t !== type);
+  });
+  document.querySelectorAll('.signal-section').forEach(sec => {
+    sec.style.display = (type === 'all' || sec.dataset.type === type) ? '' : 'none';
+  });
+}
+
+function onPeriodChange() {
+  const v = document.getElementById('periodSelect').value;
+  const end = new Date('2026-04-22');
+  let start = new Date(end);
+  if      (v === '1d') start.setDate(end.getDate() - 1);
+  else if (v === '1w') start.setDate(end.getDate() - 7);
+  else if (v === '1m') start.setMonth(end.getMonth() - 1);
+  else if (v === '3m') start.setMonth(end.getMonth() - 3);
+  else if (v === '6m') start.setMonth(end.getMonth() - 6);
+  else if (v === '1y') start.setFullYear(end.getFullYear() - 1);
+  else return;
+  document.getElementById('dateStart').value = start.toISOString().slice(0,10);
+  document.getElementById('dateEnd').value   = end.toISOString().slice(0,10);
+}
+
+// ── 初始化 ──
+renderMarket();
+renderBuySell();
+renderSignal();
+</script>
+
+</body>
+</html>
