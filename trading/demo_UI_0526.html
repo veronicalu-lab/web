@@ -66,7 +66,7 @@
 
       --tint1: rgba(0, 0, 0, .03);  /* row hover overlay */
       --tint2: rgba(0, 0, 0, .05);  /* button hover overlay */
-      --hover-bg: #c7dcff;          /* XQNext light hover */
+      --hover-bg: #eff6ff;                /* XQNext light hover — Theme-100 */
       --tint3: #f0f0f0;             /* Gray-150：tag bg、separator */
       --tint4: #d2d2d2;             /* Gray-250：strong separator */
 
@@ -273,7 +273,7 @@
      XQNext: 半透明底色 + accent 文字
      XQ:     實心填滿 + 白字（見截圖全商品/股票/期貨） */
       --comp-seg-inactive-bg: transparent;
-      --comp-seg-inactive-text: #989898;        /* Figma Gray-650 */
+      --comp-seg-inactive-text: var(--text2);        /* Figma Gray-650 */
       --comp-seg-inactive-border: #404E5D;      /* Figma inactive stroke */
       --comp-seg-active-bg: #101F3B;            /* Figma active fill */
       --comp-seg-active-text: #6597FF;          /* Figma active text */
@@ -739,7 +739,6 @@
 
     .sb-hdr-toggle:hover {
       color: var(--accent);
-      background: var(--hover-bg);
     }
 
     /* 收合狀態：顯示 Logo，hover 才顯示漢堡選單 */
@@ -790,7 +789,6 @@
     }
 
     .sb-l1-item:hover {
-      background: var(--hover-bg);
       color: var(--accent);
     }
 
@@ -1317,12 +1315,12 @@
 
     .hdr-nav-btn:hover {
       color: var(--accent);
-      background: var(--bg4)
+      background: var(--comp-table-row-hover)
     }
 
     .hdr-close-btn:hover {
       color: var(--accent);
-      background: var(--bg4)
+      background: var(--comp-ico-hover-bg)
     }
 
     .hdr-nav-sep {
@@ -1380,7 +1378,7 @@
     }
 
     .det-hdr-btn:hover {
-      background: var(--bg4);
+      background: var(--comp-table-row-hover);
       color: var(--accent);
     }
 
@@ -1514,6 +1512,11 @@
     #t-settings>.set-wrap,
     #t-log>.s-section:first-child {
       margin-top: var(--sp-5);
+      overflow: hidden;
+    }
+
+    #t-comm>.s-section {
+      overflow: hidden;
     }
 
     .tab-pane {
@@ -1798,7 +1801,9 @@
       align-items: center;
       justify-content: space-between;
       gap: var(--sp-3);
-      padding: var(--sp-2) 10px;
+      padding: 0 10px;
+      height: 32px;
+      box-sizing: border-box;
       border: 1px solid var(--border2);
       border-radius: var(--r-md);
       background: var(--comp-seg-inactive-bg);
@@ -1809,6 +1814,8 @@
       white-space: nowrap;
       min-width: 60px
     }
+
+    .xsel-val { color: var(--text); }
 
     .xsel-trigger.sm {
       padding: var(--sp-1) var(--sp-3);
@@ -1840,7 +1847,7 @@
     }
 
     .xsel-wrap:has(#comm-filter-sel) .xsel-trigger {
-      width: calc(4em + 32px);
+      width: 95px;
       min-width: unset
     }
 
@@ -1906,7 +1913,9 @@
     }
 
     .op-btn {
-      padding: var(--sp-1) 10px;
+      padding: 0 10px;
+      height: 32px;
+      box-sizing: border-box;
       color: var(--bg);
       border: none;
       border-radius: var(--r-md);
@@ -1956,7 +1965,7 @@
       background: var(--hover-bg)
     }
 
-    .r-header:hover .rh-title {
+    .rh-title-link:hover {
       color: var(--accent)
     }
 
@@ -1986,11 +1995,6 @@
       max-width: 100%
     }
 
-    .rh-title-link:hover {
-      color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 3px
-    }
 
     .robot-link {
       color: var(--accent);
@@ -2078,6 +2082,12 @@
     .rh-pill.fail {
       background: var(--comp-pill-fail-bg);
       color: var(--comp-pill-fail-text)
+    }
+
+    .rh-pill.cancel {
+      background: transparent;
+      color: var(--text3);
+      border-color: var(--border2)
     }
 
     /* trigger info */
@@ -2220,12 +2230,12 @@
 
       0%,
       100% {
-        box-shadow: 0 0 0 0 rgba(24, 158, 1, .55);
+        box-shadow: 0 0 0 0 rgba(245, 127, 22, .55);
         opacity: 1
       }
 
       50% {
-        box-shadow: 0 0 0 4px rgba(24, 158, 1, 0);
+        box-shadow: 0 0 0 4px rgba(245, 127, 22, 0);
         opacity: .65
       }
     }
@@ -2432,12 +2442,13 @@
 
     .o-table td {
       padding: var(--comp-table-cell-pad-v) var(--sp-3);
-      color: var(--text)
+      color: var(--text);
+      font-weight: 400
     }
 
     .o-table tbody tr { background: var(--bg3); border-bottom: 1px solid var(--border); }
 
-    .o-table tr:hover {
+    .o-table tbody tr:hover {
       background: var(--comp-table-row-hover)
     }
 
@@ -2458,8 +2469,7 @@
     }
 
     .edit-val {
-      color: inherit;
-      font-weight: 500
+      color: inherit
     }
 
     .unit {
@@ -2672,7 +2682,7 @@
       box-sizing: border-box;
       display: block;
       margin: 0 auto;
-      border: 1.5px solid var(--border2);
+      border: 2px solid var(--icon-text);
       border-radius: 3px;
       background: transparent;
       cursor: pointer;
@@ -2719,6 +2729,18 @@
     .s-fail {
       background: rgba(228, 40, 69, .12);
       color: var(--danger2)
+    }
+
+    .o-table tbody tr:has(.s-cancel) {
+      background: var(--tint1)
+    }
+
+    .o-table tbody tr:has(.s-cancel) td {
+      color: var(--text4)
+    }
+
+    .o-table tbody tr:has(.s-cancel) .prod-code {
+      color: var(--text4)
     }
 
     .xs-btn {
@@ -2845,6 +2867,7 @@
       background-image: none;
       padding-right: 8px;
       cursor: text;
+      font-weight: 400;
     }
 
     input.s-input.is-error { border-color: var(--danger); }
@@ -2994,13 +3017,15 @@
     .f-input {
       display: flex;
       align-items: center;
-      padding: var(--sp-3) 10px var(--sp-3) 30px;
+      padding: 0 10px 0 30px;
       border: 1px solid var(--border2);
       border-radius: var(--r-md);
       background: var(--bg3);
       color: var(--text);
       font-size: var(--f-base);
       width: 100%;
+      height: 32px;
+      box-sizing: border-box;
       outline: none;
       transition: border-color .15s;
     }
@@ -3059,7 +3084,9 @@
     }
 
     .del-all-btn {
-      padding: 5px var(--sp-4);
+      padding: 0 var(--sp-4);
+      height: 32px;
+      box-sizing: border-box;
       background: var(--danger2);
       color: var(--bg);
       border: none;
@@ -3125,7 +3152,7 @@
       user-select: none;
       width: 200px;
       height: 32px;
-      padding: var(--sp-5) 0;
+      box-sizing: border-box;
     }
 
     .log-date-nav .ldn-arrow {
@@ -3243,7 +3270,9 @@
     }
 
     .export-btn {
-      padding: 5px var(--sp-4);
+      padding: 0 var(--sp-4);
+      height: 32px;
+      box-sizing: border-box;
       background: var(--accent);
       color: var(--bg);
       border: none;
@@ -3381,6 +3410,9 @@
       border-bottom: none
     }
 
+    .batch-table td.side-buy { color: var(--danger) }
+    .batch-table td.side-sell { color: var(--success) }
+
     .prod-badge {
       display: inline-flex;
       align-items: center;
@@ -3471,7 +3503,7 @@
     }
 
     .modal-close:hover {
-      background: var(--bg4);
+      background: var(--comp-ico-hover-bg);
       color: var(--accent)
     }
 
@@ -3621,7 +3653,7 @@
     }
 
     .arm-close:hover {
-      background: var(--bg4);
+      background: var(--comp-ico-hover-bg);
       color: var(--accent)
     }
 
@@ -4083,7 +4115,7 @@
     }
 
     .xpop-close:hover {
-      background: var(--bg4);
+      background: var(--comp-ico-hover-bg);
       color: var(--accent)
     }
 
@@ -4420,7 +4452,7 @@
       border: none;
       outline: none;
       background: transparent;
-      color: #e1e1e1;
+      color: var(--comp-input-text);
       font-size: var(--f-base);
       font-weight: 500;
       text-align: left;
@@ -4446,7 +4478,7 @@
       flex: 1;
       border: none;
       background: transparent;
-      color: #c3c3c3;
+      color: var(--comp-input-placeholder);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -4454,8 +4486,8 @@
       padding: 0;
       line-height: 1;
     }
-    .num-wrap .num-arrows button:hover { background: rgba(255,255,255,0.08); color: #e1e1e1; }
-    .num-wrap .num-arrows button:active { background: rgba(255,255,255,0.15); }
+    .num-wrap .num-arrows button:hover { background: var(--hover-bg); color: var(--comp-input-text); }
+    .num-wrap .num-arrows button:active { background: var(--tint2); }
     .num-wrap.is-disabled { background: var(--border); pointer-events: none; }
     .num-wrap.is-disabled input[type=number],
     .num-wrap.is-disabled .num-arrows button { color: var(--text4); }
@@ -4685,16 +4717,16 @@
           </div>
           <div class="metric long">
             <div class="m-label">作多部位</div>
-            <div class="m-value">12張<span class="m-amount">500股</span></div>
-            <div class="m-sub">$368,245</div>
+            <div class="m-value">$368,245</div>
+            <div class="m-sub">10,500股</div>
           </div>
           <div class="metric short">
             <div class="m-label">作空部位</div>
-            <div class="m-value">12張<span class="m-amount">500股</span></div>
-            <div class="m-sub">$138,546</div>
+            <div class="m-value">$138,546</div>
+            <div class="m-sub">10,500股</div>
           </div>
           <div class="metric book">
-            <div class="m-label">可刪改委託單</div>
+            <div class="m-label">未成交委託</div>
             <div class="m-value">4筆</div>
             <div class="m-sub">共3檔商品</div>
           </div>
@@ -4711,7 +4743,7 @@
           </select>
           <select class="s-input" id="ov-status-filter" style="width:auto" onchange="ovFilterBySelect(this.value)">
             <option value="">全部狀態</option>
-            <option value="pend">可刪改</option>
+            <option value="pend">未成交</option>
             <option value="filled">已成交</option>
             <option value="fail">委託失敗</option>
             <option value="cancel">已刪單</option>
@@ -4746,9 +4778,9 @@
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新訊號 11:40:10</span>
                   <div class="rh-pills">
-                    <span class="rh-pill pend">可刪改(3)</span>
+                    <span class="rh-pill pend">未成交(3)</span>
                     <span class="rh-pill filled">已成交(2)</span>
-                    <span class="rh-pill fail">失敗(0)</span>
+                    <span class="rh-pill fail" style="color:var(--danger2);border-color:rgba(254,43,72,.25);background:rgba(254,43,72,.08)">失敗(1)</span>
                   </div>
                 </div>
                 <div class="rh-cap">
@@ -4785,7 +4817,7 @@
                         <th>買賣</th>
                         <th>委託/成交</th>
                         <th>委託價</th>
-                        <th>成交價</th>
+                        <th>成交均價</th>
                         <th>狀態</th>
                         <th title="券商委託回報書號，供核對用">委託書號</th>
                       </tr>
@@ -4803,7 +4835,7 @@
                         <td><span class="edit-val" data-qty="10">10/0張</span></td>
                         <td><span class="edit-val" data-price="985">985</span></td>
                         <td style="color:var(--text4)">—</td>
-                        <td><span class="s-tag s-pend">待成交</span></td>
+                        <td><span class="s-tag s-pend">未成交</span></td>
                         <td title="委託書號">A11305001</td>
                       </tr>
                       <tr>
@@ -4819,7 +4851,7 @@
                         <td><span class="edit-val" data-qty="5">5/0張</span></td>
                         <td><span class="edit-val" data-price="21300">21,300</span></td>
                         <td style="color:var(--text4)">—</td>
-                        <td><span class="s-tag s-pend">待成交</span></td>
+                        <td><span class="s-tag s-pend">未成交</span></td>
                         <td title="委託書號">B10050211</td>
                       </tr>
                       <tr>
@@ -4834,7 +4866,7 @@
                         <td><span class="edit-val" data-qty="8">8/0張</span></td>
                         <td><span class="edit-val" data-price="1300">1,300</span></td>
                         <td style="color:var(--text4)">—</td>
-                        <td><span class="s-tag s-pend">待成交</span></td>
+                        <td><span class="s-tag s-pend">未成交</span></td>
                         <td title="委託書號">A11400033</td>
                       </tr>
                       <tr>
@@ -4867,6 +4899,34 @@
                         <td><span class="s-tag s-filled">已成交</span></td>
                         <td title="委託書號">B09450055</td>
                       </tr>
+                      <tr>
+                        <td class="col-chk"><input type="checkbox" class="row-cb" disabled></td>
+                        <td class="col-act"><button class="ico-btn del" disabled><i class="icon-trash-01"></i></button></td>
+                        <td>10:02:15</td>
+                        <td>
+                          <div class="line-clamp-2" title="鴻海 2317">鴻海 <span class="prod-code">2317</span></div>
+                        </td>
+                        <td class="side-buy">買進</td>
+                        <td>2/0張</td>
+                        <td>180</td>
+                        <td style="color:var(--text4)">—</td>
+                        <td><span class="s-tag s-fail">失敗</span></td>
+                        <td title="委託書號">A10020071</td>
+                      </tr>
+                      <tr>
+                        <td class="col-chk"><input type="checkbox" class="row-cb" disabled></td>
+                        <td class="col-act"><button class="ico-btn del" disabled><i class="icon-trash-01"></i></button></td>
+                        <td>10:18:40</td>
+                        <td>
+                          <div class="line-clamp-2" title="台新金 2887">台新金 <span class="prod-code">2887</span></div>
+                        </td>
+                        <td class="side-sell">賣出</td>
+                        <td>4/0張</td>
+                        <td>1,305</td>
+                        <td style="color:var(--text4)">—</td>
+                        <td><span class="s-tag s-cancel">已刪單</span></td>
+                        <td title="委託書號">B10180092</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -4887,7 +4947,7 @@
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新訊號 14:22:35</span>
                   <div class="rh-pills">
-                    <span class="rh-pill pend">可刪改(1)</span>
+                    <span class="rh-pill pend">未成交(1)</span>
                     <span class="rh-pill filled">已成交(4)</span>
                     <span class="rh-pill fail"
                       style="color:var(--danger2);border-color:rgba(254,43,72,.25);background:rgba(254,43,72,.08)">失敗(1)</span>
@@ -4928,7 +4988,7 @@
                         <th>買賣</th>
                         <th>委託/成交</th>
                         <th>委託價</th>
-                        <th>成交價</th>
+                        <th>成交均價</th>
                         <th>狀態</th>
                         <th title="券商委託回報書號，供核對用">委託書號</th>
                       </tr>
@@ -4946,7 +5006,7 @@
                         <td><span class="edit-val" data-qty="100">100/0張</span></td>
                         <td><span class="edit-val" data-price="1245">1,245</span></td>
                         <td style="color:var(--text4)">—</td>
-                        <td><span class="s-tag s-pend">待成交</span></td>
+                        <td><span class="s-tag s-pend">未成交</span></td>
                         <td title="委託書號">C10150321</td>
                       </tr>
                       <tr>
@@ -4961,7 +5021,7 @@
                         <td><span class="edit-val" data-qty="50">50/0張</span></td>
                         <td><span class="edit-val" data-price="1260">1,260</span></td>
                         <td style="color:var(--text4)">—</td>
-                        <td><span class="s-tag s-pend">待成交</span></td>
+                        <td><span class="s-tag s-pend">未成交</span></td>
                         <td title="委託書號">C10180089</td>
                       </tr>
                       <tr>
@@ -5104,7 +5164,7 @@
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新訊號 09:15:22</span>
                   <div class="rh-pills">
-                    <span class="rh-pill pend">可刪改(0)</span>
+                    <span class="rh-pill pend">未成交(0)</span>
                     <span class="rh-pill filled">已成交(5)</span>
                     <span class="rh-pill fail">失敗(0)</span>
                   </div>
@@ -5204,7 +5264,7 @@
                   <td>100/20張</td>
                   <td>1,245</td>
                   <td style="color:var(--text3)">—</td>
-                  <td><span class="s-tag s-pend">待成交</span></td>
+                  <td><span class="s-tag s-pend">未成交</span></td>
                   <td title="委託書號">B10150099</td>
                   <td>
                     <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
@@ -5244,7 +5304,7 @@
                   <td>7/0股</td>
                   <td>27.5</td>
                   <td style="color:var(--text3)">—</td>
-                  <td><span class="s-tag s-pend">待成交</span></td>
+                  <td><span class="s-tag s-pend">未成交</span></td>
                   <td title="委託書號">C14200733</td>
                   <td>
                     <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
@@ -5612,7 +5672,7 @@
                 <div class="m-sub">共8檔商品</div>
               </div>
               <div class="metric book">
-                <div class="m-label">可刪改委託單</div>
+                <div class="m-label">未成交委託</div>
                 <div class="m-value">4筆<span class="m-amount">($125,400)</span></div>
                 <div class="m-sub">共4檔商品</div>
               </div>
@@ -5632,7 +5692,7 @@
                 </div>
                 <select class="f-sel" id="comm-filter-sel" onchange="commFilterBySelect(this.value)">
                   <option value="">全部狀態</option>
-                  <option value="pend">可刪改</option>
+                  <option value="pend">未成交</option>
                   <option value="filled">已成交</option>
                   <option value="fail">委託失敗</option>
                   <option value="cancel">已刪單</option>
@@ -5674,7 +5734,7 @@
                     <td><span class="edit-val" data-qty="10">10/0張</span></td>
                     <td><span class="edit-val" data-price="105">105.00</span></td>
                     <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-pend">待成交</span></td>
+                    <td><span class="s-tag s-pend">未成交</span></td>
                     <td title="委託書號">A11305001</td>
                   </tr>
                   <!-- 2 -->
@@ -5720,7 +5780,7 @@
                     <td><span class="edit-val" data-qty="20">20/0張</span></td>
                     <td><span class="edit-val" data-price="32.5">32.50</span></td>
                     <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-pend">待成交</span></td>
+                    <td><span class="s-tag s-pend">未成交</span></td>
                     <td title="委託書號">A11200004</td>
                   </tr>
                   <!-- 5 -->
@@ -5811,7 +5871,7 @@
                     <td><span class="edit-val" data-qty="1000">1000/0股</span></td>
                     <td><span class="edit-val" data-price="18.5">18.50</span></td>
                     <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-pend">待成交</span></td>
+                    <td><span class="s-tag s-pend">未成交</span></td>
                     <td title="委託書號">A10400010</td>
                   </tr>
                   <!-- 11 -->
@@ -5917,7 +5977,7 @@
                     <td><span class="edit-val" data-qty="10">10/0張</span></td>
                     <td><span class="edit-val" data-price="15.7">15.70</span></td>
                     <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-pend">待成交</span></td>
+                    <td><span class="s-tag s-pend">未成交</span></td>
                     <td title="委託書號">A10050017</td>
                   </tr>
                   <!-- 18 -->
@@ -6172,22 +6232,22 @@
         <p style="font-size:var(--f-base);color:var(--text3);margin-bottom:10px">即將停止以下機器人：</p>
         <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 1</label>
-          <span class="rh-pill pend">可刪改(3)</span>
+          <span class="rh-pill pend">未成交(3)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 2 hr</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 2</label>
-          <span class="rh-pill pend">可刪改(1)</span>
+          <span class="rh-pill pend">未成交(1)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 1.5 hr</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 3</label>
-          <span class="rh-pill pend">可刪改(2)</span>
+          <span class="rh-pill pend">未成交(2)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 3 hr</span>
         </div>
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('stop-all-modal')">取消</button><button
-          class="m-confirm" onclick="closeModal('stop-all-modal');xAlert('已停止','所有選中的機器人已停止執行','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認停止</button>
+          class="m-confirm" onclick="closeModal('stop-all-modal');xAlert('已停止','已停止 3 個機器人，共 6 筆委託','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認停止</button>
       </div>
     </div>
   </div>
@@ -6196,22 +6256,22 @@
   <div class="modal" id="del-all-modal">
     <div class="modal-box">
       <div class="modal-hdr">
-        <div class="modal-title">確認刪除所有可刪改委託</div><button class="modal-close"
+        <div class="modal-title">確認刪除所有未成交委託</div><button class="modal-close"
           onclick="closeModal('del-all-modal')"><i class="icon-close-01"></i></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:var(--f-base);color:var(--text3);margin-bottom:10px">即將刪除以下可刪改委託單（共 4 筆）：</p>
+        <p style="font-size:var(--f-base);color:var(--text3);margin-bottom:10px">即將刪除以下未成交委託（共 4 筆）：</p>
         <div style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden">
           <label
             style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);cursor:pointer;font-size:var(--f-base)"><input
               type="checkbox" checked>交易機器人 1</label>
-          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 10 張 @ 21,200 <span class="rh-pill pend">可刪改(1)</span></div>
+          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 10 張 @ 21,200 <span class="rh-pill pend">未成交(1)</span></div>
         </div>
         <div style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden">
           <label
             style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);cursor:pointer;font-size:var(--f-base)"><input
               type="checkbox" checked>交易機器人 2</label>
-          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 100 張 @ 1,245 <span class="rh-pill pend">可刪改(3)</span></div>
+          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 100 張 @ 1,245 <span class="rh-pill pend">未成交(3)</span></div>
         </div>
         <div style="border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;opacity:.6">
           <label
@@ -6221,7 +6281,7 @@
         </div>
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('del-all-modal')">取消</button><button
-          class="m-confirm" onclick="closeModal('del-all-modal');xAlert('已刪除','所有勾選的委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認刪除</button>
+          class="m-confirm" onclick="closeModal('del-all-modal');xAlert('已刪除','已刪除 3 個機器人，共 6 筆委託','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認刪除</button>
       </div>
     </div>
   </div>
@@ -6275,8 +6335,8 @@
             <div class="s-section">
               <div class="s-row">
                 <div class="s-label">機器人名稱</div>
-                <input class="s-input" id="arm-robot-name" placeholder="請輸入機器人名稱（例：台指期策略 v1.0）" oninput="checkRobotName(this)">
-                <div class="s-field-warn" id="arm-name-warn" style="display:none"><i class="icon-alert-circle-border"></i> 此名稱已存在，請使用不同名稱</div>
+                <input class="s-input" id="arm-robot-name" placeholder="請輸入機器人名稱（例：台指期策略 v1.0）" oninput="checkRobotName(this)" onblur="checkRobotName(this)">
+                <div class="s-field-warn" id="arm-name-warn" style="display:none"><i class="icon-alert-circle-fill"></i> 此名稱已存在，請輸入不同的名稱</div>
               </div>
               <div class="s-row">
                 <div class="s-label">交易帳號</div>
@@ -7105,7 +7165,7 @@
     function showDelAll() { document.getElementById('del-all-modal').classList.add('show'); }
     function showDelSingle(name) {
       document.getElementById('del-single-title').textContent = '確認刪除：' + name + ' 的委託';
-      document.getElementById('del-single-msg').textContent = '即將刪除「' + name + '」的所有可刪改委託單。此操作無法還原。';
+      document.getElementById('del-single-msg').textContent = '即將刪除「' + name + '」的所有未成交委託。此操作無法還原。';
       document.getElementById('del-single-modal').classList.add('show');
     }
     function toggleAllRows(cb) {
@@ -7176,9 +7236,36 @@
     let armCurrentStep = 0;
     let _armEditMode = false;
     const ARM_STEPS = 3;
+    function armReset() {
+      const modal = document.getElementById('arm-modal');
+      // 步驟 1
+      const nameInput = document.getElementById('arm-robot-name');
+      nameInput.value = '';
+      nameInput.classList.remove('is-error');
+      document.getElementById('arm-name-warn').style.display = 'none';
+      document.getElementById('arm-strat-sel').selectedIndex = 0;
+      // 步驟 2 — radios
+      modal.querySelectorAll('[name="arm-ctype"]')[0].checked = true;
+      modal.querySelectorAll('[name="arm-entry"]')[0].checked = true;
+      modal.querySelectorAll('[name="arm-exit"]')[0].checked = true;
+      const qmodeQty = modal.querySelector('[name="arm-qmode"][onchange*="qty"]');
+      if (qmodeQty) qmodeQty.checked = true;
+      armQModeSwitch('qty');
+      // 步驟 2 — selects & num inputs in pane-1
+      modal.querySelectorAll('#arm-pane-1 select.s-input').forEach(s => s.selectedIndex = 0);
+      modal.querySelectorAll('#arm-pane-1 .num-wrap input[type="number"]').forEach(i => i.value = 1);
+      // 步驟 2 — checkboxes
+      modal.querySelectorAll('#arm-pane-1 input[type="checkbox"]').forEach(c => c.checked = true);
+      // 步驟 3
+      modal.querySelector('#arm-pane-2 input[inputmode="numeric"]').value = '1,000,000';
+      const numInputs = modal.querySelectorAll('#arm-pane-2 input[type="number"]');
+      if (numInputs[0]) numInputs[0].value = 50;
+      if (numInputs[1]) numInputs[1].value = 5;
+    }
     function openArmModal() {
       _armEditMode = false;
       armCurrentStep = 0;
+      armReset();
       _armApplyMode();
       armRender();
       document.getElementById('arm-modal').classList.add('show');
@@ -7292,11 +7379,19 @@
       }
     }
 
+    function armStep1Valid() {
+      const input = document.getElementById('arm-robot-name');
+      if (!input) return true;
+      checkRobotName(input);
+      return !input.classList.contains('is-error') && input.value.trim() !== '';
+    }
     function armGoStep(n) {
+      if (n > 0 && armCurrentStep === 0 && !armStep1Valid()) return;
       armCurrentStep = n;
       armRender();
     }
     function armNext() {
+      if (armCurrentStep === 0 && !armStep1Valid()) return;
       if (armCurrentStep < ARM_STEPS - 1) { armCurrentStep++; armRender(); }
       else {
         closeArmModal();
