@@ -6674,6 +6674,7 @@
       const lbl = document.getElementById('fs-level-label');
       if (lbl) lbl.textContent = _fsLabels[level - 1];
     }
+    let _hashReady = false;
     function _getCurrentPage() {
       const rv = document.getElementById('robot-view');
       if (rv && rv.style.display !== 'none') {
@@ -6684,6 +6685,7 @@
       return document.getElementById('vbtn-all')?.classList.contains('active') ? 'ov-comm' : 'ov-robots';
     }
     function _updateHash() {
+      if (!_hashReady) return;
       const plat = document.documentElement.getAttribute('data-platform') || 'xqnext';
       const theme = document.documentElement.getAttribute('data-theme') || 'dark';
       const themeMap = { 'xqnext-dark': 'next-dark', 'xqnext-light': 'next-light', 'xq-light': 'xq-light', 'xq-dark': 'xq-dark' };
@@ -7812,6 +7814,7 @@
     // populate counts after xsel is built
     document.addEventListener('DOMContentLoaded', () => {
       if (location.hash) { _applyHash(); setFontSize(_fontLevel); }
+      _hashReady = true;
       refreshCommFilterCounts();
       refreshOvFilterCounts();
     });
