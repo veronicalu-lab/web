@@ -219,8 +219,11 @@
     }
 
     /* sb-list 用主頁色系（MD spec 主頁色） */
+    [data-platform="xq"][data-theme="light"] .sb-l2 {
+      background: var(--tint3)
+    }
     [data-platform="xq"][data-theme="light"] .sb-list {
-      background: var(--bg)
+      background: var(--tint3)
     }
     [data-platform="xq"][data-theme="light"] .sb-item {
       color: var(--text)
@@ -631,8 +634,8 @@
       --sp-4: 12px;
       --sp-5: 16px;
       --sp-6: 20px;
-      /* font family: XQ 用傳統 CJK 字型，渲染感接近桌面軟體 */
-      --f-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+      /* font family: 量化積木 production 字體（dev tools 實測） */
+      --f-family: 'Noto Sans TC', 'Microsoft JhengHei', Meiryo, sans-serif, Arial, 'PingFang TC';
       /* XQ 全站 medium weight（production spec） */
       --f-weight: 500;
     }
@@ -2486,6 +2489,12 @@
       table-layout: fixed
     }
 
+    #t-comm .o-robot-link {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset
+    }
+
     .pend-orders .o-table tbody {
       display: block;
       max-height: calc(5 * 50px);
@@ -2942,7 +2951,7 @@
       font-weight: 500;
       color: var(--text);
       margin-bottom: 10px;
-      border-left: 2px solid var(--indicator);
+      border-left: 2px solid var(--accent);
       padding-left: 8px;
       line-height: 16px;
     }
@@ -4302,6 +4311,57 @@
       background: var(--bg4)
     }
 
+    .arm-strat-wrap { position: relative; }
+    .arm-strat-display {
+      display: flex;
+      align-items: center;
+      padding: 7px 8px;
+      border: 1px solid var(--comp-dd-border);
+      border-radius: var(--comp-dd-radius);
+      font-size: var(--f-base);
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--comp-dd-bg);
+      color: var(--comp-dd-text);
+      cursor: pointer;
+      transition: border-color .15s
+    }
+    .arm-strat-display:hover { border-color: var(--border2); }
+    .arm-strat-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: var(--r-md);
+      padding: var(--sp-1);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 20;
+      display: none;
+      box-shadow: var(--comp-float-shadow)
+    }
+    .arm-strat-list.open { display: block; }
+    .arm-strat-item {
+      padding: 7px var(--sp-4);
+      font-size: var(--f-base);
+      color: var(--text);
+      cursor: pointer;
+      transition: background .1s;
+      border-radius: calc(var(--r-md) - 2px)
+    }
+    .arm-strat-item:hover, .arm-strat-item.selected {
+      background: var(--hover-bg);
+      color: var(--accent)
+    }
+    .arm-strat-empty {
+      padding: 12px;
+      text-align: center;
+      color: var(--text3);
+      font-size: var(--f-sm)
+    }
+
     /* ── CUSTOM POPUP ── */
     .xpop-overlay {
       display: none;
@@ -4638,7 +4698,7 @@
     }
 
     body.is-empty-state .metric.warn .m-sub::before {
-      content: "安控 $650K(0%)";
+      content: "安控 $65萬(0%)";
       font-size: var(--f-base);
     }
 
@@ -5018,7 +5078,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $650K(65%)</span>
+                  <span class="rh-cap-label">安控 $65萬(65%)</span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill" style="width:65%"></div>
@@ -5188,7 +5248,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $320K(40%)</span>
+                  <span class="rh-cap-label">安控 $32萬(40%)</span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill" style="width:40%"></div>
@@ -5404,7 +5464,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $1M(100%) <i class="icon-alert-triangle-fill" style="color:var(--warning)"></i></span>
+                  <span class="rh-cap-label">安控 $100萬(100%) <i class="icon-alert-triangle-fill" style="color:var(--warning)"></i></span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill warn" style="width:100%"></div>
@@ -5679,7 +5739,7 @@
                   <div class="arm-section-title" onclick="openEditModal()" data-tip="編輯設定">
                     <i class="icon-setting-01 orig-icon"></i><i class="icon-edit-01 hover-icon"></i>安控設定
                   </div>
-                  <div class="sv-row"><span class="sv-label">每日選擇金額上限</span><span class="sv-val">$1,000,000</span></div>
+                  <div class="sv-row"><span class="sv-label">每日金額上限</span><span class="sv-val">$1,000,000</span></div>
                   <div class="sv-row"><span class="sv-label">最大部位限制</span><span class="sv-val">50 張</span></div>
                   <div class="sv-row"><span class="sv-label">最多持有商品檔數</span><span class="sv-val">5 檔</span></div>
                 </div>
@@ -5867,7 +5927,7 @@
                     <div class="arm-section-title"><i class="icon-setting-01"></i>安控設定</div>
                     <div class="s-section">
                       <div class="s-row">
-                        <div class="s-label">每日選擇金額上限</div>
+                        <div class="s-label">每日金額上限</div>
                         <input type="text" value="1,000,000" class="s-input" inputmode="numeric" onchange="this.value=Number(this.value.replace(/,/g,'')).toLocaleString('zh-TW')">
                       </div>
                       <div class="s-row">
@@ -5894,7 +5954,7 @@
                 <div class="m-label">持倉金額</div>
                 <div class="m-value">$166,248</div>
                 <div class="m-sub" style="display:flex;align-items:center;gap:6px">
-                  <span style="white-space:nowrap">安控 $650K(40.00%)</span>
+                  <span style="white-space:nowrap">安控 $65萬(40.00%)</span>
                   <div class="cap-bar" style="flex:1">
                     <div class="cap-fill" style="width:40%"></div>
                   </div>
@@ -6604,6 +6664,7 @@
                 <div class="s-label">機器人名稱</div>
                 <input class="s-input" id="arm-robot-name" placeholder="請輸入機器人名稱（例：台指期策略 v1.0）" oninput="checkRobotName(this)" onblur="checkRobotName(this)">
                 <div class="s-field-warn" id="arm-name-warn" style="display:none"><i class="icon-alert-circle-fill"></i> 此名稱已存在，請輸入不同的名稱</div>
+                <div class="s-field-warn" id="arm-name-empty-warn" style="display:none"><i class="icon-alert-circle-fill"></i> 請輸入機器人名稱</div>
               </div>
               <div class="s-row">
                 <div class="s-label">交易帳號</div>
@@ -6617,19 +6678,10 @@
                 <div class="radio-row" style="margin-bottom:8px">
                   <label><input type="radio" name="arm-src" checked disabled> 綁定量化積木策略</label>
                 </div>
-                <select class="s-input" id="arm-strat-sel">
-                  <option data-dir="long">聯發科策略 v2.0</option>
-                  <option data-dir="short">海海策略 v1.5</option>
-                  <option data-dir="long">台指期策略 v3.1</option>
-                </select>
-                <div class="hint" style="color:var(--warning)"><i class="icon-alert-triangle-fill"></i> 綁定後交易方向自動同步，無法手動修改</div>
-              </div>
-              <!-- 交易方向：綁定積木時不出現 -->
-              <div class="s-row" style="display:none">
-                <div class="s-label">交易方向</div>
-                <div class="seg-nav">
-                  <button class="seg-btn dir-long active" onclick="armDirSelect(this)">作多</button>
-                  <button class="seg-btn dir-short" onclick="armDirSelect(this)">作空</button>
+                <div class="arm-strat-wrap">
+                  <div class="arm-strat-display" id="arm-strat-display" style="display:none" onclick="armStratClear()"></div>
+                  <input class="s-input" id="arm-strat-input" placeholder="輸入策略名稱" oninput="armStratSearch(this.value)" onfocus="armStratOpen()" onblur="armStratClose()" autocomplete="off">
+                  <div class="arm-strat-list" id="arm-strat-list"></div>
                 </div>
               </div>
             </div>
@@ -6733,7 +6785,7 @@
             <div class="arm-section-title"><i class="icon-setting-01"></i>安控設定</div>
             <div class="s-section">
               <div class="s-row">
-                <div class="s-label">每日選擇金額上限</div>
+                <div class="s-label">每日金額上限</div>
                 <input type="text" value="1,000,000" class="s-input" inputmode="numeric" onchange="this.value=Number(this.value.replace(/,/g,'')).toLocaleString('zh-TW')">
               </div>
               <div class="s-row">
@@ -6871,6 +6923,70 @@
     }
     document.getElementById('xpop-overlay').addEventListener('click', function (e) { if (e.target === this) _xpopCancel(); });
     // public helpers
+    const ARM_STRATS = [
+      { name: '王牌選股法',           dir: 'long' },
+      { name: '投信突然開始買',        dir: 'long' },
+      { name: '富貴險中求',           dir: 'long' },
+      { name: '券商01專屬策略',        dir: 'long' },
+      { name: 'KD高檔死亡交叉',        dir: 'short' },
+      { name: '帶量空頭執帶',          dir: 'short' },
+      { name: '法人累計買超超過1,000張', dir: 'long' },
+      { name: '十字線',               dir: 'short' },
+      { name: 'BBand翻多策略',         dir: 'long' },
+      { name: '三日均量爆增',          dir: 'long' },
+      { name: '均線多頭排列',          dir: 'long' },
+      { name: '融券回補訊號',          dir: 'short' },
+      { name: '強勢股動能策略',        dir: 'long' },
+      { name: '外資連續買超',          dir: 'long' },
+      { name: '籌碼集中度偵測',        dir: 'long' },
+    ];
+    function _armDirTag(dir) {
+      const isLong = dir === 'long';
+      const style = [
+        'display:inline-block;cursor:default;pointer-events:none;flex-shrink:0',
+        'font-size:11px;font-weight:500;line-height:1',
+        'padding:2px 5px;border-radius:3px;margin-right:6px',
+        isLong ? 'color:var(--danger);background:var(--tint1)' : 'color:var(--success);background:var(--tint2)'
+      ].join(';');
+      return `<span style="${style}">${isLong ? '作多' : '作空'}</span>`;
+    }
+    function armStratRenderList(items) {
+      const list = document.getElementById('arm-strat-list');
+      const cur = document.getElementById('arm-strat-input').value.trim();
+      list.innerHTML = items.length
+        ? items.map(s => `<div class="arm-strat-item${s.name===cur?' selected':''}" onmousedown="armStratSelect('${s.name.replace(/'/g,"\\'")}','${s.dir}')">${_armDirTag(s.dir)}${s.name}</div>`).join('')
+        : '<div class="arm-strat-empty">找不到符合的策略</div>';
+    }
+    function armStratSearch(q) {
+      const filtered = q.trim() ? ARM_STRATS.filter(s => s.name.includes(q.trim())) : ARM_STRATS;
+      armStratRenderList(filtered);
+      document.getElementById('arm-strat-list').classList.add('open');
+    }
+    function armStratOpen() {
+      const q = document.getElementById('arm-strat-input').value.trim();
+      armStratRenderList(q ? ARM_STRATS.filter(s => s.name.includes(q)) : ARM_STRATS);
+      document.getElementById('arm-strat-list').classList.add('open');
+    }
+    function armStratClose() {
+      setTimeout(() => document.getElementById('arm-strat-list')?.classList.remove('open'), 180);
+    }
+    function armStratSelect(name, dir) {
+      const input = document.getElementById('arm-strat-input');
+      const display = document.getElementById('arm-strat-display');
+      input.value = name;
+      input.style.display = 'none';
+      display.innerHTML = _armDirTag(dir) + name;
+      display.style.display = 'flex';
+      document.getElementById('arm-strat-list').classList.remove('open');
+    }
+    function armStratClear() {
+      const input = document.getElementById('arm-strat-input');
+      document.getElementById('arm-strat-display').style.display = 'none';
+      input.style.display = '';
+      input.value = '';
+      input.focus();
+    }
+
     function armDirSelect(btn) {
       btn.closest('.seg-nav').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -6883,6 +6999,8 @@
 
     function checkRobotName(input) {
       const val = input.value.trim();
+      const emptyWarn = document.getElementById('arm-name-empty-warn');
+      if (emptyWarn) emptyWarn.style.display = 'none';
       const exists = val && Array.from(document.querySelectorAll('.rh-title-link'))
         .some(el => el.textContent.trim() === val);
       const warn = document.getElementById('arm-name-warn');
@@ -7089,6 +7207,7 @@
     function sbFilterClick(el, type) {
       if (document.querySelector('.sb').classList.contains('sb-collapsed')) toggleSidebar();
       _syncFilterActive(type);
+      showOv();
     }
 
     function _applyListFilter(type) {
@@ -7623,7 +7742,14 @@
       nameInput.value = '';
       nameInput.classList.remove('is-error');
       document.getElementById('arm-name-warn').style.display = 'none';
-      document.getElementById('arm-strat-sel').selectedIndex = 0;
+      document.getElementById('arm-name-empty-warn').style.display = 'none';
+      const stratInput = document.getElementById('arm-strat-input');
+      if (stratInput) {
+        stratInput.value = '';
+        stratInput.style.display = '';
+        document.getElementById('arm-strat-display').style.display = 'none';
+        document.getElementById('arm-strat-list')?.classList.remove('open');
+      }
       // 步驟 2 — radios
       modal.querySelectorAll('[name="arm-ctype"]')[0].checked = true;
       modal.querySelectorAll('[name="arm-entry"]')[0].checked = true;
@@ -7762,8 +7888,15 @@
     function armStep1Valid() {
       const input = document.getElementById('arm-robot-name');
       if (!input) return true;
+      const emptyWarn = document.getElementById('arm-name-empty-warn');
+      if (input.value.trim() === '') {
+        input.classList.add('is-error');
+        emptyWarn.style.display = 'flex';
+        return false;
+      }
+      emptyWarn.style.display = 'none';
       checkRobotName(input);
-      return !input.classList.contains('is-error') && input.value.trim() !== '';
+      return !input.classList.contains('is-error');
     }
     function armGoStep(n) {
       if (n > 0 && armCurrentStep === 0 && !armStep1Valid()) return;
