@@ -42,7 +42,7 @@
       --success: #2ec87b; /* Trade/Down / System/Success */
       --danger: #fe2b48;  /* Trade/Up */
       --danger2: #e42845; /* Trade/Limit-up */
-      --warning: #fac02d; /* System/Warning */
+      --warning: var(--cta); /* System/Warning */
       --cta: #f57f16;     /* System/CTA */
       --online: var(--cta);
       --tooltip-bg: #262626; /* Tooltip — 保持深色對比 */
@@ -79,7 +79,7 @@
       --success: #189e01;     /* Green-550 Light：Trade/Down */
       --danger: #ef1515;      /* Red-550 Light：Trade/Up（白底加深）*/
       --danger2: #d8121b;     /* Red-600 Light：Trade/Limit-up */
-      --warning: #fac02d;     /* System/Warning（同 Dark）*/
+      --warning: var(--cta);   /* System/Warning */
       --cta: #f57f16;         /* System/CTA（同 Dark）*/
       --online: var(--cta);
     }
@@ -117,7 +117,7 @@
       --success: #2dc87b;
       --danger: #f05454;
       --danger2: #e04040;
-      --warning: #f5a623;
+      --warning: var(--cta);
       --cta: #f07820;
       --online: var(--cta);
       /* Orange — robot running / system active */
@@ -168,8 +168,7 @@
       --success: #16a34a;
       --danger: #dc2626;
       --danger2: #dc2626;
-      --warning: #fad82a;
-      /* production 警示黃 */
+      --warning: var(--cta);
       --cta: #fd8920;
       /* production 橙色 CTA */
       --online: var(--cta);
@@ -1757,9 +1756,9 @@
     }
 
     .m-amount {
-      font-size: 28px;
-      font-weight: 500;
-      color: var(--text)
+      font-size: var(--f-sm);
+      font-weight: 400;
+      color: var(--text2)
     }
 
     /* CTRL BAR */
@@ -5903,12 +5902,12 @@
               </div>
               <div class="metric filled">
                 <div class="m-label">已成交</div>
-                <div class="m-value">12筆<span class="m-amount">($248,310)</span></div>
+                <div class="m-value">12筆 <span class="m-amount">($248,310)</span></div>
                 <div class="m-sub">共8檔商品</div>
               </div>
               <div class="metric book">
                 <div class="m-label">未成交委託</div>
-                <div class="m-value">4筆<span class="m-amount">($125,400)</span></div>
+                <div class="m-value">4筆 <span class="m-amount">($125,400)</span></div>
                 <div class="m-sub">共4檔商品</div>
               </div>
               <div class="metric long">
