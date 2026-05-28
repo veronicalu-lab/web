@@ -6674,18 +6674,83 @@
       const lbl = document.getElementById('fs-level-label');
       if (lbl) lbl.textContent = _fsLabels[level - 1];
     }
+    function _getCurrentPage() {
+      const rv = document.getElementById('robot-view');
+      if (rv && rv.style.display !== 'none') {
+        const pane = document.querySelector('#robot-view .tab-pane.active');
+        const id = pane ? pane.id : 't-settings';
+        return { 't-settings': 'robot-settings', 't-comm': 'robot-comm', 't-log': 'robot-log' }[id] || 'robot-settings';
+      }
+      return document.getElementById('vbtn-all')?.classList.contains('active') ? 'ov-comm' : 'ov-robots';
+    }
+    function _updateHash() {
+      const plat = document.documentElement.getAttribute('data-platform') || 'xqnext';
+      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const themeMap = { 'xqnext-dark': 'next-dark', 'xqnext-light': 'next-light', 'xq-light': 'xq-light', 'xq-dark': 'xq-dark' };
+      const themeKey = themeMap[plat + '-' + theme] || 'next-dark';
+      location.replace('#' + themeKey + '/' + _getCurrentPage());
+    }
+    function _applyPageSilent(page) {
+      if (page === 'ov-robots' || page === 'ov-comm') {
+        document.getElementById('ov').classList.remove('ov-hidden');
+        document.getElementById('ov').style.display = 'block';
+        document.getElementById('robot-view').style.display = 'none';
+        document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('active'));
+        document.getElementById('nav-ov').classList.add('active');
+        const v = page === 'ov-comm' ? 'all' : 'card';
+        document.getElementById('ov-card').style.display = v === 'card' ? 'flex' : 'none';
+        if (v === 'card') document.getElementById('ov-card').style.flexDirection = 'column';
+        document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
+        document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
+        document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
+      } else {
+        document.getElementById('nav-ov').classList.remove('active');
+        document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('active'));
+        _applyRobot('交易機器人 1');
+        document.getElementById('ov').style.display = 'none';
+        document.getElementById('robot-view').style.display = 'flex';
+        const tabId = { 'robot-settings': 't-settings', 'robot-comm': 't-comm', 'robot-log': 't-log' }[page] || 't-settings';
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        const tabIdx = ['t-settings', 't-comm', 't-log'].indexOf(tabId);
+        const tabs = document.querySelectorAll('.tab');
+        if (tabs[tabIdx]) tabs[tabIdx].classList.add('active');
+      }
+    }
+    function _applyHash() {
+      const parts = location.hash.replace('#', '').split('/');
+      const themeKey = parts[0];
+      const pageKey = parts[1];
+      const themePresets = {
+        'next-dark':  { plat: 'xqnext', theme: 'dark' },
+        'next-light': { plat: 'xqnext', theme: 'light' },
+        'xq-light':   { plat: 'xq',     theme: 'light' },
+        'xq-dark':    { plat: 'xq',     theme: 'dark' },
+      };
+      const p = themePresets[themeKey] || themePresets['next-dark'];
+      document.documentElement.setAttribute('data-platform', p.plat);
+      document.documentElement.setAttribute('data-theme', p.theme);
+      document.getElementById('plat-xq').classList.toggle('active', p.plat === 'xq');
+      document.getElementById('plat-xqnext').classList.toggle('active', p.plat === 'xqnext');
+      const isLight = p.theme === 'light';
+      document.getElementById('theme-icon').textContent = isLight ? '☀️' : '🌙';
+      document.getElementById('theme-label').textContent = isLight ? '亮色' : '暗色';
+      if (pageKey) _applyPageSilent(pageKey);
+    }
     function setPlatform(p) {
       document.documentElement.setAttribute('data-platform', p);
       document.getElementById('plat-xq').classList.toggle('active', p === 'xq');
       document.getElementById('plat-xqnext').classList.toggle('active', p === 'xqnext');
-      // 切換平台後重新套用字級（base 值已變）
       setFontSize(_fontLevel);
+      _updateHash();
     }
     function toggleTheme() {
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
       document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
       document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
       document.getElementById('theme-label').textContent = isDark ? '亮色' : '暗色';
+      _updateHash();
     }
     function toggleEmptyState() {
       document.body.classList.toggle('is-empty-state');
@@ -7083,11 +7148,11 @@
       document.getElementById('robot-view').style.display = 'none';
       document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('active'));
       document.getElementById('nav-ov').classList.add('active');
+      _updateHash();
     }
     function goToRobot(name, acc) {
       if (typeof clearBatchSel === 'function') clearBatchSel();
       document.getElementById('nav-ov').classList.remove('active');
-      // 從總覽進入：清掉 sb-item active，filter 切到「執行中」
       document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('active'));
       _sbNavContext = '執行中';
       _syncFilterActive('running');
@@ -7122,6 +7187,7 @@
       document.getElementById(id).classList.add('active');
       e.currentTarget.classList.add('active');
       _syncDetFilterBar(id);
+      _updateHash();
     }
     function switchTabById(id) {
       if (typeof clearBatchSel === 'function') clearBatchSel();
@@ -7130,6 +7196,7 @@
       document.getElementById(id).classList.add('active');
       document.querySelectorAll('.tab')[['t-settings', 't-comm', 't-log'].indexOf(id)].classList.add('active');
       _syncDetFilterBar(id);
+      _updateHash();
     }
     function toggleFav(el) {
       const active = el.classList.toggle('active');
@@ -7160,6 +7227,7 @@
       document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
       document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
       document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
+      _updateHash();
     }
     function showStopAll() { document.getElementById('stop-all-modal').classList.add('show'); }
     function showDelAll() { document.getElementById('del-all-modal').classList.add('show'); }
@@ -7743,6 +7811,7 @@
     })();
     // populate counts after xsel is built
     document.addEventListener('DOMContentLoaded', () => {
+      if (location.hash) { _applyHash(); setFontSize(_fontLevel); }
       refreshCommFilterCounts();
       refreshOvFilterCounts();
     });
