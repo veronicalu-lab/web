@@ -448,6 +448,8 @@
       <button class="proto-nav-btn" onclick="showPage('etf')">ETF → 持股狀態</button>
       <div class="proto-nav-label">美股</div>
       <button class="proto-nav-btn" onclick="showPage('us-theme')">主題投資</button>
+      <div class="proto-nav-label" style="margin-top:12px">連結</div>
+      <a class="proto-nav-btn" href="index.html?xqm=1" target="_blank" style="display:block;text-decoration:none">XQM 版 ↗</a>
     </nav>
 
     <div id="sidebar-update-time" style="font-size:12px;color:var(--color-gray-500);padding:6px 12px 4px;"></div>
@@ -4598,9 +4600,10 @@
       });
 
       document.addEventListener('DOMContentLoaded', function () {
+        if (new URLSearchParams(location.search).has('xqm')) setPlatform('xqm');
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/05/25 09:55';
+        const FILE_UPDATED = '2026/05/28 17:03';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
