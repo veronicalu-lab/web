@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="light" data-platform="xqnext">
+<html lang="zh-TW" data-theme="light" data-platform="xq">
 
 <head>
   <meta charset="UTF-8">
@@ -102,7 +102,7 @@
 
       --text: #dce2f5;
       --text2: #a2aed0;
-      --text3: #677099;
+      --text3: #7d88a8;
       --text4: #444f75;
 
       --tint1: rgba(255, 255, 255, .04);
@@ -129,34 +129,49 @@
       --bg: #f4f4f6;
       /* page / content bg */
       --bg2: #f2f4fb;
-      /* sidebar bg（header + nav + list 區） */
+      /* modal-hdr / sidebar secondary bg */
       --bg3: #ffffff;
-      /* cards / tab strip — 白 */
+      /* cards / modal body — 白 */
       --bg4: #e4e8f6;
       /* pressed / hover */
-      --border: #e0e4f0;
-      --border2: #c8cedf;
+      --border: #eaeaed;
+      /* production 分隔線 / 邊框 */
+      --border2: #adacb4;
+      /* outline button hover border */
 
-      --text: #474C64;
+      --text: #474c5c;
       --text2: #808392;
       /* XQ 次要文字 */
-      --text3: #677099;
-      --text4: #9ba4c0;
+      --text3: #808392;
+      --text4: #94a3b8;
 
       --tint1: rgba(0, 0, 0, .025);
-      --tint2: rgba(0, 0, 0, .025);
-      --tint3: #e8ecfa;
-      --tint4: #c8cedf;
-      --hover-bg: rgba(0, 0, 0, .04);
+      /* 已刪單 row 極淡底 */
+      --tint2: #f2f2f2;
+      /* chip / tag 底色（production neutral gray） */
+      --tint3: #eaeaed;
+      /* 分隔線 / pill fail bg */
+      --tint4: #d5d6db;
+      /* strong separator / block 序號底色 */
+      --hover-bg: #fbfcff;
+      /* row hover、rule item header（production） */
 
       --accent: #6886dc;
-      --accent-h: #4f6cce;
-      --accent-bg: #eef1fb;
+      --accent-h: #84A0F0;
+      /* production hover 藍 */
+      --accent-bg: #ecf1ff;
+      /* production accent 淡底 */
+      --accent-bg2: #e6ebff;
+      /* system tag 底色（比 accent-bg 更藍） */
+      --accent-pressed: #4f67a8;
+      /* pressed/active border（比 accent 深） */
       --success: #16a34a;
       --danger: #dc2626;
       --danger2: #dc2626;
-      --warning: #d97706;
-      --cta: #ea6f00;
+      --warning: #fad82a;
+      /* production 警示黃 */
+      --cta: #fd8920;
+      /* production 橙色 CTA */
       --online: var(--cta);
       /* Orange — robot running / system active */
     }
@@ -167,20 +182,41 @@
     /* ── XQ light shadow tokens ──
    平台特徵：帶藍紫色調陰影（accent #6886DC = rgb(104,134,220)） */
     [data-platform="xq"][data-theme="light"] {
-      --comp-card-shadow: 0 2px 8px rgba(104, 134, 220, .14), 0 1px 2px rgba(0, 0, 0, .04);
-      --comp-sidebar-shadow: 2px 0 12px rgba(104, 134, 220, .12);
-      --comp-float-shadow: 0 8px 28px rgba(104, 134, 220, .18);
+      /* Shadow: production 使用 rgba(60,79,107) 藍灰色調 */
+      --comp-card-shadow: 0 4px 5px 0 rgba(60, 79, 107, .10), 0 1px 10px 0 rgba(60, 79, 107, .05), 0 2px 4px -1px rgba(60, 79, 107, .15);
+      --comp-sidebar-shadow: 2px 0 8px rgba(60, 79, 107, .12);
+      --comp-float-shadow: 0 8px 28px rgba(60, 79, 107, .18);
       --comp-modal-bg: var(--bg3);
-      /* XQ light: bg2=#f2f4fb → modal 改白 */
+
+      /* Nav sidebar: dark navy sb-l1 */
+      --comp-nav-inactive-text: #f2f2f2;
+      --comp-nav-active-text: #f2f2f2;
+      --comp-nav-active-bg: #354479;
+      --comp-nav-hover-bg: #343b60;
+      --comp-nav-active-indicator: #8ba9ff;
+
+      /* Segmented: 白底 inactive（在亮色頁面上有層次） */
+      --comp-seg-inactive-bg: #ffffff;
+      --comp-seg-inactive-border: var(--border2);
+
+      /* Header button hover: accent bg */
+      --comp-hbtn-hover-bg: var(--accent-bg);
+
+      /* Table header: 同頁面底色（production #f4f4f6） */
+      --comp-table-header-bg: var(--bg);
+
+      /* Dropdown input (亮版) */
+      --comp-dd-bg: #ffffff;
+      --comp-dd-text: var(--text);
+      --comp-dd-caret: var(--text2);
+      --comp-dd-hover-border: var(--accent);
     }
 
     /* XQ light — surface overrides */
-    [data-platform="xq"][data-theme="light"] body {
-      font-weight: 500
-    }
 
-    [data-platform="xq"][data-theme="light"] .sb-list {
-      background: var(--bg2)
+    /* XQ light sidebar: dark navy 同 production（亮版保持深色 sidebar） */
+    [data-platform="xq"][data-theme="light"] .sb-l1 {
+      background: #232742
     }
 
     /* list 區同 sidebar 灰底 */
@@ -228,7 +264,9 @@
     }
 
     [data-platform="xq"][data-theme="light"] .modal-box {
-      box-shadow: var(--comp-float-shadow)
+      box-shadow: var(--comp-float-shadow);
+      background: var(--bg3);
+      border: 1px solid var(--border)
     }
 
     [data-platform="xq"][data-theme="light"] .batch-bar {
@@ -278,6 +316,8 @@
       --comp-seg-active-bg: #101F3B;            /* Figma active fill */
       --comp-seg-active-text: #6597FF;          /* Figma active text */
       --comp-seg-active-border: #2862FF;        /* Figma active stroke */
+      --comp-seg-hover-bg: var(--hover-bg);     /* inactive hover bg */
+      --comp-seg-active-hover-bg: rgba(101, 151, 255, .25); /* active hover bg */
       --comp-seg-radius: 4px;
 
       /* ── Header Button (hbtn) ── */
@@ -370,12 +410,17 @@
       --comp-ico-hover-text: var(--text);
       --comp-ico-radius: var(--r-sm);
 
+      /* ── Control Height（button / input / select / seg / log-date-nav） ── */
+      --comp-ctrl-h: 36px;
+
       /* ── Titlebar ⚡ ── */
       --comp-titlebar-h: 46px;
 
       /* ── Modal / Floating Surface ⚡ ── */
       --comp-modal-bg: var(--bg2);
       /* modal-box, arm-panel, xpop-box, ctx-menu */
+      --comp-modal-hdr-bg: var(--bg2);
+      /* modal header bar */
 
       /* ── Shadow ⚡ ──
      dark mode: 背景深，卡片靠色差區分，陰影很淡或無
@@ -428,16 +473,22 @@
     /* ── XQ Component Overrides ──
    ⚡ 邏輯不同的元件在此覆蓋               */
     [data-platform="xq"] {
-      /* Segmented: 實心填滿 */
+      /* Segmented: 實心填滿 + accent 邊框（production: border = accent ALL states） */
       --comp-seg-active-bg: var(--accent);
       --comp-seg-active-text: #ffffff;
-      --comp-seg-inactive-text: var(--text2);
-      /* XQ: text2 (#474c5c in light) */
-      --comp-seg-inactive-border: var(--border2);
+      --comp-seg-inactive-text: var(--text);      /* XQ: #474c5c（比 text2 更黑） */
+      --comp-seg-inactive-border: var(--accent);  /* XQ: 全狀態邊框都是 accent */
+      --comp-seg-active-border: var(--accent);
+      --comp-seg-hover-bg: var(--accent-bg);      /* inactive hover: accent 淡底 #ecf1ff */
+      --comp-seg-active-hover-bg: var(--accent-h); /* active hover: accent 高亮 #84A0F0 */
 
       /* Nav active: XQ accent rgba + 左邊條（GitLab style） */
       --comp-nav-active-bg: rgba(104, 134, 220, .12);
       --comp-nav-active-indicator: var(--accent);
+
+      /* Page Tab: XQ 用 accent 色，不走 XQNext 的 --indicator */
+      --comp-tab-active-text: var(--accent);
+      --comp-tab-active-indicator: var(--accent);
 
       /* Dropdown sel: XQ accent rgba */
       --comp-sel-active-bg: rgba(104, 134, 220, .18);
@@ -453,6 +504,9 @@
 
       /* Titlebar */
       --comp-titlebar-h: 44px;
+
+      /* Modal header: XQ 用純灰（同 --bg #f4f4f6），與 XQNext 藍灰 --bg2 區分 */
+      --comp-modal-hdr-bg: var(--bg);
 
       /* Shadow: XQ dark — navy bg，卡片用較重陰影增加深度感 */
       --comp-card-shadow: 0 2px 6px rgba(0, 0, 0, .35);
@@ -500,6 +554,8 @@
       --sp-6: 20px;
       /* font family */
       --f-family: 'Noto Sans TC', 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif; /* XQNext: Windows 優先 */
+      /* font weight: XQNext 預設 regular，XQ 全站 medium */
+      --f-weight: 400;
     }
 
     /* XQ platform — based on testweb9.xq.com.tw visual spec
@@ -539,6 +595,8 @@
       --sp-6: 20px;
       /* font family: XQ 用傳統 CJK 字型，渲染感接近桌面軟體 */
       --f-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+      /* XQ 全站 medium weight（production spec） */
+      --f-weight: 500;
     }
 
     * {
@@ -557,6 +615,7 @@
       background: var(--bg);
       color: var(--text);
       font-size: var(--f-md);
+      font-weight: var(--f-weight);
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -610,7 +669,7 @@
     .titlebar-name {
       font-size: var(--f-base);
       color: var(--text2);
-      font-weight: 400
+      font-weight: var(--f-weight)
     }
 
     .titlebar-spacer {
@@ -728,7 +787,7 @@
       height: 44px;
       padding: 0;
       border-radius: var(--r-md);
-      color: var(--text2);
+      color: var(--comp-nav-inactive-text);
       font-size: var(--f-xl);
       transition: all .15s;
       display: flex;
@@ -781,7 +840,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text2);
+      color: var(--comp-nav-inactive-text);
       font-size: var(--f-xl);
       border-radius: var(--r-md);
       cursor: pointer;
@@ -812,21 +871,21 @@
       gap: var(--sp-4);
       width: 100%;
       cursor: pointer;
-      color: var(--text2);
+      color: var(--comp-nav-inactive-text);
       transition: color .15s;
       padding: var(--sp-2) 0;
       border-left: 3px solid transparent;
     }
 
     .sb-l1-filter:hover {
-      color: var(--accent);
+      color: var(--comp-nav-active-text);
     }
 
     .sb-l1-filter.active {
-      color: var(--accent);
-      border-left-color: var(--accent);
+      color: var(--comp-nav-active-text);
+      border-left-color: var(--comp-nav-active-indicator);
       font-weight: 500;
-      background: var(--bg2);
+      background: var(--comp-nav-active-bg);
       margin-right: -1px;
       border-radius: var(--r-md) 0 0 var(--r-md);
       position: relative;
@@ -1171,7 +1230,7 @@
       margin-left: var(--sp-1);
       font-size: var(--f-xs);
       color: var(--text4);
-      font-weight: 400;
+      font-weight: var(--f-weight);
     }
 
     .sb-group-hdr:hover .sb-group-cnt {
@@ -1197,7 +1256,7 @@
       display: block;
       padding: 7px var(--sp-3) 7px 22px;
       font-size: var(--f-md);
-      color: var(--text2);
+      color: var(--comp-nav-inactive-text);
       cursor: pointer;
       border-radius: var(--r-md);
       transition: all .15s;
@@ -1207,8 +1266,8 @@
     }
 
     .sb-item:hover {
-      background: var(--hover-bg);
-      color: var(--accent)
+      background: var(--comp-nav-hover-bg);
+      color: var(--comp-nav-active-text)
     }
 
     .sb-item.active {
@@ -1303,14 +1362,18 @@
       padding: 0;
       width: 32px;
       height: 32px;
-      border-radius: 2px;
-      color: var(--comp-ico-text);
-      font-size: 24px;
-      line-height: 1;
+      border-radius: var(--r-md);
+      color: var(--text);
+      font-size: 28px;
       transition: color .15s, background .15s;
       display: flex;
       align-items: center;
       justify-content: center
+    }
+    .hdr-nav-btn#nav-btn-prev i,
+    .hdr-nav-btn#nav-btn-next i {
+      transform: scaleX(0.9);
+      display: inline-block
     }
 
     .hdr-nav-btn:hover {
@@ -1368,9 +1431,9 @@
       cursor: pointer;
       width: 32px;
       height: 32px;
-      border-radius: 2px;
-      color: var(--comp-ico-text);
-      font-size: 24px;
+      border-radius: var(--r-md);
+      color: var(--text);
+      font-size: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1401,16 +1464,16 @@
     /* Monitoring status button (橘色 --cta) */
     .rh-status-btn.monitoring {
       border-color: var(--cta);
-      background: var(--cta);
-      color: #fff
+      background: transparent;
+      color: var(--cta)
     }
 
     .rh-status-btn.monitoring:hover {
-      filter: brightness(1.08)
+      background: rgba(253, 137, 32, .08)
     }
 
     .rh-status-btn.monitoring .rh-dot {
-      background: #fff;
+      background: var(--cta);
       animation: none
     }
 
@@ -1444,7 +1507,11 @@
     }
 
     .hbtn {
-      padding: var(--sp-2) var(--sp-4);
+      padding: 0 var(--sp-4);
+      height: var(--comp-ctrl-h);
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
       background: var(--comp-hbtn-bg);
       border: 1px solid var(--comp-hbtn-border);
       border-radius: var(--comp-hbtn-radius);
@@ -1629,7 +1696,7 @@
     }
 
     .m-value {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 500;
       color: var(--text);
       line-height: 1.1
@@ -1651,7 +1718,7 @@
     }
 
     .m-amount {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 500;
       color: var(--text)
     }
@@ -1676,15 +1743,16 @@
     }
 
     .seg-btn {
-      padding: 7px var(--sp-5);
-      line-height: 16px;
+      padding: 0 var(--sp-5);
+      height: var(--comp-ctrl-h);
+      box-sizing: border-box;
       border: 1px solid var(--comp-seg-inactive-border);
       background: var(--comp-seg-inactive-bg);
       color: var(--comp-seg-inactive-text);
       border-radius: 0;
       cursor: pointer;
       font-size: var(--f-base);
-      font-weight: 400;
+      font-weight: var(--f-weight);
       transition: background .15s, color .15s, border-color .15s;
       white-space: nowrap;
       flex: 1;
@@ -1708,13 +1776,20 @@
     }
 
     .seg-btn:hover {
-      color: var(--comp-seg-active-text);
+      background: var(--comp-seg-hover-bg);
       border-color: var(--comp-seg-active-border);
       z-index: 1;
     }
 
     .seg-btn.active {
       background: var(--comp-seg-active-bg);
+      color: var(--comp-seg-active-text);
+      border-color: var(--comp-seg-active-border);
+      z-index: 1;
+    }
+
+    .seg-btn.active:hover {
+      background: var(--comp-seg-active-hover-bg);
       color: var(--comp-seg-active-text);
       border-color: var(--comp-seg-active-border);
       z-index: 1;
@@ -1739,7 +1814,7 @@
 
     /* ── INPUT NUMBER 統一樣式 ── */
     input[type="number"] {
-      height: 32px;
+      height: var(--comp-ctrl-h);
       padding: 0 6px;
       border: 1px solid var(--border2);
       border-radius: var(--r-md);
@@ -1802,7 +1877,7 @@
       justify-content: space-between;
       gap: var(--sp-3);
       padding: 0 10px;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
       border: 1px solid var(--border2);
       border-radius: var(--r-md);
@@ -1825,7 +1900,7 @@
 
     .xsel-trigger.lg {
       min-width: 90px;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
     }
 
@@ -1892,7 +1967,7 @@
       font-size: var(--f-xs);
       color: var(--text4);
       flex-shrink: 0;
-      font-weight: normal
+      font-weight: var(--f-weight)
     }
 
     .xsel-opt:hover {
@@ -1914,22 +1989,29 @@
 
     .op-btn {
       padding: 0 10px;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
       color: var(--bg);
       border: none;
       border-radius: var(--r-md);
       font-size: var(--f-base);
       cursor: pointer;
-      font-weight: 400
+      font-weight: var(--f-weight);
+      transition: background .15s
     }
 
     .op-blue {
       background: var(--accent)
     }
+    .op-blue:hover {
+      background: var(--comp-seg-active-hover-bg)
+    }
 
     .op-red {
       background: var(--danger2)
+    }
+    .op-red:hover {
+      background: var(--danger)
     }
 
     /* ROBOT CARDS — 無 border，靠色差區分層次 */
@@ -2443,7 +2525,7 @@
     .o-table td {
       padding: var(--comp-table-cell-pad-v) var(--sp-3);
       color: var(--text);
-      font-weight: 400
+      font-weight: var(--f-weight)
     }
 
     .o-table tbody tr { background: var(--bg3); border-bottom: 1px solid var(--border); }
@@ -2575,7 +2657,7 @@
       cursor: pointer;
       padding: 3px;
       border-radius: var(--r-sm);
-      font-size: 24px;
+      font-size: 28px;
       line-height: 1;
       color: var(--text3);
       display: flex;
@@ -2867,7 +2949,7 @@
       background-image: none;
       padding-right: 8px;
       cursor: text;
-      font-weight: 400;
+      font-weight: var(--f-weight);
     }
 
     input.s-input.is-error { border-color: var(--danger); }
@@ -3024,7 +3106,7 @@
       color: var(--text);
       font-size: var(--f-base);
       width: 100%;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
       outline: none;
       transition: border-color .15s;
@@ -3085,7 +3167,7 @@
 
     .del-all-btn {
       padding: 0 var(--sp-4);
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
       background: var(--danger2);
       color: var(--bg);
@@ -3093,8 +3175,12 @@
       border-radius: var(--r-md);
       font-size: var(--f-base);
       cursor: pointer;
-      font-weight: 400;
-      margin-left: auto
+      font-weight: var(--f-weight);
+      margin-left: auto;
+      transition: background .15s
+    }
+    .del-all-btn:hover {
+      background: var(--danger)
     }
 
     /* EXEC LOG */
@@ -3151,7 +3237,7 @@
       position: relative;
       user-select: none;
       width: 200px;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
     }
 
@@ -3164,7 +3250,7 @@
       border: none;
       background: transparent;
       color: var(--text3);
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
       transition: color .15s, background .15s;
       flex-shrink: 0
@@ -3202,7 +3288,7 @@
     .log-date-nav .ldn-latest-tag {
       font-size: var(--f-xs);
       color: var(--text4);
-      font-weight: 400
+      font-weight: var(--f-weight)
     }
 
     .log-date-nav .ldn-goto-latest {
@@ -3215,7 +3301,7 @@
       border-left: 0px solid var(--border2);
       background: transparent;
       color: var(--accent);
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
       transition: background .15s
     }
@@ -3271,18 +3357,23 @@
 
     .export-btn {
       padding: 0 var(--sp-4);
-      height: 32px;
+      height: var(--comp-ctrl-h);
       box-sizing: border-box;
       background: var(--accent);
       color: var(--bg);
       border: none;
       border-radius: var(--r-md);
       font-size: var(--f-base);
+      font-weight: var(--f-weight);
       cursor: pointer;
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 5px
+      gap: 5px;
+      transition: background .15s
+    }
+    .export-btn:hover {
+      background: var(--comp-seg-active-hover-bg)
     }
 
     /* MODAL */
@@ -3358,7 +3449,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: var(--f-base);
-      font-weight: 400
+      font-weight: var(--f-weight)
     }
     .batch-del-btn i { font-size: 20px; }
 
@@ -3476,6 +3567,8 @@
     .modal-hdr {
       padding: var(--sp-5) var(--sp-6);
       border-bottom: 1px solid var(--border);
+      background: var(--comp-modal-hdr-bg);
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
       display: flex;
       align-items: center;
       justify-content: space-between
@@ -3493,7 +3586,7 @@
       width: 32px;
       height: 32px;
       border-radius: 2px;
-      font-size: 24px;
+      font-size: 28px;
       color: var(--comp-ico-text);
       cursor: pointer;
       display: flex;
@@ -3517,6 +3610,7 @@
     .modal-footer {
       padding: var(--sp-4) var(--sp-6);
       border-top: 1px solid var(--border);
+      border-radius: 0 0 var(--r-xl) var(--r-xl);
       display: flex;
       gap: var(--sp-3);
       justify-content: flex-end
@@ -3524,28 +3618,130 @@
 
     .m-cancel {
       padding: 7px var(--sp-5);
-      border: 1px solid var(--tint3);
-      background: var(--bg3);
+      border: 1px solid var(--border2);
+      background: transparent;
       color: var(--text2);
       border-radius: var(--r-md);
       cursor: pointer;
-      font-size: var(--f-base)
+      font-size: var(--f-base);
+      transition: background .15s, color .15s
+    }
+
+    .m-cancel:hover {
+      background: var(--hover-bg);
+      color: var(--text)
     }
 
     .m-confirm {
       padding: 7px var(--sp-5);
-      background: var(--danger2);
-      color: var(--bg);
+      background: var(--accent);
+      color: #fff;
       border: none;
       border-radius: var(--r-md);
       cursor: pointer;
       font-size: var(--f-base);
-      font-weight: 400
+      font-weight: 500;
+      transition: opacity .15s
     }
 
-    .m-confirm.blue {
+    .m-confirm:hover {
+      opacity: .85
+    }
+
+    .m-confirm.danger {
+      background: var(--danger2)
+    }
+    .m-confirm:disabled {
+      opacity: .4;
+      cursor: not-allowed
+    }
+
+    /* ── DAL CARDS (del-all modal) ── */
+    .dal-card {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: background .15s;
+      background: var(--comp-modal-bg);
+      padding-bottom: 8px
+    }
+    .dal-card[data-checked="true"] {
+      background: var(--accent-bg)
+    }
+    .dal-card.disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      pointer-events: none
+    }
+    .dal-card-hdr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: var(--f-base);
+      font-weight: var(--f-weight)
+    }
+    .dal-cb {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--border2);
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg3);
+      transition: background .15s, border-color .15s
+    }
+    .dal-cb.checked {
       background: var(--accent);
-      color: var(--bg)
+      border-color: var(--accent)
+    }
+    .dal-cb.checked::after {
+      content: '';
+      width: 4px;
+      height: 7px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+      display: block
+    }
+    .dal-name { flex: 1; color: var(--text) }
+    .dal-orders {
+      padding: 0 12px 10px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 82px;
+      overflow-y: auto;
+      font-size: var(--f-sm);
+      color: var(--text2)
+    }
+    .dal-order-item { line-height: 1.5 }
+
+    /* Toast */
+    .xtoast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: var(--r-pill);
+      font-size: var(--f-base);
+      box-shadow: var(--comp-float-shadow);
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+      white-space: nowrap
+    }
+    .xtoast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
     }
 
     .compare-row {
@@ -3620,7 +3816,7 @@
       padding: var(--sp-5) 24px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
-      background: var(--bg2)
+      background: var(--comp-modal-hdr-bg)
     }
 
     .arm-header-title {
@@ -3641,7 +3837,7 @@
       width: 32px;
       height: 32px;
       border-radius: 2px;
-      font-size: 24px;
+      font-size: 28px;
       color: var(--comp-ico-text);
       cursor: pointer;
       padding: 0;
@@ -3746,7 +3942,7 @@
     .arm-step-label {
       font-size: var(--f-xs);
       color: var(--text3);
-      font-weight: 400
+      font-weight: var(--f-weight)
     }
 
     .arm-step.active .arm-step-label {
@@ -3785,7 +3981,7 @@
       color: var(--comp-seg-inactive-text);
       cursor: pointer;
       font-size: var(--f-sm);
-      font-weight: 400;
+      font-weight: var(--f-weight);
       transition: background .12s, color .12s, border-color .12s;
       position: relative;
       z-index: 0;
@@ -4009,7 +4205,7 @@
       justify-content: space-between;
       padding: 14px 24px;
       border-top: 1px solid var(--border);
-      background: var(--bg2);
+      background: var(--bg3);
       flex-shrink: 0
     }
 
@@ -4104,7 +4300,7 @@
       width: 32px;
       height: 32px;
       border-radius: 2px;
-      font-size: 24px;
+      font-size: 28px;
       color: var(--comp-ico-text);
       cursor: pointer;
       padding: 0;
@@ -4128,7 +4324,7 @@
     }
 
     .xpop-icon {
-      font-size: 24px;
+      font-size: 28px;
       margin-bottom: 10px;
       line-height: 1
     }
@@ -4352,34 +4548,34 @@
 
     body.is-empty-state .metric.robot .m-value::before {
       content: "0個";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     body.is-empty-state .metric.long .m-value::before,
     body.is-empty-state .metric.short .m-value::before {
       content: "0 ($0)";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     body.is-empty-state .metric.book .m-value::before {
       content: "0筆";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     /* Missing types previously breaking t-comm / daily orders metrics */
     body.is-empty-state .metric.warn .m-value::before {
       content: "$0";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     body.is-empty-state .metric.filled .m-value::before {
       content: "0筆 ($0)";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     body.is-empty-state .metric.fail .m-value::before {
       content: "0筆";
-      font-size: 22px;
+      font-size: 28px;
     }
 
     body.is-empty-state .metric .m-sub {
@@ -4434,7 +4630,7 @@
     .num-wrap {
       display: inline-flex;
       align-items: stretch;
-      height: 32px;
+      height: var(--comp-ctrl-h);
       border-radius: var(--r-md);
       border: 1px solid var(--border2);
       background: var(--comp-dd-bg);
@@ -4514,9 +4710,9 @@
 
       <div class="platform-toggle" id="platform-toggle"
         style="display: flex; gap: 4px; background: transparent; border: none; padding: 0;">
-        <span id="plat-xq" onclick="setPlatform('xq')"
+        <span id="plat-xq" class="active" onclick="setPlatform('xq')"
           style="flex:1;text-align:center;border-radius: var(--r-md);border:1px solid var(--border2)">XQ</span>
-        <span id="plat-xqnext" class="active" onclick="setPlatform('xqnext')"
+        <span id="plat-xqnext" onclick="setPlatform('xqnext')"
           style="flex:1;text-align:center;border-radius: var(--r-md);border:1px solid var(--border2)">XQNext</span>
       </div>
 
@@ -5690,7 +5886,7 @@
                   <input class="f-input" id="prod-search-input" placeholder="輸入股票代號或股名"
                     oninput="_applyProdListFilter(this.value)">
                 </div>
-                <select class="f-sel" id="comm-filter-sel" onchange="commFilterBySelect(this.value)">
+                <select class="s-input" id="comm-filter-sel" style="width:auto;height:var(--comp-ctrl-h)" onchange="commFilterBySelect(this.value)">
                   <option value="">全部狀態</option>
                   <option value="pend">未成交</option>
                   <option value="filled">已成交</option>
@@ -6185,7 +6381,7 @@
       --->
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('mod-modal')">取消</button><button
-          class="m-confirm blue" onclick="confirmMod()">確認修改</button></div>
+          class="m-confirm" onclick="confirmMod()">確認修改</button></div>
     </div>
   </div>
 
@@ -6217,7 +6413,7 @@
         </table>
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('del-modal')">取消</button><button
-          class="m-confirm" onclick="confirmDel()">確認刪除</button></div>
+          class="m-confirm danger" onclick="confirmDel()">確認刪除</button></div>
     </div>
   </div>
 
@@ -6229,59 +6425,92 @@
           onclick="closeModal('stop-all-modal')"><i class="icon-close-01"></i></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:var(--f-base);color:var(--text3);margin-bottom:10px">即將停止以下機器人：</p>
-        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
+        <p style="font-size:var(--f-base);margin-bottom:10px;color:var(--text2)">即將停止以下 <strong style="color:var(--text)">3</strong> 個機器人，共 <strong style="color:var(--text)">8</strong> 筆未成交委託單：</p>
+        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 12px;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 1</label>
           <span class="rh-pill pend">未成交(3)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 2 hr</span>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
+        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 12px;background:var(--bg2);border-radius:var(--r-md);margin-bottom:6px;font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 2</label>
           <span class="rh-pill pend">未成交(1)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 1.5 hr</span>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 0;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base)">
+        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px 9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base)">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="row-cb" checked style="padding:0;margin:0">交易機器人 3</label>
           <span class="rh-pill pend">未成交(2)</span>
           <span style="color:var(--text3);font-size:var(--f-sm);margin-left:auto">已執行 3 hr</span>
         </div>
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('stop-all-modal')">取消</button><button
-          class="m-confirm" onclick="closeModal('stop-all-modal');xAlert('已停止','已停止 3 個機器人，共 6 筆委託','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認停止</button>
+          class="m-confirm danger" onclick="closeModal('stop-all-modal');xAlert('已停止','已停止 3 個機器人，共 6 筆委託','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認停止</button>
       </div>
     </div>
   </div>
 
   <!-- 全部刪單彈窗 -->
-  <div class="modal" id="del-all-modal">
+  <div class="modal" id="del-all-modal" onclick="if(event.target===this)closeModal('del-all-modal')">
     <div class="modal-box">
       <div class="modal-hdr">
-        <div class="modal-title">確認刪除所有未成交委託</div><button class="modal-close"
-          onclick="closeModal('del-all-modal')"><i class="icon-close-01"></i></button>
+        <div class="modal-title">確認刪除所有未成交委託</div>
+        <button class="modal-close" onclick="closeModal('del-all-modal')"><i class="icon-close-01"></i></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:var(--f-base);color:var(--text3);margin-bottom:10px">即將刪除以下未成交委託（共 4 筆）：</p>
-        <div style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden">
-          <label
-            style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);cursor:pointer;font-size:var(--f-base)"><input
-              type="checkbox" checked>交易機器人 1</label>
-          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 10 張 @ 21,200 <span class="rh-pill pend">未成交(1)</span></div>
-        </div>
-        <div style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden">
-          <label
-            style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);cursor:pointer;font-size:var(--f-base)"><input
-              type="checkbox" checked>交易機器人 2</label>
-          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">• 買進 100 張 @ 1,245 <span class="rh-pill pend">未成交(3)</span></div>
-        </div>
-        <div style="border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;opacity:.6">
-          <label
-            style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);cursor:not-allowed;font-size:var(--f-base)"><input
-              type="checkbox" disabled><span style="color:var(--text3)">交易機器人 3</span></label>
-          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text3)">已全部成交，無可刪單</div>
+        <p style="font-size:var(--f-base);margin-bottom:12px;color:var(--text2)">
+          即將刪除以下 <strong id="dal-robot-cnt" style="color:var(--text)">3</strong> 個機器人，共
+          <strong id="dal-order-cnt" style="color:var(--text)">8</strong> 筆未成交委託單：
+        </p>
+        <div id="dal-list" style="display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto;padding-right:2px">
+          <div class="dal-card" data-checked="true" data-orders="1" onclick="dalToggle(this)">
+            <div class="dal-card-hdr">
+              <div class="dal-cb checked"></div>
+              <span class="dal-name">交易機器人 1</span>
+              <span class="rh-pill pend">未成交(1)</span>
+            </div>
+            <div class="dal-orders" onclick="event.stopPropagation()">
+              <div class="dal-order-item">台積電 (2330) 買進 10 張 @ 21,200</div>
+            </div>
+          </div>
+          <div class="dal-card" data-checked="true" data-orders="5" onclick="dalToggle(this)">
+            <div class="dal-card-hdr">
+              <div class="dal-cb checked"></div>
+              <span class="dal-name">交易機器人 2</span>
+              <span class="rh-pill pend">未成交(5)</span>
+            </div>
+            <div class="dal-orders" onclick="event.stopPropagation()">
+              <div class="dal-order-item">鴻海 (2454) 賣出 100 張 @ 1,245</div>
+              <div class="dal-order-item">鴻海 (2454) 賣出 50 張 @ 1,240</div>
+              <div class="dal-order-item">聯發科 (2454) 買進 5 張 @ 980</div>
+              <div class="dal-order-item">台積電 (2330) 買進 20 張 @ 21,000</div>
+              <div class="dal-order-item">台積電 (2330) 買進 15 張 @ 20,800</div>
+            </div>
+          </div>
+          <div class="dal-card disabled" data-checked="false" data-orders="0">
+            <div class="dal-card-hdr">
+              <div class="dal-cb"></div>
+              <span class="dal-name">交易機器人 3</span>
+              <span class="rh-pill pend">無未成交</span>
+            </div>
+            <div class="dal-orders">
+              <div class="dal-order-item">已全部成交，無可刪單</div>
+            </div>
+          </div>
+          <div class="dal-card" data-checked="true" data-orders="2" onclick="dalToggle(this)">
+            <div class="dal-card-hdr">
+              <div class="dal-cb checked"></div>
+              <span class="dal-name">交易機器人 4</span>
+              <span class="rh-pill pend">未成交(2)</span>
+            </div>
+            <div class="dal-orders" onclick="event.stopPropagation()">
+              <div class="dal-order-item">長榮 (2603) 買進 10 張 @ 185</div>
+              <div class="dal-order-item">長榮 (2603) 賣出 5 張 @ 186</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="modal-footer"><button class="m-cancel" onclick="closeModal('del-all-modal')">取消</button><button
-          class="m-confirm" onclick="closeModal('del-all-modal');xAlert('已刪除','已刪除 3 個機器人，共 6 筆委託','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認刪除</button>
+      <div class="modal-footer" style="background:var(--bg3)">
+        <button class="m-cancel" onclick="closeModal('del-all-modal')">取消</button>
+        <button class="m-confirm danger" id="dal-confirm-btn" onclick="dalConfirm()">確認刪除</button>
       </div>
     </div>
   </div>
@@ -6509,7 +6738,7 @@
         <p id="del-single-msg" style="font-size:var(--f-base);color:var(--text)"></p>
       </div>
       <div class="modal-footer"><button class="m-cancel" onclick="closeModal('del-single-modal')">取消</button><button
-          class="m-confirm" onclick="closeModal('del-single-modal');xAlert('已刪除','委託單已成功刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認刪除</button></div>
+          class="m-confirm danger" onclick="closeModal('del-single-modal');xAlert('已刪除','委託單已成功刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>')">確認刪除</button></div>
     </div>
   </div>
 
@@ -6730,7 +6959,7 @@
         'xq-light':   { plat: 'xq',     theme: 'light' },
         'xq-dark':    { plat: 'xq',     theme: 'dark' },
       };
-      const p = themePresets[themeKey] || themePresets['next-dark'];
+      const p = themePresets[themeKey] || themePresets['xq-light'];
       document.documentElement.setAttribute('data-platform', p.plat);
       document.documentElement.setAttribute('data-theme', p.theme);
       document.getElementById('plat-xq').classList.toggle('active', p.plat === 'xq');
@@ -7232,7 +7461,50 @@
       _updateHash();
     }
     function showStopAll() { document.getElementById('stop-all-modal').classList.add('show'); }
-    function showDelAll() { document.getElementById('del-all-modal').classList.add('show'); }
+    function showDelAll() {
+      document.getElementById('del-all-modal').classList.add('show');
+      dalUpdateSummary();
+    }
+    function dalToggle(card) {
+      if (card.classList.contains('disabled')) return;
+      const checked = card.dataset.checked === 'true';
+      card.dataset.checked = checked ? 'false' : 'true';
+      card.querySelector('.dal-cb').classList.toggle('checked', !checked);
+      dalUpdateSummary();
+    }
+    function dalUpdateSummary() {
+      let robots = 0, orders = 0;
+      document.querySelectorAll('#dal-list .dal-card:not(.disabled)').forEach(c => {
+        if (c.dataset.checked === 'true') { robots++; orders += parseInt(c.dataset.orders) || 0; }
+      });
+      document.getElementById('dal-robot-cnt').textContent = robots;
+      document.getElementById('dal-order-cnt').textContent = orders;
+      const btn = document.getElementById('dal-confirm-btn');
+      btn.disabled = robots === 0;
+    }
+    function dalConfirm() {
+      const names = [];
+      document.querySelectorAll('#dal-list .dal-card[data-checked="true"]:not(.disabled)').forEach(c => {
+        names.push(c.querySelector('.dal-name').textContent);
+      });
+      const orders = document.getElementById('dal-order-cnt').textContent;
+      closeModal('del-all-modal');
+      showToast(`成功刪除 ${names.join('、')} 的共 ${orders} 筆委託單`);
+    }
+    function showSigRecord(stockName, stockCode, time) {
+      document.getElementById('sig-record-title').textContent = `${stockName}(${stockCode})記錄`;
+      document.getElementById('sig-record-stock').textContent = `股票-${stockName}(${stockCode})`;
+      document.getElementById('sig-record-time').textContent = time || '';
+      document.getElementById('sig-record-modal').classList.add('show');
+    }
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'xtoast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 5000);
+    }
     function showDelSingle(name) {
       document.getElementById('del-single-title').textContent = '確認刪除：' + name + ' 的委託';
       document.getElementById('del-single-msg').textContent = '即將刪除「' + name + '」的所有未成交委託。此操作無法還原。';
@@ -7874,11 +8146,42 @@
       </div>
       <div class="modal-footer">
         <button class="m-cancel" onclick="closeModal('batch-del-modal')">取消</button>
-        <button class="m-confirm" id="batch-del-confirm-btn" onclick="confirmBatchDel()">確認刪除(0)</button>
+        <button class="m-confirm danger" id="batch-del-confirm-btn" onclick="confirmBatchDel()">確認刪除(0)</button>
       </div>
     </div>
   </div>
 
+  <!-- 訊號記錄 popup -->
+  <div class="modal" id="sig-record-modal" onclick="if(event.target===this)closeModal('sig-record-modal')">
+    <div class="modal-box">
+      <div class="modal-hdr">
+        <div class="modal-title" id="sig-record-title">華南金(2880)記錄</div>
+        <button class="modal-close" onclick="closeModal('sig-record-modal')"><i class="icon-close-01"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;margin-bottom:8px">
+          <div style="padding:9px 12px;background:var(--bg2);font-size:var(--f-base);font-weight:var(--f-weight)">
+            <span style="color:var(--accent)">已符合</span> 其他觸發
+          </div>
+          <div style="padding:8px 16px;font-size:var(--f-sm);color:var(--text2)">(測試)已達到某種條件</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden">
+          <div style="padding:9px 12px;background:var(--bg2);font-size:var(--f-base);font-weight:var(--f-weight);display:flex;align-items:center;gap:4px">
+            盤中<span style="color:var(--accent)">符合全部條件</span>
+            <span style="margin-left:auto;font-size:var(--f-xs);color:var(--cta);background:rgba(245,127,22,.1);border:1px solid rgba(245,127,22,.3);border-radius:var(--r-sm);padding:1px 7px;white-space:nowrap">共1個條件</span>
+          </div>
+          <div style="padding:8px 16px;font-size:var(--f-sm);display:flex;align-items:center;gap:6px">
+            <span class="tag" data-variant="gray" style="cursor:default;pointer-events:none">空方</span>
+            <span style="color:var(--accent)">股票-5日均量 &lt;= 200張</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between">
+        <span id="sig-record-stock" style="font-size:var(--f-xs);color:var(--text3)">股票-華南金(2880)</span>
+        <span id="sig-record-time" style="font-size:var(--f-xs);color:var(--text3)">2026/05/28 10:43</span>
+      </div>
+    </div>
+  </div>
 
   <script>
     /* ── BATCH SELECTION ── */
