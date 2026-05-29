@@ -1670,6 +1670,11 @@
     #t-settings>.set-wrap,
     #t-log>.s-section:first-child {
       margin-top: var(--sp-5);
+    }
+    #t-settings>.set-wrap {
+      overflow: clip;
+    }
+    #t-log>.s-section:first-child {
       overflow: visible;
     }
 
@@ -5104,7 +5109,7 @@
 
         <!-- 搜尋列（點擊 icon 才顯示） -->
         <div class="sb-search-bar" id="sb-search-bar" style="display:none;">
-          <input class="sb-search-input" id="sb-search-input" placeholder="搜尋機器人名稱..."
+          <input class="sb-search-input" id="sb-search-input" placeholder="搜尋機器人名稱"
             oninput="sbSearchFilter(this.value)">
           <span class="sb-search-close" onclick="sbSearchClose()" title="關閉"><span style="font-family:xqnext">&#xe913;</span></span>
         </div>
