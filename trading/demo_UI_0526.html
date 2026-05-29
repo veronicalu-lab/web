@@ -5071,12 +5071,12 @@
             </div>
             <div class="sb-l1-label">執行中</div>
           </div>
-          <div class="sb-l1-filter" data-filter="fav" onclick="sbFilterClick(this,'fav')" data-tip="常用">
+          <div class="sb-l1-filter" data-filter="fav" onclick="sbFilterClick(this,'fav')" data-tip="收藏">
             <div class="sb-l1-ico-wrap">
               <i class="far fa-bookmark"></i>
               <div class="sb-l1-cnt" id="sb-cnt-fav"></div>
             </div>
-            <div class="sb-l1-label">常用</div>
+            <div class="sb-l1-label">收藏</div>
           </div>
         </div>
       </div>
@@ -5236,7 +5236,7 @@
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
-                      title="加入常用"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
+                      title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
                       onclick="event.stopPropagation();goToRobot('極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示','証-模擬交易(內建)-01')"
                       title="極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示">極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示</span></div>
                   <div class="rh-sub" title="証-模擬交易(內建)-01｜極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試">
@@ -5421,7 +5421,7 @@
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
-                      title="加入常用"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
+                      title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
                       onclick="event.stopPropagation();goToRobot('交易機器人 2','証-模擬交易(內建)-01')">交易機器人 2</span></div>
                   <div class="rh-sub">証-模擬交易(內建)-01｜聯發科策略 v2.0</div>
                 </div>
@@ -5652,7 +5652,7 @@
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
-                      title="加入常用"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
+                      title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
                       onclick="event.stopPropagation();goToRobot('交易機器人 3','期-模擬交易(內建)-01')">交易機器人 3</span></div>
                   <div class="rh-sub">期-模擬交易(內建)-01｜海海策略 v1.5</div>
                 </div>
@@ -5874,7 +5874,7 @@
         <div class="hdr det-hdr">
           <!-- Row 1: ❤ + 名稱 + 導航 -->
           <div class="det-hdr-row1">
-            <span class="rh-fav" id="det-fav" onclick="toggleFav(this)" title="加入常用"
+            <span class="rh-fav" id="det-fav" onclick="toggleFav(this)" title="加入收藏"
               style="flex-shrink:0;line-height:1"><i class="icon-bookmark-border-02"></i></span>
             <div class="hdr-title" id="r-title"
               style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
@@ -7232,7 +7232,7 @@
     <div class="ctx-item" id="ctx-stop" onclick="ctxAction('stop')"><span>停止</span><span
         class="ctx-shortcut">Ctrl+Num−</span></div>
     <div class="ctx-sep"></div>
-    <div class="ctx-item" id="ctx-fav" onclick="ctxAction('fav')"><span id="ctx-fav-label">加入常用</span></div>
+    <div class="ctx-item" id="ctx-fav" onclick="ctxAction('fav')"><span id="ctx-fav-label">加入收藏</span></div>
     <div class="ctx-sep"></div>
     <div class="ctx-item" onclick="ctxAction('edit')"><span>編輯</span></div>
     <div class="ctx-item" onclick="ctxAction('copy')"><span>複製</span></div>
@@ -7568,7 +7568,7 @@
       };
       set('sb-cnt-all', counts.all, 'all', '全部');
       set('sb-cnt-running', counts.running, 'running', '執行中');
-      set('sb-cnt-fav', counts.fav, 'fav', '常用');
+      set('sb-cnt-fav', counts.fav, 'fav', '收藏');
       set('sb-cnt-recent', counts.recent, 'recent', '最近');
       // update folder count badge in tier-2 header
       const cntEl = document.getElementById('sb-folder-cnt');
@@ -7591,7 +7591,7 @@
       const emptyMsgs = {
         all: ['無可用機器人', '請點選下方按鈕新增機器人', true],
         running: ['目前無執行中機器人', '請點擊啟動來執行機器人', false],
-        fav: ['尚無常用機器人', '點擊卡片標題旁的書籤圖示加入常用', false],
+        fav: ['尚無收藏機器人', '點擊卡片標題旁的書籤圖示加入收藏', false],
         recent: ['近期尚無活動紀錄', '這裡將顯示您最近操作的機器人', false],
       };
 
@@ -7727,7 +7727,7 @@
       document.getElementById('ctx-stop').classList.toggle('disabled', !isRunning);
       // 常用狀態
       const isFav = item.dataset.fav === '1';
-      document.getElementById('ctx-fav-label').textContent = isFav ? '移除常用' : '加入常用';
+      document.getElementById('ctx-fav-label').textContent = isFav ? '移除收藏' : '加入收藏';
       // position
       const vw = window.innerWidth, vh = window.innerHeight;
       let x = e.clientX, y = e.clientY;
@@ -7745,7 +7745,7 @@
       const name = ctxTarget.querySelector('.sb-dot') ? ctxTarget.textContent.trim() : '此策略';
       const saved = ctxTarget;
       closeCtx();
-      if (act === 'fav') { const isFav = saved.dataset.fav === '1'; saved.dataset.fav = isFav ? '0' : '1'; xAlert(isFav ? '已移除常用' : ('已加入常用'), name, isFav ? '🔖' : '🔖'); }
+      if (act === 'fav') { const isFav = saved.dataset.fav === '1'; saved.dataset.fav = isFav ? '0' : '1'; xAlert(isFav ? '已移除收藏' : ('已加入收藏'), name, isFav ? '🔖' : '🔖'); }
       else if (act === 'start') xAlert('已啟動', name, '▶️');
       else if (act === 'stop') xConfirm('確認停止', '停止「' + name + '」的執行？', () => xAlert('已停止', name, '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'), { icon: '⏹', confirmText: '停止', confirmCls: 'danger' });
       else if (act === 'edit') xAlert('編輯策略', name, '✏️');
@@ -7875,9 +7875,9 @@
       Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
       sel._xselRebuild();
     }
-    const _contextToFilter = { '全部': 'all', '執行中': 'running', '常用': 'fav', '最近': 'recent' };
+    const _contextToFilter = { '全部': 'all', '執行中': 'running', '收藏': 'fav', '最近': 'recent' };
 
-    const _filterToLabel = { all: '全部', running: '執行中', fav: '常用', recent: '最近' };
+    const _filterToLabel = { all: '全部', running: '執行中', fav: '收藏', recent: '最近' };
     function _syncFilterActive(filterKey) {
       document.querySelectorAll('.sb-l1-filter').forEach(f =>
         f.classList.toggle('active', f.dataset.filter === filterKey)
