@@ -217,6 +217,10 @@
     [data-platform="xq"][data-theme="light"] .sb-l1 {
       background: #232742
     }
+    [data-platform="xq"][data-theme="light"] .sb-l1.sb-l1--accent,
+    [data-theme="light"] .sb-l1.sb-l1--accent {
+      background: #354479;
+    }
 
     /* sb-list 用主頁色系（MD spec 主頁色） */
     [data-platform="xq"][data-theme="light"] .sb-l2 {
@@ -974,6 +978,55 @@
 
     .sb-l1-cnt:empty {
       display: none;
+    }
+
+    /* ── sb-l1 accent-blue variant ── */
+    .sb-l1--accent {
+      background: #354479;
+    }
+    .sb-l1--accent .sb-l1-item {
+      color: var(--comp-nav-inactive-text);
+    }
+    .sb-l1--accent .sb-l1-item:hover {
+      color: var(--comp-nav-active-text);
+      background: var(--accent);
+    }
+    .sb-l1--accent .sb-l1-item.active {
+      background: #4f67a8;
+      color: var(--comp-nav-active-text);
+    }
+    .sb-l1--accent .sb-hdr-toggle {
+      color: var(--comp-nav-inactive-text);
+    }
+    .sb-l1--accent .sb-hdr-toggle:hover {
+      color: var(--comp-nav-active-text);
+      background: var(--accent);
+    }
+    .sb-l1--accent .sb-l1-divider {
+      background: var(--comp-nav-active-bg);
+    }
+    .sb-l1--accent .sb-l1-filter {
+      color: var(--comp-nav-inactive-text);
+    }
+    .sb-l1--accent .sb-l1-filter:hover {
+      color: var(--comp-nav-active-indicator);
+    }
+    .sb-l1--accent .sb-l1-filter.active {
+      background: var(--tint3);
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+    .sb-l1--accent .sb-l1-cnt {
+      background: var(--comp-nav-active-bg);
+      color: var(--comp-nav-active-text);
+    }
+    .sb-l1--accent .sb-l1-filter:hover .sb-l1-cnt {
+      background: var(--comp-nav-active-indicator);
+      color: var(--bg2);
+    }
+    .sb-l1--accent .sb-l1-filter.active .sb-l1-cnt {
+      background: var(--accent);
+      color: var(--comp-nav-active-text);
     }
 
     /* Global tooltips */
@@ -5044,7 +5097,7 @@
     <!-- ===== SIDEBAR ===== -->
     <div class="sb sb-2tier" id="sidebar">
       <!-- Tier 1 -->
-      <div class="sb-l1">
+      <div class="sb-l1 sb-l1--accent">
         <div class="sb-l1-hdr">
           <button class="sb-hdr-toggle" onclick="toggleSidebar()" data-tip="收合資料夾">
             <span class="sb-toggle-logo">XQ</span>
