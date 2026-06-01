@@ -3223,6 +3223,12 @@
       outline: none;
       border-color: var(--comp-dd-focus-border);
     }
+    input.s-input:-webkit-autofill,
+    input.s-input:-webkit-autofill:hover,
+    input.s-input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px var(--comp-dd-bg, #fff) inset !important;
+      -webkit-text-fill-color: var(--comp-dd-text) !important;
+    }
 
     .s-input:disabled {
       background-color: var(--comp-dd-disabled-bg);
@@ -4990,7 +4996,7 @@
     }
     .num-wrap:hover { border-color: #8fb8ff; }
     .num-wrap:focus-within { border-color: var(--accent); }
-    .num-wrap input[type=number] {
+    .num-wrap input {
       -webkit-appearance: none;
       -moz-appearance: textfield;
       appearance: none;
@@ -5005,9 +5011,10 @@
       min-width: 0;
       flex: 1;
       box-sizing: border-box;
+      width: 0;
     }
-    .num-wrap input[type=number]::-webkit-inner-spin-button,
-    .num-wrap input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .num-wrap input::-webkit-inner-spin-button,
+    .num-wrap input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     .num-wrap .num-divider {
       width: 1px;
       background: rgba(225,225,225,0.12);
@@ -5034,7 +5041,7 @@
     .num-wrap .num-arrows button:hover { background: var(--hover-bg); color: var(--comp-input-text); }
     .num-wrap .num-arrows button:active { background: var(--tint2); }
     .num-wrap.is-disabled { background: var(--border); pointer-events: none; }
-    .num-wrap.is-disabled input[type=number],
+    .num-wrap.is-disabled input,
     .num-wrap.is-disabled .num-arrows button { color: var(--text4); }
     .num-wrap.is-error { border-color: var(--danger2); }
   </style>
@@ -6169,7 +6176,7 @@
                       <div class="radio-row" style="flex-direction:column;gap:10px">
                         <label style="color:var(--text)"><input type="radio" name="ctype" checked> 現沖<span style="color:var(--text2)">現股買進/現先賣，T+0</span></label>
                         <label style="color:var(--text)"><input type="radio" name="ctype"> 資券<span style="color:var(--text2)">融資買進/融券賣出，預設</span></label>
-                        <label style="color:var(--text)"><input type="radio" name="ctype"> 零股<span style="color:var(--text2)">限作多，&gt;1000股自動拆整張</span></label>
+                        <label style="color:var(--text)"><input type="radio" name="ctype"> 零股<span style="color:var(--text2)">限作多，&gt;1,000股自動拆整張</span></label>
                       </div>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin-bottom:24px">
@@ -6190,7 +6197,7 @@
                               <option>參考價</option>
                             </select>
                             <span style="font-size:var(--f-xs)">+</span>
-                            <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
+                            <div class="num-wrap" style="width:65px"><input type="text" inputmode="numeric" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
                               style="font-size:var(--f-base)">檔</span>
                           </div>
                         </div>
@@ -6217,7 +6224,7 @@
                               <option>參考價</option>
                             </select>
                             <span style="font-size:var(--f-xs)">-</span>
-                            <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
+                            <div class="num-wrap" style="width:65px"><input type="text" inputmode="numeric" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
                               style="font-size:var(--f-base)">檔</span>
                           </div>
                         </div>
@@ -6236,7 +6243,7 @@
                       </div>
                       <div id="qmode-qty" style="display:flex;align-items:center;gap:8px;font-size:var(--f-xs)">
                         <span>固定數量：</span>
-                        <div class="num-wrap" style="width:75px"><input type="number" value="2" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                        <div class="num-wrap" style="width:75px"><input type="text" inputmode="numeric" value="2" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
                         <span>張</span>
                       </div>
                       <div id="qmode-amount" style="display:none;flex-direction:column;gap:6px;font-size:var(--f-xs)">
@@ -7126,7 +7133,7 @@
               <div class="radio-row" style="flex-direction:column;gap:10px">
                 <label style="color:var(--text)"><input type="radio" name="arm-ctype" checked> 現沖<span style="color:var(--text2)">現股買進/現先賣，T+0</span></label>
                 <label style="color:var(--text)"><input type="radio" name="arm-ctype"> 資券<span style="color:var(--text2)">融資買進/融券賣出，預設</span></label>
-                <label style="color:var(--text)"><input type="radio" name="arm-ctype"> 零股<span style="color:var(--text2)">限作多，&gt;1000股自動拆整張</span></label>
+                <label style="color:var(--text)"><input type="radio" name="arm-ctype"> 零股<span style="color:var(--text2)">限作多，&gt;1,000股自動拆整張</span></label>
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin-bottom:24px">
@@ -7147,7 +7154,7 @@
                       <option>參考價</option>
                     </select>
                     <span style="font-size:var(--f-xs)">＋</span>
-                    <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
+                    <div class="num-wrap" style="width:65px"><input type="text" inputmode="numeric" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
                       style="font-size:var(--f-base)">檔</span>
                   </div>
                 </div>
@@ -7173,7 +7180,7 @@
                       <option>參考價</option>
                     </select>
                     <span style="font-size:var(--f-xs)">－</span>
-                    <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
+                    <div class="num-wrap" style="width:65px"><input type="text" inputmode="numeric" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
                       style="font-size:var(--f-base)">檔</span>
                   </div>
                 </div>
@@ -7192,12 +7199,12 @@
               </div>
               <div id="arm-qmode-amount" style="display:none;align-items:center;gap:8px;font-size:var(--f-base)">
                 <span style="color:var(--text2)">固定每筆金額</span>
-                <input type="text" value="100,000" class="s-input" style="width:120px;height:var(--comp-ctrl-h)" inputmode="numeric" onchange="this.value=Number(this.value.replace(/,/g,'')).toLocaleString('zh-TW')">
-                <span style="color:var(--text2)">元</span>
+                <div class="num-wrap" style="width:75px"><input type="text" inputmode="numeric" value="10" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                <span>萬元</span>
               </div>
               <div id="arm-qmode-qty" style="display:flex;align-items:center;gap:8px;font-size:var(--f-base)">
                 <span style="color:var(--text2)">固定每筆數量</span>
-                <div class="num-wrap" style="width:75px"><input type="number" value="1" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                <div class="num-wrap" style="width:75px"><input type="text" inputmode="numeric" value="1" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
                 <span>張</span>
               </div>
             </div>
@@ -7207,17 +7214,26 @@
           <div id="arm-pane-2" class="arm-pane">
             <div class="arm-section-title"><i class="icon-setting-01"></i>安控設定</div>
             <div class="s-section">
-              <div class="s-row">
-                <div class="s-label">每日金額上限</div>
-                <input type="text" value="1,000,000" class="s-input" inputmode="numeric" onchange="this.value=Number(this.value.replace(/,/g,'')).toLocaleString('zh-TW')">
+              <div class="s-row" style="display:flex;align-items:center;margin-bottom:10px">
+                <div class="s-label" style="margin-bottom:0;width:160px;flex-shrink:0">每日金額上限</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="num-wrap" style="width:140px"><input type="text" inputmode="numeric" value="100" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                  <span style="font-size:var(--f-base);white-space:nowrap">萬元</span>
+                </div>
               </div>
-              <div class="s-row">
-                <div class="s-label">最大部位限制</div>
-                <input type="number" value="50" class="s-input">
+              <div class="s-row" style="display:flex;align-items:center;margin-bottom:10px">
+                <div class="s-label" style="margin-bottom:0;width:160px;flex-shrink:0">最大部位限制</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="num-wrap" style="width:140px"><input type="text" inputmode="numeric" value="50" min="1" max="100"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                  <span style="font-size:var(--f-base);white-space:nowrap">%</span>
+                </div>
               </div>
-              <div class="s-row">
-                <div class="s-label">最多持有商品檔數</div>
-                <input type="number" value="5" class="s-input">
+              <div class="s-row" style="display:flex;align-items:center;margin-bottom:10px">
+                <div class="s-label" style="margin-bottom:0;width:160px;flex-shrink:0">最多持有商品檔數</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="num-wrap" style="width:140px"><input type="text" inputmode="numeric" value="5" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
+                  <span style="font-size:var(--f-base);white-space:nowrap">檔</span>
+                </div>
               </div>
             </div>
           </div>
@@ -7303,7 +7319,7 @@
     /* ── num-wrap arrow step ── */
     function numStep(btn, dir) {
       var inp = btn.closest('.num-wrap').querySelector('input');
-      var step = parseFloat(inp.step) || 1;
+      var step = parseFloat(inp.getAttribute('step')) || 1;
       var min = inp.getAttribute('min') !== null && inp.getAttribute('min') !== '' ? parseFloat(inp.getAttribute('min')) : -Infinity;
       var max = inp.getAttribute('max') !== null && inp.getAttribute('max') !== '' ? parseFloat(inp.getAttribute('max')) : Infinity;
       var cur = parseFloat((inp.value + '').replace(/,/g, '')) || 0;
@@ -7311,6 +7327,18 @@
       inp.value = next >= 1000 ? next.toLocaleString('zh-TW') : next;
       inp.dispatchEvent(new Event('change'));
     }
+    function numFmt(inp) {
+      var raw = (inp.value + '').replace(/,/g, '').trim();
+      var n = parseFloat(raw);
+      if (isNaN(n)) return;
+      var min = inp.getAttribute('min') !== null && inp.getAttribute('min') !== '' ? parseFloat(inp.getAttribute('min')) : -Infinity;
+      var max = inp.getAttribute('max') !== null && inp.getAttribute('max') !== '' ? parseFloat(inp.getAttribute('max')) : Infinity;
+      n = Math.min(max, Math.max(min, n));
+      inp.value = n >= 1000 ? n.toLocaleString('zh-TW') : n;
+    }
+    document.addEventListener('blur', function(e) {
+      if (e.target.closest && e.target.closest('.num-wrap')) numFmt(e.target);
+    }, true);
 
     /* ── xPop helpers ── */
     let _xpopCb = null;
@@ -8289,11 +8317,14 @@
       // 步驟 2 — selects & num inputs in pane-1
       modal.querySelectorAll('#arm-pane-1 select.s-input').forEach(s => s.selectedIndex = 0);
       modal.querySelectorAll('#arm-pane-1 .num-wrap input[type="number"]').forEach(i => i.value = 1);
+      const amountInput = modal.querySelector('#arm-qmode-amount .num-wrap input[type="number"]');
+      if (amountInput) amountInput.value = 10;
       // 步驟 2 — checkboxes
       modal.querySelectorAll('#arm-pane-1 input[type="checkbox"]').forEach(c => c.checked = true);
       // 步驟 3
-      modal.querySelector('#arm-pane-2 input[inputmode="numeric"]').value = '1,000,000';
-      const numInputs = modal.querySelectorAll('#arm-pane-2 input[type="number"]');
+      const dailyLimitInput = modal.querySelector('#arm-pane-2 .num-wrap input[type="number"]');
+      if (dailyLimitInput) dailyLimitInput.value = 100;
+      const numInputs = modal.querySelectorAll('#arm-pane-2 .s-input[type="number"]');
       if (numInputs[0]) numInputs[0].value = 50;
       if (numInputs[1]) numInputs[1].value = 5;
     }
@@ -8542,7 +8573,7 @@
                         <div class="rh-sub">証-模擬交易-01｜<span class="dir-tag long">作多</span>王牌選股法</div>
                       </div>
                       <div class="rh-signal-block">
-                        <span class="rh-signal-lbl">剛剛啟動</span>
+                        <span class="rh-signal-lbl">最新委託 --:--:--</span>
                         <div class="rh-pills">
                           <span class="rh-pill pend">委託中(0)</span>
                           <span class="rh-pill filled">已成交(0)</span>
