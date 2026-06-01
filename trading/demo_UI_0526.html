@@ -2205,6 +2205,13 @@
       background: var(--danger)
     }
 
+    .op-orange {
+      background: var(--cta)
+    }
+    .op-orange:hover {
+      background: var(--warning)
+    }
+
     /* ROBOT CARDS — 無 border，靠色差區分層次 */
     .robot-list {
       display: flex;
@@ -5278,8 +5285,8 @@
             <option value="cancel">已刪單</option>
           </select>
           <div class="op-btns">
-            <button class="op-btn op-blue" onclick="showStopAll()">全部停止</button>
-            <button class="op-btn op-red" onclick="showDelAll()">全部刪單</button>
+            <button class="op-btn op-orange" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
+            <button class="op-btn op-red" onclick="showDelAll()" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
           </div>
         </div>
 
