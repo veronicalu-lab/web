@@ -2507,7 +2507,6 @@
       border-radius: 50%;
       background: var(--online);
       flex-shrink: 0;
-      margin-right: 4px;
     }
 
     .rh-status-btn.running .rh-dot {
@@ -5516,8 +5515,7 @@
                   <button class="ico-btn" title="複製"><i class="icon-copy"></i></button>
                   <button class="ico-btn del" title="刪除" onclick="showDelSingle('交易機器人 2')"><i
                       class="icon-trash-01"></i></button>
-                  <button class="rh-status-btn idle" data-tip="執行機器人"><i class="fas fa-play" style="font-size:var(--f-xs)"></i>
-                    ㅤ啟動</button>
+                  <button class="rh-status-btn idle" data-tip="執行機器人" onclick="toggleRobotStatus(this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動</button>
                 </div>
               </div>
               <div class="r-body" id="rb2">
@@ -6296,7 +6294,7 @@
                   <option value="cancel">已刪單</option>
                 </select>
                 <button class="del-all-btn"
-                  onclick="xConfirm('確認全部刪單','將刪除此機器人所有可刪改委託，此操作無法復原。',()=>xAlert('已刪除','所有可刪改委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'全部刪單',confirmCls:'danger',noClose:true})">全部刪單</button>
+                  onclick="xConfirm('確認全部刪單','將刪除此機器人所有可刪改委託，此操作無法復原。',()=>xAlert('已刪除','所有可刪改委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'全部刪單',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
               </div>
               <div class="empty-view" style="padding:60px 20px;">
                 <div class="empty-icon"><i class="icon-folder-open"></i></div>
@@ -6657,7 +6655,7 @@
                     <span class="ldn-latest-tag" id="ldn-latest-tag">(最新)</span>
                   </div>
                   <button class="ldn-goto-latest" id="ldn-goto-latest" onclick="ldnGoLatest()" title="回到最新"><i
-                      class="icon-arrow-up-01"></i></button>
+                      class="icon-arrow-up-02" style="font-size:18px;line-height:1"></i></button>
                   <button class="ldn-arrow" id="ldn-next" onclick="ldnStep(1)" title="後一天"><i
                       class="icon-chevron-right"></i></button>
                   <div class="ldn-drop" id="ldn-drop"></div>
@@ -6672,7 +6670,7 @@
                   <button class="seg-btn" onclick="filterLog('trade',this)">交易</button>
                   <button class="seg-btn" onclick="filterLog('warning',this)">警示</button>
                 </div>
-                <button class="export-btn"><i class="icon-export"></i> 匯出紀錄</button>
+                <button class="export-btn" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-export" style="font-size:24px;line-height:1"></i><span>匯出紀錄</span></button>
               </div>
               <div class="empty-view" style="padding:40px 20px;">
                 <div class="empty-icon"><i class="icon-file-list"></i></div>
@@ -8308,7 +8306,7 @@
           if (!btn) return;
           btn.classList.remove('running', 'idle', 'waiting');
           btn.classList.add('idle');
-          btn.innerHTML = '<i class="fas fa-play" style="font-size:var(--f-sm)"></i> 啟動';
+          btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動';
           btn.setAttribute('data-tip', '執行機器人');
           _robotStateIndex = 1;
         },
@@ -8330,15 +8328,23 @@
       } else if (_robotStateIndex === 1) {
         // 進入啟動 (暫停狀態)
         btn.classList.add('idle');
-        btn.innerHTML = '<i class="fas fa-play" style="font-size:\s*var(--f-sm)"></i> 啟動';
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動';
         btn.setAttribute('data-tip', '執行機器人');
 
       } else if (_robotStateIndex === 2) {
-        // 進入等待中
+        // 進入等待中，1.5s 後自動切換為執行中
         btn.classList.add('waiting');
-        btn.innerHTML = '<i class="fas fa-spinner rh-spin"></i> 等待中';
-        btn.title = '點擊關閉'; // 或點擊取消等待
+        btn.innerHTML = '<span class="rh-spin" style="display:inline-block">✳</span> 等待中';
+        btn.removeAttribute('onclick');
         if (isSettingsEditing) toggleSettingsEdit();
+        setTimeout(() => {
+          btn.classList.remove('waiting');
+          btn.classList.add('running');
+          btn.innerHTML = '<span class="rh-dot"></span>執行中';
+          btn.setAttribute('onclick', 'toggleRobotStatus(this)');
+          _robotStateIndex = 0;
+          updateSettingsEditButtonState();
+        }, 1500);
       }
 
       updateSettingsEditButtonState();
