@@ -1446,6 +1446,8 @@
     }
 
     .hdr-sub {
+      display: flex;
+      align-items: center;
       font-size: var(--f-base);
       color: var(--text2);
       white-space: nowrap;
@@ -2307,6 +2309,8 @@
     .rh-fav i { font-size: 1.5em; }
 
     .rh-sub {
+      display: flex;
+      align-items: center;
       font-size: var(--f-base);
       color: var(--text2);
       margin-top: 3px;
@@ -2354,10 +2358,6 @@
       color: var(--comp-pill-pend-text)
     }
 
-    #stop-all-modal .rh-pill.pend,
-    #del-all-modal .rh-pill.pend {
-      background: transparent
-    }
 
 
     .rh-pill.partial {
@@ -3914,6 +3914,18 @@
       opacity: .4;
       cursor: not-allowed
     }
+    .m-stroke {
+      padding: 7px var(--sp-5);
+      background: transparent;
+      color: var(--danger2);
+      border: 1px solid var(--danger2);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      font-size: var(--f-base);
+      font-weight: 500;
+      transition: background .15s, opacity .15s
+    }
+    .m-stroke:hover { background: rgba(254,43,72,.08) }
 
     /* ── DAL CARDS (del-all modal) ── */
     .dal-card {
@@ -4577,6 +4589,23 @@
       background: var(--hover-bg);
       color: var(--accent)
     }
+    .dir-tag {
+      display: inline-flex;
+      align-items: center;
+      cursor: default;
+      pointer-events: none;
+      flex-shrink: 0;
+      font-size: var(--f-base);
+      font-weight: 500;
+      padding: 1px var(--sp-2);
+      border-radius: var(--comp-pill-radius);
+      margin-right: 4px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .dir-tag.long  { color: var(--danger);  background: var(--tint2); }
+    .dir-tag.short { color: var(--success); background: var(--tint2); }
+
     .arm-strat-empty {
       padding: 12px;
       text-align: center;
@@ -5284,8 +5313,7 @@
             <option value="cancel">已刪單</option>
           </select>
           <div class="op-btns">
-            <button class="op-btn op-orange" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
-            <button class="op-btn op-red" onclick="showDelAll()" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
+            <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止 / 刪單</span></button>
           </div>
         </div>
 
@@ -5308,7 +5336,7 @@
                       onclick="event.stopPropagation();goToRobot('極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示','証-模擬交易(內建)-01')"
                       title="極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示">極端長度的超級高頻當沖交易機器人測試名稱字數到達極限的滿版狀態顯示</span></div>
                   <div class="rh-sub" title="証-模擬交易(內建)-01｜極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試">
-                    証-模擬交易(內建)-01｜極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試</div>
+                    証-模擬交易(內建)-01｜<span class="dir-tag long">作多</span>極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試</div>
                 </div>
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新委託 11:40:10</span>
@@ -5480,7 +5508,7 @@
                   </table>
                 </div>
               </div>
-              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))"><i
+              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="收合委託列表"><i
                   class="tog-icon icon-chevron-up"></i></div>
             </div>
 
@@ -5491,7 +5519,7 @@
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
                       title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
                       onclick="event.stopPropagation();goToRobot('交易機器人 2','証-模擬交易(內建)-01')">交易機器人 2</span></div>
-                  <div class="rh-sub">証-模擬交易(內建)-01｜聯發科策略 v2.0</div>
+                  <div class="rh-sub">証-模擬交易(內建)-01｜<span class="dir-tag long">作多</span>聯發科策略 v2.0</div>
                 </div>
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新委託 14:22:35</span>
@@ -5710,7 +5738,7 @@
                   </table>
                 </div>
               </div>
-              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))"><i
+              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="展開委託列表"><i
                   class="tog-icon icon-chevron-down"></i></div>
             </div>
 
@@ -5721,7 +5749,7 @@
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
                       title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
                       onclick="event.stopPropagation();goToRobot('交易機器人 3','期-模擬交易(內建)-01')">交易機器人 3</span></div>
-                  <div class="rh-sub">期-模擬交易(內建)-01｜海海策略 v1.5</div>
+                  <div class="rh-sub">期-模擬交易(內建)-01｜<span class="dir-tag short">作空</span>海海策略 v1.5</div>
                 </div>
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新委託 09:15:22</span>
@@ -5758,7 +5786,7 @@
                   <div class="data-view" style="display:contents"></div>
                 </div>
               </div>
-              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))"><i
+              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="展開委託列表"><i
                   class="tog-icon icon-chevron-down"></i></div>
             </div>
 
@@ -5816,7 +5844,7 @@
                     <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="海海策略">海海策略</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag short">作空</span><div class="line-clamp-2" title="海海策略">海海策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5838,7 +5866,7 @@
                     <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="聯發科策略">聯發科策略</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="聯發科策略">聯發科策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5860,7 +5888,7 @@
                     <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="聯發科策略">聯發科策略</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="聯發科策略">聯發科策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5882,7 +5910,7 @@
                     <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="零股策略">零股策略</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="零股策略">零股策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5904,7 +5932,7 @@
                     <button class="o-robot-link" title="現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版" onclick="goToRobot('現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版','')">現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="季線突破動能追蹤+均值回歸複合策略模型">季線突破動能追蹤+均值回歸複合策略模型</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="季線突破動能追蹤+均值回歸複合策略模型">季線突破動能追蹤+均值回歸複合策略模型</div></div>
                   </td>
                   <td title="証-模擬-02">証-模擬-02</td>
                 </tr>
@@ -5926,7 +5954,7 @@
                     <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
                   </td>
                   <td>
-                    <div class="line-clamp-2" title="鴻海波段策略">鴻海波段策略</div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="鴻海波段策略">鴻海波段策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5958,7 +5986,7 @@
           <!-- Row 2: 副標 + 操作按鈕 + 執行狀態 -->
           <div class="det-hdr-row2">
             <div class="hdr-sub" id="r-sub" title="証-模擬交易(內建)-01｜極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試">
-              証-模擬交易(內建)-01｜極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試</div>
+              証-模擬交易(內建)-01｜<span class="dir-tag long">作多</span>極端長度的台指期高頻交易當沖獲利暴力模型完全自動化策略 v9.9.9 滿版狀態顯示測試</div>
             <div class="det-hdr-actions">
               <button class="det-hdr-btn" data-tip="編輯設定" onclick="openEditModal()"><i class="icon-edit-01"></i></button>
               <button class="det-hdr-btn" data-tip="複製"><i class="icon-copy"></i></button>
@@ -6249,6 +6277,21 @@
 
           <!-- TAB 2: 商品監控 -->
           <div id="t-comm" class="tab-pane">
+            <!-- 未啟動空畫面 -->
+            <div id="comm-idle-state" class="empty-view" style="padding:80px 20px;display:none;">
+              <div class="empty-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>
+              </div>
+              <div class="empty-title">請啟動機器人</div>
+              <div class="empty-sub">啟動後每日委託紀錄將顯示於此</div>
+              <button class="empty-action-btn" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px"
+                onclick="document.querySelector('.det-hdr-actions .rh-status-btn').click()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>
+                啟動
+              </button>
+            </div>
+            <!-- 執行中內容 -->
+            <div id="comm-running-content">
             <!-- 指標卡 -->
             <div class="metric-bar">
               <div class="metric warn">
@@ -6641,6 +6684,7 @@
               </table>
               </div>
             </div>
+            </div><!-- /comm-running-content -->
           </div>
 
           <!-- TAB 5: 執行紀錄 -->
@@ -6936,110 +6980,63 @@
           onclick="closeModal('stop-all-modal')"><span style="font-family:xqnext">&#xe913;</span></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:var(--f-base);margin-bottom:10px;color:var(--text2)">即將停止以下 <strong id="stop-all-robot-cnt" style="color:var(--accent)">6</strong> 個機器人：</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <p style="font-size:var(--f-base);color:var(--text2);margin:0">即將停止以下 <strong id="stop-all-robot-cnt" style="color:var(--accent)">6</strong> 個機器人：</p>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--f-sm);color:var(--text3);flex-shrink:0">
+            <input type="checkbox" id="stop-all-select-all" class="row-cb" checked style="padding:0;margin:0;flex-shrink:0" onchange="(function(cb){document.querySelectorAll('.stop-all-cb').forEach(c=>{c.checked=cb.checked});_updateStopAllCounts()})(this)">
+            全選
+          </label>
+        </div>
         <div id="stop-all-list" style="overflow-y:auto;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="3" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 1</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="3" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 1</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(3)</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="1" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 2</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="1" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 2</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(1)</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="2" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 3</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="2" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 3</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(2)</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="5" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="5" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(5)</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="4" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">均值回歸套利機器人 Sigma 版</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="4" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">均值回歸套利機器人 Sigma 版</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(4)</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" data-pend="2" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">台指期日內當沖機器人</span></label>
+          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:var(--f-base);flex-shrink:0">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb stop-all-cb" onchange="_syncSelectAll()" data-pend="2" checked style="padding:0;margin:0;flex-shrink:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">台指期日內當沖機器人</span></label>
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(2)</span>
           </div>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:var(--f-base);color:var(--text2);cursor:pointer">
+        <label style="display:flex;align-items:center;gap:8px;padding:14px 12px;font-size:var(--f-base);color:var(--text2);cursor:pointer;background:rgba(254,43,72,.08);border-radius:var(--r-md)">
           <input type="checkbox" class="row-cb row-cb-danger" id="stop-all-del-orders" checked style="padding:0;margin:0;flex-shrink:0">
           <span>刪除選取機器人相關 <strong id="stop-all-pend-cnt" style="color:var(--accent)">17</strong> 筆委託</span>
         </label>
       </div>
-      <div class="modal-footer"><button class="m-cancel" onclick="closeModal('stop-all-modal')">取消</button><button
-          class="m-confirm danger" onclick="(function(){
-            const robots = document.getElementById('stop-all-robot-cnt').textContent;
-            const pend = document.getElementById('stop-all-pend-cnt').textContent;
-            const delChecked = document.getElementById('stop-all-del-orders').checked;
-            const msg = '已停止 <strong style=&quot;color:var(--accent)&quot;>' + robots + '</strong> 個機器人' + (delChecked ? '<br>刪除 <strong style=&quot;color:var(--accent)&quot;>' + pend + '</strong> 筆委託' : '');
-            closeModal('stop-all-modal');
-            xAlert('已停止', msg, '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
-          })()">確認停止</button>
+      <div class="modal-footer">
+        <button class="m-cancel" onclick="closeModal('stop-all-modal')">取消</button>
+        <button class="m-stroke" onclick="(function(){
+          const pend = document.getElementById('stop-all-pend-cnt').textContent;
+          closeModal('stop-all-modal');
+          xAlert('已刪單', '已刪除 <strong style=&quot;color:var(--accent)&quot;>' + pend + '</strong> 筆委託', '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
+        })()">僅刪單</button>
+        <button class="m-confirm danger" onclick="(function(){
+          const robots = document.getElementById('stop-all-robot-cnt').textContent;
+          const pend = document.getElementById('stop-all-pend-cnt').textContent;
+          const delChecked = document.getElementById('stop-all-del-orders').checked;
+          const msg = '已停止 <strong style=&quot;color:var(--accent)&quot;>' + robots + '</strong> 個機器人' + (delChecked ? '<br>刪除 <strong style=&quot;color:var(--accent)&quot;>' + pend + '</strong> 筆委託' : '');
+          closeModal('stop-all-modal');
+          xAlert('已停止', msg, '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
+        })()">確認停止</button>
       </div>
     </div>
   </div>
 
-  <!-- 全部刪單彈窗 -->
-  <div class="modal" id="del-all-modal" onclick="if(event.target===this)closeModal('del-all-modal')">
-    <div class="modal-box">
-      <div class="modal-hdr">
-        <div class="modal-title">確認刪除所有未成交委託</div>
-        <button class="modal-close" onclick="closeModal('del-all-modal')"><span style="font-family:xqnext">&#xe913;</span></button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size:var(--f-base);margin-bottom:10px;color:var(--text2)">即將刪除以下 <strong id="dal-order-cnt" style="color:var(--accent)">17</strong> 筆未成交委託單：</p>
-        <div id="del-all-list" style="overflow-y:auto;margin-bottom:14px;display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="3" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(3)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 1</span></label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="5" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(5)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 2</span></label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="2" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(2)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">交易機器人 3</span></label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="5" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(5)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">現股波段趨勢跟蹤機器人高頻版Pro最終穩定測試版</span></label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="4" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(4)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">均值回歸套利機器人 Sigma 版</span></label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border-radius:var(--r-md);font-size:var(--f-base);flex-shrink:0">
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1"><input type="checkbox" class="row-cb dal-cb2" data-orders="2" checked style="padding:0;margin:0;flex-shrink:0">
-            <span class="rh-pill pend" style="flex-shrink:0">委託中(2)</span>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">台指期日內當沖機器人</span></label>
-          </div>
-        </div>
-        <label style="display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:var(--f-base);color:var(--text2);cursor:pointer">
-          <input type="checkbox" class="row-cb row-cb-danger" id="dal-stop-robots" style="padding:0;margin:0;flex-shrink:0">
-          <span>停止選取委託單相關 <strong id="dal-robot-cnt" style="color:var(--accent)">6</strong> 個機器人</span>
-        </label>
-      </div>
-      <div class="modal-footer">
-        <button class="m-cancel" onclick="closeModal('del-all-modal')">取消</button>
-        <button class="m-confirm danger" onclick="(function(){
-          const orders = document.getElementById('dal-order-cnt').textContent;
-          const robots = document.getElementById('dal-robot-cnt').textContent;
-          const stopChecked = document.getElementById('dal-stop-robots').checked;
-          const msg = '已刪除 <strong style=&quot;color:var(--accent)&quot;>' + orders + '</strong> 筆委託單' + (stopChecked ? '<br>停止 <strong style=&quot;color:var(--accent)&quot;>' + robots + '</strong> 個機器人' : '');
-          closeModal('del-all-modal');
-          xAlert('已刪除', msg, '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
-        })()">確認刪除</button>
-      </div>
-    </div>
-  </div>
 
   <!-- ===== 新增交易機器人 大型 Modal ===== -->
   <div class="arm-overlay" id="arm-modal">
@@ -7991,6 +7988,23 @@
       document.getElementById('robot-view').style.display = 'flex';
       switchTabById('t-comm');
     }
+    function _applyDetHdrStatus(isRunning) {
+      const detBtn = document.querySelector('.det-hdr-actions .rh-status-btn');
+      if (!detBtn) return;
+      if (isRunning) {
+        detBtn.classList.remove('idle', 'waiting');
+        detBtn.classList.add('running');
+        detBtn.innerHTML = '<span class="rh-dot"></span>執行中';
+        detBtn.setAttribute('data-tip', '停止執行');
+        _robotStateIndex = 0;
+      } else {
+        detBtn.classList.remove('running', 'waiting');
+        detBtn.classList.add('idle');
+        detBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動';
+        detBtn.setAttribute('data-tip', '執行機器人');
+        _robotStateIndex = 1;
+      }
+    }
     function selRobot(el, name, acc) {
       const q = document.getElementById('sb-search-input').value.trim();
       if (q && !_sbHistory.includes(q)) { _sbHistory.unshift(q); if (_sbHistory.length > 5) _sbHistory.pop(); }
@@ -8005,6 +8019,9 @@
       el.classList.add('active');
       document.getElementById('nav-ov').classList.remove('active');
       _applyRobot(name);
+      // 依 dot 顏色決定執行狀態
+      const isRunning = !!el.querySelector('.sb-dot.green');
+      _applyDetHdrStatus(isRunning);
       document.getElementById('ov').style.display = 'none';
       document.getElementById('robot-view').style.display = 'flex';
       switchTabById('t-comm');
@@ -8018,6 +8035,13 @@
       if (id === 't-comm') _syncCommStickyTops();
       if (id === 't-log')  _syncLogStickyTops();
     }
+    function _syncCommIdleState() {
+      const isIdle = _robotStateIndex !== 0;
+      const idleEl = document.getElementById('comm-idle-state');
+      const contentEl = document.getElementById('comm-running-content');
+      if (idleEl) idleEl.style.display = isIdle ? 'flex' : 'none';
+      if (contentEl) contentEl.style.display = isIdle ? 'none' : '';
+    }
     function switchTab(e, id) {
       if (typeof clearBatchSel === 'function') clearBatchSel();
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -8027,6 +8051,7 @@
       _syncDetFilterBar(id);
       _syncCompact(id);
       _syncTabSticky(id);
+      if (id === 't-comm') _syncCommIdleState();
       _updateHash();
     }
     function switchTabById(id) {
@@ -8038,6 +8063,7 @@
       _syncDetFilterBar(id);
       _syncCompact(id);
       _syncTabSticky(id);
+      if (id === 't-comm') _syncCommIdleState();
       _updateHash();
     }
     function toggleFav(el) {
@@ -8062,6 +8088,8 @@
       const isOpen = body.classList.toggle('open');
       const icon = card.querySelector('.r-toggle-bar .tog-icon');
       if (icon) { icon.classList.toggle('icon-chevron-up', isOpen); icon.classList.toggle('icon-chevron-down', !isOpen); }
+      const bar = card.querySelector('.r-toggle-bar');
+      if (bar) bar.dataset.tip = isOpen ? '收合委託列表' : '展開委託列表';
     }
     function ovSwitch(v) {
       document.getElementById('ov-card').style.display = v === 'card' ? 'flex' : 'none';
@@ -8084,16 +8112,6 @@
     }
     function showStopAll() { document.getElementById('stop-all-modal').classList.add('show'); _updateStopAllCounts(); _fitList('stop-all-list'); }
 
-    function _updateDalCounts() {
-      const cbs = document.querySelectorAll('#del-all-modal .dal-cb2');
-      let orders = 0, robots = 0;
-      cbs.forEach(cb => { if (cb.checked) { orders += parseInt(cb.dataset.orders) || 0; robots++; } });
-      document.getElementById('dal-order-cnt').textContent = orders;
-      document.getElementById('dal-robot-cnt').textContent = robots;
-    }
-    document.addEventListener('change', e => {
-      if (e.target.matches('#del-all-modal .dal-cb2')) _updateDalCounts();
-    });
 
     function _updateStopAllCounts() {
       const cbs = document.querySelectorAll('#stop-all-modal .stop-all-cb');
@@ -8102,14 +8120,18 @@
       document.getElementById('stop-all-robot-cnt').textContent = robots;
       document.getElementById('stop-all-pend-cnt').textContent = pend;
     }
+    function _syncSelectAll() {
+      const cbs = [...document.querySelectorAll('#stop-all-modal .stop-all-cb')];
+      const sa = document.getElementById('stop-all-select-all');
+      if (!sa) return;
+      const checkedCount = cbs.filter(c => c.checked).length;
+      sa.indeterminate = checkedCount > 0 && checkedCount < cbs.length;
+      sa.checked = checkedCount === cbs.length;
+    }
     document.addEventListener('change', e => {
       if (e.target.matches('#stop-all-modal .stop-all-cb')) _updateStopAllCounts();
     });
-    function showDelAll() {
-      document.getElementById('del-all-modal').classList.add('show');
-      _updateDalCounts();
-      _fitList('del-all-list');
-    }
+    function showDelAll() { showStopAll(); }
     function showSigRecord(stockName, stockCode, time) {
       document.getElementById('sig-record-title').textContent = `${stockName}(${stockCode})記錄`;
       document.getElementById('sig-record-stock').textContent = `股票-${stockName}(${stockCode})`;
@@ -8309,6 +8331,7 @@
           btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動';
           btn.setAttribute('data-tip', '執行機器人');
           _robotStateIndex = 1;
+          _syncCommIdleState();
         },
         { icon: '<i class="icon-alert-circle-fill" style="color:var(--danger)"></i>', confirmText: '確認', confirmCls: 'danger' }
       );
@@ -8348,6 +8371,7 @@
       }
 
       updateSettingsEditButtonState();
+      _syncCommIdleState();
     }
 
     function updateSettingsEditButtonState() {
@@ -8450,20 +8474,29 @@
         if (_armEditMode) xAlert('設定已儲存', '機器人設定已更新成功', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>');
         else {
           const _newRobotName = document.getElementById('arm-robot-name').value.trim() || '交易機器人 1';
-          const _goNewRobot = tabId => {
+          const _goNewRobot = (tabId, navCtx, filterKey, startIdle) => {
             clearBatchSel();
             document.getElementById('nav-ov').classList.remove('active');
             document.querySelectorAll('.sb-item').forEach(e => e.classList.remove('active'));
-            _sbNavContext = '執行中';
-            _syncFilterActive('running');
+            _sbNavContext = navCtx;
+            _syncFilterActive(filterKey);
             _applyRobot(_newRobotName);
             document.getElementById('ov').style.display = 'none';
             document.getElementById('robot-view').style.display = 'flex';
+            if (startIdle) {
+              _applyDetHdrStatus(false);
+              const activeDot = document.querySelector('.sb-item.active .sb-dot');
+              if (activeDot) { activeDot.classList.remove('green'); activeDot.classList.add('gray'); }
+            } else {
+              _applyDetHdrStatus(true);
+              const activeDot = document.querySelector('.sb-item.active .sb-dot');
+              if (activeDot) { activeDot.classList.remove('gray'); activeDot.classList.add('green'); }
+            }
             switchTabById(tabId);
           };
           xConfirm('交易機器人已建立', '設定已儲存，可開始執行',
-            () => _goNewRobot('t-comm'),
-            { icon: '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', confirmText: '立即執行', cancelText: '暫不執行', confirmCls: '', noClose: true, onCancel: () => _goNewRobot('t-settings') }
+            () => _goNewRobot('t-comm', '執行中', 'running', false),
+            { icon: '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', confirmText: '立即執行', cancelText: '暫不執行', confirmCls: '', noClose: true, onCancel: () => _goNewRobot('t-settings', '全部', 'all', true) }
           );
         }
       }
