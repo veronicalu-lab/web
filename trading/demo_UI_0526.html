@@ -4168,14 +4168,14 @@
     }
 
     .arm-step.active {
-      background: rgba(101, 151, 255, .08)
+      background: var(--bg4)
     }
 
     .arm-step-num {
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      border: 2px solid var(--border2);
+      border: 2px solid var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -4190,14 +4190,14 @@
 
     .arm-step.active .arm-step-num {
       border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-bg)
+      color: var(--text3);
+      background: var(--bg2)
     }
 
     .arm-step.done .arm-step-num {
-      border-color: var(--success);
+      border-color: var(--accent);
       color: #fff;
-      background: var(--success)
+      background: var(--accent)
     }
 
     .arm-step-num i {
@@ -4228,7 +4228,7 @@
     }
 
     .arm-step.active .arm-step-name {
-      color: var(--accent)
+      color: var(--text)
     }
 
     /* Content area */
@@ -4585,7 +4585,7 @@
       transition: background .1s;
       border-radius: calc(var(--r-md) - 2px)
     }
-    .arm-strat-item:hover, .arm-strat-item.selected {
+    .arm-strat-item:hover, .arm-strat-item.selected, .arm-strat-item.active {
       background: var(--hover-bg);
       color: var(--accent)
     }
@@ -5289,7 +5289,7 @@
             <div class="m-sub">10,500股</div>
           </div>
           <div class="metric book">
-            <div class="m-label">未成交/部分委託中</div>
+            <div class="m-label">委託中</div>
             <div class="m-value">4筆</div>
             <div class="m-sub">共3檔商品</div>
           </div>
@@ -5307,13 +5307,12 @@
           <select class="s-input" id="ov-status-filter" style="width:auto" onchange="ovFilterBySelect(this.value)">
             <option value="">全部狀態</option>
             <option value="pend">委託中</option>
-            <option value="partial">部分成交</option>
             <option value="filled">已成交</option>
             <option value="fail">委託失敗</option>
             <option value="cancel">已刪單</option>
           </select>
           <div class="op-btns">
-            <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止 / 刪單</span></button>
+            <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
           </div>
         </div>
 
@@ -5341,7 +5340,7 @@
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新委託 11:40:10</span>
                   <div class="rh-pills">
-                    <span class="rh-pill pend" data-tip="未成交(2)，部分成交(1)">委託中(3)</span>
+                    <span class="rh-pill pend">委託中(3)</span>
                     <span class="rh-pill filled">已成交(2)</span>
                     <span class="rh-pill fail" style="color:var(--danger2);border-color:rgba(254,43,72,.25);background:rgba(254,43,72,.08)">失敗(1)</span>
                   </div>
@@ -5524,7 +5523,7 @@
                 <div class="rh-signal-block">
                   <span class="rh-signal-lbl">最新委託 14:22:35</span>
                   <div class="rh-pills">
-                    <span class="rh-pill pend" data-tip="未成交(1)，部分成交(0)">委託中(1)</span>
+                    <span class="rh-pill pend">委託中(1)</span>
                     <span class="rh-pill filled">已成交(4)</span>
                     <span class="rh-pill fail"
                       style="color:var(--danger2);border-color:rgba(254,43,72,.25);background:rgba(254,43,72,.08)">失敗(1)</span>
@@ -6192,7 +6191,7 @@
                             </select>
                             <span style="font-size:var(--f-xs)">+</span>
                             <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
-                              style="font-size:var(--f-xs)">檔</span>
+                              style="font-size:var(--f-base)">檔</span>
                           </div>
                         </div>
                         <div class="s-row">
@@ -6219,7 +6218,7 @@
                             </select>
                             <span style="font-size:var(--f-xs)">-</span>
                             <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
-                              style="font-size:var(--f-xs)">檔</span>
+                              style="font-size:var(--f-base)">檔</span>
                           </div>
                         </div>
                         <div class="s-row">
@@ -6310,12 +6309,12 @@
                 <div class="m-sub">共8檔商品</div>
               </div>
               <div class="metric book">
-                <div class="m-label">未成交/部分委託中</div>
+                <div class="m-label">委託中</div>
                 <div class="m-value">4筆 <span class="m-amount">($125,400)</span></div>
                 <div class="m-sub">共4檔商品</div>
               </div>
               <div class="metric long">
-                <div class="m-label">失敗/已刪</div>
+                <div class="m-label">失敗</div>
                 <div class="m-value">4筆</div>
                 <div class="m-sub">共3檔商品</div>
               </div>
@@ -6331,7 +6330,6 @@
                 <select class="s-input" id="comm-filter-sel" style="width:auto;height:var(--comp-ctrl-h)" onchange="commFilterBySelect(this.value)">
                   <option value="">全部狀態</option>
                   <option value="pend">委託中</option>
-                  <option value="partial">部分成交</option>
                   <option value="filled">已成交</option>
                   <option value="fail">委託失敗</option>
                   <option value="cancel">已刪單</option>
@@ -6948,18 +6946,20 @@
       </div>
       <div class="modal-body" style="padding:0">
         <table class="batch-table" id="del-single-table">
-          <colgroup><col style="width:230px"><col><col><col></colgroup>
+          <colgroup><col style="width:230px"><col><col><col><col></colgroup>
           <thead>
             <tr>
               <th>商品</th>
               <th>買賣</th>
               <th>委託</th>
               <th>委託價</th>
+              <th>委託書號</th>
             </tr>
           </thead>
           <tbody>
             <tr id="del-single-row">
               <td><div class="batch-prod-cell"><span class="batch-prod-name">—</span></div></td>
+              <td>—</td>
               <td>—</td>
               <td>—</td>
               <td>—</td>
@@ -7013,18 +7013,13 @@
             <span class="rh-pill pend" style="margin-left:auto;flex-shrink:0">委託中(2)</span>
           </div>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;padding:14px 12px;font-size:var(--f-base);color:var(--text2);cursor:pointer;background:rgba(254,43,72,.08);border-radius:var(--r-md)">
+        <label style="display:flex;align-items:center;gap:8px;padding:14px 12px;font-size:var(--f-base);color:var(--text);cursor:pointer;background:rgba(254,43,72,.08);border-radius:var(--r-md)">
           <input type="checkbox" class="row-cb row-cb-danger" id="stop-all-del-orders" checked style="padding:0;margin:0;flex-shrink:0">
           <span>刪除選取機器人相關 <strong id="stop-all-pend-cnt" style="color:var(--accent)">17</strong> 筆委託</span>
         </label>
       </div>
       <div class="modal-footer">
         <button class="m-cancel" onclick="closeModal('stop-all-modal')">取消</button>
-        <button class="m-stroke" onclick="(function(){
-          const pend = document.getElementById('stop-all-pend-cnt').textContent;
-          closeModal('stop-all-modal');
-          xAlert('已刪單', '已刪除 <strong style=&quot;color:var(--accent)&quot;>' + pend + '</strong> 筆委託', '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
-        })()">僅刪單</button>
         <button class="m-confirm danger" onclick="(function(){
           const robots = document.getElementById('stop-all-robot-cnt').textContent;
           const pend = document.getElementById('stop-all-pend-cnt').textContent;
@@ -7032,7 +7027,7 @@
           const msg = '已停止 <strong style=&quot;color:var(--accent)&quot;>' + robots + '</strong> 個機器人' + (delChecked ? '<br>刪除 <strong style=&quot;color:var(--accent)&quot;>' + pend + '</strong> 筆委託' : '');
           closeModal('stop-all-modal');
           xAlert('已停止', msg, '<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>');
-        })()">確認停止</button>
+        })()">確認</button>
       </div>
     </div>
   </div>
@@ -7105,7 +7100,7 @@
                 </div>
                 <div class="arm-strat-wrap">
                   <div class="arm-strat-display" id="arm-strat-display" style="display:none" onclick="armStratClear()"></div>
-                  <input class="s-input" id="arm-strat-input" placeholder="輸入策略名稱" oninput="armStratSearch(this.value)" onfocus="armStratOpen()" onblur="armStratClose()" autocomplete="off">
+                  <input class="s-input" id="arm-strat-input" placeholder="輸入策略名稱" oninput="armStratSearch(this.value)" onfocus="armStratOpen()" onblur="armStratClose()" onkeydown="armStratKeydown(event)" autocomplete="off">
                   <div class="arm-strat-list" id="arm-strat-list"></div>
                 </div>
                 <div class="s-field-warn" id="arm-strat-empty-warn" style="display:none"><i class="icon-alert-circle-fill"></i> 請輸入策略名稱</div>
@@ -7153,7 +7148,7 @@
                     </select>
                     <span style="font-size:var(--f-xs)">＋</span>
                     <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
-                      style="font-size:var(--f-xs)">檔</span>
+                      style="font-size:var(--f-base)">檔</span>
                   </div>
                 </div>
                 <div class="s-row">
@@ -7179,7 +7174,7 @@
                     </select>
                     <span style="font-size:var(--f-xs)">－</span>
                     <div class="num-wrap" style="width:65px"><input type="number" value="1" min="0"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div> <span
-                      style="font-size:var(--f-xs)">檔</span>
+                      style="font-size:var(--f-base)">檔</span>
                   </div>
                 </div>
                 <div class="s-row">
@@ -7197,8 +7192,8 @@
               </div>
               <div id="arm-qmode-amount" style="display:none;align-items:center;gap:8px;font-size:var(--f-base)">
                 <span style="color:var(--text2)">固定每筆金額</span>
-                <div class="num-wrap" style="width:75px"><input type="number" value="1" min="1"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
-                <span>萬元</span>
+                <input type="text" value="100,000" class="s-input" style="width:120px;height:var(--comp-ctrl-h)" inputmode="numeric" onchange="this.value=Number(this.value.replace(/,/g,'')).toLocaleString('zh-TW')">
+                <span style="color:var(--text2)">元</span>
               </div>
               <div id="arm-qmode-qty" style="display:flex;align-items:center;gap:8px;font-size:var(--f-base)">
                 <span style="color:var(--text2)">固定每筆數量</span>
@@ -7376,22 +7371,45 @@
       ].join(';');
       return `<span style="${style}">${isLong ? '作多' : '作空'}</span>`;
     }
-    function armStratRenderList(items) {
+    let _armStratIdx = -1;
+    function armStratRenderList(items, activeIdx = -1) {
       const list = document.getElementById('arm-strat-list');
       const cur = document.getElementById('arm-strat-input').value.trim();
       list.innerHTML = items.length
-        ? items.map(s => `<div class="arm-strat-item${s.name===cur?' selected':''}" onmousedown="armStratSelect('${s.name.replace(/'/g,"\\'")}','${s.dir}')">${_armDirTag(s.dir)}${s.name}</div>`).join('')
+        ? items.map((s, i) => `<div class="arm-strat-item${s.name===cur?' selected':''}${i===activeIdx?' active':''}" onmousedown="armStratSelect('${s.name.replace(/'/g,"\\'")}','${s.dir}')">${_armDirTag(s.dir)}${s.name}</div>`).join('')
         : '<div class="arm-strat-empty">找不到符合的策略</div>';
     }
     function armStratSearch(q) {
       const filtered = q.trim() ? ARM_STRATS.filter(s => s.name.includes(q.trim())) : ARM_STRATS;
-      armStratRenderList(filtered);
+      _armStratIdx = q.trim() && filtered.length > 0 ? 0 : -1;
+      armStratRenderList(filtered, _armStratIdx);
       document.getElementById('arm-strat-list').classList.add('open');
     }
     function armStratOpen() {
       const q = document.getElementById('arm-strat-input').value.trim();
-      armStratRenderList(q ? ARM_STRATS.filter(s => s.name.includes(q)) : ARM_STRATS);
+      const items = q ? ARM_STRATS.filter(s => s.name.includes(q)) : ARM_STRATS;
+      _armStratIdx = items.length > 0 ? 0 : -1;
+      armStratRenderList(items, _armStratIdx);
       document.getElementById('arm-strat-list').classList.add('open');
+    }
+    function armStratKeydown(e) {
+      const list = document.getElementById('arm-strat-list');
+      const items = list.querySelectorAll('.arm-strat-item');
+      if (!items.length) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        _armStratIdx = Math.min(_armStratIdx + 1, items.length - 1);
+        items.forEach((el, i) => el.classList.toggle('active', i === _armStratIdx));
+        items[_armStratIdx]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        _armStratIdx = Math.max(_armStratIdx - 1, 0);
+        items.forEach((el, i) => el.classList.toggle('active', i === _armStratIdx));
+        items[_armStratIdx]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (_armStratIdx >= 0 && items[_armStratIdx]) items[_armStratIdx].dispatchEvent(new MouseEvent('mousedown'));
+      }
     }
     function armStratClose() {
       setTimeout(() => {
@@ -7899,14 +7917,16 @@
         if (!status) { tr.style.display = ''; return; }
         const tag = tr.querySelector('.s-tag');
         const cls = tag ? tag.className : '';
-        tr.style.display = cls.includes('s-' + status) ? '' : 'none';
+        const match = status === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + status);
+        tr.style.display = match ? '' : 'none';
       });
     }
     function ovFilterBySelect(val) {
       document.querySelectorAll('#ov-all .o-table tbody tr').forEach(tr => {
         if (!val) { tr.style.display = ''; return; }
         const cls = tr.querySelector('.s-tag')?.className || '';
-        tr.style.display = cls.includes('s-' + val) ? '' : 'none';
+        const match = val === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + val);
+        tr.style.display = match ? '' : 'none';
       });
     }
     function refreshCommFilterCounts() {
@@ -8006,6 +8026,7 @@
       }
     }
     function selRobot(el, name, acc) {
+      if (typeof clearBatchSel === 'function') clearBatchSel();
       const q = document.getElementById('sb-search-input').value.trim();
       if (q && !_sbHistory.includes(q)) { _sbHistory.unshift(q); if (_sbHistory.length > 5) _sbHistory.pop(); }
       if (q) sbSearchClose();
@@ -8092,6 +8113,7 @@
       if (bar) bar.dataset.tip = isOpen ? '收合委託列表' : '展開委託列表';
     }
     function ovSwitch(v) {
+      if (typeof clearBatchSel === 'function') clearBatchSel();
       document.getElementById('ov-card').style.display = v === 'card' ? 'flex' : 'none';
       if (v === 'card') document.getElementById('ov-card').style.flexDirection = 'column';
       document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
@@ -8188,6 +8210,8 @@
       row.cells[1].innerHTML = `<span style="color:${sideColor};font-weight:500">${side}</span>`;
       row.cells[2].textContent = qty;
       row.cells[3].textContent = price;
+      row.cells[4].textContent = 'A' + Math.floor(1000000 + Math.random() * 9000000);
+      row.cells[4].style.color = 'var(--text3)';
       document.getElementById('del-modal').classList.add('show');
     }
     function confirmDel() {
@@ -8494,10 +8518,68 @@
             }
             switchTabById(tabId);
           };
-          xConfirm('交易機器人已建立', '設定已儲存，可開始執行',
-            () => _goNewRobot('t-comm', '執行中', 'running', false),
-            { icon: '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', confirmText: '立即執行', cancelText: '暫不執行', confirmCls: '', noClose: true, onCancel: () => _goNewRobot('t-settings', '全部', 'all', true) }
-          );
+          _xpopShow({
+            icon: '<i class="icon-check-circle-fill" style="color:var(--success)"></i>',
+            title: '交易機器人已建立',
+            msg: '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:var(--f-base);color:var(--text3)"><input type="checkbox" id="arm-start-now" style="flex-shrink:0"> 立即開始執行</label>',
+            type: 'alert',
+            confirmText: '確認',
+            noClose: true,
+            onOk: () => {
+              const run = document.getElementById('arm-start-now')?.checked;
+              if (run) {
+                const dataView = document.querySelector('#ov-card .data-view');
+                if (dataView) {
+                  const card = document.createElement('div');
+                  card.className = 'r-card';
+                  card.innerHTML = `
+                    <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
+                      <div class="rh-name-block">
+                        <div class="rh-title">
+                          <span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)" title="加入收藏"><i class="icon-bookmark-border-02"></i></span>
+                          <span class="rh-title-link" onclick="event.stopPropagation();goToRobot('${_newRobotName}','')" title="${_newRobotName}">${_newRobotName}</span>
+                        </div>
+                        <div class="rh-sub">証-模擬交易-01｜<span class="dir-tag long">作多</span>王牌選股法</div>
+                      </div>
+                      <div class="rh-signal-block">
+                        <span class="rh-signal-lbl">剛剛啟動</span>
+                        <div class="rh-pills">
+                          <span class="rh-pill pend">委託中(0)</span>
+                          <span class="rh-pill filled">已成交(0)</span>
+                          <span class="rh-pill fail">失敗(0)</span>
+                        </div>
+                      </div>
+                      <div class="rh-cap">
+                        <span class="rh-cap-label">安控 $100萬(0%)</span>
+                        <div class="rh-cap-bar-wrap"><div class="cap-bar"><div class="cap-fill" style="width:0%"></div></div></div>
+                      </div>
+                      <div class="rh-actions" onclick="event.stopPropagation()">
+                        <button class="ico-btn edit" title="編輯"><i class="icon-edit-01"></i></button>
+                        <button class="ico-btn" title="複製"><i class="icon-copy"></i></button>
+                        <button class="ico-btn del" title="刪除" onclick="showDelSingle('${_newRobotName}')"><i class="icon-trash-01"></i></button>
+                        <button class="rh-status-btn running" data-tip="停止執行" onclick="showStopSingle(this,0)"><span class="rh-dot"></span>執行中</button>
+                      </div>
+                    </div>
+                    <div class="r-body open">
+                      <div class="pend-orders">
+                        <div class="empty-view" style="padding:24px 16px;display:flex">
+                          <div class="empty-icon" style="font-size:28px;margin-bottom:8px;"><i class="icon-inbox"></i></div>
+                          <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">尚無交易委託</div>
+                          <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="收合委託列表"><i class="tog-icon icon-chevron-up"></i></div>`;
+                  dataView.insertBefore(card, dataView.firstChild);
+                }
+                showOv();
+                _sbNavContext = '執行中';
+                _syncFilterActive('running');
+              } else {
+                _goNewRobot('t-settings', '全部', 'all', true);
+              }
+            }
+          });
         }
       }
     }
@@ -8939,7 +9021,7 @@
       </div>
       <div class="modal-body" style="padding:0">
         <table class="batch-table" id="batch-del-table">
-          <colgroup><col style="width:34px"><col style="width:230px"><col><col><col></colgroup>
+          <colgroup><col style="width:34px"><col style="width:200px"><col><col><col><col></colgroup>
           <thead>
             <tr>
               <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
@@ -8947,6 +9029,7 @@
               <th>買賣</th>
               <th>委託</th>
               <th>委託價</th>
+              <th>委託書號</th>
             </tr>
           </thead>
           <tbody>
@@ -8956,6 +9039,7 @@
               <td class="side-buy">買進</td>
               <td>10張</td>
               <td>985</td>
+              <td style="color:var(--text3)">A1234567</td>
             </tr>
             <tr>
               <td class="col-chk"><input type="checkbox" class="row-cb" checked></td>
@@ -8963,6 +9047,7 @@
               <td class="side-sell">賣出</td>
               <td>5張</td>
               <td>21,300</td>
+              <td style="color:var(--text3)">A1234568</td>
             </tr>
             <tr>
               <td class="col-chk"><input type="checkbox" class="row-cb" checked></td>
@@ -8970,6 +9055,7 @@
               <td class="side-buy">買進</td>
               <td>8張</td>
               <td>1,300</td>
+              <td style="color:var(--text3)">A1234569</td>
             </tr>
           </tbody>
         </table>
@@ -9078,7 +9164,8 @@
       <td>${_batchProdHTML(prodCell)}</td>
       <td class="${sideClass}">${sideCell ? sideCell.textContent.trim() : '—'}</td>
       <td>${(qtyCell?.querySelector('[data-qty]')?.dataset.qty ?? qtyCell?.textContent.trim() ?? '—') + '張'}</td>
-      <td>${priceCell ? priceCell.textContent.trim() : '—'}</td>`;
+      <td>${priceCell ? priceCell.textContent.trim() : '—'}</td>
+      <td style="color:var(--text3)">A${Math.floor(1000000 + Math.random() * 9000000)}</td>`;
         tbody.appendChild(row);
       });
       document.getElementById('batch-del-confirm-btn').textContent = '確認刪除';
