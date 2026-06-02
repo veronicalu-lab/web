@@ -5833,24 +5833,46 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="col-chk"><input type="checkbox" class="row-cb" disabled></td>
-                  <td class="col-act"><button class="ico-btn del" disabled><i class="icon-trash-01"></i></button></td>
-                  <td>10:05:10</td>
-                  <td><span class="type-tag t-stock">整股</span></td>
+                  <td class="col-chk"><input type="checkbox" class="row-cb" onchange="onRowCbChange()"></td>
+                  <td class="col-act"><button class="ico-btn del" onclick="delRow(this)" title="刪除"><i class="icon-trash-01"></i></button></td>
+                  <td>14:20:30</td>
+                  <td><span class="type-tag t-odd">零股</span></td>
                   <td>
-                    <div class="line-clamp-2" title="滬海 6837">滬海 <span class="prod-code">6837</span></div>
+                    <div class="line-clamp-2" title="台新金 2887">台新金 <span class="prod-code">2887</span></div>
                   </td>
                   <td class="side-buy">買進</td>
-                  <td>50/50張</td>
-                  <td>38.50</td>
-                  <td>38.25</td>
-                  <td><span class="s-tag s-filled">已成交</span></td>
-                  <td title="委託書號">B10050211</td>
+                  <td><span class="edit-val" data-qty="7">7</span>/<span>0</span>股</td>
+                  <td><span class="edit-val" data-price="27.5">27.5</span></td>
+                  <td style="color:var(--text3)">—</td>
+                  <td><span class="s-tag s-pend">未成交</span></td>
+                  <td title="委託書號">C14200733</td>
                   <td>
-                    <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
+                    <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
                   </td>
                   <td>
-                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag short">作空</span><div class="line-clamp-2" title="海海策略">海海策略</div></div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="零股策略">零股策略</div></div>
+                  </td>
+                  <td title="証-模擬-01">証-模擬-01</td>
+                </tr>
+                <tr>
+                  <td class="col-chk"><input type="checkbox" class="row-cb" onchange="onRowCbChange()"></td>
+                  <td class="col-act"><button class="ico-btn del" onclick="delRow(this)" title="刪除"><i class="icon-trash-01"></i></button></td>
+                  <td>11:20:05</td>
+                  <td><span class="type-tag t-stock">整股</span></td>
+                  <td>
+                    <div class="line-clamp-2" title="鴻海 2317">鴻海 <span class="prod-code">2317</span></div>
+                  </td>
+                  <td class="side-buy">買進</td>
+                  <td><span class="edit-val" data-qty="20">20</span>/<span>8</span>張</td>
+                  <td><span class="edit-val" data-price="182">182</span></td>
+                  <td>181.5</td>
+                  <td><span class="s-tag s-partial">部分成交</span></td>
+                  <td title="委託書號">A11200399</td>
+                  <td>
+                    <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="鴻海波段策略">鴻海波段策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5879,44 +5901,22 @@
                 <tr>
                   <td class="col-chk"><input type="checkbox" class="row-cb" disabled></td>
                   <td class="col-act"><button class="ico-btn del" disabled><i class="icon-trash-01"></i></button></td>
-                  <td>09:30:15</td>
+                  <td>10:05:10</td>
                   <td><span class="type-tag t-stock">整股</span></td>
                   <td>
-                    <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
+                    <div class="line-clamp-2" title="滬海 6837">滬海 <span class="prod-code">6837</span></div>
                   </td>
                   <td class="side-buy">買進</td>
-                  <td>25/25張</td>
-                  <td>1,240</td>
-                  <td>1,240.0</td>
+                  <td>50/50張</td>
+                  <td>38.50</td>
+                  <td>38.25</td>
                   <td><span class="s-tag s-filled">已成交</span></td>
-                  <td title="委託書號">B09300412</td>
+                  <td title="委託書號">B10050211</td>
                   <td>
                     <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
                   </td>
                   <td>
-                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="聯發科策略">聯發科策略</div></div>
-                  </td>
-                  <td title="証-模擬-01">証-模擬-01</td>
-                </tr>
-                <tr>
-                  <td class="col-chk"><input type="checkbox" class="row-cb" onchange="onRowCbChange()"></td>
-                  <td class="col-act"><button class="ico-btn del" onclick="delRow(this)" title="刪除"><i class="icon-trash-01"></i></button></td>
-                  <td>14:20:30</td>
-                  <td><span class="type-tag t-odd">零股</span></td>
-                  <td>
-                    <div class="line-clamp-2" title="台新金 2887">台新金 <span class="prod-code">2887</span></div>
-                  </td>
-                  <td class="side-buy">買進</td>
-                  <td><span class="edit-val" data-qty="7">7</span>/<span>0</span>股</td>
-                  <td><span class="edit-val" data-price="27.5">27.5</span></td>
-                  <td style="color:var(--text3)">—</td>
-                  <td><span class="s-tag s-pend">未成交</span></td>
-                  <td title="委託書號">C14200733</td>
-                  <td>
-                    <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
-                  </td>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="零股策略">零股策略</div></div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag short">作空</span><div class="line-clamp-2" title="海海策略">海海策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
@@ -5943,24 +5943,24 @@
                   <td title="証-模擬-02">証-模擬-02</td>
                 </tr>
                 <tr>
-                  <td class="col-chk"><input type="checkbox" class="row-cb" onchange="onRowCbChange()"></td>
-                  <td class="col-act"><button class="ico-btn del" onclick="delRow(this)" title="刪除"><i class="icon-trash-01"></i></button></td>
-                  <td>11:20:05</td>
+                  <td class="col-chk"><input type="checkbox" class="row-cb" disabled></td>
+                  <td class="col-act"><button class="ico-btn del" disabled><i class="icon-trash-01"></i></button></td>
+                  <td>09:30:15</td>
                   <td><span class="type-tag t-stock">整股</span></td>
                   <td>
-                    <div class="line-clamp-2" title="鴻海 2317">鴻海 <span class="prod-code">2317</span></div>
+                    <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
                   </td>
                   <td class="side-buy">買進</td>
-                  <td><span class="edit-val" data-qty="20">20</span>/<span>8</span>張</td>
-                  <td><span class="edit-val" data-price="182">182</span></td>
-                  <td>181.5</td>
-                  <td><span class="s-tag s-partial">部分成交</span></td>
-                  <td title="委託書號">A11200399</td>
+                  <td>25/25張</td>
+                  <td>1,240</td>
+                  <td>1,240.0</td>
+                  <td><span class="s-tag s-filled">已成交</span></td>
+                  <td title="委託書號">B09300412</td>
                   <td>
-                    <button class="o-robot-link" title="機器人 1" onclick="goToRobot('機器人 1','')">機器人 1</button>
+                    <button class="o-robot-link" title="機器人 2" onclick="goToRobot('機器人 2','')">機器人 2</button>
                   </td>
                   <td>
-                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="鴻海波段策略">鴻海波段策略</div></div>
+                    <div style="display:flex;align-items:center;gap:4px"><span class="dir-tag long">作多</span><div class="line-clamp-2" title="聯發科策略">聯發科策略</div></div>
                   </td>
                   <td title="証-模擬-01">証-模擬-01</td>
                 </tr>
