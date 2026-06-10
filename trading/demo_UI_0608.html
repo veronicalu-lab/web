@@ -1137,7 +1137,21 @@
       font-size: var(--f-xs);
       color: var(--text3);
       font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    .sb-sort-reset {
+      display: none;
+      font-size: var(--f-xs);
+      color: var(--text4);
+      cursor: pointer;
+      padding: 0;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+    .sb-sort-reset.show { display: inline-block; }
+    .sb-sort-reset:hover { color: var(--text3); }
     .sb-acct-chk-row {
       display: flex;
       align-items: center;
@@ -1968,6 +1982,10 @@
     #robot-view .metric-bar {
       padding-top: var(--sp-5);
     }
+    #robot-view[data-dir="long"]  #pos-running-content .metric-bar .metric:first-child { border-left-color: var(--danger); }
+    #robot-view[data-dir="long"]  #pos-running-content .metric-bar .metric:first-child .m-label { color: var(--danger); }
+    #robot-view[data-dir="short"] #pos-running-content .metric-bar .metric:first-child { border-left-color: var(--success); }
+    #robot-view[data-dir="short"] #pos-running-content .metric-bar .metric:first-child .m-label { color: var(--success); }
 
     .metric {
       background: var(--bg3);
@@ -2357,7 +2375,7 @@
     .xsel-wrap.has-filter:has(#comm-col-status-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
 
     .xsel-wrap:has(#comm-filter-sel) .xsel-trigger {
-      width: 103px;
+      width: 120px;
       min-width: unset
     }
 
@@ -3164,6 +3182,22 @@
       opacity: .25;
       cursor: not-allowed;
       pointer-events: none
+    }
+
+    .m-info-icon {
+      font-size: 16px;
+      color: var(--text3);
+      cursor: default;
+      padding: 2px;
+      border-radius: var(--r-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+    .m-info-icon:hover {
+      background: var(--bg4);
+      color: var(--text);
     }
 
     .rh-actions .ico-btn {
@@ -5573,26 +5607,26 @@
             </button>
             <!-- 排序面板（下拉） -->
             <div class="sb-sort-panel xsel-drop" id="sb-sort-panel">
-          <div class="sb-sort-section-hdr">排序</div>
+          <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="sb-reset-sort" onclick="sbSortReset()">預設</span></div>
           <div class="sb-sort-opt" data-sort="created"      onclick="sbSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="sb-sarr-created"></span></div>
           <div class="sb-sort-opt" data-sort="started"      onclick="sbSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="sb-sarr-started"></span></div>
           <div class="sb-sort-opt" data-sort="latest_order" onclick="sbSortSelect('latest_order')">最新委託時間<span class="sb-sort-opt-arrow" id="sb-sarr-latest_order"></span></div>
           <div class="sb-sort-opt" data-sort="name"         onclick="sbSortSelect('name')">機器人名稱<span class="sb-sort-opt-arrow" id="sb-sarr-name"></span></div>
           <div class="sb-sort-opt" data-sort="risk"         onclick="sbSortSelect('risk')">安控金額<span class="sb-sort-opt-arrow" id="sb-sarr-risk"></span></div>
-          <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="sbSortSelect('risk_ratio')">安控使用佔比<span class="sb-sort-opt-arrow" id="sb-sarr-risk_ratio"></span></div>
+          <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="sbSortSelect('risk_ratio')">安控佔用比例<span class="sb-sort-opt-arrow" id="sb-sarr-risk_ratio"></span></div>
           <div class="sb-sort-divider"></div>
           <div class="sb-sort-val-row">
             <span>顯示排序數值</span>
             <button class="sb-sort-val-toggle" id="sb-sort-val-toggle" onclick="sbSortValToggle()"></button>
           </div>
           <div class="sb-sort-divider"></div>
-          <div class="sb-sort-section-hdr">多空篩選</div>
+          <div class="sb-sort-section-hdr">多空篩選<span class="sb-sort-reset" id="sb-reset-dir" onclick="sbDirReset()">預設</span></div>
           <div class="sb-sort-val-row" style="gap:6px;">
             <button class="sb-dir-chip long"  id="sb-dir-long"  onclick="sbDirToggle('long')"  style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作多<span class="sb-l2-f-cnt" id="sb-dir-cnt-long"></span></button>
             <button class="sb-dir-chip short" id="sb-dir-short" onclick="sbDirToggle('short')" style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作空<span class="sb-l2-f-cnt" id="sb-dir-cnt-short"></span></button>
           </div>
           <div class="sb-sort-divider"></div>
-          <div class="sb-sort-section-hdr">交易帳號篩選</div>
+          <div class="sb-sort-section-hdr">交易帳號篩選<span class="sb-sort-reset" id="sb-reset-acct" onclick="sbAcctFilter('');_sbResetSync()">預設</span></div>
           <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="" checked onchange="sbAcctFilter('')"> 全部帳號</label>
           <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="証-模擬交易(內建)-01" onchange="sbAcctFilter('証-模擬交易(內建)-01')"> 証-模擬交易(內建)-01</label>
           <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="期-模擬交易-01" onchange="sbAcctFilter('期-模擬交易-01')"> 期-模擬交易-01</label>
@@ -5665,7 +5699,7 @@
             <!-- 無權限鎖定 banner（只有 is-no-permission 時顯示） -->
             <div class="noperm-sb-lock" style="flex-direction:column;align-items:center;gap:6px;padding:14px var(--sp-3) 10px;border-top:1px solid var(--border2);margin-top:4px;text-align:center;">
               <i class="fas fa-lock" style="font-size:18px;opacity:0.4;color:var(--text3);"></i>
-              <div style="font-size:var(--f-xs);color:var(--text3);line-height:1.5;">您目前可使用 <strong style="color:var(--text2)">1 個機器人</strong><br>升級方案解鎖無限機器人</div>
+              <div style="font-size:var(--f-xs);color:var(--text3);line-height:1.5;">您目前可使用 <strong style="color:var(--text2)">1 個機器人</strong><br>升級方案解鎖更多機器人</div>
               <button class="empty-action-btn" style="font-size:var(--f-xs);padding:5px 14px;margin-top:2px;">了解升級方案</button>
             </div>
 
@@ -5755,26 +5789,26 @@
               </svg>
             </button>
             <div class="sb-sort-panel xsel-drop" id="ov-sort-panel">
-              <div class="sb-sort-section-hdr">排序</div>
+              <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="ov-reset-sort" onclick="ovSortReset()">預設</span></div>
               <div class="sb-sort-opt" data-sort="created"      onclick="ovSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="ov-sarr-created"></span></div>
               <div class="sb-sort-opt" data-sort="started"      onclick="ovSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="ov-sarr-started"></span></div>
               <div class="sb-sort-opt" data-sort="latest_order" onclick="ovSortSelect('latest_order')">最新委託時間<span class="sb-sort-opt-arrow" id="ov-sarr-latest_order"></span></div>
               <div class="sb-sort-opt" data-sort="name"         onclick="ovSortSelect('name')">機器人名稱<span class="sb-sort-opt-arrow" id="ov-sarr-name"></span></div>
               <div class="sb-sort-opt" data-sort="risk"         onclick="ovSortSelect('risk')">安控金額<span class="sb-sort-opt-arrow" id="ov-sarr-risk"></span></div>
-              <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="ovSortSelect('risk_ratio')">安控使用佔比<span class="sb-sort-opt-arrow" id="ov-sarr-risk_ratio"></span></div>
+              <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="ovSortSelect('risk_ratio')">安控佔用比例<span class="sb-sort-opt-arrow" id="ov-sarr-risk_ratio"></span></div>
               <div class="sb-sort-divider"></div>
               <div class="sb-sort-val-row">
                 <span>顯示排序數值</span>
                 <button class="sb-sort-val-toggle" id="ov-sort-val-toggle" onclick="ovSortValToggle()"></button>
               </div>
               <div class="sb-sort-divider"></div>
-              <div class="sb-sort-section-hdr">多空篩選</div>
+              <div class="sb-sort-section-hdr">多空篩選<span class="sb-sort-reset" id="ov-reset-dir" onclick="ovDirReset()">預設</span></div>
               <div class="sb-sort-val-row" style="gap:6px;">
                 <button class="sb-dir-chip long"  id="ov-dir-long"  onclick="ovDirToggle('long')"  style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作多<span class="sb-l2-f-cnt" id="ov-dir-cnt-long"></span></button>
                 <button class="sb-dir-chip short" id="ov-dir-short" onclick="ovDirToggle('short')" style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作空<span class="sb-l2-f-cnt" id="ov-dir-cnt-short"></span></button>
               </div>
               <div class="sb-sort-divider"></div>
-              <div class="sb-sort-section-hdr">交易帳號篩選</div>
+              <div class="sb-sort-section-hdr">交易帳號篩選<span class="sb-sort-reset" id="ov-reset-acct" onclick="ovAcctFilter('');_ovResetSync()">預設</span></div>
               <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="" checked onchange="ovAcctFilter('')"> 全部帳號</label>
               <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="証-模擬交易(內建)-01" onchange="ovAcctFilter('証-模擬交易(內建)-01')"> 証-模擬交易(內建)-01</label>
               <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="期-模擬交易-01" onchange="ovAcctFilter('期-模擬交易-01')"> 期-模擬交易-01</label>
@@ -5796,7 +5830,7 @@
           <div class="data-view" style="display:contents">
 
             <!-- Card 1 -->
-            <div class="r-card" data-account="証-模擬交易(內建)-01">
+            <div class="r-card" data-account="証-模擬交易(內建)-01" data-dir="long">
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
@@ -5987,7 +6021,7 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="r-card" data-account="証-模擬交易(內建)-01">
+            <div class="r-card" data-account="証-模擬交易(內建)-01" data-dir="long">
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
@@ -6223,7 +6257,7 @@
             </div>
 
             <!-- Card 3 -->
-            <div class="r-card" data-account="期-模擬交易-01">
+            <div class="r-card" data-account="期-模擬交易-01" data-dir="short">
               <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
                 <div class="rh-name-block">
                   <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
@@ -6273,32 +6307,12 @@
           </div>
 
           <!-- 無權限升級區（is-no-permission 時顯示） -->
-          <div class="noperm-upgrade-sec" style="flex-direction:column;gap:10px;padding:0 16px 20px;">
-
-            <!-- 幽靈卡 1 -->
-            <div class="noperm-ghost-card" style="display:flex;align-items:center;gap:12px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--text4);flex-shrink:0;"></div>
-              <div style="flex:1;min-width:0;">
-                <div style="height:12px;border-radius:4px;background:var(--border2);width:55%;margin-bottom:6px;"></div>
-                <div style="height:10px;border-radius:4px;background:var(--border2);width:35%;"></div>
-              </div>
-              <div style="width:60px;height:28px;border-radius:var(--r-md);background:var(--border2);flex-shrink:0;"></div>
-            </div>
-
-            <!-- 幽靈卡 2 -->
-            <div class="noperm-ghost-card" style="display:flex;align-items:center;gap:12px;">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--text4);flex-shrink:0;"></div>
-              <div style="flex:1;min-width:0;">
-                <div style="height:12px;border-radius:4px;background:var(--border2);width:42%;margin-bottom:6px;"></div>
-                <div style="height:10px;border-radius:4px;background:var(--border2);width:28%;"></div>
-              </div>
-              <div style="width:60px;height:28px;border-radius:var(--r-md);background:var(--border2);flex-shrink:0;"></div>
-            </div>
+          <div class="noperm-upgrade-sec" style="flex-direction:column;gap:10px;padding:0 0 20px;">
 
             <!-- 升級 CTA -->
             <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border:1px dashed var(--border2);border-radius:var(--r-lg);text-align:center;">
               <i class="fas fa-lock" style="font-size:22px;opacity:0.35;color:var(--text3);"></i>
-              <div style="font-size:var(--f-sm);font-weight:500;color:var(--text2);">解鎖無限機器人</div>
+              <div style="font-size:var(--f-sm);font-weight:500;color:var(--text2);">解鎖更多機器人</div>
               <div style="font-size:var(--f-xs);color:var(--text4);line-height:1.5;">升級使用方案，同時執行多個策略<br>靈活管理您的投資組合</div>
               <button class="empty-action-btn" style="margin-top:4px;">了解升級方案</button>
             </div>
@@ -6820,7 +6834,7 @@
             <!-- 指標卡 -->
             <div class="metric-bar">
               <div class="metric warn">
-                <div class="m-label">開倉金額</div>
+                <div class="m-label">安控佔用金額 <span class="m-info-icon" data-tip="已送出委託的金額，含未成交及已成交委託" style="font-family:xqnext;line-height:1">&#xe96c;</span></div>
                 <div class="m-value">$166,248</div>
                 <div class="m-sub" style="display:flex;align-items:center;gap:6px">
                   <span style="white-space:nowrap">安控 $65萬(40.00%)</span>
@@ -7370,6 +7384,7 @@
                   </table>
                 </div>
               </div>
+              <div style="padding:6px var(--sp-4) 8px;font-size:var(--f-sm);color:var(--text4);text-align:center">更新時間：2026/06/10 14:32</div>
             </div>
           </div>
 
@@ -8435,6 +8450,31 @@
       }
     }, true);
     let _ovSort = 'started', _ovSortDir = 'desc';
+    function _ovResetSync() {
+      const defSort = _ovSort === 'started' && _ovSortDir === 'desc';
+      const defDir  = _ovDirActive.size === 2;
+      const defAcct = _ovAcctSelected === '';
+      document.getElementById('ov-reset-sort')?.classList.toggle('show', !defSort);
+      document.getElementById('ov-reset-dir')?.classList.toggle('show', !defDir);
+      document.getElementById('ov-reset-acct')?.classList.toggle('show', !defAcct);
+    }
+    function ovSortReset() {
+      _ovSort = 'started'; _ovSortDir = 'desc';
+      const arrows = { asc: '↑', desc: '↓' };
+      ['created','started','latest_order','name','risk','risk_ratio'].forEach(k => {
+        const el = document.getElementById('ov-sarr-' + k);
+        if (el) el.textContent = k === _ovSort ? arrows[_ovSortDir] : '';
+        const opt = document.querySelector('#ov-sort-panel [data-sort="' + k + '"]');
+        if (opt) opt.classList.toggle('active', k === _ovSort);
+      });
+      _ovResetSync();
+    }
+    function ovDirReset() {
+      _ovDirActive.add('long'); _ovDirActive.add('short');
+      document.getElementById('ov-dir-long')?.classList.remove('inactive');
+      document.getElementById('ov-dir-short')?.classList.remove('inactive');
+      _ovFilterBtnSync(); _ovResetSync();
+    }
     function ovSortSelect(key) {
       if (_ovSort === key) {
         _ovSortDir = _ovSortDir === 'asc' ? 'desc' : 'asc';
@@ -8448,6 +8488,7 @@
         const opt = document.querySelector('#ov-sort-panel [data-sort="' + k + '"]');
         if (opt) opt.classList.toggle('active', k === _ovSort);
       });
+      _ovResetSync();
     }
     // OV filter state (independent from L2)
     let _ovSortShowVal = false;
@@ -8457,12 +8498,21 @@
       const btn = document.getElementById('ov-sort-btn');
       if (!btn) return;
       const panelOpen = document.getElementById('ov-sort-panel')?.classList.contains('show');
-      const hasFilter = _ovAcctSelected !== '' || _ovDirActive.size < 2;
+      const hasFilter = _ovAcctSelected !== '' || _ovDirActive.size < 2 || !(_ovSort === 'started' && _ovSortDir === 'desc');
       btn.style.color = (panelOpen || hasFilter) ? 'var(--accent)' : '';
     }
     function ovSortValToggle() {
       _ovSortShowVal = !_ovSortShowVal;
       document.getElementById('ov-sort-val-toggle').classList.toggle('on', _ovSortShowVal);
+    }
+    function _updateOvDirCounts() {
+      const cards = [...document.querySelectorAll('#ov-card .r-card')].filter(c => c.style.display !== 'none');
+      const cntLong  = cards.filter(c => c.dataset.dir === 'long').length;
+      const cntShort = cards.filter(c => c.dataset.dir === 'short').length;
+      const fmt = n => n > 99 ? '99+' : `${n}`;
+      const el = id => document.getElementById(id);
+      if (el('ov-dir-cnt-long'))  el('ov-dir-cnt-long').textContent  = cntLong  ? fmt(cntLong)  : '';
+      if (el('ov-dir-cnt-short')) el('ov-dir-cnt-short').textContent = cntShort ? fmt(cntShort) : '';
     }
     function ovDirToggle(dir) {
       if (_ovDirActive.has(dir)) {
@@ -8473,19 +8523,44 @@
       }
       document.getElementById('ov-dir-long').classList.toggle('inactive', !_ovDirActive.has('long'));
       document.getElementById('ov-dir-short').classList.toggle('inactive', !_ovDirActive.has('short'));
-      _ovFilterBtnSync();
+      _ovFilterBtnSync(); _ovResetSync();
     }
     function ovAcctFilter(acct) {
       _ovAcctSelected = acct;
       // sync ctrl-bar select
       const sel = document.getElementById('ov-acct-filter');
-      if (sel && sel.value !== acct) sel.value = acct;
-      // sync sort panel radio
+      if (sel && sel.value !== acct) {
+        sel.value = acct;
+        const wrap = sel.closest('.xsel-wrap');
+        if (wrap) {
+          const v = wrap.querySelector('.xsel-val');
+          if (v) v.textContent = sel.options[sel.selectedIndex]?.text || '';
+        }
+      }
+      // sync OV sort panel radio
       document.querySelectorAll('#ov-sort-panel input[name="ov-acct"]').forEach(r => { r.checked = r.value === acct; });
+      // sync L2 sort panel radio + sidebar filter
+      if (!_acctSyncing) {
+        document.querySelectorAll('#sb-sort-panel input[name="sb-acct"]').forEach(r => { r.checked = r.value === acct; });
+        if (_sbAcctSelected !== acct) {
+          _sbAcctSelected = acct;
+          _acctSyncing = true;
+          _applyListFilter();
+          if (_sbAcctSelected) {
+            document.querySelectorAll('.sb-list .sb-item').forEach(i => {
+              if (i.style.display === 'none') return;
+              if ((i.dataset.account || '') !== _sbAcctSelected) i.style.display = 'none';
+            });
+          }
+          _sbFilterBtnSync();
+          _acctSyncing = false;
+        }
+      }
       // filter r-cards
       document.querySelectorAll('#ov-card .r-card').forEach(card => {
         card.style.display = (!acct || card.dataset.account === acct) ? '' : 'none';
       });
+      _updateOvDirCounts();
       // filter #ov-all rows
       document.querySelectorAll('.all-orders-wrap .o-table tbody tr').forEach(tr => {
         tr.style.display = (!acct || tr.dataset.account === acct) ? '' : 'none';
@@ -8501,7 +8576,7 @@
           if (v) v.textContent = colSel.options[colSel.selectedIndex]?.text || '';
         }
       }
-      _ovFilterBtnSync();
+      _ovFilterBtnSync(); _ovResetSync();
     }
     function ovAcctColSync(val) {
       // sync col filter icon active state
@@ -8514,7 +8589,7 @@
       const btn = document.getElementById('sb-sort-btn');
       if (!btn) return;
       const panelOpen = document.getElementById('sb-sort-panel')?.classList.contains('show');
-      const hasFilter = _sbAcctSelected !== '' || _sbDirActive.size < 2;
+      const hasFilter = _sbAcctSelected !== '' || _sbDirActive.size < 2 || !(_sbSort === 'created' && _sbSortDir === 'desc');
       btn.style.color = (panelOpen || hasFilter) ? 'var(--accent)' : '';
     }
     function sbSortPanelToggle() {
@@ -8531,6 +8606,24 @@
       panel.classList.add('show');
       btn.style.color = 'var(--accent)';
     }
+    function _sbResetSync() {
+      const defSort = _sbSort === 'created' && _sbSortDir === 'desc';
+      const defDir  = _sbDirActive.size === 2;
+      const defAcct = _sbAcctSelected === '';
+      document.getElementById('sb-reset-sort')?.classList.toggle('show', !defSort);
+      document.getElementById('sb-reset-dir')?.classList.toggle('show', !defDir);
+      document.getElementById('sb-reset-acct')?.classList.toggle('show', !defAcct);
+    }
+    function sbSortReset() {
+      _sbSort = 'created'; _sbSortDir = 'desc';
+      _applySortUI(); _applySortList(); _sbResetSync();
+    }
+    function sbDirReset() {
+      _sbDirActive.add('long'); _sbDirActive.add('short');
+      document.getElementById('sb-dir-long')?.classList.remove('inactive');
+      document.getElementById('sb-dir-short')?.classList.remove('inactive');
+      _sbFilterBtnSync(); _sbResetSync();
+    }
     function sbSortSelect(key) {
       if (_sbSort === key) {
         _sbSortDir = _sbSortDir === 'asc' ? 'desc' : 'asc';
@@ -8540,6 +8633,7 @@
       }
       _applySortUI();
       _applySortList();
+      _sbResetSync();
     }
     function sbSortValToggle() {
       _sbSortShowVal = !_sbSortShowVal;
@@ -8636,9 +8730,10 @@
       }
       document.getElementById('sb-dir-long').classList.toggle('inactive', !_sbDirActive.has('long'));
       document.getElementById('sb-dir-short').classList.toggle('inactive', !_sbDirActive.has('short'));
-      _sbFilterBtnSync();
+      _sbFilterBtnSync(); _sbResetSync();
     }
 
+    let _acctSyncing = false;
     function sbAcctFilter(acct) {
       _sbAcctSelected = acct;
       _applyListFilter();
@@ -8648,7 +8743,8 @@
           if ((i.dataset.account || '') !== _sbAcctSelected) i.style.display = 'none';
         });
       }
-      _sbFilterBtnSync();
+      _sbFilterBtnSync(); _sbResetSync();
+      if (!_acctSyncing) { _acctSyncing = true; ovAcctFilter(acct); _acctSyncing = false; }
     }
 
     function sbL2Filter(el, type) {
@@ -8901,6 +8997,8 @@
       const curRobot = ROBOTS[_curRobotIdx];
       document.getElementById('r-title').textContent = curRobot ? curRobot.name : name;
       document.getElementById('r-title').title = curRobot ? curRobot.name : name;
+      const robotView = document.getElementById('robot-view');
+      if (robotView) robotView.dataset.dir = curRobot?.el?.dataset?.dir || 'long';
 
       if (ROBOTS.length > 0) {
         // 1. 同步更新側邊欄 Active 狀態
@@ -9131,6 +9229,7 @@
       ovSwitch('card');
       _updateHash();
       _syncOvStickyTops();
+      _updateOvDirCounts();
     }
     /* ── 持倉庫存 日期導覽 ── */
     const _posDates = ['2026/06/09','2026/06/06','2026/06/05','2026/06/04','2026/06/03','2026/06/02'];
@@ -10165,6 +10264,7 @@
     }
     window.addEventListener('load', () => {
       _syncCommStickyTops(); _syncLogStickyTops(); _syncOvStickyTops();
+      _applySortUI(); _applySortList(); _sbResetSync(); _ovResetSync();
       const ovWrap = document.querySelector('.ov-wrap');
       if (ovWrap) ovWrap.addEventListener('scroll', function() {
         const mh = this.querySelector('.metric-bar').offsetHeight;
