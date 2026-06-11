@@ -1083,11 +1083,11 @@
     /* Sort panel */
     .sb-sort-panel {
       position: fixed;
-      width: 200px;
+      width: 150px;
       padding: var(--sp-1) 0;
     }
     .sb-sort-opt {
-      min-height: 36px;
+      min-height: 32px;
       padding: 0 var(--sp-4);
       font-size: var(--f-base);
       color: var(--text);
@@ -1156,7 +1156,7 @@
       display: flex;
       align-items: center;
       gap: var(--sp-2);
-      min-height: 36px;
+      min-height: 32px;
       padding: 0 var(--sp-4);
       font-size: var(--f-sm);
       color: var(--text);
@@ -1219,7 +1219,7 @@
       display: flex;
       align-items: center;
       padding: 0 var(--sp-4);
-      height: 44px;
+      height: 32px;
       flex-shrink: 0;
       gap: var(--sp-1);
     }
@@ -1233,26 +1233,32 @@
       flex-shrink: 0;
       border-bottom: none;
     }
-    .sb-dir-chip {
+    .sb-sort-bar {
+      padding: 0 var(--sp-3) var(--sp-2);
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .sb-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .sb-sort-inline {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      font-size: var(--f-sm);
+      gap: 5px;
+      font-size: var(--f-xs);
       font-weight: 500;
-      padding: 6px var(--sp-2);
-      border-radius: var(--comp-pill-radius);
-      white-space: nowrap;
+      color: var(--text3);
+      padding: 3px 7px;
+      border-radius: var(--r-sm);
       cursor: pointer;
-      user-select: none;
+      background: none;
       border: none;
-      transition: opacity .15s;
     }
-    .sb-dir-chip.long  { color: var(--danger);  background: var(--tint2); border: 1px solid var(--danger); }
-    .sb-dir-chip.short { color: var(--success); background: var(--tint2); border: 1px solid var(--success); }
-    .sb-dir-chip.inactive { border-color: transparent; }
-    .sb-dir-chip:hover { background: color-mix(in srgb, var(--tint2) 70%, transparent); }
-    .sb-dir-chip .sb-dir-check { font-size: 10px; }
-    .sb-dir-chip.inactive .sb-dir-check { display: none; }
+    .sb-sort-inline:hover { background: var(--hover-bg); color: var(--accent); }
+    #sb-sort-icon.flipped { transform: scaleY(-1); }
     .sb-l2-f {
       display: flex;
       align-items: center;
@@ -1388,6 +1394,22 @@
     }
     #ov-all .o-table td:nth-child(13),
     #ov-all .o-table td:nth-child(14) { font-weight: 500; }
+
+    /* ── 當日委託表格排序 ── */
+    #ov-all .o-table th[data-sortable] { cursor: pointer; user-select: none; }
+    #ov-all .o-table th[data-sortable]:not([data-sort-dir]):hover::after {
+      content: '↕'; margin-left: 4px; opacity: .45; font-size: 10px;
+    }
+    #ov-all .o-table th[data-sort-dir="asc"]::after  { content: '↑'; margin-left: 4px; font-size: 10px; color: var(--accent); }
+    #ov-all .o-table th[data-sort-dir="desc"]::after { content: '↓'; margin-left: 4px; font-size: 10px; color: var(--accent); }
+    /* 置右欄：箭頭在左（::before），關掉 ::after */
+    #ov-all .o-table th[data-sortable].col-right { text-align: right; }
+    #ov-all .o-table th[data-sortable].col-right::after { content: none !important; }
+    #ov-all .o-table th[data-sortable].col-right:not([data-sort-dir]):hover::before {
+      content: '↕'; margin-right: 4px; opacity: .45; font-size: 10px;
+    }
+    #ov-all .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; margin-right: 4px; font-size: 10px; color: var(--accent); }
+    #ov-all .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; margin-right: 4px; font-size: 10px; color: var(--accent); }
 
     .prod-code {
       color: var(--text2);
@@ -4070,6 +4092,9 @@
       font-size: var(--f-base)
     }
 
+    .batch-table th:first-child,
+    .batch-table td:first-child { padding-left: var(--sp-6) }
+
     .batch-table tr:last-child td {
       border-bottom: none
     }
@@ -5008,6 +5033,28 @@
       line-height: 1.4
     }
 
+    .xpop-price-opts {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+      text-align: left
+    }
+    .xpop-price-opts label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: var(--f-base)
+    }
+    .xpop-price-opts input[type="radio"] {
+      accent-color: var(--accent);
+      flex-shrink: 0;
+      cursor: pointer
+    }
+
     .xpop-input {
       width: 100%;
       margin-top: 12px;
@@ -5574,65 +5621,51 @@
           </div>
         </div>
 
-        <!-- 標題 / 搜尋 + 排序按鈕（排序永遠在右側） -->
-        <div style="display:flex; align-items:center; flex-shrink:0; height:44px; padding-right:var(--sp-4);">
-          <!-- 標題列（預設顯示） -->
-          <div class="sb-folder-hdr" id="sb-l2-hdr" style="flex:1; min-width:0; height:100%; padding-right:0; border:none;">
-            <span class="sb-folder-title">
-              <span id="sb-folder-name">全部</span>
-              <span class="sb-folder-cnt" id="sb-folder-cnt"></span>
-            </span>
+        <!-- 搜尋 + 排序 列 -->
+        <div style="display:flex; align-items:center; height:32px; padding:0 var(--sp-3); flex-shrink:0;">
+          <!-- 預設：搜尋 icon + 資料夾名稱 + 數量 -->
+          <div id="sb-l2-hdr" style="display:flex; align-items:center; flex:1; min-width:0; gap:1px;">
             <button class="sb-hdr-search-ico" onclick="sbSearchExpand()" title="搜尋">
               <i class="icon-search"></i>
             </button>
+            <span class="sb-folder-title" style="flex:none"><span id="sb-folder-name">全部</span><span class="sb-folder-cnt" id="sb-folder-cnt"></span></span>
           </div>
-          <!-- 搜尋列（點擊 icon 才顯示） -->
-          <div class="sb-search-bar" id="sb-search-bar" style="display:none; flex:1; min-width:0; height:100%; padding:0 var(--sp-2) 0 var(--sp-4);">
+          <!-- 搜尋展開（點擊 icon 顯示） -->
+          <div id="sb-search-bar" style="display:none; flex:1; min-width:0; align-items:center; height:100%; gap:4px; padding:0 0 0 var(--sp-2);">
             <input class="sb-search-input" id="sb-search-input" placeholder="搜尋機器人名稱"
               oninput="sbSearchFilter(this.value)">
             <span class="sb-search-close" onclick="sbSearchClose()" title="關閉"><span style="font-family:xqnext">&#xe913;</span></span>
           </div>
-          <!-- 排序按鈕：永遠顯示 -->
-          <div class="xsel-wrap" style="flex-shrink:0;">
-            <button class="sb-hdr-search-ico" id="sb-sort-btn" onclick="sbSortPanelToggle()" data-tip="機器人排序與篩選">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 32 24" fill="currentColor" style="display:block;">
-                <!-- filter funnel (outline) -->
-                <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
-                  d="M1 3h14L9.5 11V21H6.5V11Z"/>
-                <!-- sort bars (decreasing) -->
-                <rect x="17" y="3" width="14" height="2.5" rx="1.25"/>
-                <rect x="17" y="10.75" width="9.5" height="2.5" rx="1.25"/>
-                <rect x="17" y="18.5" width="5" height="2.5" rx="1.25"/>
+          <!-- 排序按鈕 -->
+          <div id="sb-sort-wrap" class="xsel-wrap">
+            <button class="sb-sort-inline" id="sb-sort-btn" onclick="sbSortPanelToggle()">
+              <span id="sb-sort-label">建立時間</span>
+              <svg id="sb-sort-icon" width="12" height="10" viewBox="0 0 16 13" fill="currentColor" style="display:block;flex-shrink:0;opacity:.7;transition:transform .15s">
+                <rect y="0" width="16" height="2" rx="1"/>
+                <rect y="5.5" width="11" height="2" rx="1"/>
+                <rect y="11" width="6" height="2" rx="1"/>
               </svg>
             </button>
-            <!-- 排序面板（下拉） -->
             <div class="sb-sort-panel xsel-drop" id="sb-sort-panel">
-          <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="sb-reset-sort" onclick="sbSortReset()">預設</span></div>
-          <div class="sb-sort-opt" data-sort="created"      onclick="sbSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="sb-sarr-created"></span></div>
-          <div class="sb-sort-opt" data-sort="started"      onclick="sbSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="sb-sarr-started"></span></div>
-          <div class="sb-sort-opt" data-sort="latest_order" onclick="sbSortSelect('latest_order')">最新委託時間<span class="sb-sort-opt-arrow" id="sb-sarr-latest_order"></span></div>
-          <div class="sb-sort-opt" data-sort="name"         onclick="sbSortSelect('name')">機器人名稱<span class="sb-sort-opt-arrow" id="sb-sarr-name"></span></div>
-          <div class="sb-sort-opt" data-sort="risk"         onclick="sbSortSelect('risk')">安控金額<span class="sb-sort-opt-arrow" id="sb-sarr-risk"></span></div>
-          <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="sbSortSelect('risk_ratio')">安控佔用比例<span class="sb-sort-opt-arrow" id="sb-sarr-risk_ratio"></span></div>
-          <div class="sb-sort-divider"></div>
-          <div class="sb-sort-val-row">
-            <span>顯示排序數值</span>
-            <button class="sb-sort-val-toggle" id="sb-sort-val-toggle" onclick="sbSortValToggle()"></button>
+              <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="sb-reset-sort" onclick="sbSortReset()">預設</span></div>
+              <div class="sb-sort-opt" data-sort="created" onclick="sbSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="sb-sarr-created"></span></div>
+              <div class="sb-sort-opt" data-sort="started" onclick="sbSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="sb-sarr-started"></span></div>
+              <div class="sb-sort-opt" data-sort="name"    onclick="sbSortSelect('name')">名稱<span class="sb-sort-opt-arrow" id="sb-sarr-name"></span></div>
+            </div>
           </div>
-          <div class="sb-sort-divider"></div>
-          <div class="sb-sort-section-hdr">多空篩選<span class="sb-sort-reset" id="sb-reset-dir" onclick="sbDirReset()">預設</span></div>
-          <div class="sb-sort-val-row" style="gap:6px;">
-            <button class="sb-dir-chip long"  id="sb-dir-long"  onclick="sbDirToggle('long')"  style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作多<span class="sb-l2-f-cnt" id="sb-dir-cnt-long"></span></button>
-            <button class="sb-dir-chip short" id="sb-dir-short" onclick="sbDirToggle('short')" style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作空<span class="sb-l2-f-cnt" id="sb-dir-cnt-short"></span></button>
+          <!-- hidden dir dropdown -->
+          <div class="xsel-wrap" style="display:none">
+            <button class="sb-sort-inline" id="sb-dir-btn" onclick="sbDirPanelToggle()">
+              <span id="sb-dir-label">多空</span>
+              <i class="fas fa-chevron-down" style="font-size:9px;opacity:.6;margin-left:1px"></i>
+            </button>
+            <div class="sb-sort-panel xsel-drop" id="sb-dir-panel">
+              <div class="sb-sort-opt active" data-dir="all"   onclick="sbDirSelect('all')">多空</div>
+              <div class="sb-sort-opt"        data-dir="long"  onclick="sbDirSelect('long')">作多</div>
+              <div class="sb-sort-opt"        data-dir="short" onclick="sbDirSelect('short')">作空</div>
+            </div>
           </div>
-          <div class="sb-sort-divider"></div>
-          <div class="sb-sort-section-hdr">交易帳號篩選<span class="sb-sort-reset" id="sb-reset-acct" onclick="sbAcctFilter('');_sbResetSync()">預設</span></div>
-          <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="" checked onchange="sbAcctFilter('')"> 全部帳號</label>
-          <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="証-模擬交易(內建)-01" onchange="sbAcctFilter('証-模擬交易(內建)-01')"> 証-模擬交易(內建)-01</label>
-          <label class="sb-acct-chk-row"><input type="radio" name="sb-acct" value="期-模擬交易-01" onchange="sbAcctFilter('期-模擬交易-01')"> 期-模擬交易-01</label>
-        </div><!-- /.sb-sort-panel -->
-          </div><!-- /.xsel-wrap -->
-        </div><!-- /.flex wrapper -->
+        </div>
 
         <!-- L2 次篩選列 -->
         <div class="sb-l2-filter" id="sb-l2-filter">
@@ -5778,41 +5811,6 @@
             <i class="icon-search f-search-ico"></i>
             <input class="f-input" id="ov-prod-search" type="text" placeholder="輸入股票代號或股名" oninput="ovProdSearch(this.value)">
             <button class="inp-clear" onclick="this.previousElementSibling.value='';ovProdSearch('')" title="清除"><span style="font-family:xqnext;font-size:14px;line-height:1">&#xe913;</span></button>
-          </div>
-          <div class="xsel-wrap" style="flex-shrink:0;position:relative;">
-            <button class="ico-btn" id="ov-sort-btn" onclick="ovSortPanelToggle()" data-tip="機器人排序與篩選">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 32 24" fill="currentColor" style="display:block;">
-                <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" d="M1 3h14L9.5 11V21H6.5V11Z"/>
-                <rect x="17" y="3" width="14" height="2.5" rx="1.25"/>
-                <rect x="17" y="10.75" width="9.5" height="2.5" rx="1.25"/>
-                <rect x="17" y="18.5" width="5" height="2.5" rx="1.25"/>
-              </svg>
-            </button>
-            <div class="sb-sort-panel xsel-drop" id="ov-sort-panel">
-              <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="ov-reset-sort" onclick="ovSortReset()">預設</span></div>
-              <div class="sb-sort-opt" data-sort="created"      onclick="ovSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="ov-sarr-created"></span></div>
-              <div class="sb-sort-opt" data-sort="started"      onclick="ovSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="ov-sarr-started"></span></div>
-              <div class="sb-sort-opt" data-sort="latest_order" onclick="ovSortSelect('latest_order')">最新委託時間<span class="sb-sort-opt-arrow" id="ov-sarr-latest_order"></span></div>
-              <div class="sb-sort-opt" data-sort="name"         onclick="ovSortSelect('name')">機器人名稱<span class="sb-sort-opt-arrow" id="ov-sarr-name"></span></div>
-              <div class="sb-sort-opt" data-sort="risk"         onclick="ovSortSelect('risk')">安控金額<span class="sb-sort-opt-arrow" id="ov-sarr-risk"></span></div>
-              <div class="sb-sort-opt" data-sort="risk_ratio"   onclick="ovSortSelect('risk_ratio')">安控佔用比例<span class="sb-sort-opt-arrow" id="ov-sarr-risk_ratio"></span></div>
-              <div class="sb-sort-divider"></div>
-              <div class="sb-sort-val-row">
-                <span>顯示排序數值</span>
-                <button class="sb-sort-val-toggle" id="ov-sort-val-toggle" onclick="ovSortValToggle()"></button>
-              </div>
-              <div class="sb-sort-divider"></div>
-              <div class="sb-sort-section-hdr">多空篩選<span class="sb-sort-reset" id="ov-reset-dir" onclick="ovDirReset()">預設</span></div>
-              <div class="sb-sort-val-row" style="gap:6px;">
-                <button class="sb-dir-chip long"  id="ov-dir-long"  onclick="ovDirToggle('long')"  style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作多<span class="sb-l2-f-cnt" id="ov-dir-cnt-long"></span></button>
-                <button class="sb-dir-chip short" id="ov-dir-short" onclick="ovDirToggle('short')" style="flex:1; justify-content:center;"><i class="fas fa-check sb-dir-check"></i> 作空<span class="sb-l2-f-cnt" id="ov-dir-cnt-short"></span></button>
-              </div>
-              <div class="sb-sort-divider"></div>
-              <div class="sb-sort-section-hdr">交易帳號篩選<span class="sb-sort-reset" id="ov-reset-acct" onclick="ovAcctFilter('');_ovResetSync()">預設</span></div>
-              <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="" checked onchange="ovAcctFilter('')"> 全部帳號</label>
-              <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="証-模擬交易(內建)-01" onchange="ovAcctFilter('証-模擬交易(內建)-01')"> 証-模擬交易(內建)-01</label>
-              <label class="sb-acct-chk-row"><input type="radio" name="ov-acct" value="期-模擬交易-01" onchange="ovAcctFilter('期-模擬交易-01')"> 期-模擬交易-01</label>
-            </div>
           </div>
           <div class="op-btns">
             <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
@@ -6334,18 +6332,18 @@
                 <tr>
                   <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                   <th class="col-act"></th>
-                  <th>委託時間</th>
-                  <th>類別</th>
-                  <th class="col-prod">商品</th>
+                  <th data-sortable onclick="ovColSort(this,2)">委託時間</th>
+                  <th data-sortable onclick="ovColSort(this,3)">類別</th>
+                  <th class="col-prod" data-sortable onclick="ovColSort(this,4)">商品</th>
                   <th>買賣 <select class="th-inline-sel"
                       style="font-size:var(--f-xs);border:none;cursor:pointer;color:inherit">
                       <option>全</option>
                       <option>買進</option>
                       <option>賣出</option>
                     </select></th>
-                  <th>委託/成交</th>
-                  <th>委託價</th>
-                  <th>成交均價</th>
+                  <th data-sortable onclick="ovColSort(this,6)">委託/成交</th>
+                  <th class="col-right" data-sortable onclick="ovColSort(this,7)">委託價</th>
+                  <th class="col-right" data-sortable onclick="ovColSort(this,8)">成交均價</th>
                   <th>委託狀態 <select class="th-inline-sel" id="ov-col-status-sel" onchange="ovColStatusSync(this.value)">
                     <option value="">全部</option>
                     <option value="pend">未完全成交</option>
@@ -6353,9 +6351,9 @@
                     <option value="fail">委託失敗</option>
                     <option value="cancel">已刪單</option>
                   </select></th>
-                  <th title="券商委託回報書號，供核對用">委託書號</th>
-                  <th class="col-robot">機器人</th>
-                  <th class="col-robot">策略</th>
+                  <th data-sortable onclick="ovColSort(this,10)" title="券商委託回報書號，供核對用">委託書號</th>
+                  <th class="col-robot" data-sortable onclick="ovColSort(this,11)">機器人</th>
+                  <th class="col-robot" data-sortable onclick="ovColSort(this,12)">策略</th>
                   <th>帳號 <select class="th-inline-sel" id="ov-col-acct-sel" onchange="ovAcctColSync(this.value)">
                     <option value="">全部</option>
                     <option value="証-模擬交易(內建)-01">証-模擬-01</option>
@@ -6876,7 +6874,7 @@
                   <option value="cancel">已刪單</option>
                 </select>
                 <button class="del-all-btn"
-                  onclick="xConfirm('確認全部刪單','將刪除此機器人所有可刪改委託，此操作無法復原。',()=>xAlert('已刪除','所有可刪改委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'全部刪單',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
+                  onclick="xConfirm('全部刪單','將刪除所有未完全成交委託<br>此操作無法復原',()=>xAlert('已刪除','所有可刪改委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'確認',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
               </div>
               <div class="empty-view ev-no-order" style="padding:60px 20px;">
                 <div class="empty-icon"><i class="icon-folder-open"></i></div>
@@ -7292,7 +7290,7 @@
                     </div>
                   </div>
                   <button class="del-all-btn"
-                    onclick="xConfirm('確認全部平倉','將對所有持倉送出市價賣出委託，此操作無法復原。',()=>xAlert('已送出','全部平倉委託已送出','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'全部平倉',confirmCls:'danger',noClose:true})"
+                    onclick="closeAllPosConfirm()"
                     style="display:inline-flex;align-items:center;gap:6px">
                     <i class="icon-trash-01" style="font-size:24px;line-height:1"></i>
                     <span>全部平倉</span>
@@ -7644,7 +7642,7 @@
   <div class="modal" id="del-modal">
     <div class="modal-box wide">
       <div class="modal-hdr">
-        <div class="modal-title">確認刪除委託單</div><button class="modal-close"
+        <div class="modal-title">刪除委託單</div><button class="modal-close"
           onclick="closeModal('del-modal')"><span style="font-family:xqnext">&#xe913;</span></button>
       </div>
       <div class="modal-body" style="padding:0">
@@ -7679,7 +7677,7 @@
   <div class="modal" id="stop-all-modal">
     <div class="modal-box">
       <div class="modal-hdr">
-        <div class="modal-title">確認停止所有執行中機器人</div><button class="modal-close"
+        <div class="modal-title">停止全部執行中機器人</div><button class="modal-close"
           onclick="closeModal('stop-all-modal')"><span style="font-family:xqnext">&#xe913;</span></button>
       </div>
       <div class="modal-body">
@@ -8215,6 +8213,18 @@
     function xAlert(title, msg, icon, onOk) { _xpopShow({ icon: icon || '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', title, msg, type: 'alert', onOk: onOk || null }); }
     function xConfirm(title, msg, onOk, opts) { _xpopShow({ icon: (opts && opts.icon) || '<i class="icon-alert-triangle-fill" style="color:var(--warning)"></i>', title, msg, type: 'confirm', confirmText: (opts && opts.confirmText) || '確認', cancelText: (opts && opts.cancelText) || '取消', confirmCls: (opts && opts.confirmCls != null) ? opts.confirmCls : 'danger', onOk, onCancel: (opts && opts.onCancel) || null, noClose: !!(opts && opts.noClose) }); }
     function xPrompt(title, msg, defaultVal, onOk) { _xpopShow({ icon: '✏️', title, msg, type: 'prompt', inputVal: defaultVal || '', confirmText: '確認', confirmCls: 'accent', onOk }); }
+    function closeAllPosConfirm() {
+      const msgHtml = `<div>將對所有持倉送出委託<br>此操作無法復原</div>
+        <div class="xpop-price-opts">
+          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
+        </div>`;
+      xConfirm('全部平倉', msgHtml,
+        () => xAlert('已送出', '全部平倉委託已送出', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'),
+        { icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>', confirmText: '確認', confirmCls: 'danger', noClose: true }
+      );
+    }
     /* ── Font size control ── */
     let _fontLevel = 2;
     const _fsLabels = ['小', '預設', '大', '較大', '最大'];
@@ -8589,8 +8599,8 @@
       const btn = document.getElementById('sb-sort-btn');
       if (!btn) return;
       const panelOpen = document.getElementById('sb-sort-panel')?.classList.contains('show');
-      const hasFilter = _sbAcctSelected !== '' || _sbDirActive.size < 2 || !(_sbSort === 'created' && _sbSortDir === 'desc');
-      btn.style.color = (panelOpen || hasFilter) ? 'var(--accent)' : '';
+      const nonDefault = !(_sbSort === 'created' && _sbSortDir === 'desc');
+      btn.style.color = panelOpen ? 'var(--accent)' : '';
     }
     function sbSortPanelToggle() {
       const panel = document.getElementById('sb-sort-panel');
@@ -8600,6 +8610,8 @@
         _sbFilterBtnSync();
         return;
       }
+      document.querySelectorAll('.xsel-drop.show').forEach(d => d.classList.remove('show'));
+      document.querySelectorAll('.xsel-trigger.open').forEach(t => t.classList.remove('open'));
       const r = btn.getBoundingClientRect();
       panel.style.top  = (r.bottom + 4) + 'px';
       panel.style.left = Math.max(4, r.left) + 'px';
@@ -8619,17 +8631,14 @@
       _applySortUI(); _applySortList(); _sbResetSync();
     }
     function sbDirReset() {
-      _sbDirActive.add('long'); _sbDirActive.add('short');
-      document.getElementById('sb-dir-long')?.classList.remove('inactive');
-      document.getElementById('sb-dir-short')?.classList.remove('inactive');
-      _sbFilterBtnSync(); _sbResetSync();
+      sbDirSelect('all');
     }
     function sbSortSelect(key) {
       if (_sbSort === key) {
         _sbSortDir = _sbSortDir === 'asc' ? 'desc' : 'asc';
       } else {
         _sbSort = key;
-        _sbSortDir = 'asc';
+        _sbSortDir = key === 'name' ? 'asc' : 'desc';
       }
       _applySortUI();
       _applySortList();
@@ -8641,6 +8650,7 @@
       document.querySelector('.sb-list').classList.toggle('sb-show-val', _sbSortShowVal);
       if (_sbSortShowVal) _updateSortValDisplay();
     }
+    const _sbSortLabels = { created:'建立時間', started:'啟動時間', latest_order:'最新委託', name:'名稱', risk:'安控金額', risk_ratio:'安控比例' };
     function _applySortUI() {
       document.querySelectorAll('.sb-sort-opt').forEach(opt => {
         const key = opt.dataset.sort;
@@ -8648,6 +8658,10 @@
         const arrow = document.getElementById('sb-sarr-' + key);
         if (arrow) arrow.textContent = key === _sbSort ? (_sbSortDir === 'asc' ? ' ↑' : ' ↓') : '';
       });
+      const lbl = document.getElementById('sb-sort-label');
+      if (lbl) lbl.textContent = _sbSortLabels[_sbSort] || _sbSort;
+      document.getElementById('sb-sort-icon')?.classList.toggle('flipped', _sbSortDir === 'asc');
+      _sbFilterBtnSync();
     }
     function _fmtDateShort(raw) {
       if (!raw || raw === '—') return raw || '';
@@ -8702,6 +8716,14 @@
         valEl.style.textOverflow = isAccount ? 'ellipsis' : '';
       });
     }
+    function _nameCmp(sa, sb) {
+      const aLatin = /^[A-Za-z0-9]/.test(sa);
+      const bLatin = /^[A-Za-z0-9]/.test(sb);
+      if (aLatin && !bLatin) return -1;
+      if (!aLatin && bLatin) return 1;
+      if (aLatin) return sa.localeCompare(sb, 'en');
+      return sa.localeCompare(sb, 'zh-TW-u-co-stroke');
+    }
     function _applySortList() {
       if (!_sbSort) return;
       const field = _sortFields[_sbSort];
@@ -8711,7 +8733,9 @@
           const va = field.get(a), vb = field.get(b);
           const cmp = typeof va === 'number'
             ? va - vb
-            : String(va).localeCompare(String(vb), 'zh-Hant');
+            : _sbSort === 'name'
+              ? _nameCmp(String(va), String(vb))
+              : String(va).localeCompare(String(vb), 'zh-TW');
           return _sbSortDir === 'asc' ? cmp : -cmp;
         });
         items.forEach(i => body.appendChild(i));
@@ -8720,16 +8744,34 @@
     }
 
     const _sbDirActive = new Set(['long', 'short']);
+    let _sbDirSel = 'all';
     let _sbAcctSelected = ''; // '' = 全部帳號
-    function sbDirToggle(dir) {
-      if (_sbDirActive.has(dir)) {
-        if (_sbDirActive.size === 1) return; // 至少保留一個
-        _sbDirActive.delete(dir);
-      } else {
-        _sbDirActive.add(dir);
+    function sbDirPanelToggle() {
+      const panel = document.getElementById('sb-dir-panel');
+      const btn   = document.getElementById('sb-dir-btn');
+      if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        return;
       }
-      document.getElementById('sb-dir-long').classList.toggle('inactive', !_sbDirActive.has('long'));
-      document.getElementById('sb-dir-short').classList.toggle('inactive', !_sbDirActive.has('short'));
+      document.querySelectorAll('.xsel-drop.show').forEach(d => d.classList.remove('show'));
+      document.querySelectorAll('.xsel-trigger.open').forEach(t => t.classList.remove('open'));
+      const r = btn.getBoundingClientRect();
+      panel.style.top  = (r.bottom + 4) + 'px';
+      panel.style.left = Math.max(4, r.left) + 'px';
+      panel.classList.add('show');
+    }
+    function sbDirSelect(val) {
+      _sbDirSel = val;
+      _sbDirActive.clear();
+      if (val !== 'short') _sbDirActive.add('long');
+      if (val !== 'long')  _sbDirActive.add('short');
+      const labels = { all: '多空', long: '作多', short: '作空' };
+      const lbl = document.getElementById('sb-dir-label');
+      if (lbl) lbl.textContent = labels[val];
+      document.querySelectorAll('#sb-dir-panel .sb-sort-opt').forEach(o =>
+        o.classList.toggle('active', o.dataset.dir === val));
+      document.getElementById('sb-dir-panel')?.classList.remove('show');
+      _applyListFilter(_sbCurrentFilter);
       _sbFilterBtnSync(); _sbResetSync();
     }
 
@@ -8820,6 +8862,7 @@
           else if (type === 'running') show = i.closest('[data-group="quant"]') !== null;
           else if (type === 'fav') show = i.closest('[data-group="smart"]') !== null;
           else if (type === 'recent') show = _sbRecent.includes(name);
+          if (show && _sbDirActive.size < 2) show = _sbDirActive.has(i.dataset.dir);
         }
         i.style.display = show ? '' : 'none';
       });
@@ -8857,6 +8900,7 @@
     function sbSearchExpand() {
       if (document.querySelector('.sb').classList.contains('sb-collapsed')) toggleSidebar();
       document.getElementById('sb-l2-hdr').style.display = 'none';
+      document.getElementById('sb-sort-wrap').style.display = 'none';
       const bar = document.getElementById('sb-search-bar');
       bar.style.display = 'flex';
       const inp = document.getElementById('sb-search-input');
@@ -8866,6 +8910,7 @@
     function sbSearchClose() {
       document.getElementById('sb-search-bar').style.display = 'none';
       document.getElementById('sb-l2-hdr').style.display = 'flex';
+      document.getElementById('sb-sort-wrap').style.display = '';
       document.querySelectorAll('.sb-item').forEach(i => i.style.display = '');
       document.getElementById('sb-search-input').value = '';
       const extra = document.getElementById('sb-search-extra');
@@ -9142,6 +9187,29 @@
       // filter #ov-all + r-cards + sync other rc-status-sel
       ovFilterBySelect(val);
     }
+    let _ovColSortCol = null, _ovColSortDir = 'asc';
+    function ovColSort(th, colIdx) {
+      if (_ovColSortCol === colIdx) {
+        _ovColSortDir = _ovColSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        _ovColSortCol = colIdx;
+        _ovColSortDir = 'asc';
+      }
+      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.sortDir = _ovColSortDir;
+      const tbody = document.querySelector('#ov-all .o-table tbody');
+      if (!tbody) return;
+      const rows = [...tbody.querySelectorAll('tr')];
+      rows.sort((a, b) => {
+        const va = a.cells[colIdx]?.textContent.trim().replace(/,/g, '') || '';
+        const vb = b.cells[colIdx]?.textContent.trim().replace(/,/g, '') || '';
+        const na = parseFloat(va), nb = parseFloat(vb);
+        const cmp = !isNaN(na) && !isNaN(nb) ? na - nb : va.localeCompare(vb, 'zh-Hant');
+        return _ovColSortDir === 'asc' ? cmp : -cmp;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    }
+
     function ovColStatusSync(val) {
       // sync main 全部狀態 select
       const mainSel = document.getElementById('ov-status-filter');
@@ -9490,8 +9558,7 @@
       document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
       document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
       document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
-      // 機器人模式顯示排序+機器人搜尋，當日委託模式顯示商品搜尋
-      document.querySelector('.xsel-wrap:has(#ov-sort-btn)').style.display = v === 'card' ? '' : 'none';
+      // 機器人模式顯示機器人搜尋，當日委託模式顯示商品搜尋
       document.getElementById('ov-robot-search-wrap').style.display = v === 'card' ? '' : 'none';
       document.getElementById('ov-prod-search-wrap').style.display = v === 'all' ? '' : 'none';
       if (v === 'all') { document.getElementById('ov-robot-search').value = ''; ovRobotSearch(''); }
@@ -9807,7 +9874,7 @@
           _robotStateIndex = 1;
           _syncCommIdleState();
         },
-        { icon: '<i class="icon-alert-circle-fill" style="color:var(--danger)"></i>', confirmText: '確認', confirmCls: 'danger' }
+        { icon: '<i class="icon-alert-circle-fill" style="color:var(--danger)"></i>', confirmText: '確認', confirmCls: 'danger', noClose: true }
       );
     }
     function toggleRobotStatus(btn) {
@@ -10141,7 +10208,7 @@
       const btn = document.getElementById('sb-sort-btn');
       if (panel && !panel.contains(e.target) && btn && !btn.contains(e.target)) {
         panel.classList.remove('show');
-        btn.style.color = '';
+        _sbFilterBtnSync();
       }
     });
 
@@ -10203,7 +10270,6 @@
     _updateFilterCounts();
     _applySortUI();
     _applySortList();
-    ovSortSelect(_ovSort); // init ov-sort panel visual state
 
     /* ── 當日委託表格：機器人欄可點擊連結 ── */
     (function () {
@@ -10493,7 +10559,7 @@
           <colgroup><col style="width:34px"><col style="width:200px"><col><col><col><col></colgroup>
           <thead>
             <tr>
-              <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
+              <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this);_syncBatchDelBtn()"></th>
               <th>商品</th>
               <th>買賣</th>
               <th>委託</th>
@@ -10531,7 +10597,7 @@
       </div>
       <div class="modal-footer">
         <button class="m-cancel" onclick="closeModal('batch-del-modal')">取消</button>
-        <button class="m-confirm danger" id="batch-del-confirm-btn" onclick="confirmBatchDel()">確認刪除(0)</button>
+        <button class="m-confirm danger" id="batch-del-confirm-btn" onclick="confirmBatchDel()">確認刪除</button>
       </div>
     </div>
   </div>
@@ -10615,6 +10681,7 @@
       return { prod, side, sideClass, qty, price, filled, qtyEl, priceEl, tr };
     }
 
+    function _syncBatchDelBtn() {}
     function showBatchDel() {
       const tbody = document.querySelector('#batch-del-table tbody');
       tbody.innerHTML = '';
@@ -10629,7 +10696,7 @@
         const priceCell = cells[6 + off];
         const sideClass = sideCell?.classList.contains('side-buy') ? 'side-buy' : 'side-sell';
         const row = document.createElement('tr');
-        row.innerHTML = `<td class="col-chk"><input type="checkbox" class="row-cb" checked></td>
+        row.innerHTML = `<td class="col-chk"><input type="checkbox" class="row-cb" checked onchange="_syncBatchDelBtn()"></td>
       <td>${_batchProdHTML(prodCell)}</td>
       <td class="${sideClass}">${sideCell ? sideCell.textContent.trim() : '—'}</td>
       <td>${(qtyCell?.querySelector('[data-qty]')?.dataset.qty ?? qtyCell?.textContent.trim() ?? '—') + '張'}</td>
@@ -10637,16 +10704,17 @@
       <td style="color:var(--text3)">A${Math.floor(1000000 + Math.random() * 9000000)}</td>`;
         tbody.appendChild(row);
       });
-      document.getElementById('batch-del-confirm-btn').textContent = '確認刪除';
       document.querySelector('#batch-del-table thead .row-cb').checked = true;
+      _syncBatchDelBtn();
       document.getElementById('batch-del-modal').classList.add('show');
     }
 
     function confirmBatchDel() {
+      const n = document.querySelectorAll('#batch-del-table tbody .row-cb:checked').length;
       _batchRows.forEach(tr => tr.remove());
       clearBatchSel();
       closeModal('batch-del-modal');
-      xAlert('已刪除', '已刪除 ' + _batchRows.length + '筆委託', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>');
+      xAlert('已刪除', '已刪除 <span style="color:var(--accent)">' + n + '</span> 筆委託', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>');
       _batchRows = [];
     }
 
