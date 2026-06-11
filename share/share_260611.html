@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股大師贏家選股模擬儀表板</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        darkCard: '#151c2c',
+                        xqRed: '#f43f5e',
+                        xqGreen: '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #090d16;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen pb-12">
+
+    <!-- 頂部導覽列 -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-rose-500 to-amber-500 p-2 rounded-lg text-white">
+                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">
+                        贏家選股模擬系統 <span class="text-xs bg-slate-800 text-amber-400 px-2 py-0.5 rounded-full border border-slate-700 ml-2">台股版 Mockup</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">大師篩選指標與策略符合數統計</p>
+                </div>
+            </div>
+            
+            <!-- 市場即時狀態欄 (模擬) -->
+            <div class="flex items-center space-x-4 text-xs">
+                <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-slate-700/50">
+                    <span class="text-slate-400">加權指數:</span>
+                    <span class="text-xqRed font-semibold ml-1">21,845.20</span>
+                    <span class="text-xqRed ml-1 font-medium">+1.45% ↑</span>
+                </div>
+                <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-slate-700/50 hidden md:block">
+                    <span class="text-slate-400">櫃買指數:</span>
+                    <span class="text-xqGreen font-semibold ml-1">262.15</span>
+                    <span class="text-xqGreen ml-1 font-medium">-0.12% ↓</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 mt-6">
+        
+        <!-- 頂部：大師策略控制與年期切換列 -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+                <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+                    <span class="w-1.5 h-5 bg-indigo-500 rounded-full"></span>
+                    大師選股策略表現
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">即時追蹤各策略匹配檔數與不同年期的歷史模擬累積報酬率</p>
+            </div>
+            
+            <!-- 年期快速切換 Tabs (調整為 6個月、1年、3年) -->
+            <div class="flex items-center space-x-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
+                <button onclick="changePeriod('6m')" id="btn-period-6m" class="flex-1 sm:flex-none px-4 py-1.5 text-xs font-semibold rounded-lg transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-950/50">
+                    6個月報酬
+                </button>
+                <button onclick="changePeriod('1y')" id="btn-period-1y" class="flex-1 sm:flex-none px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-slate-200">
+                    1年報酬
+                </button>
+                <button onclick="changePeriod('3y')" id="btn-period-3y" class="flex-1 sm:flex-none px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-slate-200">
+                    3年報酬
+                </button>
+            </div>
+        </div>
+
+        <!-- 大師策略速覽列 (模擬 IMG_5100.jpg 頂部邏輯，已增加"報酬率"文字標籤) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <!-- 1. 彼得林區 -->
+            <div class="bg-darkCard p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded border border-rose-500/20">多 財務 價量</span>
+                    <span class="text-slate-500 text-xs hover:text-slate-300 cursor-pointer"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+                <h3 class="font-bold text-base text-slate-200">彼得林區</h3>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-rose-500" id="stat-lynch-count">1 檔</span>
+                    <span class="text-xs font-bold text-rose-400" id="stat-lynch-return">報酬率 +12.3%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-rose-500 h-full rounded-full" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- 2. 班哲明格拉罕 -->
+            <div class="bg-darkCard p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-medium">多 價值 財務</span>
+                    <span class="text-slate-500 text-xs hover:text-slate-300 cursor-pointer"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+                <h3 class="font-bold text-base text-slate-200">班哲明格拉罕</h3>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-slate-500" id="stat-graham-count">0 檔</span>
+                    <span class="text-xs font-bold text-slate-500" id="stat-graham-return">--</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                    <div class="bg-emerald-500 h-full rounded-full animate-pulse" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- 3. 華倫巴菲特 -->
+            <div class="bg-darkCard p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/20 font-medium">多 籌碼 成長</span>
+                    <span class="text-slate-500 text-xs hover:text-slate-300 cursor-pointer"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+                <h3 class="font-bold text-base text-slate-200">華倫巴菲特</h3>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-rose-400" id="stat-buffett-count">40 檔</span>
+                    <span class="text-xs font-bold text-rose-400" id="stat-buffett-return">報酬率 +9.2%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden flex">
+                    <div class="bg-rose-500 h-full" style="width: 30%"></div>
+                    <div class="bg-slate-700 h-full" style="width: 20%"></div>
+                    <div class="bg-emerald-500 h-full" style="width: 50%"></div>
+                </div>
+            </div>
+
+            <!-- 4. 詹姆斯歐沙那希 -->
+            <div class="bg-darkCard p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs bg-sky-500/10 text-sky-400 px-2 py-0.5 rounded border border-sky-500/20 font-medium">多 綜合 指標</span>
+                    <span class="text-slate-500 text-xs hover:text-slate-300 cursor-pointer"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+                <h3 class="font-bold text-base text-slate-200">詹姆斯歐沙那希</h3>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-emerald-400" id="stat-oshan-count">5 檔</span>
+                    <span class="text-xs font-bold text-rose-400" id="stat-oshan-return">報酬率 +10.5%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden flex">
+                    <div class="bg-rose-500 h-full" style="width: 20%"></div>
+                    <div class="bg-emerald-500 h-full" style="width: 80%"></div>
+                </div>
+            </div>
+
+            <!-- 5. 綜合排行(選股雷達) -->
+            <div class="bg-gradient-to-br from-slate-900 to-indigo-950 p-4 rounded-xl border border-indigo-500/30 shadow-lg shadow-indigo-950/20">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/40 font-semibold">HOT 熱門排行</span>
+                    <span class="text-slate-400 text-xs"><i data-lucide="zap" class="w-4 h-4 text-amber-400 fill-amber-400"></i></span>
+                </div>
+                <h3 class="font-bold text-base text-white">大師綜合高標</h3>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-indigo-300" id="stat-all-match">0 檔</span>
+                    <span class="text-xs font-bold text-amber-400" id="stat-star-return">報酬率 +15.8%</span>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-3 truncate">高匹配度股票市場焦點指標</p>
+            </div>
+        </section>
+
+        <!-- 數據列表與篩選核心 (已調整為優雅的全寬度版面，標題已更換為：持股表現統計) -->
+        <section class="bg-darkCard p-6 rounded-2xl border border-slate-800/80 mb-8 flex flex-col">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i>
+                    <h2 class="text-lg font-bold text-slate-100">持股表現統計</h2>
+                </div>
+                
+                <!-- 快速搜尋、自選篩選與條件篩選 -->
+                <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                    <!-- 自選股限定切換按鈕 -->
+                    <button id="btn-favorite-only" onclick="toggleFavoriteFilter()" class="flex items-center space-x-1.5 bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-lg px-3 py-1.5 text-xs text-slate-300 transition-all">
+                        <i data-lucide="star" class="w-3.5 h-3.5"></i>
+                        <span>自選股</span>
+                    </button>
+                    
+                    <div class="relative w-full sm:w-48">
+                        <input type="text" id="search-bar" placeholder="搜尋代號/名稱..."
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+                    </div>
+                    
+                    <select id="filter-matches" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <option value="all">所有符合項數</option>
+                        <option value="5">符合 5 項</option>
+                        <option value="4">符合 4 項以上</option>
+                        <option value="3">符合 3 項以上</option>
+                        <option value="2">符合 2 項以上</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 模擬資料列表 -->
+            <div class="overflow-x-auto flex-grow">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 text-xs">
+                            <th class="pb-3 font-semibold">代號/名稱</th>
+                            <th class="pb-3 font-semibold">股價</th>
+                            <th class="pb-3 font-semibold">漲跌幅</th>
+                            <th class="pb-3 font-semibold">符合項數</th>
+                            <th class="pb-3 font-semibold">媒合策略細節</th>
+                            <th class="pb-3 font-semibold text-right pr-4">自選</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stock-list" class="divide-y divide-slate-800/50">
+                        <!-- JS 動態渲染 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 自訂空狀態提示 -->
+            <div id="empty-state" class="hidden py-12 flex-col items-center justify-center text-center">
+                <i data-lucide="star-off" class="w-12 h-12 text-slate-600 mb-3"></i>
+                <p class="text-sm text-slate-400">目前沒有符合篩選條件的自選或模擬股票</p>
+                <button onclick="resetMockData()" class="mt-4 text-xs text-indigo-400 hover:text-indigo-300 underline">恢復預設假數據</button>
+            </div>
+
+            <!-- 匯總統計腳部 -->
+            <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                <div id="list-summary">目前總計: -- 檔股票</div>
+                <button onclick="resetMockData()" class="flex items-center space-x-1 text-slate-400 hover:text-white transition-all">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>恢復為預設範例</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 數據趨勢與回測(模擬圖表，已加上"報酬率"文字標籤) -->
+        <section class="bg-darkCard p-6 rounded-2xl border border-slate-800/80 mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="activity" class="w-5 h-5 text-indigo-400"></i>
+                    <h2 class="text-lg font-bold text-slate-100">模擬策略歷史累積報酬率走勢 (與年期切換連動)</h2>
+                </div>
+                <span id="backtest-range-label" class="text-xs text-indigo-400 bg-indigo-950/50 px-3 py-1 rounded border border-indigo-900/50 font-medium">模擬回測區間: 近 6 個月</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400">彼得林區策略</p>
+                        <h4 class="text-base font-bold text-rose-500 mt-1" id="chart-lynch-val">報酬率 +12.3%</h4>
+                    </div>
+                    <div class="h-8 mt-3 w-full">
+                        <!-- 迷你折線圖 SVG -->
+                        <svg class="w-full h-full text-rose-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path id="chart-path-lynch" d="M0,28 Q15,20 30,25 T60,18 T90,12 T100,8" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400">巴菲特價值成長</p>
+                        <h4 class="text-base font-bold text-rose-500 mt-1" id="chart-buffett-val">報酬率 +9.2%</h4>
+                    </div>
+                    <div class="h-8 mt-3 w-full">
+                        <svg class="w-full h-full text-rose-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path id="chart-path-buffett" d="M0,29 Q15,24 30,26 T60,20 T90,16 T100,12" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400">格拉罕極致價值</p>
+                        <h4 class="text-base font-bold text-rose-500 mt-1" id="chart-graham-val">報酬率 +7.1%</h4>
+                    </div>
+                    <div class="h-8 mt-3 w-full">
+                        <svg class="w-full h-full text-rose-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path id="chart-path-graham" d="M0,30 Q20,28 40,29 T70,25 T90,22 T100,18" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400">歐沙那希綜合雷達</p>
+                        <h4 class="text-base font-bold text-rose-500 mt-1" id="chart-oshan-val">報酬率 +10.5%</h4>
+                    </div>
+                    <div class="h-8 mt-3 w-full">
+                        <svg class="w-full h-full text-rose-500" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path id="chart-path-oshan" d="M0,28 Q15,22 30,20 T60,24 T90,18 T100,15" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-indigo-900/50 flex flex-col justify-between bg-gradient-to-b from-indigo-950/20 to-transparent">
+                    <div>
+                        <p class="text-xs text-indigo-300 font-medium">🎯 4項以上全明星</p>
+                        <h4 class="text-base font-bold text-amber-400 mt-1" id="chart-star-val">報酬率 +15.8%</h4>
+                    </div>
+                    <div class="h-8 mt-3 w-full">
+                        <svg class="w-full h-full text-amber-400" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path id="chart-path-star" d="M0,29 Q15,22 30,24 T60,15 T90,10 T100,5" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 自訂通知訊息元件 -->
+        <div id="toast-message" class="fixed bottom-6 right-6 bg-slate-900 border border-indigo-500/30 text-indigo-300 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 animate-bounce"></i>
+            <span id="toast-text">成功更新數據！</span>
+        </div>
+    </main>
+
+    <footer class="text-center text-slate-500 text-xs mt-12 py-6 border-t border-slate-900">
+        <p>© 2026 贏家選股台股模擬器 - 專為數據展示與條件篩選測試設計</p>
+    </footer>
+
+    <!-- JavaScript 邏輯 -->
+    <script>
+        // 預設假數據，新增 favorite 屬性來做自選股標示 (預設台積電與鴻海為自選股)
+        const defaultStocks = [
+            { id: "1", code: "2330", name: "台積電", price: 980.0, change: 2.5, matches: 5, favorite: true },
+            { id: "2", code: "2317", name: "鴻海", price: 205.0, change: 1.2, matches: 4, favorite: true },
+            { id: "3", code: "2454", name: "聯發科", price: 1250.0, change: -0.8, matches: 3, favorite: false },
+            { id: "4", code: "2382", name: "廣達", price: 280.0, change: 3.1, matches: 4, favorite: false },
+            { id: "5", code: "2308", name: "台達電", price: 360.0, change: 0.5, matches: 3, favorite: false },
+            { id: "6", code: "2303", name: "聯電", price: 51.2, change: -0.2, matches: 2, favorite: false },
+            { id: "7", code: "2603", name: "長榮", price: 190.0, change: 4.2, matches: 3, favorite: false },
+            { id: "8", code: "2881", name: "富邦金", price: 81.5, change: 0.7, matches: 4, favorite: false },
+            { id: "9", code: "2882", name: "國泰金", price: 62.0, change: 0.3, matches: 3, favorite: false },
+            { id: "10", code: "2891", name: "中信金", price: 35.4, change: -0.5, matches: 2, favorite: false }
+        ];
+
+        let stocks = [...defaultStocks];
+        let selectedPeriod = '6m'; // 預設 6個月期
+        let favoriteOnly = false;  // 是否開啟只顯示自選股的篩選器
+
+        // 策略對應
+        const strategies = [
+            "彼得林區",
+            "華倫巴菲特",
+            "班哲明格拉罕",
+            "詹姆斯歐沙那希",
+            "綜合選股指標"
+        ];
+
+        // 各年期不同的模擬回測報酬率數據庫 (6個月 / 1年 / 3年)
+        const periodData = {
+            '6m': {
+                label: "近 6 個月",
+                lynch: "報酬率 +12.3%",
+                graham: "報酬率 +7.1%",
+                buffett: "報酬率 +9.2%",
+                oshan: "報酬率 +10.5%",
+                star: "報酬率 +15.8%",
+                chartPaths: {
+                    lynch: "M0,28 Q15,20 30,25 T60,18 T90,12 T100,8",
+                    buffett: "M0,29 Q15,24 30,26 T60,20 T90,16 T100,12",
+                    graham: "M0,30 Q20,28 40,29 T70,25 T90,22 T100,18",
+                    oshan: "M0,28 Q15,22 30,20 T60,24 T90,18 T100,15",
+                    star: "M0,29 Q15,22 30,24 T60,15 T90,10 T100,5"
+                }
+            },
+            '1y': {
+                label: "近 1 年",
+                lynch: "報酬率 +24.5%",
+                graham: "報酬率 +14.1%",
+                buffett: "報酬率 +18.2%",
+                oshan: "報酬率 +21.3%",
+                star: "報酬率 +31.8%",
+                chartPaths: {
+                    lynch: "M0,25 Q15,10 30,20 T60,5 T90,2 T100,0",
+                    buffett: "M0,28 Q15,18 30,22 T60,12 T90,8 T100,5",
+                    graham: "M0,29 Q20,25 40,28 T70,18 T90,15 T100,10",
+                    oshan: "M0,25 Q15,15 30,12 T60,18 T90,8 T100,3",
+                    star: "M0,28 Q15,15 30,19 T60,5 T90,2 T100,0"
+                }
+            },
+            '3y': {
+                label: "近 3 年",
+                lynch: "報酬率 +78.9%",
+                graham: "報酬率 +42.5%",
+                buffett: "報酬率 +58.1%",
+                oshan: "報酬率 +68.4%",
+                star: "報酬率 +104.2%",
+                chartPaths: {
+                    lynch: "M0,28 Q25,5 50,10 T90,1 T100,0",
+                    buffett: "M0,29 Q25,12 50,14 T90,4 T100,2",
+                    graham: "M0,30 Q30,18 60,20 T95,8 T100,5",
+                    oshan: "M0,28 Q25,8 50,7 T90,2 T100,0",
+                    star: "M0,30 Q25,8 50,9 T90,0 T100,0"
+                }
+            }
+        };
+
+        // DOM 載入後執行
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+
+        function initApp() {
+            lucide.createIcons();
+            setupEventListeners();
+            renderTable();
+            updateSummaryCounters();
+        }
+
+        // 綁定事件
+        function setupEventListeners() {
+            // 搜尋與篩選變更事件
+            document.getElementById('search-bar').addEventListener('input', renderTable);
+            document.getElementById('filter-matches').addEventListener('change', renderTable);
+        }
+
+        // 自選股過濾開關
+        function toggleFavoriteFilter() {
+            favoriteOnly = !favoriteOnly;
+            const btn = document.getElementById('btn-favorite-only');
+            if (favoriteOnly) {
+                btn.className = "flex items-center space-x-1.5 bg-amber-500/15 border border-amber-500/40 hover:bg-amber-500/20 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-bold transition-all shadow-sm shadow-amber-950/20 animate-pulse";
+                btn.innerHTML = `<i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i><span>只看自選</span>`;
+            } else {
+                btn.className = "flex items-center space-x-1.5 bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-lg px-3 py-1.5 text-xs text-slate-300 transition-all";
+                btn.innerHTML = `<i data-lucide="star" class="w-3.5 h-3.5"></i><span>自選股</span>`;
+            }
+            lucide.createIcons();
+            renderTable();
+        }
+
+        // 切換單一持股的自選狀態
+        function toggleFavorite(id) {
+            const index = stocks.findIndex(s => s.id === id);
+            if (index > -1) {
+                stocks[index].favorite = !stocks[index].favorite;
+                const isFav = stocks[index].favorite;
+                showToast(isFav ? `🌟 已加入自選股：${stocks[index].name}` : `🔒 已自選中移除：${stocks[index].name}`);
+                renderTable();
+                updateSummaryCounters();
+            }
+        }
+
+        // 年期切換核心邏輯
+        function changePeriod(period) {
+            selectedPeriod = period;
+            
+            // 更新按鈕樣式
+            const periods = ['6m', '1y', '3y'];
+            periods.forEach(p => {
+                const btn = document.getElementById(`btn-period-${p}`);
+                if (p === period) {
+                    btn.className = "flex-1 sm:flex-none px-4 py-1.5 text-xs font-semibold rounded-lg transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-950/50";
+                } else {
+                    btn.className = "flex-1 sm:flex-none px-4 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-slate-200";
+                }
+            });
+
+            // 更新歷史回測時間標籤
+            document.getElementById('backtest-range-label').innerText = `模擬回測區間: ${periodData[period].label}`;
+
+            // 動態更新卡片與圖表數據
+            updateSummaryCounters();
+            showToast(`已切換至 ${periodData[period].label} 歷史累積報酬率資料`);
+        }
+
+        // 重置為預設假資料
+        function resetMockData() {
+            stocks = defaultStocks.map(s => ({ ...s })); // 保持深度複製，維護原本 favorite
+            favoriteOnly = false;
+            const btn = document.getElementById('btn-favorite-only');
+            btn.className = "flex items-center space-x-1.5 bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-lg px-3 py-1.5 text-xs text-slate-300 transition-all";
+            btn.innerHTML = `<i data-lucide="star" class="w-3.5 h-3.5"></i><span>自選股</span>`;
+            
+            renderTable();
+            updateSummaryCounters();
+            showToast("已成功重置為初始模擬數據！");
+        }
+
+        // 算大師匹配圖標
+        function getMatchedBadges(count) {
+            let badgesHtml = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < count) {
+                    badgesHtml += `<span class="inline-block text-[10px] bg-slate-800 text-amber-400 px-1.5 py-0.5 rounded mr-1 mb-1 border border-amber-500/30 font-medium">${strategies[i]}</span>`;
+                } else {
+                    badgesHtml += `<span class="inline-block text-[10px] bg-slate-900/40 text-slate-600 px-1.5 py-0.5 rounded mr-1 mb-1 border border-slate-800 font-normal line-through">${strategies[i]}</span>`;
+                }
+            }
+            return badgesHtml;
+        }
+
+        // 渲染資料列表
+        function renderTable() {
+            const listContainer = document.getElementById('stock-list');
+            const emptyState = document.getElementById('empty-state');
+            const searchVal = document.getElementById('search-bar').value.toLowerCase().trim();
+            const filterVal = document.getElementById('filter-matches').value;
+
+            // 進行篩選 (加入自選股過濾)
+            const filtered = stocks.filter(stock => {
+                const matchesSearch = stock.name.toLowerCase().includes(searchVal) || stock.code.includes(searchVal);
+                
+                let matchesFilter = true;
+                if (filterVal === '5') {
+                    matchesFilter = stock.matches === 5;
+                } else if (filterVal === '4') {
+                    matchesFilter = stock.matches >= 4;
+                } else if (filterVal === '3') {
+                    matchesFilter = stock.matches >= 3;
+                } else if (filterVal === '2') {
+                    matchesFilter = stock.matches >= 2;
+                }
+
+                const matchesFav = !favoriteOnly || stock.favorite;
+
+                return matchesSearch && matchesFilter && matchesFav;
+            });
+
+            // 排序：預設讓符合最多的排在前面
+            filtered.sort((a, b) => b.matches - a.matches);
+
+            // 更新總計
+            document.getElementById('list-summary').innerText = `目前總計: ${filtered.length} 檔股票`;
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+
+            let html = '';
+            filtered.forEach(stock => {
+                const isPositive = stock.change >= 0;
+                const changeClass = isPositive ? 'text-xqRed' : 'text-xqGreen';
+                const changeSign = isPositive ? '+' : '';
+                const changeArrow = isPositive ? '▲' : '▼';
+
+                // 項數標籤顏色
+                let matchBadgeColor = 'bg-slate-800 text-slate-300';
+                if (stock.matches === 5) {
+                    matchBadgeColor = 'bg-amber-500/20 text-amber-400 border border-amber-500/40 font-bold animate-pulse';
+                } else if (stock.matches >= 3) {
+                    matchBadgeColor = 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-medium';
+                }
+
+                // 星星自選股狀態樣式
+                const starClass = stock.favorite 
+                    ? "text-amber-400 fill-amber-400" 
+                    : "text-slate-500 hover:text-amber-400 hover:scale-110";
+
+                html += `
+                    <tr class="hover:bg-slate-900/40 transition-colors">
+                        <td class="py-3.5 pr-2">
+                            <div class="font-bold text-slate-100 text-sm flex items-center gap-1.5">
+                                ${stock.name}
+                                ${stock.favorite ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>' : ''}
+                            </div>
+                            <div class="text-slate-500 text-xs">${stock.code}</div>
+                        </td>
+                        <td class="py-3.5 font-semibold text-slate-200">
+                            $${stock.price.toFixed(2)}
+                        </td>
+                        <td class="py-3.5 font-medium ${changeClass}">
+                            <div>${changeSign}${stock.change.toFixed(2)}%</div>
+                            <div class="text-xs">${changeArrow} ${(stock.price * Math.abs(stock.change) / 100).toFixed(2)}</div>
+                        </td>
+                        <td class="py-3.5">
+                            <span class="px-2.5 py-1 rounded-full text-xs ${matchBadgeColor}">
+                                符合 ${stock.matches} 項
+                            </span>
+                        </td>
+                        <td class="py-3.5 max-w-xs sm:max-w-md lg:max-w-lg">
+                            <div class="flex flex-wrap">
+                                ${getMatchedBadges(stock.matches)}
+                            </div>
+                        </td>
+                        <td class="py-3.5 text-right pr-4">
+                            <button onclick="toggleFavorite('${stock.id}')" class="p-1.5 rounded-md hover:bg-slate-800/60 transition-all">
+                                <i data-lucide="star" class="w-4.5 h-4.5 ${starClass}"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // 更新頂部大師卡片統計與報酬率 (與年期切換連動計算)
+        function updateSummaryCounters() {
+            const data = periodData[selectedPeriod];
+
+            // 1. 彼得林區
+            const lynchCount = stocks.filter(s => s.matches >= 1).length;
+            document.getElementById('stat-lynch-count').innerText = `${lynchCount} 檔`;
+            document.getElementById('stat-lynch-return').innerText = lynchCount > 0 ? data.lynch : "--";
+            
+            // 2. 班哲明格拉罕
+            const grahamCount = stocks.filter(s => s.matches >= 5).length; // 難度極高，需符合 5 項
+            document.getElementById('stat-graham-count').innerText = `${grahamCount} 檔`;
+            document.getElementById('stat-graham-return').innerText = grahamCount > 0 ? data.graham : "--";
+
+            // 3. 華倫巴菲特
+            const buffettCount = stocks.filter(s => s.matches >= 3).length;
+            document.getElementById('stat-buffett-count').innerText = `${buffettCount} 檔`;
+            document.getElementById('stat-buffett-return').innerText = buffettCount > 0 ? data.buffett : "--";
+
+            // 4. 詹姆斯歐沙那希
+            const oshanCount = stocks.filter(s => s.matches >= 2).length;
+            document.getElementById('stat-oshan-count').innerText = `${oshanCount} 檔`;
+            document.getElementById('stat-oshan-return').innerText = oshanCount > 0 ? data.oshan : "--";
+
+            // 5. 綜合指標符合 4 項以上
+            const superCount = stocks.filter(s => s.matches >= 4).length;
+            document.getElementById('stat-all-match').innerText = `${superCount} 檔`;
+            document.getElementById('stat-star-return').innerText = superCount > 0 ? data.star : "--";
+
+            // 更新下方圖表區的所有數值
+            document.getElementById('chart-lynch-val').innerText = data.lynch;
+            document.getElementById('chart-buffett-val').innerText = data.buffett;
+            document.getElementById('chart-graham-val').innerText = data.graham;
+            document.getElementById('chart-oshan-val').innerText = data.oshan;
+            document.getElementById('chart-star-val').innerText = data.star;
+
+            // 更新圖表路徑 (SVG Path) 創造視覺轉換效果
+            document.getElementById('chart-path-lynch').setAttribute('d', data.chartPaths.lynch);
+            document.getElementById('chart-path-buffett').setAttribute('d', data.chartPaths.buffett);
+            document.getElementById('chart-path-graham').setAttribute('d', data.chartPaths.graham);
+            document.getElementById('chart-path-oshan').setAttribute('d', data.chartPaths.oshan);
+            document.getElementById('chart-path-star').setAttribute('d', data.chartPaths.star);
+        }
+
+        // 烤吐司訊息提示
+        function showToast(text) {
+            const toast = document.getElementById('toast-message');
+            const toastText = document.getElementById('toast-text');
+            toastText.innerText = text;
+            
+            toast.classList.remove('opacity-0', 'translate-y-20');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-20');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
