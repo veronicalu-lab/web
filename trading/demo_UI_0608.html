@@ -426,6 +426,7 @@
       --comp-table-row-hover: var(--hover-bg);
       --comp-table-border: var(--border);
       --comp-table-cell-pad-v: 10px;
+      --comp-th-sort-active: var(--accent);
       /* XQNext: row height ≈ 40px */
       --comp-comm-filter-h: 53px;
       /* XQNext: sticky thead offset = filter-bar height */
@@ -1133,7 +1134,7 @@
     .sb-sort-val-toggle.on { background: var(--accent); }
     .sb-sort-val-toggle.on::after { transform: translateX(14px); }
     .sb-sort-section-hdr {
-      padding: 7px var(--sp-4) 2px;
+      padding: 7px 8px 2px var(--sp-4);
       font-size: var(--f-xs);
       color: var(--text3);
       font-weight: 500;
@@ -1395,21 +1396,33 @@
     #ov-all .o-table td:nth-child(13),
     #ov-all .o-table td:nth-child(14) { font-weight: 500; }
 
+    /* ── 委託價 / 成交均價 靠右 ── */
+    .o-table th.col-right { text-align: right; }
+    .pend-orders .o-table td:nth-child(7),
+    .pend-orders .o-table td:nth-child(8) { text-align: right; }
+    #ov-all .o-table td:nth-child(8),
+    #ov-all .o-table td:nth-child(9) { text-align: right; }
+    #t-comm .table-radius-wrap .o-table td:nth-child(7),
+    #t-comm .table-radius-wrap .o-table td:nth-child(8) { text-align: right; }
+
     /* ── 當日委託表格排序 ── */
     #ov-all .o-table th[data-sortable] { cursor: pointer; user-select: none; }
-    #ov-all .o-table th[data-sortable]:not([data-sort-dir]):hover::after {
-      content: '↕'; margin-left: 4px; opacity: .45; font-size: 10px;
+    #ov-all .o-table th[data-sortable]:hover { background: var(--comp-table-row-hover); }
+    /* 左/置中欄：箭頭在後，opacity:0 預留空位避免 hover 時寬度跳動 */
+    #ov-all .o-table th[data-sortable]:not(.col-right)::after {
+      content: '↓'; display: inline-block; margin-left: 4px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sort-dir="asc"]::after  { content: '↑'; margin-left: 4px; font-size: 10px; color: var(--accent); }
-    #ov-all .o-table th[data-sort-dir="desc"]::after { content: '↓'; margin-left: 4px; font-size: 10px; color: var(--accent); }
-    /* 置右欄：箭頭在左（::before），關掉 ::after */
+    #ov-all .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .45; }
+    #ov-all .o-table th[data-sort-dir="asc"]:not(.col-right)::after  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-all .o-table th[data-sort-dir="desc"]:not(.col-right)::after { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    /* 置右欄：箭頭在前（::before），同樣 opacity:0 預留空位 */
     #ov-all .o-table th[data-sortable].col-right { text-align: right; }
-    #ov-all .o-table th[data-sortable].col-right::after { content: none !important; }
-    #ov-all .o-table th[data-sortable].col-right:not([data-sort-dir]):hover::before {
-      content: '↕'; margin-right: 4px; opacity: .45; font-size: 10px;
+    #ov-all .o-table th[data-sortable].col-right::before {
+      content: '↓'; display: inline-block; margin-right: 4px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; margin-right: 4px; font-size: 10px; color: var(--accent); }
-    #ov-all .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; margin-right: 4px; font-size: 10px; color: var(--accent); }
+    #ov-all .o-table th[data-sortable].col-right:hover::before { opacity: .45; }
+    #ov-all .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-all .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
 
     .prod-code {
       color: var(--text2);
@@ -5054,6 +5067,44 @@
       flex-shrink: 0;
       cursor: pointer
     }
+    .price-stepper {
+      display: inline-flex;
+      align-items: stretch;
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      height: 28px;
+      margin-left: 2px;
+    }
+    .price-stepper input[type="number"] {
+      width: 80px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      text-align: center;
+      font-size: var(--f-base);
+      font-variant-numeric: tabular-nums;
+      padding: 0;
+      outline: none;
+      -moz-appearance: textfield;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+    }
+    .price-stepper input[type="number"]::-webkit-inner-spin-button,
+    .price-stepper input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .price-stepper button {
+      background: none;
+      border: none;
+      color: var(--text2);
+      cursor: pointer;
+      padding: 0 8px;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .price-stepper button:first-child { border-right: 1px solid var(--border); }
+    .price-stepper button:last-child  { border-left:  1px solid var(--border); }
+    .price-stepper button:hover { background: var(--hover-bg); color: var(--accent); }
 
     .xpop-input {
       width: 100%;
@@ -5639,7 +5690,7 @@
           <!-- 排序按鈕 -->
           <div id="sb-sort-wrap" class="xsel-wrap">
             <button class="sb-sort-inline" id="sb-sort-btn" onclick="sbSortPanelToggle()">
-              <span id="sb-sort-label">建立時間</span>
+              <span id="sb-sort-label">名稱</span>
               <svg id="sb-sort-icon" width="12" height="10" viewBox="0 0 16 13" fill="currentColor" style="display:block;flex-shrink:0;opacity:.7;transition:transform .15s">
                 <rect y="0" width="16" height="2" rx="1"/>
                 <rect y="5.5" width="11" height="2" rx="1"/>
@@ -5648,9 +5699,9 @@
             </button>
             <div class="sb-sort-panel xsel-drop" id="sb-sort-panel">
               <div class="sb-sort-section-hdr">排序<span class="sb-sort-reset" id="sb-reset-sort" onclick="sbSortReset()">預設</span></div>
+              <div class="sb-sort-opt" data-sort="name"    onclick="sbSortSelect('name')">名稱<span class="sb-sort-opt-arrow" id="sb-sarr-name"></span></div>
               <div class="sb-sort-opt" data-sort="created" onclick="sbSortSelect('created')">建立時間<span class="sb-sort-opt-arrow" id="sb-sarr-created"></span></div>
               <div class="sb-sort-opt" data-sort="started" onclick="sbSortSelect('started')">啟動時間<span class="sb-sort-opt-arrow" id="sb-sarr-started"></span></div>
-              <div class="sb-sort-opt" data-sort="name"    onclick="sbSortSelect('name')">名稱<span class="sb-sort-opt-arrow" id="sb-sarr-name"></span></div>
             </div>
           </div>
           <!-- hidden dir dropdown -->
@@ -5765,23 +5816,23 @@
         <div class="metric-bar">
           <div class="metric robot">
             <div class="m-label">執行中機器人</div>
-            <div class="m-value">5個</div>
-            <div class="m-sub">共12檔商品</div>
+            <div class="m-value" id="metric-robot-val">5個</div>
+            <div class="m-sub" id="metric-robot-sub">共12檔商品</div>
           </div>
           <div class="metric long">
             <div class="m-label">作多市值</div>
-            <div class="m-value">$368,245</div>
-            <div class="m-sub">10,500股</div>
+            <div class="m-value" id="metric-long-val">$368,245</div>
+            <div class="m-sub" id="metric-long-sub">10,500股</div>
           </div>
           <div class="metric short">
             <div class="m-label">作空市值</div>
-            <div class="m-value">$138,546</div>
-            <div class="m-sub">10,500股</div>
+            <div class="m-value" id="metric-short-val">$138,546</div>
+            <div class="m-sub" id="metric-short-sub">10,500股</div>
           </div>
           <div class="metric book">
             <div class="m-label">未完全成交</div>
-            <div class="m-value">4筆</div>
-            <div class="m-sub">共3檔商品</div>
+            <div class="m-value" id="metric-pend-val">4筆</div>
+            <div class="m-sub" id="metric-pend-sub">共3檔商品</div>
           </div>
         </div>
         <!-- 控制列 -->
@@ -5802,11 +5853,6 @@
             <option value="fail">委託失敗</option>
             <option value="cancel">已刪單</option>
           </select>
-          <div class="f-search-wrap" id="ov-robot-search-wrap" style="width:200px;flex:none">
-            <i class="icon-search f-search-ico"></i>
-            <input class="f-input" id="ov-robot-search" type="text" placeholder="輸入機器人名稱" oninput="ovRobotSearch(this.value)">
-            <button class="inp-clear" onclick="this.previousElementSibling.value='';ovRobotSearch('')" title="清除"><span style="font-family:xqnext;font-size:14px;line-height:1">&#xe913;</span></button>
-          </div>
           <div class="f-search-wrap" id="ov-prod-search-wrap" style="display:none;width:200px;flex:none">
             <i class="icon-search f-search-ico"></i>
             <input class="f-input" id="ov-prod-search" type="text" placeholder="輸入股票代號或股名" oninput="ovProdSearch(this.value)">
@@ -5879,8 +5925,8 @@
                         <th>商品</th>
                         <th>買賣</th>
                         <th>委託/成交</th>
-                        <th>委託價</th>
-                        <th>成交均價</th>
+                        <th class="col-right">委託價</th>
+                        <th class="col-right">成交均價</th>
                         <th>委託狀態 <select class="th-inline-sel rc-status-sel" onchange="rcStatusSync(this.value)">
                           <option value="">全部</option>
                           <option value="pend">未完全成交</option>
@@ -6069,8 +6115,8 @@
                         <th>商品</th>
                         <th>買賣</th>
                         <th>委託/成交</th>
-                        <th>委託價</th>
-                        <th>成交均價</th>
+                        <th class="col-right">委託價</th>
+                        <th class="col-right">成交均價</th>
                         <th>委託狀態 <select class="th-inline-sel rc-status-sel" onchange="rcStatusSync(this.value)">
                           <option value="">全部</option>
                           <option value="pend">未完全成交</option>
@@ -6332,7 +6378,7 @@
                 <tr>
                   <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                   <th class="col-act"></th>
-                  <th data-sortable onclick="ovColSort(this,2)">委託時間</th>
+                  <th data-sortable data-sort-dir="desc" onclick="ovColSort(this,2)">委託時間</th>
                   <th data-sortable onclick="ovColSort(this,3)">類別</th>
                   <th class="col-prod" data-sortable onclick="ovColSort(this,4)">商品</th>
                   <th>買賣 <select class="th-inline-sel"
@@ -6891,8 +6937,8 @@
                     <th>商品</th>
                     <th>買賣</th>
                     <th>委託/成交</th>
-                    <th>委託價</th>
-                    <th>成交均價</th>
+                    <th class="col-right">委託價</th>
+                    <th class="col-right">成交均價</th>
                     <th>委託狀態 <select class="th-inline-sel" id="comm-col-status-sel" onchange="commColStatusSync(this.value)">
                       <option value="">全部</option>
                       <option value="pend">未完全成交</option>
@@ -7317,7 +7363,7 @@
                       <!-- 台積電 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330')" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330',815)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="台積電 2330">台積電 <span class="prod-code">2330</span></div>
                         </td>
@@ -7333,7 +7379,7 @@
                       <!-- 聯發科 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454')" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454',1230)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
                         </td>
@@ -7349,7 +7395,7 @@
                       <!-- 台塑 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301')" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301',105.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="台塑 1301">台塑 <span class="prod-code">1301</span></div>
                         </td>
@@ -7365,7 +7411,7 @@
                       <!-- 國泰金 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882')" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882',68.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="國泰金 2882">國泰金 <span class="prod-code">2882</span></div>
                         </td>
@@ -8419,9 +8465,9 @@
 
     let _sbL2Filter = 'all';
     /* ── Sort ── */
-    let _sbSort = 'created';
+    let _sbSort = 'name';
     let _sortCanvasCtx = null;
-    let _sbSortDir = 'desc';
+    let _sbSortDir = 'asc';
     let _sbSortShowVal = false;
     let _ovReturnSeg = 'card'; // 'card'=執行總覽 / 'all'=當日委託
     const _sortFields = {
@@ -8587,6 +8633,7 @@
         }
       }
       _ovFilterBtnSync(); _ovResetSync();
+      _updateMetricBar(acct);
     }
     function ovAcctColSync(val) {
       // sync col filter icon active state
@@ -8595,11 +8642,43 @@
       ovAcctFilter(val);
     }
 
+    const _metricByAcct = {
+      '': {
+        robotVal: '5個', robotSub: '共12檔商品',
+        longVal: '$368,245', longSub: '10,500股',
+        shortVal: '$138,546', shortSub: '10,500股',
+        pendVal: '4筆', pendSub: '共3檔商品'
+      },
+      '証-模擬交易(內建)-01': {
+        robotVal: '3個', robotSub: '共8檔商品',
+        longVal: '$248,500', longSub: '7,200股',
+        shortVal: '—', shortSub: '0股',
+        pendVal: '3筆', pendSub: '共2檔商品'
+      },
+      '期-模擬交易-01': {
+        robotVal: '2個', robotSub: '共4檔商品',
+        longVal: '—', longSub: '0股',
+        shortVal: '$138,546', shortSub: '3,300股',
+        pendVal: '1筆', pendSub: '共1檔商品'
+      }
+    };
+    function _updateMetricBar(acct) {
+      const d = _metricByAcct[acct] || _metricByAcct[''];
+      document.getElementById('metric-robot-val').textContent = d.robotVal;
+      document.getElementById('metric-robot-sub').textContent = d.robotSub;
+      document.getElementById('metric-long-val').textContent  = d.longVal;
+      document.getElementById('metric-long-sub').textContent  = d.longSub;
+      document.getElementById('metric-short-val').textContent = d.shortVal;
+      document.getElementById('metric-short-sub').textContent = d.shortSub;
+      document.getElementById('metric-pend-val').textContent  = d.pendVal;
+      document.getElementById('metric-pend-sub').textContent  = d.pendSub;
+    }
+
     function _sbFilterBtnSync() {
       const btn = document.getElementById('sb-sort-btn');
       if (!btn) return;
       const panelOpen = document.getElementById('sb-sort-panel')?.classList.contains('show');
-      const nonDefault = !(_sbSort === 'created' && _sbSortDir === 'desc');
+      const nonDefault = !(_sbSort === 'name' && _sbSortDir === 'asc');
       btn.style.color = panelOpen ? 'var(--accent)' : '';
     }
     function sbSortPanelToggle() {
@@ -8619,7 +8698,7 @@
       btn.style.color = 'var(--accent)';
     }
     function _sbResetSync() {
-      const defSort = _sbSort === 'created' && _sbSortDir === 'desc';
+      const defSort = _sbSort === 'name' && _sbSortDir === 'asc';
       const defDir  = _sbDirActive.size === 2;
       const defAcct = _sbAcctSelected === '';
       document.getElementById('sb-reset-sort')?.classList.toggle('show', !defSort);
@@ -8627,18 +8706,19 @@
       document.getElementById('sb-reset-acct')?.classList.toggle('show', !defAcct);
     }
     function sbSortReset() {
-      _sbSort = 'created'; _sbSortDir = 'desc';
+      _sbSort = 'name'; _sbSortDir = 'asc';
       _applySortUI(); _applySortList(); _sbResetSync();
     }
     function sbDirReset() {
       sbDirSelect('all');
     }
+    const _sortDefDir = { name: 'asc', created: 'desc', started: 'desc' };
     function sbSortSelect(key) {
       if (_sbSort === key) {
         _sbSortDir = _sbSortDir === 'asc' ? 'desc' : 'asc';
       } else {
         _sbSort = key;
-        _sbSortDir = key === 'name' ? 'asc' : 'desc';
+        _sbSortDir = _sortDefDir[key] || 'asc';
       }
       _applySortUI();
       _applySortList();
@@ -8656,11 +8736,15 @@
         const key = opt.dataset.sort;
         opt.classList.toggle('active', key === _sbSort);
         const arrow = document.getElementById('sb-sarr-' + key);
-        if (arrow) arrow.textContent = key === _sbSort ? (_sbSortDir === 'asc' ? ' ↑' : ' ↓') : '';
+        if (arrow) {
+          const isDefault = _sbSortDir === (_sortDefDir[key] || 'asc');
+          arrow.textContent = key === _sbSort ? (isDefault ? ' ↓' : ' ↑') : '';
+        }
       });
       const lbl = document.getElementById('sb-sort-label');
       if (lbl) lbl.textContent = _sbSortLabels[_sbSort] || _sbSort;
-      document.getElementById('sb-sort-icon')?.classList.toggle('flipped', _sbSortDir === 'asc');
+      const curDefDir = _sortDefDir[_sbSort] || 'asc';
+      document.getElementById('sb-sort-icon')?.classList.toggle('flipped', _sbSortDir !== curDefDir);
       _sbFilterBtnSync();
     }
     function _fmtDateShort(raw) {
@@ -9187,7 +9271,7 @@
       // filter #ov-all + r-cards + sync other rc-status-sel
       ovFilterBySelect(val);
     }
-    let _ovColSortCol = null, _ovColSortDir = 'asc';
+    let _ovColSortCol = 2, _ovColSortDir = 'desc';
     function ovColSort(th, colIdx) {
       if (_ovColSortCol === colIdx) {
         _ovColSortDir = _ovColSortDir === 'asc' ? 'desc' : 'asc';
@@ -9390,17 +9474,39 @@
       const tPos = document.getElementById('t-pos');
       if (!tPos?.contains(e.target) && !bar.contains(e.target)) clearPosBatchSel();
     });
-    function posCloseSingle(btn, name) {
-      xConfirm('確認平倉',
-        '將對 <strong style="color:var(--accent)">' + name + '</strong> 送出市價賣出委託，此操作無法復原。',
+    function posCloseSingle(btn, name, price) {
+      const step = price >= 500 ? 1 : price >= 100 ? 0.5 : price >= 50 ? 0.1 : price >= 10 ? 0.05 : 0.01;
+      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 送出賣出委託<br>此操作無法復原</div>
+        <div class="xpop-price-opts">
+          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
+          <label>
+            <input type="radio" name="cap-price" value="limit" id="cap-limit-radio">
+            限價
+            <div class="price-stepper">
+              <button type="button" onclick="document.getElementById('cap-limit-radio').checked=true;document.getElementById('cap-limit-inp').stepDown()">−</button>
+              <input type="number" id="cap-limit-inp" value="${price}" step="${step}" min="0"
+                onfocus="document.getElementById('cap-limit-radio').checked=true"
+                oninput="document.getElementById('cap-limit-radio').checked=true">
+              <button type="button" onclick="document.getElementById('cap-limit-radio').checked=true;document.getElementById('cap-limit-inp').stepUp()">+</button>
+            </div>
+          </label>
+        </div>`;
+      xConfirm('確認平倉', msgHtml,
         () => xAlert('已送出', name + ' 平倉委託已送出', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'),
         { icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>', confirmText: '確認平倉', confirmCls: 'danger', noClose: true }
       );
     }
     function showPosBatchClose() {
       const n = document.querySelectorAll('#t-pos .pos-cb:checked:not([disabled])').length;
-      xConfirm('確認平倉',
-        '將對已選 <strong style="color:var(--accent)">' + n + '</strong> 檔商品送出市價賣出委託，此操作無法復原。',
+      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔商品送出賣出委託<br>此操作無法復原</div>
+        <div class="xpop-price-opts">
+          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
+        </div>`;
+      xConfirm('確認平倉', msgHtml,
         () => {
           clearPosBatchSel();
           xAlert('已送出', '平倉委託已送出', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>');
@@ -9558,10 +9664,7 @@
       document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
       document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
       document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
-      // 機器人模式顯示機器人搜尋，當日委託模式顯示商品搜尋
-      document.getElementById('ov-robot-search-wrap').style.display = v === 'card' ? '' : 'none';
       document.getElementById('ov-prod-search-wrap').style.display = v === 'all' ? '' : 'none';
-      if (v === 'all') { document.getElementById('ov-robot-search').value = ''; ovRobotSearch(''); }
       if (v === 'card') { document.getElementById('ov-prod-search').value = ''; ovProdSearch(''); }
       _updateHash();
     }
