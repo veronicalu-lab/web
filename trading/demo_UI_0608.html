@@ -411,6 +411,8 @@
       --comp-card-bg: var(--bg3);
       --comp-card-border: var(--border);
       --comp-card-radius: var(--r-lg);
+      --comp-metric-empty-bg: rgba(255,255,255,0.2);
+      --comp-metric-empty-text: color-mix(in srgb, var(--text4) 60%, transparent);
 
       /* ── Input ── */
       --comp-input-bg: var(--bg3);
@@ -423,7 +425,7 @@
       /* ── Table ── */
       --comp-table-header-bg: var(--bg3);   /* Gray-150 = #1b1b1b，符合 XQNext Table 規格 */
       --comp-table-header-text: var(--text2); /* Gray-650 = #989898，TitleText_Default */
-      --comp-table-row-hover: var(--hover-bg);
+      --comp-table-row-hover: color-mix(in srgb, var(--bg3) 50%, transparent);
       --comp-table-border: var(--border);
       --comp-table-cell-pad-v: 10px;
       --comp-th-sort-active: var(--accent);
@@ -1410,19 +1412,59 @@
     #ov-all .o-table th[data-sortable]:hover { background: var(--comp-table-row-hover); }
     /* 左/置中欄：箭頭在後，opacity:0 預留空位避免 hover 時寬度跳動 */
     #ov-all .o-table th[data-sortable]:not(.col-right)::after {
-      content: '↓'; display: inline-block; margin-left: 4px; font-size: 14px; opacity: 0;
+      content: '↓'; display: inline-block; margin-left: 2px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .45; }
+    #ov-all .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .35; }
     #ov-all .o-table th[data-sort-dir="asc"]:not(.col-right)::after  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
     #ov-all .o-table th[data-sort-dir="desc"]:not(.col-right)::after { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-all .o-table th[data-sort-dir]:not(.col-right):hover::after  { opacity: 1; filter: brightness(1.35); }
     /* 置右欄：箭頭在前（::before），同樣 opacity:0 預留空位 */
     #ov-all .o-table th[data-sortable].col-right { text-align: right; }
     #ov-all .o-table th[data-sortable].col-right::before {
-      content: '↓'; display: inline-block; margin-right: 4px; font-size: 14px; opacity: 0;
+      content: '↓'; display: inline-block; margin-right: 2px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sortable].col-right:hover::before { opacity: .45; }
+    #ov-all .o-table th[data-sortable].col-right:hover::before { opacity: .35; }
     #ov-all .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
     #ov-all .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-all .o-table th[data-sort-dir].col-right:hover::before  { opacity: 1; filter: brightness(1.35); }
+
+    /* ── 委託/成交 雙欄循環排序 ── */
+    /* steps 1&2：/成交 變淡 */
+    #ov-all .o-table #ov-both-th[data-dual-step="1"] .both-sep,
+    #ov-all .o-table #ov-both-th[data-dual-step="1"] .both-t2,
+    #ov-all .o-table #ov-both-th[data-dual-step="2"] .both-sep,
+    #ov-all .o-table #ov-both-th[data-dual-step="2"] .both-t2 { opacity: 0.45; }
+    /* steps 3&4：委託/ 變淡 */
+    #ov-all .o-table #ov-both-th[data-dual-step="3"] .both-t1,
+    #ov-all .o-table #ov-both-th[data-dual-step="3"] .both-sep,
+    #ov-all .o-table #ov-both-th[data-dual-step="4"] .both-t1,
+    #ov-all .o-table #ov-both-th[data-dual-step="4"] .both-sep { opacity: 0.45; }
+
+    /* ── 總覽機器人卡片表格排序 ── */
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable] { cursor: pointer; user-select: none; }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable]:hover { background: var(--comp-table-row-hover); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable]:not(.col-right)::after {
+      content: '↓'; display: inline-block; margin-left: 2px; font-size: 14px; opacity: 0;
+    }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .35; }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir="asc"]:not(.col-right)::after  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir="desc"]:not(.col-right)::after { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir]:not(.col-right):hover::after  { opacity: 1; filter: brightness(1.35); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable].col-right::before {
+      content: '↓'; display: inline-block; margin-right: 2px; font-size: 14px; opacity: 0;
+    }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable].col-right:hover::before { opacity: .35; }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sort-dir].col-right:hover::before  { opacity: 1; filter: brightness(1.35); }
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="1"] .both-sep,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="1"] .both-t2,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="2"] .both-sep,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="2"] .both-t2 { opacity: 0.45; }
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="3"] .both-t1,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="3"] .both-sep,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="4"] .both-t1,
+    :is(.r-card, #t-comm) .o-table .rc-both-th[data-dual-step="4"] .both-sep { opacity: 0.45; }
 
     .prod-code {
       color: var(--text2);
@@ -2372,6 +2414,10 @@
       color: inherit;
       gap: 3px;
       height: 18px;
+      border-radius: var(--r-sm);
+    }
+    .xsel-wrap:has(.th-inline-sel) .xsel-trigger:hover {
+      background: var(--hover-bg);
     }
     .xsel-wrap:has(.th-inline-sel) .xsel-arrow {
       font-size: 7px;
@@ -2393,6 +2439,14 @@
     .xsel-wrap:has(.rc-status-sel) .xsel-arrow::before { content: '\ea49'; font-family: xqnext; font-size: 16px; line-height: 1; }
     .xsel-wrap.has-filter:has(.rc-status-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
 
+    /* r-card 買賣 th inline filter */
+    .xsel-wrap:has(.rc-buysell-sel) { position: relative; top: -2px; }
+    .xsel-wrap:has(.rc-buysell-sel) .xsel-val { display: none; }
+    .xsel-wrap:has(.rc-buysell-sel) .xsel-trigger { padding: 0 3px; gap: 0; height: 18px; display: flex; align-items: center; }
+    .xsel-wrap:has(.rc-buysell-sel) .xsel-arrow { font-size: 0; opacity: .55; display: flex; align-items: center; }
+    .xsel-wrap:has(.rc-buysell-sel) .xsel-arrow::before { content: '\ea49'; font-family: xqnext; font-size: 16px; line-height: 1; }
+    .xsel-wrap.has-filter:has(.rc-buysell-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
+
     /* 帳號 th inline filter */
     .xsel-wrap:has(#ov-col-acct-sel) { position: relative; top: -2px; }
     .xsel-wrap:has(#ov-col-acct-sel) .xsel-val { display: none; }
@@ -2408,6 +2462,56 @@
     .xsel-wrap:has(#comm-col-status-sel) .xsel-arrow { font-size: 0; opacity: .55; display: flex; align-items: center; }
     .xsel-wrap:has(#comm-col-status-sel) .xsel-arrow::before { content: '\ea49'; font-family: xqnext; font-size: 16px; line-height: 1; }
     .xsel-wrap.has-filter:has(#comm-col-status-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
+
+    /* 類別 th inline filter */
+    .xsel-wrap:has(#ov-col-type-sel) { position: relative; top: -2px; }
+    .xsel-wrap:has(#ov-col-type-sel) .xsel-val { display: none; }
+    .xsel-wrap:has(#ov-col-type-sel) .xsel-trigger { padding: 0 3px; gap: 0; height: 18px; display: flex; align-items: center; }
+    .xsel-wrap:has(#ov-col-type-sel) .xsel-arrow { font-size: 0; opacity: .55; display: flex; align-items: center; }
+    .xsel-wrap:has(#ov-col-type-sel) .xsel-arrow::before { content: '\ea49'; font-family: xqnext; font-size: 16px; line-height: 1; }
+    .xsel-wrap.has-filter:has(#ov-col-type-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
+
+    /* 買賣 th inline filter */
+    .xsel-wrap:has(#ov-col-buysell-sel) { position: relative; top: -2px; }
+    .xsel-wrap:has(#ov-col-buysell-sel) .xsel-val { display: none; }
+    .xsel-wrap:has(#ov-col-buysell-sel) .xsel-trigger { padding: 0 3px; gap: 0; height: 18px; display: flex; align-items: center; }
+    .xsel-wrap:has(#ov-col-buysell-sel) .xsel-arrow { font-size: 0; opacity: .55; display: flex; align-items: center; }
+    .xsel-wrap:has(#ov-col-buysell-sel) .xsel-arrow::before { content: '\ea49'; font-family: xqnext; font-size: 16px; line-height: 1; }
+    .xsel-wrap.has-filter:has(#ov-col-buysell-sel) .xsel-arrow { opacity: 1; color: var(--accent); }
+
+    /* active filter tag (ctrl-bar) — matches xsel-trigger appearance */
+    .ov-filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      padding: 0 6px 0 10px;
+      height: var(--comp-ctrl-h);
+      box-sizing: border-box;
+      border: 1px solid var(--accent);
+      border-radius: var(--r-md);
+      background: var(--comp-seg-inactive-bg);
+      color: var(--comp-seg-inactive-text);
+      font-size: var(--f-base);
+      white-space: nowrap;
+      flex: none;
+    }
+    .ov-filter-tag .tag-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border: none;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      opacity: 0.55;
+      padding: 0;
+      font-size: 13px;
+      border-radius: var(--r-sm);
+      flex-shrink: 0;
+    }
+    .ov-filter-tag .tag-close:hover { opacity: 1; background: var(--hover-bg); }
 
     .xsel-wrap:has(#comm-filter-sel) .xsel-trigger {
       width: 120px;
@@ -3111,6 +3215,15 @@
       text-overflow: ellipsis;
       color: var(--text);
       font-weight: 500
+    }
+
+    /* 事件欄（第 4 欄）：固定 8 字寬，超出截斷 */
+    .log-table th:nth-child(4),
+    .log-table td:nth-child(4) {
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* 限制詳細內容欄（第 5 欄）的最大寬度並自動加上省略號 */
@@ -5067,6 +5180,66 @@
       flex-shrink: 0;
       cursor: pointer
     }
+    /* Price card radio options */
+    .price-card-opts {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      text-align: left;
+    }
+    .price-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border2);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .price-card:has(input:checked) {
+      border-color: var(--accent);
+    }
+    .price-card input[type="radio"] { display: none; }
+    .price-card-info { flex: 1; }
+    .price-card-title {
+      font-size: var(--f-base);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .price-card-sub {
+      font-size: var(--f-xs);
+      color: var(--text3);
+      margin-top: 3px;
+    }
+    .price-card-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .price-card:has(input:checked) .price-card-radio {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .price-card:has(input:checked) .price-card-radio::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
     .price-stepper {
       display: inline-flex;
       align-items: stretch;
@@ -5272,6 +5445,81 @@
       margin-bottom: var(--sp-4);
     }
 
+    /* ov-card 無機器人：與 r-card 同寬同陰影 */
+    #ov-card .ev-no-robot,
+    #ov-card .ev-no-running,
+    #ov-all .ev-no-robot,
+    #ov-all .ev-no-running {
+      background: var(--bg3);
+      border-radius: var(--r-lg);
+      box-shadow: var(--comp-card-shadow);
+      padding: 40px 24px;
+      gap: 12px;
+    }
+    [data-platform="xq"] #ov-card .ev-no-robot,
+    [data-platform="xq"] #ov-card .ev-no-running,
+    [data-platform="xq"] #ov-all .ev-no-robot,
+    [data-platform="xq"] #ov-all .ev-no-running {
+      border: 1px solid var(--border);
+    }
+    #ov-card .ev-no-robot .empty-icon,
+    #ov-card .ev-no-running .empty-icon,
+    #ov-all .ev-no-robot .empty-icon,
+    #ov-all .ev-no-running .empty-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      opacity: 1;
+    }
+    #ov-card .ev-no-robot .empty-icon i,
+    #ov-card .ev-no-running .empty-icon i,
+    #ov-all .ev-no-robot .empty-icon i,
+    #ov-all .ev-no-running .empty-icon i {
+      color: var(--accent);
+      opacity: 1;
+    }
+    #ov-card .ev-no-robot .empty-title,
+    #ov-card .ev-no-running .empty-title,
+    #ov-all .ev-no-robot .empty-title,
+    #ov-all .ev-no-running .empty-title {
+      font-size: var(--f-xl);
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    #ov-card .ev-no-robot .empty-sub,
+    #ov-all .ev-no-robot .empty-sub {
+      font-size: var(--f-xl);
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+    #ov-card .ev-no-running .empty-sub,
+    #ov-all .ev-no-running .empty-sub {
+      font-size: var(--f-md);
+      color: var(--text3);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+    .ov-wrap .empty-view .empty-title { color: var(--text); font-size: var(--f-xl); }
+
+    #sb-empty-btn,
+    .noperm-sb-lock .empty-action-btn {
+      font-size: var(--f-sm);
+      padding: 6px 14px;
+      gap: 4px;
+    }
+
+    .expiring-notice .empty-action-btn,
+    .noperm-upgrade-sec .empty-action-btn { background: var(--warning) !important; }
+    .expiring-notice .empty-action-btn:hover,
+    .noperm-upgrade-sec .empty-action-btn:hover { background: var(--warning) !important; filter: brightness(1.1); }
+
     .empty-view .empty-title {
       font-size: var(--f-md);
       color: var(--text2);
@@ -5294,91 +5542,113 @@
     }
 
     body.is-empty-state .ctrl-bar,
+    body.is-no-permission .ctrl-bar,
+    body.is-expiring .ctrl-bar,
     body.is-empty-state #det-filter-bar {
       display: none !important;
     }
 
     /* Metric Cards Zeroing in Empty State */
-    body.is-empty-state .metric .m-value {
+    body.is-empty-state .metric .m-value,
+    body.is-expiring .ov-wrap .metric .m-value,
+    body.is-no-permission .ov-wrap .metric .m-value,
+    body.is-partial-empty .ov-wrap .metric .m-value {
       font-size: 0 !important;
-      color: var(--text4) !important;
+      color: var(--comp-metric-empty-text) !important;
     }
 
-    body.is-empty-state .metric .m-value span {
+    body.is-empty-state .metric .m-value span,
+    body.is-expiring .ov-wrap .metric .m-value span,
+    body.is-no-permission .ov-wrap .metric .m-value span,
+    body.is-partial-empty .ov-wrap .metric .m-value span {
       display: none !important;
     }
 
-    body.is-empty-state .metric.robot .m-value::before {
-      content: "0個";
-      font-size: 28px;
-    }
-
-    body.is-empty-state .metric.long .m-value::before,
-    body.is-empty-state .metric.short .m-value::before {
-      content: "0 ($0)";
-      font-size: 28px;
-    }
-
-    body.is-empty-state .metric.book .m-value::before {
-      content: "0筆";
-      font-size: 28px;
-    }
-
-    /* Missing types previously breaking t-comm / daily orders metrics */
-    body.is-empty-state .metric.warn .m-value::before {
-      content: "$0";
-      font-size: 28px;
-    }
-
-    body.is-empty-state .metric.filled .m-value::before {
-      content: "0筆 ($0)";
-      font-size: 28px;
-    }
-
-    body.is-empty-state .metric.fail .m-value::before {
-      content: "0筆";
-      font-size: 28px;
-    }
-
-    body.is-empty-state .metric .m-sub {
+    body.is-empty-state .metric .m-sub,
+    body.is-expiring .ov-wrap .metric .m-sub,
+    body.is-no-permission .ov-wrap .metric .m-sub,
+    body.is-partial-empty .ov-wrap .metric .m-sub {
       font-size: 0 !important;
-      color: var(--text4) !important;
+      color: var(--comp-metric-empty-text) !important;
     }
 
-    body.is-empty-state .metric.robot .m-sub::before {
-      content: "共0檔商品";
-      font-size: var(--f-base);
+    body.is-empty-state .ov-wrap .metric-bar,
+    body.is-expiring .ov-wrap .metric-bar,
+    body.is-no-permission .ov-wrap .metric-bar,
+    body.is-partial-empty .ov-wrap .metric-bar {
+      opacity: 0.5;
     }
 
+    body.is-empty-state .metric.robot .m-value::before,
+    body.is-expiring .ov-wrap .metric.robot .m-value::before,
+    body.is-no-permission .ov-wrap .metric.robot .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.robot .m-value::before {
+      content: "--個"; font-size: 28px;
+    }
+    body.is-empty-state .metric.long .m-value::before,
+    body.is-empty-state .metric.short .m-value::before,
+    body.is-empty-state .metric.warn .m-value::before,
+    body.is-expiring .ov-wrap .metric.long .m-value::before,
+    body.is-expiring .ov-wrap .metric.short .m-value::before,
+    body.is-expiring .ov-wrap .metric.warn .m-value::before,
+    body.is-no-permission .ov-wrap .metric.long .m-value::before,
+    body.is-no-permission .ov-wrap .metric.short .m-value::before,
+    body.is-no-permission .ov-wrap .metric.warn .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.long .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.short .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.warn .m-value::before {
+      content: "$--"; font-size: 28px;
+    }
+    body.is-empty-state .metric.book .m-value::before,
+    body.is-empty-state .metric.filled .m-value::before,
+    body.is-expiring .ov-wrap .metric.book .m-value::before,
+    body.is-expiring .ov-wrap .metric.filled .m-value::before,
+    body.is-no-permission .ov-wrap .metric.book .m-value::before,
+    body.is-no-permission .ov-wrap .metric.filled .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.book .m-value::before,
+    body.is-partial-empty .ov-wrap .metric.filled .m-value::before {
+      content: "--筆"; font-size: 28px;
+    }
+
+    body.is-empty-state .metric.robot .m-sub::before,
+    body.is-expiring .ov-wrap .metric.robot .m-sub::before,
+    body.is-no-permission .ov-wrap .metric.robot .m-sub::before,
+    body.is-partial-empty .ov-wrap .metric.robot .m-sub::before {
+      content: "共--檔"; font-size: var(--f-base);
+    }
     body.is-empty-state .metric.long .m-sub::before,
-    body.is-empty-state .metric.short .m-sub::before {
-      content: "股票0張";
-      font-size: var(--f-base);
+    body.is-empty-state .metric.short .m-sub::before,
+    body.is-expiring .ov-wrap .metric.long .m-sub::before,
+    body.is-expiring .ov-wrap .metric.short .m-sub::before,
+    body.is-no-permission .ov-wrap .metric.long .m-sub::before,
+    body.is-no-permission .ov-wrap .metric.short .m-sub::before,
+    body.is-partial-empty .ov-wrap .metric.long .m-sub::before,
+    body.is-partial-empty .ov-wrap .metric.short .m-sub::before {
+      content: "--股"; font-size: var(--f-base);
     }
-
-    body.is-empty-state .metric.book .m-sub::before {
-      content: "共0檔商品";
-      font-size: var(--f-base);
-    }
-
-    body.is-empty-state .metric.warn .m-sub::before {
-      content: "安控 $65萬(0%)";
-      font-size: var(--f-base);
-    }
-
+    body.is-empty-state .metric.book .m-sub::before,
     body.is-empty-state .metric.filled .m-sub::before,
-    body.is-empty-state .metric.fail .m-sub::before {
-      content: "共0檔商品";
-      font-size: var(--f-base);
+    body.is-expiring .ov-wrap .metric.book .m-sub::before,
+    body.is-expiring .ov-wrap .metric.filled .m-sub::before,
+    body.is-no-permission .ov-wrap .metric.book .m-sub::before,
+    body.is-no-permission .ov-wrap .metric.filled .m-sub::before,
+    body.is-partial-empty .ov-wrap .metric.book .m-sub::before,
+    body.is-partial-empty .ov-wrap .metric.filled .m-sub::before {
+      content: "共--檔"; font-size: var(--f-base);
     }
 
     .empty-action-btn {
-      padding: var(--sp-2) var(--sp-5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 20px;
+      height: 44px;
       background: var(--accent);
       color: #fff;
       border: none;
-      border-radius: 5px;
-      font-size: var(--f-base);
+      border-radius: var(--comp-status-radius);
+      font-size: 18px;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.15s;
@@ -5394,9 +5664,18 @@
     body.is-empty-state.empty-no-order .empty-view { display: none !important; }
 
     body.is-empty-state.empty-no-robot .ev-no-robot { display: flex !important; }
+    body.is-empty-state.empty-no-robot #sb-search-sort-row { visibility: hidden; }
+    body.is-empty-state.empty-no-robot .sb-l2-filter { visibility: hidden; }
 
     body.is-empty-state.empty-inactive .ev-inactive { display: flex !important; }
     body.is-empty-state.empty-inactive #sb-data-view { display: contents !important; }
+
+    /* ── 無機器人-部分（有機器人但全未啟動） ── */
+    body.is-partial-empty #ov-card .ev-no-running,
+    body.is-partial-empty #ov-all .ev-no-running { display: flex !important; }
+    body.is-partial-empty #ov-all .all-orders-wrap { display: none !important; }
+    body.is-partial-empty #ov-card .r-card { display: none !important; }
+    body.is-partial-empty .ctrl-bar { display: none !important; }
 
     body.is-empty-state.empty-no-order .ev-no-order { display: flex !important; }
     body.is-empty-state.empty-no-order #sb-data-view { display: contents !important; }
@@ -5406,15 +5685,28 @@
     .noperm-sb-lock,
     .noperm-upgrade-sec { display: none; }
 
-    body.is-no-permission #sb-data-view .sb-group ~ .sb-group { display: none; }
-    body.is-no-permission #sb-data-view .sb-item ~ .sb-item { display: none; }
+    body.is-no-permission #sb-data-view { display: none !important; }
     body.is-no-permission .sb-l2-filter { display: none; }
     body.is-no-permission .noperm-sb-lock { display: flex; }
 
-    body.is-no-permission #ov-card .r-card ~ .r-card { display: none; }
+    body.is-no-permission #ov-card .r-card { display: none; }
     body.is-no-permission .noperm-upgrade-sec { display: flex; }
     body.is-no-permission #ov-all { display: none !important; }
     body.is-no-permission .ov-switcher { display: none; }
+
+    /* ── 即將到期狀態 ── */
+    .expiring-notice { display: none; }
+    [data-platform="xq"] .expiring-notice,
+    [data-platform="xq"] .noperm-upgrade-sec { border: 1px solid var(--border); }
+    body.is-expiring .sb-list .sb-item { opacity: 0.45; pointer-events: none; user-select: none; }
+    body.is-expiring .sb-list .sb-dot.green { background: var(--text4); }
+    body.is-expiring #sb-cnt-running { display: none !important; }
+    body.is-expiring #sb-l2-cnt-running { display: none !important; }
+    body.is-expiring #ov-card .data-view { display: none !important; }
+    body.is-expiring .expiring-notice { display: flex !important; }
+    body.is-expiring .ov-switcher { display: none; }
+    body.is-expiring #ov-all .all-orders-wrap,
+    body.is-no-permission #ov-all .all-orders-wrap { display: none !important; }
 
     .noperm-ghost-card {
       border: 1px solid var(--border2);
@@ -5498,12 +5790,12 @@
   <!-- ===== BOTTOM LEFT DEMO CONTROL — 僅供開發階段切換檢視使用，非正式功能 ===== -->
   <div class="demo-float-wrap" id="demo-float-wrap"
     style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column-reverse; gap: 8px; align-items: flex-start;">
-    <button class="demo-float-btn" onclick="document.getElementById('demo-float-menu').classList.toggle('show');"
+    <button class="demo-float-btn" onclick="document.getElementById('demo-float-menu').classList.toggle('show');event.stopPropagation();"
       style="background: var(--accent); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); outline: none; transition: transform 0.2s;">
       <i class="fas fa-magic" style="font-size: var(--f-xl);"></i>
     </button>
 
-    <div class="demo-float-menu" id="demo-float-menu"
+    <div class="demo-float-menu" id="demo-float-menu" onclick="event.stopPropagation();"
       style="display: none; flex-direction: column; gap: 8px; background: var(--bg3); padding: 12px; border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
       <div
         style="font-size: var(--f-xs); color: var(--text3); font-weight: 500; padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 4px;">
@@ -5543,23 +5835,36 @@
       <div class="theme-toggle" onclick="setQuotaScenario('upgrade')" id="quota-upgrade-btn"
         style="display:flex;gap:8px;align-items:center;justify-content:flex-start;">
         <span class="icon" style="width:20px;text-align:center;">🔒</span>
-        <span>免費權限</span>
+        <span>無權限</span>
       </div>
-      <div class="theme-toggle" onclick="setQuotaScenario('limit')" id="quota-limit-btn"
+      <div class="theme-toggle" onclick="setQuotaScenario('limits')" id="quota-limits-btn"
         style="display:flex;gap:8px;align-items:center;justify-content:flex-start;">
         <span class="icon" style="width:20px;text-align:center;">🔒</span>
-        <span>權限上限</span>
+        <span>新增/執行上限</span>
+      </div>
+      <div class="theme-toggle" onclick="setQuotaScenario('expiring')" id="quota-expiring-btn"
+        style="display:flex;gap:8px;align-items:center;justify-content:flex-start;">
+        <span class="icon" style="width:20px;text-align:center;">🔒</span>
+        <span>權限到期-緩衝期</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:2px 8px;">
+        <span style="font-size:var(--f-xs);color:var(--text3);flex:1;">剩餘天數</span>
+        <button onclick="setExpiringDays(_expiringDays-1)"
+          style="width:20px;height:20px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--text2);cursor:pointer;font-size:14px;line-height:1;padding:0;">−</button>
+        <span id="expiring-days-val" style="font-size:var(--f-sm);color:var(--accent);font-weight:600;min-width:18px;text-align:center;">14</span>
+        <button onclick="setExpiringDays(_expiringDays+1)"
+          style="width:20px;height:20px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--text2);cursor:pointer;font-size:14px;line-height:1;padding:0;">+</button>
       </div>
 
       <div class="theme-toggle" onclick="setEmptyVariant('no-robot')" id="ev-no-robot-btn"
         style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
         <span class="icon" style="width: 20px; text-align: center;">🤖</span>
-        <span>無機器人</span>
+        <span>無機器人-全部</span>
       </div>
-      <div class="theme-toggle" onclick="setEmptyVariant('inactive')" id="ev-inactive-btn"
+      <div class="theme-toggle" onclick="setPartialEmpty()" id="ev-no-robot-partial-btn"
         style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
         <span class="icon" style="width: 20px; text-align: center;">⏸</span>
-        <span>無啟動</span>
+        <span>無啟動/收藏</span>
       </div>
       <div class="theme-toggle" onclick="setEmptyVariant('no-order')" id="ev-no-order-btn"
         style="display: flex; gap: 8px; align-items: center; justify-content: flex-start;">
@@ -5671,7 +5976,7 @@
         </div>
 
         <!-- 搜尋 + 排序 列 -->
-        <div style="display:flex; align-items:center; height:32px; padding:0 var(--sp-3); flex-shrink:0;">
+        <div id="sb-search-sort-row" style="display:flex; align-items:center; height:32px; padding:0 var(--sp-3); flex-shrink:0;">
           <!-- 預設：搜尋 icon + 資料夾名稱 + 數量 -->
           <div id="sb-l2-hdr" style="display:flex; align-items:center; flex:1; min-width:0; gap:1px;">
             <button class="sb-hdr-search-ico" onclick="sbSearchExpand()" title="搜尋">
@@ -5680,10 +5985,15 @@
             <span class="sb-folder-title" style="flex:none"><span id="sb-folder-name">全部</span><span class="sb-folder-cnt" id="sb-folder-cnt"></span></span>
           </div>
           <!-- 搜尋展開（點擊 icon 顯示） -->
-          <div id="sb-search-bar" style="display:none; flex:1; min-width:0; align-items:center; height:100%; gap:4px; padding:0 0 0 var(--sp-2);">
-            <input class="sb-search-input" id="sb-search-input" placeholder="搜尋機器人名稱"
-              oninput="sbSearchFilter(this.value)">
-            <span class="sb-search-close" onclick="sbSearchClose()" title="關閉"><span style="font-family:xqnext">&#xe913;</span></span>
+          <div id="sb-search-bar" style="display:none; flex:1; min-width:0; align-items:center; height:100%; padding:0 0 0 var(--sp-2);">
+            <div style="position:relative; flex:1; display:flex; align-items:center;">
+              <input class="sb-search-input" id="sb-search-input" placeholder="搜尋機器人名稱"
+                oninput="sbSearchFilter(this.value)" style="width:100%; padding-right:28px;">
+              <span class="sb-search-close" onclick="sbSearchClose()" title="關閉"
+                style="position:absolute; right:4px; top:50%; transform:translateY(-50%); width:20px; height:20px; font-size:14px;">
+                <span style="font-family:xqnext">&#xe913;</span>
+              </span>
+            </div>
           </div>
           <!-- 排序按鈕 -->
           <div id="sb-sort-wrap" class="xsel-wrap">
@@ -5732,7 +6042,7 @@
             <div class="empty-title" id="sb-empty-title">無可用機器人</div>
             <div class="empty-sub" id="sb-empty-sub">目前沒有可用的策略</div>
             <button class="empty-action-btn" id="sb-empty-btn" onclick="openArmModal()"
-              style="margin-top:12px;">新建機器人</button>
+              style="margin-top:12px;"><i class="fas fa-plus"></i><span>新建</span></button>
           </div>
           <div id="sb-data-view" class="data-view" style="display:contents">
 
@@ -5781,8 +6091,8 @@
             <!-- 無權限鎖定 banner（只有 is-no-permission 時顯示） -->
             <div class="noperm-sb-lock" style="flex-direction:column;align-items:center;gap:6px;padding:14px var(--sp-3) 10px;border-top:1px solid var(--border2);margin-top:4px;text-align:center;">
               <i class="fas fa-lock" style="font-size:18px;opacity:0.4;color:var(--text3);"></i>
-              <div style="font-size:var(--f-xs);color:var(--text3);line-height:1.5;">您目前可使用 <strong style="color:var(--text2)">1 個機器人</strong><br>升級方案解鎖更多機器人</div>
-              <button class="empty-action-btn" style="font-size:var(--f-xs);padding:5px 14px;margin-top:2px;">了解升級方案</button>
+              <div style="font-size:var(--f-xs);color:var(--text3);line-height:1.5;">尚未開通自動交易<br>訂閱後即可使用機器人</div>
+              <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:2px;">了解訂閱方案</button>
             </div>
 
             <!-- 智慧單 -->
@@ -5856,6 +6166,14 @@
             <input class="f-input" id="ov-prod-search" type="text" placeholder="輸入股票代號或股名" oninput="ovProdSearch(this.value)">
             <button class="inp-clear" onclick="this.previousElementSibling.value='';ovProdSearch('')" title="清除"><span style="font-family:xqnext;font-size:14px;line-height:1">&#xe913;</span></button>
           </div>
+          <div id="ov-type-tag" class="ov-filter-tag" style="display:none">
+            <span class="tag-label">零股</span>
+            <button class="tag-close" onclick="ovTypeClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
+          </div>
+          <div id="ov-buysell-tag" class="ov-filter-tag" style="display:none">
+            <span class="tag-label">買進</span>
+            <button class="tag-close" onclick="ovBuySellClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
+          </div>
           <div class="op-btns">
             <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
           </div>
@@ -5863,6 +6181,17 @@
 
         <!-- 機器人 VIEW -->
         <div id="ov-card" class="robot-list">
+          <div class="empty-view ev-no-running">
+            <div class="empty-icon"><i class="fas fa-robot"></i></div>
+            <div class="empty-title">目前無執行中機器人</div>
+            <div class="empty-sub">請啟動看更多執行數據</div>
+          </div>
+          <div class="empty-view ev-no-robot">
+            <div class="empty-icon"><i class="fas fa-robot"></i></div>
+            <div class="empty-title">建立交易機器人</div>
+            <div class="empty-sub">來啟動自動下單吧！</div>
+            <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;gap:8px;"><i class="fas fa-plus"></i>新建機器人</button>
+          </div>
           <div class="empty-view ev-inactive">
             <div class="empty-icon"><i class="fas fa-video-slash"></i></div>
             <div class="empty-title">目前沒有執行中的機器人</div>
@@ -5911,7 +6240,7 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">尚無未平倉委託</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無未平倉委託</div>
                     <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
                   </div>
                   <table class="o-table data-view">
@@ -5919,12 +6248,16 @@
                       <tr>
                         <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                         <th class="col-act"></th>
-                        <th>委託時間</th>
-                        <th>商品</th>
-                        <th>買賣</th>
-                        <th>委託/成交</th>
-                        <th class="col-right">委託價</th>
-                        <th class="col-right">成交均價</th>
+                        <th data-sortable data-sort-dir="desc" onclick="rcColSort(this,2)">委託時間</th>
+                        <th class="col-prod" data-sortable onclick="rcColSort(this,3)">商品</th>
+                        <th>買賣 <select class="th-inline-sel rc-buysell-sel" onchange="rcBuySellSync(this)">
+                          <option value="">全部</option>
+                          <option value="buy">買進</option>
+                          <option value="sell">賣出</option>
+                        </select></th>
+                        <th data-sortable class="rc-both-th" onclick="rcColBothSort(this)"><span class="both-t1">委託</span><span class="both-sep">/</span><span class="both-t2">成交</span></th>
+                        <th class="col-right" data-sortable onclick="rcColSort(this,6)">委託價</th>
+                        <th class="col-right" data-sortable onclick="rcColSort(this,7)">成交均價</th>
                         <th>委託狀態 <select class="th-inline-sel rc-status-sel" onchange="rcStatusSync(this.value)">
                           <option value="">全部</option>
                           <option value="pend">未完全成交</option>
@@ -5932,7 +6265,7 @@
                           <option value="fail">委託失敗</option>
                           <option value="cancel">已刪單</option>
                         </select></th>
-                        <th title="券商委託回報書號，供核對用">委託書號</th>
+                        <th data-sortable onclick="rcColSort(this,9)" title="券商委託回報書號，供核對用">委託書號</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -6101,7 +6434,7 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">尚無未平倉委託</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無未平倉委託</div>
                     <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
                   </div>
                   <table class="o-table data-view">
@@ -6109,12 +6442,16 @@
                       <tr>
                         <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                         <th class="col-act"></th>
-                        <th>委託時間</th>
-                        <th>商品</th>
-                        <th>買賣</th>
-                        <th>委託/成交</th>
-                        <th class="col-right">委託價</th>
-                        <th class="col-right">成交均價</th>
+                        <th data-sortable data-sort-dir="desc" onclick="rcColSort(this,2)">委託時間</th>
+                        <th class="col-prod" data-sortable onclick="rcColSort(this,3)">商品</th>
+                        <th>買賣 <select class="th-inline-sel rc-buysell-sel" onchange="rcBuySellSync(this)">
+                          <option value="">全部</option>
+                          <option value="buy">買進</option>
+                          <option value="sell">賣出</option>
+                        </select></th>
+                        <th data-sortable class="rc-both-th" onclick="rcColBothSort(this)"><span class="both-t1">委託</span><span class="both-sep">/</span><span class="both-t2">成交</span></th>
+                        <th class="col-right" data-sortable onclick="rcColSort(this,6)">委託價</th>
+                        <th class="col-right" data-sortable onclick="rcColSort(this,7)">成交均價</th>
                         <th>委託狀態 <select class="th-inline-sel rc-status-sel" onchange="rcStatusSync(this.value)">
                           <option value="">全部</option>
                           <option value="pend">未完全成交</option>
@@ -6122,7 +6459,7 @@
                           <option value="fail">委託失敗</option>
                           <option value="cancel">已刪單</option>
                         </select></th>
-                        <th title="券商委託回報書號，供核對用">委託書號</th>
+                        <th data-sortable onclick="rcColSort(this,9)" title="券商委託回報書號，供核對用">委託書號</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -6336,7 +6673,7 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">尚無交易委託</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無交易委託</div>
                     <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
                   </div>
                   <div class="data-view" style="display:contents"></div>
@@ -6348,27 +6685,65 @@
 
           </div>
 
-          <!-- 無權限升級區（is-no-permission 時顯示） -->
-          <div class="noperm-upgrade-sec" style="flex-direction:column;gap:10px;padding:0 0 20px;">
-
-            <!-- 升級 CTA -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;border:1px dashed var(--border2);border-radius:var(--r-lg);text-align:center;">
-              <i class="fas fa-lock" style="font-size:22px;opacity:0.35;color:var(--text3);"></i>
-              <div style="font-size:var(--f-sm);font-weight:500;color:var(--text2);">解鎖更多機器人</div>
-              <div style="font-size:var(--f-xs);color:var(--text4);line-height:1.5;">升級使用方案，同時執行多個策略<br>靈活管理您的投資組合</div>
-              <button class="empty-action-btn" style="margin-top:4px;">了解升級方案</button>
+          <!-- 即將到期提示卡（is-expiring 時顯示） -->
+          <div class="expiring-notice" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
+            <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-clock" style="color:var(--warning);opacity:1;"></i></div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">訂閱已到期</div>
+            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+              機器人資料將在
+              <strong id="expiring-days-card" style="color:var(--warning);">14</strong>
+              天內清空<br>立即續訂以繼續使用所有機器人
             </div>
+            <button class="empty-action-btn" onclick="openQuotaModal('expiring')" style="margin-top:4px;">立即續訂</button>
+          </div>
 
+          <!-- 無權限升級區（is-no-permission 時顯示） -->
+          <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
+            <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動交易</div>
+            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+              支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
+            </div>
+            <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:4px;">前往升級</button>
           </div>
 
         </div><!-- /ov-card -->
 
         <!-- 全部委託 VIEW -->
         <div id="ov-all" style="display:none">
-          <div class="empty-view ev-no-robot ev-inactive ev-no-order">
+          <div class="empty-view ev-no-robot">
+            <div class="empty-icon"><i class="fas fa-robot"></i></div>
+            <div class="empty-title">建立交易機器人</div>
+            <div class="empty-sub">來啟動自動下單吧！</div>
+            <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;"><i class="fas fa-plus"></i>新建機器人</button>
+          </div>
+          <div class="empty-view ev-no-running">
+            <div class="empty-icon"><i class="fas fa-robot"></i></div>
+            <div class="empty-title">目前無執行中機器人</div>
+            <div class="empty-sub">請啟動看更多委託資訊</div>
+          </div>
+          <div class="empty-view ev-inactive ev-no-order">
             <div class="empty-icon"><i class="icon-inbox"></i></div>
-            <div class="empty-title">今日尚無委託紀錄</div>
+            <div class="empty-title">今日目前無委託紀錄</div>
             <div class="empty-sub">送出委託後將顯示於此</div>
+          </div>
+          <div class="expiring-notice" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
+            <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-clock" style="color:var(--warning);opacity:1;"></i></div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">訂閱已到期</div>
+            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+              機器人資料將在
+              <strong id="expiring-days-card-comm" style="color:var(--warning);">14</strong>
+              天內清空<br>立即續訂以繼續使用所有機器人
+            </div>
+            <button class="empty-action-btn" onclick="openQuotaModal('expiring')" style="margin-top:4px;">立即續訂</button>
+          </div>
+          <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
+            <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動交易</div>
+            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+              支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
+            </div>
+            <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:4px;">前往升級</button>
           </div>
           <div class="all-orders-wrap data-view">
             <table class="o-table">
@@ -6377,15 +6752,18 @@
                   <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                   <th class="col-act"></th>
                   <th data-sortable data-sort-dir="desc" onclick="ovColSort(this,2)">委託時間</th>
-                  <th data-sortable onclick="ovColSort(this,3)">類別</th>
-                  <th class="col-prod" data-sortable onclick="ovColSort(this,4)">商品</th>
-                  <th>買賣 <select class="th-inline-sel"
-                      style="font-size:var(--f-xs);border:none;cursor:pointer;color:inherit">
-                      <option>全</option>
-                      <option>買進</option>
-                      <option>賣出</option>
+                  <th>類別 <select class="th-inline-sel" id="ov-col-type-sel" onchange="ovTypeSync(this.value)">
+                      <option value="">全部</option>
+                      <option value="odd">零股</option>
+                      <option value="stock">整股</option>
                     </select></th>
-                  <th data-sortable onclick="ovColSort(this,6)">委託/成交</th>
+                  <th class="col-prod" data-sortable onclick="ovColSort(this,4)">商品</th>
+                  <th>買賣 <select class="th-inline-sel" id="ov-col-buysell-sel" onchange="ovBuySellSync(this.value)">
+                      <option value="">全部</option>
+                      <option value="buy">買進</option>
+                      <option value="sell">賣出</option>
+                    </select></th>
+                  <th data-sortable id="ov-both-th" onclick="ovColBothSort()"><span class="both-t1">委託</span><span class="both-sep">/</span><span class="both-t2">成交</span></th>
                   <th class="col-right" data-sortable onclick="ovColSort(this,7)">委託價</th>
                   <th class="col-right" data-sortable onclick="ovColSort(this,8)">成交均價</th>
                   <th>委託狀態 <select class="th-inline-sel" id="ov-col-status-sel" onchange="ovColStatusSync(this.value)">
@@ -6858,6 +7236,18 @@
 
           <!-- TAB 2: 商品監控 -->
           <div id="t-comm" class="tab-pane">
+            <!-- 無機器人空畫面 -->
+            <div class="empty-view ev-no-robot" style="padding:80px 20px;">
+              <div class="empty-icon"><i class="fas fa-robot"></i></div>
+              <div class="empty-title">建立交易機器人</div>
+              <div class="empty-sub">來啟動自動下單吧！</div>
+            </div>
+            <!-- 無執行中機器人空畫面 -->
+            <div class="empty-view ev-no-running" style="padding:80px 20px;">
+              <div class="empty-icon"><i class="fas fa-robot"></i></div>
+              <div class="empty-title">目前無執行中機器人</div>
+              <div class="empty-sub">請啟動看更多執行數據</div>
+            </div>
             <!-- 未啟動空畫面 -->
             <div id="comm-idle-state" class="empty-view ev-inactive" style="padding:80px 20px;display:none;">
               <div class="empty-icon">
@@ -6865,7 +7255,7 @@
               </div>
               <div class="empty-title">請啟動機器人</div>
               <div class="empty-sub">啟動後每日委託紀錄將顯示於此</div>
-              <button class="empty-action-btn" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px"
+              <button class="empty-action-btn" style="margin-top:16px;"
                 onclick="document.querySelector('.det-hdr-actions .rh-status-btn').click()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>
                 啟動
@@ -6910,6 +7300,10 @@
                     oninput="_applyProdListFilter(this.value)">
                   <button class="inp-clear" onclick="this.previousElementSibling.value='';this.previousElementSibling.dispatchEvent(new Event('input'))" title="清除"><span style="font-family:xqnext;font-size:14px;line-height:1">&#xe913;</span></button>
                 </div>
+                <div id="comm-buysell-tag" class="ov-filter-tag" style="display:none">
+                  <span class="tag-label">買進</span>
+                  <button class="tag-close" onclick="commBuySellClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
+                </div>
                 <select class="s-input" id="comm-filter-sel" style="width:auto;height:var(--comp-ctrl-h)" onchange="commFilterBySelect(this.value)">
                   <option value="">全部委託</option>
                   <option value="pend">未完全成交</option>
@@ -6918,11 +7312,11 @@
                   <option value="cancel">已刪單</option>
                 </select>
                 <button class="del-all-btn"
-                  onclick="xConfirm('全部刪單','將刪除所有未完全成交委託<br>此操作無法復原',()=>xAlert('已刪除','所有可刪改委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'確認',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
+                  onclick="xConfirm('全部刪單','將刪除所有未完全成交委託',()=>xAlert('已刪除','所有未完全成交委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'確認',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
               </div>
               <div class="empty-view ev-no-order" style="padding:60px 20px;">
                 <div class="empty-icon"><i class="icon-folder-open"></i></div>
-                <div class="empty-title">今日尚無委託紀錄</div>
+                <div class="empty-title">今日目前無委託紀錄</div>
                 <div class="empty-sub">開通機器人後送出的委託紀錄將顯示於此</div>
               </div>
               <div class="table-radius-wrap">
@@ -6931,12 +7325,16 @@
                   <tr>
                     <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                     <th class="col-act"></th>
-                    <th>委託時間</th>
-                    <th>商品</th>
-                    <th>買賣</th>
-                    <th>委託/成交</th>
-                    <th class="col-right">委託價</th>
-                    <th class="col-right">成交均價</th>
+                    <th data-sortable data-sort-dir="desc" onclick="rcColSort(this,2)">委託時間</th>
+                    <th class="col-prod" data-sortable onclick="rcColSort(this,3)">商品</th>
+                    <th>買賣 <select class="th-inline-sel rc-buysell-sel" data-tag-id="comm-buysell-tag" onchange="rcBuySellSync(this)">
+                      <option value="">全部</option>
+                      <option value="buy">買進</option>
+                      <option value="sell">賣出</option>
+                    </select></th>
+                    <th data-sortable class="rc-both-th" onclick="rcColBothSort(this)"><span class="both-t1">委託</span><span class="both-sep">/</span><span class="both-t2">成交</span></th>
+                    <th class="col-right" data-sortable onclick="rcColSort(this,6)">委託價</th>
+                    <th class="col-right" data-sortable onclick="rcColSort(this,7)">成交均價</th>
                     <th>委託狀態 <select class="th-inline-sel" id="comm-col-status-sel" onchange="commColStatusSync(this.value)">
                       <option value="">全部</option>
                       <option value="pend">未完全成交</option>
@@ -6944,7 +7342,7 @@
                       <option value="fail">委託失敗</option>
                       <option value="cancel">已刪單</option>
                     </select></th>
-                    <th title="券商委託回報書號，供核對用">委託書號</th>
+                    <th data-sortable onclick="rcColSort(this,9)" title="券商委託回報書號，供核對用">委託書號</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -7276,11 +7674,16 @@
 
           <!-- TAB: 持倉庫存 -->
           <div id="t-pos" class="tab-pane">
+            <div class="empty-view ev-no-robot" style="padding:80px 20px;">
+              <div class="empty-icon"><i class="fas fa-robot"></i></div>
+              <div class="empty-title">目前無可用機器人</div>
+              <div class="empty-sub">建立並啟動機器人後，持倉紀錄將顯示於此</div>
+            </div>
             <div id="pos-idle-state" class="empty-view ev-inactive" style="padding:80px 20px;display:none;">
               <div class="empty-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><path d="M12 12v4"/><path d="M10 14h4"/></svg>
               </div>
-              <div class="empty-title">尚無持倉紀錄</div>
+              <div class="empty-title">目前無持倉紀錄</div>
               <div class="empty-sub">機器人建立持倉後將顯示於此</div>
             </div>
             <div id="pos-running-content">
@@ -7346,15 +7749,15 @@
                       <tr>
                         <th class="col-chk"><input type="checkbox" class="pos-cb" onclick="toggleAllPos(this)"></th>
                         <th class="col-act"></th>
-                        <th>商品</th>
-                        <th>成交日期</th>
-                        <th style="text-align:right">未實現損益</th>
-                        <th style="text-align:right">損益%</th>
-                        <th style="text-align:right">部位</th>
-                        <th style="text-align:right">平均成本</th>
-                        <th style="text-align:right">總成本</th>
-                        <th style="text-align:right">現價</th>
-                        <th style="text-align:right">市值</th>
+                        <th class="col-prod" data-sortable onclick="posColSort(this,2)">商品</th>
+                        <th data-sortable data-sort-dir="desc" onclick="posColSort(this,3)">成交時間</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,4)">未實現損益</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,5)">損益%</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,6)">部位</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,7)">平均成本</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,8)">總成本</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,9)">現價</th>
+                        <th class="col-right" data-sortable onclick="posColSort(this,10)">市值</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -7365,7 +7768,7 @@
                         <td>
                           <div class="line-clamp-2" title="台積電 2330">台積電 <span class="prod-code">2330</span></div>
                         </td>
-                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/15 09:35:22">2026/04/15</td>
+                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/15 09:35:22.000">2026/04/15 09:35</td>
                         <td style="text-align:right;color:var(--danger);font-variant-numeric:tabular-nums">+7,000</td>
                         <td style="text-align:right;color:var(--danger);font-variant-numeric:tabular-nums">+4.49%</td>
                         <td style="text-align:right;font-variant-numeric:tabular-nums">2張</td>
@@ -7381,7 +7784,7 @@
                         <td>
                           <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
                         </td>
-                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/03/12 10:20:45">2026/03/12</td>
+                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/03/12 10:20:45.000">2026/03/12 10:20</td>
                         <td style="text-align:right;color:var(--danger);font-variant-numeric:tabular-nums">+5,000</td>
                         <td style="text-align:right;color:var(--danger);font-variant-numeric:tabular-nums">+4.24%</td>
                         <td style="text-align:right;font-variant-numeric:tabular-nums">1張</td>
@@ -7397,7 +7800,7 @@
                         <td>
                           <div class="line-clamp-2" title="台塑 1301">台塑 <span class="prod-code">1301</span></div>
                         </td>
-                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/01 13:45:10">2026/04/01</td>
+                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/01 13:45:10.000">2026/04/01 13:45</td>
                         <td style="text-align:right;color:var(--success);font-variant-numeric:tabular-nums">−1,750</td>
                         <td style="text-align:right;color:var(--success);font-variant-numeric:tabular-nums">−3.21%</td>
                         <td style="text-align:right;font-variant-numeric:tabular-nums">5張</td>
@@ -7413,7 +7816,7 @@
                         <td>
                           <div class="line-clamp-2" title="國泰金 2882">國泰金 <span class="prod-code">2882</span></div>
                         </td>
-                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/20 14:30:05">2026/04/20</td>
+                        <td style="font-variant-numeric:tabular-nums;white-space:nowrap" title="2026/04/20 14:30:05.000">2026/04/20 14:30</td>
                         <td style="text-align:right;color:var(--success);font-variant-numeric:tabular-nums">−1,050</td>
                         <td style="text-align:right;color:var(--success);font-variant-numeric:tabular-nums">−4.86%</td>
                         <td style="text-align:right;font-variant-numeric:tabular-nums">3張</td>
@@ -7426,7 +7829,6 @@
                   </table>
                 </div>
               </div>
-              <div style="padding:6px var(--sp-4) 8px;font-size:var(--f-sm);color:var(--text4);text-align:center">更新時間：2026/06/10 14:32</div>
             </div>
           </div>
 
@@ -7459,9 +7861,9 @@
                 </div>
                 <button class="export-btn" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-export" style="font-size:24px;line-height:1"></i><span>匯出紀錄</span></button>
               </div>
-              <div class="empty-view ev-inactive ev-no-order" style="padding:40px 20px;">
+              <div class="empty-view ev-no-robot ev-inactive ev-no-order" style="padding:40px 20px;">
                 <div class="empty-icon"><i class="icon-file-list"></i></div>
-                <div class="empty-title">尚無執行紀錄</div>
+                <div class="empty-title">目前無執行紀錄</div>
                 <div class="empty-sub">此處將顯示機器人交易與系統警告等推播紀錄</div>
               </div>
               <div class="table-radius-wrap">
@@ -7475,152 +7877,152 @@
                 </colgroup>
                 <thead>
                   <tr>
-                    <th>時間</th>
-                    <th>事件名稱</th>
-                    <th>類型</th>
-                    <th>來源</th>
-                    <th>詳細內容</th>
+                    <th data-sortable data-sort-dir="desc" onclick="logColSort(this,0)">時間</th>
+                    <th data-sortable onclick="logColSort(this,1)">來源</th>
+                    <th data-sortable onclick="logColSort(this,2)">類型</th>
+                    <th data-sortable onclick="logColSort(this,3)">事件</th>
+                    <th data-sortable onclick="logColSort(this,4)">詳細內容</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr data-etype="trade" data-src="robot">
                     <td>13:30:00</td>
-                    <td>機器人停止</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">交易機器人 1</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>機器人停止</td>
                     <td>交易機器人 1 已停止 • 原因：手動停止</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>10:00:00</td>
-                    <td><strong class="log-event-cancel">刪除委託</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-cancel">刪除委託</strong></td>
                     <td>聯發科 <span class="prod-code">2454</span> 原委託已刪除</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>09:30:45</td>
-                    <td><strong class="log-event-success">委託成交</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-success">委託成交</strong></td>
                     <td>台積電 <span class="prod-code">2330</span> 成交 10張 @ 920</td>
                   </tr>
                   <tr data-etype="warning" data-src="product">
                     <td>09:15:00</td>
-                    <td><strong class="log-event-err">委託失敗</strong></td>
-                    <td><span class="evt-badge eb-warn">警示</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-warn">警示</span></td>
+                    <td><strong class="log-event-err">委託失敗</strong></td>
                     <td>聯發科 <span class="prod-code">2454</span> 賣出 5張：委託失敗</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>09:01:12</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>台積電 <span class="prod-code">2330</span> 買進 10張 @ 920</td>
                   </tr>
                   <tr data-etype="trade" data-src="robot">
                     <td>09:00:05</td>
-                    <td>機器人啟動</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">交易機器人 1</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>機器人啟動</td>
                     <td>交易機器人 1 已啟動 • 帳號：証-模擬交易-01</td>
                   </tr>
                   <tr data-etype="trade" data-src="robot">
                     <td>15:10:00</td>
-                    <td>策略已停止監控</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科策略 v2.0</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>策略已停止監控</td>
                     <td>使用者在量化積木端停止了策略監控</td>
                   </tr>
                   <tr data-etype="trade" data-src="robot">
                     <td>09:05:00</td>
-                    <td>策略重新開始監控</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科策略 v2.0</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>策略重新開始監控</td>
                     <td>使用者重新啟動了策略監控</td>
                   </tr>
                   <tr data-etype="warning" data-src="robot">
                     <td>20:30:00</td>
-                    <td>策略資料變動</td>
-                    <td><span class="evt-badge eb-warn">警示</span></td>
                     <td class="log-src">聯發科策略 v2.0</td>
+                    <td><span class="evt-badge eb-warn">警示</span></td>
+                    <td>策略資料變動</td>
                     <td>回測資料重新計算，策略訊號可能改變</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>13:45:22</td>
-                    <td><strong class="log-event-success">委託成交</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-success">委託成交</strong></td>
                     <td>聯發科 <span class="prod-code">2454</span> 成交 5張 @ 1,032</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>13:44:58</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>聯發科 <span class="prod-code">2454</span> 賣出 5張 @ 1,032</td>
                   </tr>
                   <tr data-etype="warning" data-src="product">
                     <td>13:20:11</td>
-                    <td><strong class="log-event-err">委託失敗</strong></td>
-                    <td><span class="evt-badge eb-warn">警示</span></td>
                     <td class="log-src">緯穎 <span class="prod-code">6669</span></td>
+                    <td><span class="evt-badge eb-warn">警示</span></td>
+                    <td><strong class="log-event-err">委託失敗</strong></td>
                     <td>緯穎 <span class="prod-code">6669</span> 買進 2張：餘額不足</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>12:58:03</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">緯穎 <span class="prod-code">6669</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>緯穎 <span class="prod-code">6669</span> 買進 2張 @ 3,840</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>11:32:40</td>
-                    <td><strong class="log-event-cancel">刪除委託</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-cancel">刪除委託</strong></td>
                     <td>台積電 <span class="prod-code">2330</span> 原委託已刪除</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>11:15:07</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>台積電 <span class="prod-code">2330</span> 買進 8張 @ 915</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>10:50:29</td>
-                    <td><strong class="log-event-success">委託成交</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">鴻海 <span class="prod-code">2317</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-success">委託成交</strong></td>
                     <td>鴻海 <span class="prod-code">2317</span> 成交 3張 @ 218</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>10:48:55</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">鴻海 <span class="prod-code">2317</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>鴻海 <span class="prod-code">2317</span> 買進 3張 @ 218</td>
                   </tr>
                   <tr data-etype="warning" data-src="robot">
                     <td>10:30:00</td>
-                    <td>策略資料變動</td>
-                    <td><span class="evt-badge eb-warn">警示</span></td>
                     <td class="log-src">台積電策略 v1.2</td>
+                    <td><span class="evt-badge eb-warn">警示</span></td>
+                    <td>策略資料變動</td>
                     <td>回測資料重新計算，策略訊號可能改變</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>10:05:18</td>
-                    <td><strong class="log-event-success">委託成交</strong></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-success">委託成交</strong></td>
                     <td>聯發科 <span class="prod-code">2454</span> 成交 10張 @ 1,025</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>10:02:44</td>
-                    <td>委託送出</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
                     <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
                     <td>聯發科 <span class="prod-code">2454</span> 買進 10張 @ 1,025</td>
                   </tr>
                 </tbody>
@@ -8258,15 +8660,16 @@
     function xConfirm(title, msg, onOk, opts) { _xpopShow({ icon: (opts && opts.icon) || '<i class="icon-alert-triangle-fill" style="color:var(--warning)"></i>', title, msg, type: 'confirm', confirmText: (opts && opts.confirmText) || '確認', cancelText: (opts && opts.cancelText) || '取消', confirmCls: (opts && opts.confirmCls != null) ? opts.confirmCls : 'danger', onOk, onCancel: (opts && opts.onCancel) || null, noClose: !!(opts && opts.noClose) }); }
     function xPrompt(title, msg, defaultVal, onOk) { _xpopShow({ icon: '✏️', title, msg, type: 'prompt', inputVal: defaultVal || '', confirmText: '確認', confirmCls: 'accent', onOk }); }
     function closeAllPosConfirm() {
-      const msgHtml = `<div>將對所有持倉送出委託<br>此操作無法復原</div>
-        <div class="xpop-price-opts">
-          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
-          <label><input type="radio" name="cap-price" value="current"> 現價</label>
-          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
+      const _posCnt = document.querySelectorAll('#t-pos .o-table tbody tr:not(.pos-detail-row)').length;
+      const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉送出委託價格</div>
+        <div class="xpop-price-opts" style="gap:0;">
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label style="padding:10px 0;"><input type="radio" name="cap-price" value="tick1"> 買進-1檔 / 賣出+1檔</label>
         </div>`;
       xConfirm('全部平倉', msgHtml,
         () => xAlert('已送出', '全部平倉委託已送出', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'),
-        { icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>', confirmText: '確認', confirmCls: 'danger', noClose: true }
+        { icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>', confirmText: '確認平倉', confirmCls: 'danger', noClose: true }
       );
     }
     /* ── Font size control ── */
@@ -8377,21 +8780,111 @@
       btn.style.color = active ? 'var(--accent)' : '';
     }
 
-    const _evBtns = { 'no-robot': 'ev-no-robot-btn', 'inactive': 'ev-inactive-btn', 'no-order': 'ev-no-order-btn' };
+    const _evBtns = { 'no-robot': 'ev-no-robot-btn', 'no-order': 'ev-no-order-btn' };
     let _evActive = '';
-    function setEmptyVariant(variant) {
-      const isSame = _evActive === variant && document.body.classList.contains('is-empty-state');
-      // clear
+    function _clearEmptyState() {
+      const wasNoRobot = document.body.classList.contains('empty-no-robot');
       document.body.classList.remove('is-empty-state', 'empty-no-robot', 'empty-inactive', 'empty-no-order');
       Object.values(_evBtns).forEach(id => { const b = document.getElementById(id); if (b) { b.style.borderColor = ''; b.style.color = ''; } });
       _evActive = '';
+      // 還原被 no-robot 隱藏的 sb-item
+      if (wasNoRobot) {
+        _applyListFilter(_sbCurrentFilter);
+        _updateFilterCounts();
+      }
+      // 清除 partial empty
+      _clearPartialEmpty();
+    }
+    function setEmptyVariant(variant) {
+      const isSame = _evActive === variant && document.body.classList.contains('is-empty-state');
+      _clearEmptyState();
       if (isSame) return;
+      // 互斥：清除 quota 狀態
+      document.body.classList.remove('is-no-permission', 'is-quota-active', 'is-expiring');
+      Object.values(_quotaBtns).forEach(id => { const b = document.getElementById(id); if (b) { b.style.borderColor = ''; b.style.color = ''; } });
+      _quotaScenario = 'upgrade';
       // activate
       document.body.classList.add('is-empty-state', 'empty-' + variant);
       _evActive = variant;
+      _applyPageSilent('ov-robots');
+      // 無機器人：隱藏所有 sb-item、清 L1 badges、重置 L2 到「全部」
+      if (variant === 'no-robot') {
+        document.querySelectorAll('.sb-list .sb-item').forEach(el => el.style.display = 'none');
+        _updateFilterCounts();
+        _sbL2Filter = 'all';
+        document.querySelectorAll('.sb-l2-filter .seg-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.l2filter === 'all');
+        });
+        _updateSbEmpty();
+      }
       const btn = document.getElementById(_evBtns[variant]);
       if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
     }
+    let _partialEmptyActive = false;
+    let _partialHiddenItems = []; // 被隱藏的 running items
+    let _partialSavedFavs = null; // Set backup
+
+    function _clearPartialEmpty() {
+      if (!_partialEmptyActive) return;
+      _partialEmptyActive = false;
+      document.body.classList.remove('is-partial-empty');
+      const btn = document.getElementById('ev-no-robot-partial-btn');
+      if (btn) { btn.style.borderColor = ''; btn.style.color = ''; }
+      // 還原被隱藏的 running items
+      _partialHiddenItems.forEach(el => el.style.display = '');
+      _partialHiddenItems = [];
+      // 還原 favs
+      if (_partialSavedFavs !== null) { _sbFavs = _partialSavedFavs; _partialSavedFavs = null; }
+      // 還原 L2 filter 和 list
+      _sbL2Filter = 'all';
+      document.querySelectorAll('.sb-l2-filter .seg-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.l2filter === 'all');
+      });
+      _applyListFilter(_sbCurrentFilter);
+      _updateFilterCounts();
+      _updateL2FilterCounts();
+    }
+
+    function setPartialEmpty() {
+      const btn = document.getElementById('ev-no-robot-partial-btn');
+      if (_partialEmptyActive) { _clearPartialEmpty(); return; }
+      // 互斥：清除其他狀態
+      _clearEmptyState();
+      document.body.classList.remove('is-no-permission', 'is-quota-active', 'is-expiring');
+      Object.values(_quotaBtns).forEach(id => { const b = document.getElementById(id); if (b) { b.style.borderColor = ''; b.style.color = ''; } });
+
+      _partialEmptyActive = true;
+      document.body.classList.add('is-partial-empty');
+      if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
+
+      // 暫時清空 favorites（讓「收藏」filter = 空）
+      _partialSavedFavs = new Set(_sbFavs);
+      _sbFavs = new Set();
+
+      // 先回到 L2=全部，重設清單
+      _sbL2Filter = 'all';
+      document.querySelectorAll('.sb-l2-filter .seg-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.l2filter === 'all');
+      });
+      _applyListFilter(_sbCurrentFilter);
+
+      // _applyListFilter 之後再隱藏 running items（避免被蓋回來）
+      _partialHiddenItems = [];
+      document.querySelectorAll('.sb-list .sb-item').forEach(item => {
+        if (item.querySelector('.sb-dot.green')) {
+          _partialHiddenItems.push(item);
+          item.style.display = 'none';
+        }
+      });
+
+      _updateFilterCounts();
+      _updateL2FilterCounts();
+      _updateSbEmpty();
+
+      // 強制導回首頁（執行總覽顯示空畫面）
+      _applyPageSilent('ov-robots');
+    }
+
     function toggleEmptyState() {
       // kept for backward compat — toggles raw is-empty-state without variant
       document.body.classList.toggle('is-empty-state');
@@ -8419,6 +8912,9 @@
     function _updateFilterCounts() {
       const items = [...document.querySelectorAll('.sb-item')];
       const isEmptyState = items.length === 0 || document.body.classList.contains('is-empty-state');
+      const isPartialEmpty = document.body.classList.contains('is-partial-empty');
+      const isExpiring = document.body.classList.contains('is-expiring');
+      const isNoPermission = document.body.classList.contains('is-no-permission');
       // 展示需求: 依照特定順序覆寫數量 (999, 23, 0, 9)，若在空畫面狀態則全設為 0
       const commRows = document.querySelectorAll('#ov-all .o-table tbody tr').length;
       const counts = isEmptyState ? {
@@ -8446,13 +8942,15 @@
       set('sb-cnt-fav', counts.fav, 'fav', '智慧單');
       set('sb-cnt-recent', counts.recent, 'recent', '最近');
       const ovCnt = document.getElementById('sb-cnt-ov');
-      if (ovCnt) ovCnt.textContent = counts.running === 0 ? '' : counts.running > 99 ? '99+' : String(counts.running);
+      const ovN = (isPartialEmpty || isExpiring || isNoPermission) ? 0 : counts.running;
+      if (ovCnt) ovCnt.textContent = ovN === 0 ? '' : ovN > 99 ? '99+' : String(ovN);
       const navOv = document.getElementById('nav-ov');
-      if (navOv) navOv.setAttribute('data-tip', `執行總覽(${counts.running || 0})`);
+      if (navOv) navOv.setAttribute('data-tip', `執行總覽(${ovN || 0})`);
       const commCnt = document.getElementById('sb-cnt-comm');
-      if (commCnt) commCnt.textContent = counts.comm === 0 ? '' : counts.comm > 99 ? '99+' : String(counts.comm);
+      const commN = (isPartialEmpty || isExpiring || isNoPermission) ? 0 : counts.comm;
+      if (commCnt) commCnt.textContent = commN === 0 ? '' : commN > 99 ? '99+' : String(commN);
       const navComm = document.getElementById('nav-comm');
-      if (navComm) navComm.setAttribute('data-tip', `當日委託(${counts.comm || 0})`);
+      if (navComm) navComm.setAttribute('data-tip', `當日委託(${commN || 0})`);
       // update folder count badge in tier-2 header
       const cntEl = document.getElementById('sb-folder-cnt');
       if (cntEl) {
@@ -8883,11 +9381,18 @@
         const dot = i.querySelector('.sb-dot');
         const name = i.getAttribute('title') || '';
         let show = true;
-        if (type === 'running') show = dot?.classList.contains('green');
+        const _isExpiring = document.body.classList.contains('is-expiring');
+        if (type === 'running') show = !_isExpiring && dot?.classList.contains('green');
         else if (type === 'fav') show = _sbFavs.has(name);
         i.style.display = show ? '' : 'none';
       });
-      // update l2 sub-filter counts
+      // re-evaluate group visibility after l2 filter
+      document.querySelectorAll('.sb-list .sb-group').forEach(g => {
+        const visibleItems = [...g.querySelectorAll('.sb-item')].filter(i => i.style.display !== 'none');
+        g.style.display = visibleItems.length ? '' : 'none';
+      });
+      // update empty state message and l2 counts
+      _updateSbEmpty();
       _updateL2FilterCounts();
     }
     function _updateL2FilterCounts() {
@@ -8901,7 +9406,9 @@
         return true;
       });
       const cntAll     = visAfterL1.length;
-      const cntRunning = visAfterL1.filter(i => i.querySelector('.sb-dot')?.classList.contains('green')).length;
+      const isPartialEmpty = document.body.classList.contains('is-partial-empty');
+      const isExpiring2 = document.body.classList.contains('is-expiring');
+      const cntRunning = (isPartialEmpty || isExpiring2) ? 0 : visAfterL1.filter(i => i.querySelector('.sb-dot')?.classList.contains('green')).length;
       const cntFav     = visAfterL1.filter(i => _sbFavs.has(i.getAttribute('title') || '')).length;
       const cntLong  = visAfterL1.filter(i => i.dataset.dir === 'long').length;
       const cntShort = visAfterL1.filter(i => i.dataset.dir === 'short').length;
@@ -8922,18 +9429,44 @@
       if (type === 'running') showOv();
     }
 
+    function _updateSbEmpty() {
+      const isExpiring = document.body.classList.contains('is-expiring');
+      const anyVisible = (isExpiring && _sbL2Filter === 'running')
+        ? false
+        : [...document.querySelectorAll('.sb-list .sb-item')].some(i => i.style.display !== 'none');
+      const ev = document.querySelector('.sb-list .empty-view');
+      if (ev) ev.style.display = anyVisible ? 'none' : 'flex';
+      const msgs = {
+        all:    { all:     ['目前無任何機器人',       '請新建機器人即可開始',                true],
+                  running: ['目前無執行中機器人',   '請啟動看更多執行數據',              false],
+                  fav:     ['目前無收藏的機器人',     '點擊機器人旁的書籤加入收藏',          false] },
+        running:{ all:     ['目前無量化積木機器人',   '請新建此來源機器人即可開始',         true],
+                  running: ['目前無執行中的量化積木', '請啟動看更多執行數據',              false],
+                  fav:     ['目前無收藏的量化積木',   '點擊機器人旁的書籤加入收藏',          false] },
+        fav:    { all:     ['目前無智慧單機器人',   '請新建此來源機器人即可開始',           true],
+                  running: ['目前無執行中的智慧單',   '請啟動看更多執行數據',              false],
+                  fav:     ['目前無收藏的智慧單',     '點擊機器人旁的書籤加入收藏',          false] },
+        recent: { all:     ['近期目前無活動紀錄',     '這裡將顯示您最近操作的機器人',        false] },
+      };
+      const l1msgs = msgs[_sbCurrentFilter] || msgs.all;
+      const msg = l1msgs[_sbL2Filter] || l1msgs.all;
+      const [et, es, eb] = [
+        document.getElementById('sb-empty-title'),
+        document.getElementById('sb-empty-sub'),
+        document.getElementById('sb-empty-btn'),
+      ];
+      if (et) et.innerText = msg[0];
+      if (es) es.innerText = msg[1];
+      if (eb) eb.style.display = (!anyVisible && msg[2]) ? 'block' : 'none';
+    }
+
     function _applyListFilter(type) {
       if (!type) type = _sbCurrentFilter;
       const items = document.querySelectorAll('.sb-item');
       const groups = document.querySelectorAll('.sb-group');
-      const emptyMsgs = {
-        all: ['無可用機器人', '請點選下方按鈕新增機器人', true],
-        running: ['目前無執行中機器人', '請點擊啟動來執行機器人', false],
-        fav: ['尚無收藏機器人', '點擊卡片標題旁的書籤圖示加入收藏', false],
-        recent: ['近期尚無活動紀錄', '這裡將顯示您最近操作的機器人', false],
-      };
 
       const isEmptyMode = document.body.classList.contains('is-empty-state');
+      const isPartialEmpty = document.body.classList.contains('is-partial-empty');
 
       items.forEach(i => {
         const name = i.getAttribute('title') || '';
@@ -8946,6 +9479,8 @@
           else if (type === 'recent') show = _sbRecent.includes(name);
           if (show && _sbDirActive.size < 2) show = _sbDirActive.has(i.dataset.dir);
         }
+        // is-partial-empty：執行中機器人一律隱藏
+        if (isPartialEmpty && i.querySelector('.sb-dot.green')) show = false;
         i.style.display = show ? '' : 'none';
       });
 
@@ -8962,19 +9497,7 @@
         }
       });
 
-      const anyVisible = [...groups].some(g => g.style.display !== 'none');
-      const ev = document.querySelector('.sb-list .empty-view');
-      if (ev) ev.style.display = anyVisible ? 'none' : 'flex';
-
-      const [et, es, eb] = [
-        document.getElementById('sb-empty-title'),
-        document.getElementById('sb-empty-sub'),
-        document.getElementById('sb-empty-btn'),
-      ];
-      const msg = emptyMsgs[type] || emptyMsgs.all;
-      if (et) et.innerText = msg[0];
-      if (es) es.innerText = msg[1];
-      if (eb) eb.style.display = (!anyVisible && msg[2]) ? 'block' : 'none';
+      _updateSbEmpty();
       if (typeof _updateL2FilterCounts === 'function') _updateL2FilterCounts();
     }
     /* ── Sidebar Search ── */
@@ -8982,7 +9505,6 @@
     function sbSearchExpand() {
       if (document.querySelector('.sb').classList.contains('sb-collapsed')) toggleSidebar();
       document.getElementById('sb-l2-hdr').style.display = 'none';
-      document.getElementById('sb-sort-wrap').style.display = 'none';
       const bar = document.getElementById('sb-search-bar');
       bar.style.display = 'flex';
       const inp = document.getElementById('sb-search-input');
@@ -8992,7 +9514,6 @@
     function sbSearchClose() {
       document.getElementById('sb-search-bar').style.display = 'none';
       document.getElementById('sb-l2-hdr').style.display = 'flex';
-      document.getElementById('sb-sort-wrap').style.display = '';
       document.querySelectorAll('.sb-item').forEach(i => i.style.display = '');
       document.getElementById('sb-search-input').value = '';
       const extra = document.getElementById('sb-search-extra');
@@ -9091,7 +9612,7 @@
       const saved = ctxTarget;
       closeCtx();
       if (act === 'fav') { const isFav = saved.dataset.fav === '1'; saved.dataset.fav = isFav ? '0' : '1'; xAlert(isFav ? '已移除收藏' : ('已加入收藏'), name, isFav ? '🔖' : '🔖'); }
-      else if (act === 'start') xAlert('已啟動', name, '▶️');
+      else if (act === 'start') { if (openRunLimitModal()) return; xAlert('已啟動', name, '▶️'); }
       else if (act === 'stop') xConfirm('確認停止', '停止「' + name + '」的執行？', () => xAlert('已停止', name, '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'), { icon: '⏹', confirmText: '停止', confirmCls: 'danger' });
       else if (act === 'edit') xAlert('編輯策略', name, '✏️');
       else if (act === 'copy') xAlert('已複製', name, '📋');
@@ -9211,12 +9732,22 @@
         tr.style.display = match ? '' : 'none';
       });
     }
+    let _ovBuySellFilter = '';
+    let _ovTypeFilter = '';
     function ovFilterBySelect(val) {
       document.querySelectorAll('#ov-all .o-table tbody tr').forEach(tr => {
-        if (!val) { tr.style.display = ''; return; }
-        const cls = tr.querySelector('.s-tag')?.className || '';
-        const match = val === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + val);
-        tr.style.display = match ? '' : 'none';
+        let show = true;
+        if (val) {
+          const cls = tr.querySelector('.s-tag')?.className || '';
+          show = val === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + val);
+        }
+        if (show && _ovBuySellFilter) {
+          show = _ovBuySellFilter === 'buy' ? !!tr.cells[5]?.classList.contains('side-buy') : !!tr.cells[5]?.classList.contains('side-sell');
+        }
+        if (show && _ovTypeFilter) {
+          show = !!tr.cells[3]?.querySelector('.t-' + _ovTypeFilter);
+        }
+        tr.style.display = show ? '' : 'none';
       });
       // sync col header filter icon
       const colSel = document.getElementById('ov-col-status-sel');
@@ -9269,27 +9800,333 @@
       // filter #ov-all + r-cards + sync other rc-status-sel
       ovFilterBySelect(val);
     }
-    let _ovColSortCol = 2, _ovColSortDir = 'desc';
-    function ovColSort(th, colIdx) {
-      if (_ovColSortCol === colIdx) {
-        _ovColSortDir = _ovColSortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        _ovColSortCol = colIdx;
-        _ovColSortDir = 'asc';
+    // ── Multi-key sort for #ov-all ──────────────────────────────────────────
+    // Default tiebreaker priority; '6a'=委託qty, '6b'=成交qty (both from col 6)
+    const _OV_PRIORITY = [2, 3, 4, 5, '6a', '6b', 7, 8, 9, 10, 11, 12, 13];
+    const _OV_NAT_DIR  = {
+      2: -1, 3: 1, 4: 1, 5: 1,
+      '6a': -1, '6b': -1,
+      7: -1, 8: -1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1
+    };
+
+    const _ovStrokeCol = (() => {
+      try { return new Intl.Collator('zh-TW', { collation: 'stroke' }); }
+      catch (e) { return new Intl.Collator('zh-TW'); }
+    })();
+
+    function _ovCellCmp(a, b, key) {
+      switch (key) {
+        case 2:
+          return (a.cells[2]?.textContent.trim() || '').localeCompare(b.cells[2]?.textContent.trim() || '');
+        case 3:
+          return (a.cells[3]?.textContent.trim() || '').localeCompare(b.cells[3]?.textContent.trim() || '', 'zh-Hant');
+        case 4:
+          return parseInt(a.cells[4]?.querySelector('.prod-code')?.textContent.trim() || '0')
+               - parseInt(b.cells[4]?.querySelector('.prod-code')?.textContent.trim() || '0');
+        case 5:
+          return (a.cells[5]?.classList.contains('side-buy') ? 0 : 1)
+               - (b.cells[5]?.classList.contains('side-buy') ? 0 : 1);
+        case '6a':
+          return parseInt(a.cells[6]?.querySelector('.edit-val')?.textContent.trim() || '0')
+               - parseInt(b.cells[6]?.querySelector('.edit-val')?.textContent.trim() || '0');
+        case '6b': {
+          const n = td => parseInt(td?.querySelectorAll('span')[1]?.textContent.trim() || '0');
+          return n(a.cells[6]) - n(b.cells[6]);
+        }
+        case 7: case 8: {
+          const v = td => parseFloat(td?.textContent.trim().replace(/[,—]/g, '') || '') || 0;
+          return v(a.cells[key]) - v(b.cells[key]);
+        }
+        case 9: {
+          const ord = tr => {
+            const cl = tr.cells[9]?.querySelector('.s-tag')?.className || '';
+            if (cl.includes('s-pend') || cl.includes('s-partial')) return 0;
+            if (cl.includes('s-filled')) return 1;
+            if (cl.includes('s-fail')) return 2;
+            if (cl.includes('s-cancel')) return 3;
+            return 4;
+          };
+          return ord(a) - ord(b);
+        }
+        case 10:
+          return (a.cells[10]?.textContent.trim() || '').localeCompare(b.cells[10]?.textContent.trim() || '');
+        case 11: {
+          const nm = tr => tr.cells[11]?.querySelector('.o-robot-link')?.textContent.trim()
+                        || tr.cells[11]?.textContent.trim() || '';
+          return _ovStrokeCol.compare(nm(a), nm(b));
+        }
+        case 12: {
+          const aLong = !!a.cells[12]?.querySelector('.dir-tag.long');
+          const bLong = !!b.cells[12]?.querySelector('.dir-tag.long');
+          const dc = (aLong ? 0 : 1) - (bLong ? 0 : 1);
+          if (dc !== 0) return dc;
+          const nm = tr => tr.cells[12]?.querySelector('.line-clamp-2')?.textContent.trim()
+                        || tr.cells[12]?.textContent.trim() || '';
+          return _ovStrokeCol.compare(nm(a), nm(b));
+        }
+        case 13:
+          return (a.cells[13]?.textContent.trim() || '').localeCompare(b.cells[13]?.textContent.trim() || '');
+        default: return 0;
       }
-      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
-      th.dataset.sortDir = _ovColSortDir;
+    }
+
+    function _ovBuildPriority(primary) {
+      if (primary === 12)  // 策略：機器人升第2，時間升第3
+        return [12, 11, 2, ..._OV_PRIORITY.filter(k => k !== 12 && k !== 11 && k !== 2)];
+      return [primary, ..._OV_PRIORITY.filter(k => k !== primary)];
+    }
+
+    let _ovPrimaryCol = null;  // null = 預設（以時間為主）
+    let _ovPrimaryDir = -1;    // -1=desc  1=asc
+    let _ovColBothStep = 0;
+
+    function _ovApplySort() {
       const tbody = document.querySelector('#ov-all .o-table tbody');
       if (!tbody) return;
       const rows = [...tbody.querySelectorAll('tr')];
+      const primary = _ovPrimaryCol ?? 2;
+      const priority = _ovBuildPriority(primary);
       rows.sort((a, b) => {
-        const va = a.cells[colIdx]?.textContent.trim().replace(/,/g, '') || '';
-        const vb = b.cells[colIdx]?.textContent.trim().replace(/,/g, '') || '';
-        const na = parseFloat(va), nb = parseFloat(vb);
-        const cmp = !isNaN(na) && !isNaN(nb) ? na - nb : va.localeCompare(vb, 'zh-Hant');
-        return _ovColSortDir === 'asc' ? cmp : -cmp;
+        for (const key of priority) {
+          const dir = key === primary ? _ovPrimaryDir : _OV_NAT_DIR[key];
+          const cmp = _ovCellCmp(a, b, key) * dir;
+          if (cmp !== 0) return cmp;
+        }
+        return 0;
       });
       rows.forEach(r => tbody.appendChild(r));
+    }
+
+    function _ovDefaultSort() {
+      _ovPrimaryCol = null;
+      _ovPrimaryDir = -1;
+      _ovColBothStep = 0;
+      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => {
+        t.removeAttribute('data-sort-dir');
+        t.removeAttribute('data-dual-step');
+      });
+      const timeTh = document.querySelector('#ov-all .o-table th[onclick="ovColSort(this,2)"]');
+      if (timeTh) timeTh.dataset.sortDir = 'desc';
+      _ovApplySort();
+    }
+
+    function _ovResetBothTh() {
+      _ovColBothStep = 0;
+      const bothTh = document.getElementById('ov-both-th');
+      if (bothTh) { bothTh.removeAttribute('data-dual-step'); bothTh.removeAttribute('data-sort-dir'); }
+    }
+
+    function ovColSort(th, colIdx) {
+      _ovResetBothTh();
+      if (_ovPrimaryCol === colIdx) {
+        const nat = _OV_NAT_DIR[colIdx] ?? -1;
+        if (_ovPrimaryDir !== nat) { _ovDefaultSort(); return; }
+        _ovPrimaryDir = -nat;
+      } else {
+        _ovPrimaryCol = colIdx;
+        _ovPrimaryDir = _OV_NAT_DIR[colIdx] ?? -1;
+      }
+      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.sortDir = _ovPrimaryDir === -1 ? 'desc' : 'asc';
+      _ovApplySort();
+    }
+
+    function ovColBothSort() {
+      _ovColBothStep = _ovColBothStep >= 4 ? 5 : _ovColBothStep + 1;
+      if (_ovColBothStep === 5) { _ovDefaultSort(); return; }
+      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      const th = document.getElementById('ov-both-th');
+      th.dataset.dualStep = _ovColBothStep;
+      _ovPrimaryCol = _ovColBothStep <= 2 ? '6a' : '6b';
+      _ovPrimaryDir = (_ovColBothStep % 2 === 1) ? -1 : 1;
+      th.dataset.sortDir = _ovPrimaryDir === -1 ? 'desc' : 'asc';
+      _ovApplySort();
+    }
+
+    // ── 總覽機器人卡片表格排序 ──
+    // col indices: 0=chk 1=act 2=time 3=prod 4=buysell 5=qty 6=price 7=avgprice 8=status 9=bookno
+    const _RC_PRIORITY = [2, 3, 4, '5a', '5b', 6, 7, 8, 9];
+    const _RC_NAT_DIR  = { 2: -1, 3: 1, 4: 1, '5a': -1, '5b': -1, 6: -1, 7: -1, 8: 1, 9: 1 };
+    const _rcTableState = new WeakMap();
+    function _rcGetState(table) {
+      if (!_rcTableState.has(table)) _rcTableState.set(table, { col: null, dir: -1, bothStep: 0 });
+      return _rcTableState.get(table);
+    }
+    function _rcCellCmp(a, b, key) {
+      switch (key) {
+        case 2: return (a.cells[2]?.textContent.trim() || '').localeCompare(b.cells[2]?.textContent.trim() || '');
+        case 3: return parseInt(a.cells[3]?.querySelector('.prod-code')?.textContent.trim() || '0')
+                     - parseInt(b.cells[3]?.querySelector('.prod-code')?.textContent.trim() || '0');
+        case 4: return (a.cells[4]?.classList.contains('side-buy') ? 0 : 1)
+                     - (b.cells[4]?.classList.contains('side-buy') ? 0 : 1);
+        case '5a': {
+          const n = td => parseInt(td?.querySelector('.edit-val')?.textContent.trim() || td?.textContent.trim() || '0') || 0;
+          return n(a.cells[5]) - n(b.cells[5]);
+        }
+        case '5b': {
+          const n = td => parseInt((td?.querySelector('.edit-val')?.textContent.trim() || td?.textContent.trim() || '').split('/')[1]) || 0;
+          return n(a.cells[5]) - n(b.cells[5]);
+        }
+        case 6: case 7: { const v = td => parseFloat(td?.textContent.trim().replace(/[,—]/g, '') || '') || 0; return v(a.cells[key]) - v(b.cells[key]); }
+        case 8: {
+          const ord = tr => {
+            const cl = tr.cells[8]?.querySelector('.s-tag')?.className || '';
+            if (cl.includes('s-pend') || cl.includes('s-partial')) return 0;
+            if (cl.includes('s-filled')) return 1;
+            if (cl.includes('s-fail')) return 2;
+            if (cl.includes('s-cancel')) return 3;
+            return 4;
+          };
+          return ord(a) - ord(b);
+        }
+        case 9: return (a.cells[9]?.textContent.trim() || '').localeCompare(b.cells[9]?.textContent.trim() || '');
+        default: return 0;
+      }
+    }
+    function _rcApplySort(table) {
+      const tbody = table.querySelector('tbody');
+      if (!tbody) return;
+      const st = _rcGetState(table);
+      const rows = [...tbody.querySelectorAll('tr')];
+      const primary = st.col ?? 2;
+      const priority = [primary, ..._RC_PRIORITY.filter(k => k !== primary)];
+      rows.sort((a, b) => {
+        for (const key of priority) {
+          const dir = key === primary ? st.dir : _RC_NAT_DIR[key];
+          const cmp = _rcCellCmp(a, b, key) * dir;
+          if (cmp !== 0) return cmp;
+        }
+        return 0;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    }
+    function _rcDefaultSort(table) {
+      const st = _rcGetState(table);
+      st.col = null; st.dir = -1; st.bothStep = 0;
+      table.querySelectorAll('th[data-sortable]').forEach(t => {
+        t.removeAttribute('data-sort-dir');
+        t.removeAttribute('data-dual-step');
+      });
+      const timeTh = table.querySelector('th[data-sortable][onclick*=",2)"]');
+      if (timeTh) timeTh.dataset.sortDir = 'desc';
+      _rcApplySort(table);
+    }
+    function rcColSort(th, colIdx) {
+      const table = th.closest('table');
+      const st = _rcGetState(table);
+      const bothTh = table.querySelector('.rc-both-th');
+      if (bothTh) { bothTh.removeAttribute('data-dual-step'); bothTh.removeAttribute('data-sort-dir'); }
+      st.bothStep = 0;
+      if (st.col === colIdx) {
+        const nat = _RC_NAT_DIR[colIdx] ?? -1;
+        if (st.dir !== nat) { _rcDefaultSort(table); return; }
+        st.dir = -nat;
+      } else {
+        st.col = colIdx;
+        st.dir = _RC_NAT_DIR[colIdx] ?? -1;
+      }
+      table.querySelectorAll('th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.sortDir = st.dir === -1 ? 'desc' : 'asc';
+      _rcApplySort(table);
+    }
+    function rcColBothSort(th) {
+      const table = th.closest('table');
+      const st = _rcGetState(table);
+      st.bothStep = st.bothStep >= 4 ? 5 : st.bothStep + 1;
+      if (st.bothStep === 5) { _rcDefaultSort(table); return; }
+      table.querySelectorAll('th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.dualStep = st.bothStep;
+      st.col = st.bothStep <= 2 ? '5a' : '5b';
+      st.dir = (st.bothStep % 2 === 1) ? -1 : 1;
+      th.dataset.sortDir = st.dir === -1 ? 'desc' : 'asc';
+      _rcApplySort(table);
+    }
+    // ── 持倉庫存表格排序 ──
+    // col indices: 0=chk 1=act 2=prod 3=time 4=pnl 5=pnl% 6=pos 7=cost 8=total 9=price 10=value
+    const _POS_PRIORITY = [3, 2, 4, 5, 6, 7, 8, 9, 10];
+    const _POS_NAT_DIR  = { 2: 1, 3: -1, 4: -1, 5: -1, 6: -1, 7: -1, 8: -1, 9: -1, 10: -1 };
+    const _posTableState = new WeakMap();
+    function _posGetState(table) {
+      if (!_posTableState.has(table)) _posTableState.set(table, { col: null, dir: -1 });
+      return _posTableState.get(table);
+    }
+    function _posCellCmp(a, b, key) {
+      switch (key) {
+        case 2: return parseInt(a.cells[2]?.querySelector('.prod-code')?.textContent.trim() || '0')
+                     - parseInt(b.cells[2]?.querySelector('.prod-code')?.textContent.trim() || '0');
+        case 3: return (a.cells[3]?.textContent.trim() || '').localeCompare(b.cells[3]?.textContent.trim() || '');
+        case 6: return parseInt(a.cells[6]?.textContent.trim() || '0') - parseInt(b.cells[6]?.textContent.trim() || '0');
+        default: {
+          const v = td => parseFloat((td?.textContent.trim() || '').replace(/[,%\+]/g, '').replace('−', '-').replace('—', '0')) || 0;
+          return v(a.cells[key]) - v(b.cells[key]);
+        }
+      }
+    }
+    function _posApplySort(table) {
+      const tbody = table.querySelector('tbody');
+      if (!tbody) return;
+      const st = _posGetState(table);
+      const rows = [...tbody.querySelectorAll('tr')];
+      const primary = st.col ?? 3;
+      const priority = [primary, ..._POS_PRIORITY.filter(k => k !== primary)];
+      rows.sort((a, b) => {
+        for (const key of priority) {
+          const dir = key === primary ? st.dir : _POS_NAT_DIR[key];
+          const cmp = _posCellCmp(a, b, key) * dir;
+          if (cmp !== 0) return cmp;
+        }
+        return 0;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    }
+    function _posDefaultSort(table) {
+      const st = _posGetState(table);
+      st.col = null; st.dir = -1;
+      table.querySelectorAll('th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      const timeTh = table.querySelector('th[data-sortable][onclick*=",3)"]');
+      if (timeTh) timeTh.dataset.sortDir = 'desc';
+      _posApplySort(table);
+    }
+    function posColSort(th, colIdx) {
+      const table = th.closest('table');
+      const st = _posGetState(table);
+      if (st.col === colIdx) {
+        const nat = _POS_NAT_DIR[colIdx] ?? -1;
+        if (st.dir !== nat) { _posDefaultSort(table); return; }
+        st.dir = -nat;
+      } else {
+        st.col = colIdx;
+        st.dir = _POS_NAT_DIR[colIdx] ?? -1;
+      }
+      table.querySelectorAll('th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.sortDir = st.dir === -1 ? 'desc' : 'asc';
+      _posApplySort(table);
+    }
+
+    function rcBuySellSync(sel) {
+      const val = sel.value;
+      const wrap = sel.closest('.xsel-wrap');
+      if (wrap) wrap.classList.toggle('has-filter', !!val);
+      const tagId = sel.dataset.tagId;
+      if (tagId) {
+        const tag = document.getElementById(tagId);
+        if (tag) {
+          tag.style.display = val ? '' : 'none';
+          const lbl = tag.querySelector('.tag-label');
+          if (lbl) lbl.textContent = val === 'buy' ? '買進' : '賣出';
+        }
+      }
+      const tbody = sel.closest('table').querySelector('tbody');
+      if (!tbody) return;
+      tbody.querySelectorAll('tr').forEach(tr => {
+        if (!val) { tr.style.display = ''; return; }
+        const hasBuy = tr.cells[4]?.classList.contains('side-buy');
+        tr.style.display = (val === 'buy' ? hasBuy : !hasBuy) ? '' : 'none';
+      });
+    }
+    function commBuySellClear() {
+      const sel = document.querySelector('#t-comm .o-table .rc-buysell-sel');
+      if (sel) { sel.value = ''; rcBuySellSync(sel); }
     }
 
     function ovColStatusSync(val) {
@@ -9308,9 +10145,41 @@
       if (colWrap) colWrap.classList.toggle('has-filter', !!val);
       ovFilterBySelect(val);
     }
+    function ovTypeSync(val) {
+      _ovTypeFilter = val;
+      const colWrap = document.getElementById('ov-col-type-sel')?.closest('.xsel-wrap');
+      if (colWrap) colWrap.classList.toggle('has-filter', !!val);
+      const tag = document.getElementById('ov-type-tag');
+      if (tag) {
+        tag.style.display = val ? '' : 'none';
+        const lbl = tag.querySelector('.tag-label');
+        if (lbl) lbl.textContent = val === 'odd' ? '零股' : '整股';
+      }
+      ovFilterBySelect(document.getElementById('ov-status-filter')?.value || '');
+    }
+    function ovTypeClear() {
+      const sel = document.getElementById('ov-col-type-sel');
+      if (sel) sel.value = '';
+      ovTypeSync('');
+    }
+    function ovBuySellSync(val) {
+      _ovBuySellFilter = val;
+      const colWrap = document.getElementById('ov-col-buysell-sel')?.closest('.xsel-wrap');
+      if (colWrap) colWrap.classList.toggle('has-filter', !!val);
+      const tag = document.getElementById('ov-buysell-tag');
+      if (tag) {
+        tag.style.display = val ? '' : 'none';
+        const lbl = tag.querySelector('.tag-label');
+        if (lbl) lbl.textContent = val === 'buy' ? '買進' : '賣出';
+      }
+      ovFilterBySelect(document.getElementById('ov-status-filter')?.value || '');
+    }
+    function ovBuySellClear() {
+      const sel = document.getElementById('ov-col-buysell-sel');
+      if (sel) sel.value = '';
+      ovBuySellSync('');
+    }
     function refreshCommFilterCounts() {
-      const sel = document.getElementById('comm-filter-sel');
-      if (!sel || !sel._xselRebuild) return;
       const rows = [...document.querySelectorAll('#t-comm .o-table tbody tr')];
       const map = { '': rows.length, 'pend': 0, 'filled': 0, 'fail': 0, 'cancel': 0 };
       rows.forEach(tr => {
@@ -9320,12 +10189,26 @@
         else if (cls.includes('s-fail')) map.fail++;
         else if (cls.includes('s-cancel')) map.cancel++;
       });
-      Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
+      [document.getElementById('comm-filter-sel'), document.getElementById('comm-col-status-sel')].forEach(sel => {
+        if (!sel || !sel._xselRebuild) return;
+        Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
+        sel._xselRebuild();
+      });
+    }
+    function refreshCommBuySellCounts() {
+      const rows = [...document.querySelectorAll('#t-comm .o-table tbody tr')];
+      const buy = rows.filter(tr => tr.cells[4]?.classList.contains('side-buy')).length;
+      const sell = rows.filter(tr => tr.cells[4]?.classList.contains('side-sell')).length;
+      const sel = document.querySelector('#t-comm .o-table .rc-buysell-sel');
+      if (!sel || !sel._xselRebuild) return;
+      Array.from(sel.options).forEach(opt => {
+        if (opt.value === '') opt.dataset.count = rows.length;
+        else if (opt.value === 'buy') opt.dataset.count = buy;
+        else if (opt.value === 'sell') opt.dataset.count = sell;
+      });
       sel._xselRebuild();
     }
     function refreshOvFilterCounts() {
-      const sel = document.getElementById('ov-status-filter');
-      if (!sel || !sel._xselRebuild) return;
       const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
       const map = { '': rows.length, 'pend': 0, 'filled': 0, 'fail': 0, 'cancel': 0 };
       rows.forEach(tr => {
@@ -9334,6 +10217,33 @@
         else if (cls.includes('s-filled')) map.filled++;
         else if (cls.includes('s-fail')) map.fail++;
         else if (cls.includes('s-cancel')) map.cancel++;
+      });
+      [document.getElementById('ov-status-filter'), document.getElementById('ov-col-status-sel')].forEach(sel => {
+        if (!sel || !sel._xselRebuild) return;
+        Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
+        sel._xselRebuild();
+      });
+    }
+    function refreshOvTypeCounts() {
+      const sel = document.getElementById('ov-col-type-sel');
+      if (!sel || !sel._xselRebuild) return;
+      const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
+      const map = { '': rows.length, 'odd': 0, 'stock': 0 };
+      rows.forEach(tr => {
+        if (tr.cells[3]?.querySelector('.t-odd')) map.odd++;
+        else if (tr.cells[3]?.querySelector('.t-stock')) map.stock++;
+      });
+      Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
+      sel._xselRebuild();
+    }
+    function refreshOvBuySellCounts() {
+      const sel = document.getElementById('ov-col-buysell-sel');
+      if (!sel || !sel._xselRebuild) return;
+      const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
+      const map = { '': rows.length, 'buy': 0, 'sell': 0 };
+      rows.forEach(tr => {
+        if (tr.cells[5]?.classList.contains('side-buy')) map.buy++;
+        else if (tr.cells[5]?.classList.contains('side-sell')) map.sell++;
       });
       Array.from(sel.options).forEach(opt => { opt.dataset.count = map[opt.value] ?? 0; });
       sel._xselRebuild();
@@ -9436,7 +10346,7 @@
         const kwMatch = !kw || text.includes(kw);
         let typeMatch = true;
         if (_posFilter !== 'all') {
-          const pnlTd = tr.querySelectorAll('td')[3]; // 未實現損益 (after chk, act, 商品)
+          const pnlTd = tr.querySelectorAll('td')[4]; // 未實現損益 (chk, act, 商品, 成交時間, 未實現損益)
           const val = pnlTd?.textContent.trim() || '';
           typeMatch = _posFilter === 'profit' ? val.startsWith('+') : val.startsWith('−');
         }
@@ -9474,14 +10384,13 @@
     });
     function posCloseSingle(btn, name, price) {
       const step = price >= 500 ? 1 : price >= 100 ? 0.5 : price >= 50 ? 0.1 : price >= 10 ? 0.05 : 0.01;
-      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 送出賣出委託<br>此操作無法復原</div>
-        <div class="xpop-price-opts">
-          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
-          <label><input type="radio" name="cap-price" value="current"> 現價</label>
-          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
-          <label>
-            <input type="radio" name="cap-price" value="limit" id="cap-limit-radio">
-            限價
+      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 送出委託價格</div>
+        <div class="xpop-price-opts" style="gap:0;">
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="tick1"> 買進-1檔 / 賣出+1檔</label>
+          <label style="padding:10px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <input type="radio" name="cap-price" value="limit" id="cap-limit-radio"> 限價
             <div class="price-stepper">
               <button type="button" onclick="document.getElementById('cap-limit-radio').checked=true;document.getElementById('cap-limit-inp').stepDown()">−</button>
               <input type="number" id="cap-limit-inp" value="${price}" step="${step}" min="0"
@@ -9498,13 +10407,13 @@
     }
     function showPosBatchClose() {
       const n = document.querySelectorAll('#t-pos .pos-cb:checked:not([disabled])').length;
-      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔商品送出賣出委託<br>此操作無法復原</div>
-        <div class="xpop-price-opts">
-          <label><input type="radio" name="cap-price" value="market" checked> 市價</label>
-          <label><input type="radio" name="cap-price" value="current"> 現價</label>
-          <label><input type="radio" name="cap-price" value="tick1"> 買-1 / 賣+1</label>
+      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔持倉送出委託價格</div>
+        <div class="xpop-price-opts" style="gap:0;">
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
+          <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
+          <label style="padding:10px 0;"><input type="radio" name="cap-price" value="tick1"> 買進-1檔 / 賣出+1檔</label>
         </div>`;
-      xConfirm('確認平倉', msgHtml,
+      xConfirm('批次平倉', msgHtml,
         () => {
           clearPosBatchSel();
           xAlert('已送出', '平倉委託已送出', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>');
@@ -9563,6 +10472,7 @@
       }
     }
     function selRobot(el, name, acc) {
+      if (document.body.classList.contains('is-no-permission') || document.body.classList.contains('is-expiring')) return;
       if (typeof clearBatchSel === 'function') clearBatchSel();
       const q = document.getElementById('sb-search-input').value.trim();
       if (q && !_sbHistory.includes(q)) { _sbHistory.unshift(q); if (_sbHistory.length > 5) _sbHistory.pop(); }
@@ -9583,7 +10493,7 @@
       _updateCloseBtn();
       document.getElementById('ov').style.display = 'none';
       document.getElementById('robot-view').style.display = 'flex';
-      switchTabById('t-comm');
+      switchTabById(isRunning ? 't-comm' : 't-settings');
     }
     function _syncDetFilterBar(id) { }
     function _syncCompact(id) {
@@ -9867,25 +10777,41 @@
       if (numInputs[0]) numInputs[0].value = 50;
       if (numInputs[1]) numInputs[1].value = 5;
     }
-    /* quota modal 情境：'upgrade'=情境1 / 'limit'=情境2 */
+    /* quota 情境：'upgrade'=無權限 / 'add-limit'=新增上限30 / 'run-limit'=執行上限10 */
     let _quotaScenario = 'upgrade';
-    const _quotaBtns = { upgrade: 'quota-upgrade-btn', limit: 'quota-limit-btn' };
+    let _expiringDays = 14;
+    const _quotaBtns = { upgrade: 'quota-upgrade-btn', limits: 'quota-limits-btn', expiring: 'quota-expiring-btn' };
     function setQuotaScenario(scenario) {
       const isSame = _quotaScenario === scenario && document.body.classList.contains('is-quota-active');
       // clear all
-      document.body.classList.remove('is-no-permission', 'is-quota-active');
+      document.body.classList.remove('is-no-permission', 'is-quota-active', 'is-expiring');
       Object.values(_quotaBtns).forEach(id => {
         const b = document.getElementById(id);
         if (b) { b.style.borderColor = ''; b.style.color = ''; }
       });
       if (isSame) { _quotaScenario = 'upgrade'; return; }
+      // 互斥：清除 empty 狀態
+      _clearEmptyState();
       // activate
       _quotaScenario = scenario;
       document.body.classList.add('is-quota-active');
-      // 免費權限才套用限制 UI；權限上限只攔截新增按鈕
-      if (scenario === 'upgrade') document.body.classList.add('is-no-permission');
+      if (scenario === 'upgrade')  document.body.classList.add('is-no-permission');
+      if (scenario === 'expiring') document.body.classList.add('is-expiring');
+      // 無權限 / 到期：強制回首頁
+      if (scenario === 'upgrade' || scenario === 'expiring') _applyPageSilent('ov-robots');
+      /* 'limits' — 不加額外 class，靠 openArmModal/openRunLimitModal 攔截 */
       const btn = document.getElementById(_quotaBtns[scenario]);
       if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
+      _updateFilterCounts();
+    }
+    function setExpiringDays(n) {
+      _expiringDays = Math.max(1, Math.min(14, n));
+      const v = document.getElementById('expiring-days-val');
+      if (v) v.textContent = _expiringDays;
+      ['expiring-days-card', 'expiring-days-card-comm'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = _expiringDays;
+      });
     }
     function openQuotaModal(scenario) {
       _quotaScenario = scenario || _quotaScenario;
@@ -9900,19 +10826,53 @@
           cancelText: '稍後再說',
           noClose: true
         });
-      } else {
+      } else if (_quotaScenario === 'limits' || _quotaScenario === 'add-limit') {
         _xpopShow({
           icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>',
-          title: '已達訂閱方案數量上限',
-          msg: '您目前已建立 <strong style="color:var(--accent)">30/30</strong> 個機器人<br>請先刪除不需要的機器人再新增',
+          title: '已達建立數量上限',
+          msg: '您目前已建立 <strong style="color:var(--accent)">30/30</strong> 個機器人<br>請先刪除部分機器人後再新增',
           type: 'alert',
           confirmText: '我知道了',
           noClose: true
         });
+      } else if (_quotaScenario === 'run-limit') {
+        _xpopShow({
+          icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>',
+          title: '已達執行上限',
+          msg: '目前已有 <strong style="color:var(--accent)">10/10</strong> 個機器人執行中<br>請先停止其他機器人再啟動',
+          type: 'alert',
+          confirmText: '我知道了',
+          noClose: true
+        });
+      } else if (_quotaScenario === 'expiring') {
+        _xpopShow({
+          icon: '<span style="font-family:sans-serif;font-size:22px;">⏳</span>',
+          title: '訂閱已到期',
+          msg: `機器人資料將在 <strong style="color:var(--warning)">${_expiringDays} 天</strong>內清空<br>立即續訂以繼續使用所有機器人`,
+          type: 'confirm',
+          confirmText: '立即續訂',
+          confirmCls: '',
+          cancelText: '稍後再說',
+          noClose: true
+        });
       }
     }
+    function openRunLimitModal() {
+      if (document.body.classList.contains('is-quota-active') && (_quotaScenario === 'run-limit' || _quotaScenario === 'limits')) {
+        _xpopShow({
+          icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>',
+          title: '已達執行上限',
+          msg: '目前已有 <strong style="color:var(--accent)">10/10</strong> 個機器人執行中<br>請先停止其他機器人再啟動',
+          type: 'alert',
+          confirmText: '我知道了',
+          noClose: true
+        });
+        return true;
+      }
+      return false;
+    }
     function openArmModal() {
-      if (document.body.classList.contains('is-quota-active')) {
+      if (document.body.classList.contains('is-quota-active') && (_quotaScenario === 'upgrade' || _quotaScenario === 'limits' || _quotaScenario === 'expiring')) {
         openQuotaModal();
         return;
       }
@@ -9980,6 +10940,7 @@
     }
     function toggleRobotStatus(btn) {
       if (btn.classList.contains('running')) { showStopSingle(btn); return; }
+      if (openRunLimitModal()) return;
       _robotStateIndex = (_robotStateIndex + 1) % 3;
       btn.classList.remove('running', 'idle', 'waiting');
 
@@ -10181,7 +11142,7 @@
                       <div class="pend-orders">
                         <div class="empty-view" style="padding:24px 16px;display:flex">
                           <div class="empty-icon" style="font-size:28px;margin-bottom:8px;"><i class="icon-inbox"></i></div>
-                          <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">尚無交易委託</div>
+                          <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">目前無交易委託</div>
                           <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
                         </div>
                       </div>
@@ -10364,6 +11325,63 @@
         emptyView.style.display = 'none';
         table.style.display = 'table';
       }
+    }
+
+    /* ── 執行紀錄表格排序 ── */
+    const _LOG_PRIORITY = [0, 1, 2, 3, 4];
+    const _LOG_NAT_DIR  = { 0: -1, 1: 1, 2: 1, 3: 1, 4: 1 };
+    let _logSortCol = null;
+    let _logSortDir = -1;
+
+    const _logStrokeCollator = new Intl.Collator('zh-TW', { collation: 'stroke' });
+    function _logCellCmp(a, b, key) {
+      const ta = a.cells[key]?.textContent.trim() || '';
+      const tb = b.cells[key]?.textContent.trim() || '';
+      if (key === 4) {
+        const c = _logStrokeCollator.compare(ta[0] || '', tb[0] || '');
+        return c !== 0 ? c : _logStrokeCollator.compare(ta, tb);
+      }
+      return ta.localeCompare(tb, 'zh-TW', { sensitivity: 'base', numeric: true });
+    }
+
+    function _logApplySort() {
+      const tbody = document.querySelector('.log-table tbody');
+      if (!tbody) return;
+      const rows = [...tbody.querySelectorAll('tr')];
+      const primary = _logSortCol ?? 0;
+      const priority = [primary, ..._LOG_PRIORITY.filter(k => k !== primary)];
+      rows.sort((a, b) => {
+        for (const key of priority) {
+          const dir = key === primary ? _logSortDir : _LOG_NAT_DIR[key];
+          const cmp = _logCellCmp(a, b, key) * dir;
+          if (cmp !== 0) return cmp;
+        }
+        return 0;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    }
+
+    function _logDefaultSort() {
+      _logSortCol = null;
+      _logSortDir = -1;
+      document.querySelectorAll('.log-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      const timeTh = document.querySelector('.log-table th[data-sortable][onclick*=",0)"]');
+      if (timeTh) timeTh.dataset.sortDir = 'desc';
+      _logApplySort();
+    }
+
+    function logColSort(th, colIdx) {
+      const nat = _LOG_NAT_DIR[colIdx] ?? -1;
+      if (_logSortCol === colIdx) {
+        if (_logSortDir !== nat) { _logDefaultSort(); return; }
+        _logSortDir = -nat;
+      } else {
+        _logSortCol = colIdx;
+        _logSortDir = nat;
+      }
+      document.querySelectorAll('.log-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      th.dataset.sortDir = _logSortDir === -1 ? 'desc' : 'asc';
+      _logApplySort();
     }
 
     showOv();
@@ -10614,10 +11632,33 @@
     })();
     // populate counts after xsel is built
     document.addEventListener('DOMContentLoaded', () => {
+      // flow.html 傳入的 ?ev=&tab= 參數
+      const _sp = new URLSearchParams(location.search);
+      const _flowEv    = _sp.get('ev');
+      const _flowTab   = _sp.get('tab');
+      const _flowQuota = _sp.get('quota');
+      const _flowSbL1  = _sp.get('sb_l1');
+      const _flowSbL2  = _sp.get('sb_l2');
+      if (_flowEv) setEmptyVariant(_flowEv);
+      if (_flowQuota) setQuotaScenario(_flowQuota);
+      if (_flowTab) switchTabById(_flowTab);
+      if (_flowSbL1) { _syncFilterActive(_flowSbL1); _applyListFilter(_flowSbL1); }
+      if (_flowSbL2 && _flowSbL2 !== 'all') {
+        const _l2el = document.querySelector(`#sb-l2-filter .seg-btn[data-l2filter="${_flowSbL2}"]`);
+        if (_l2el) sbL2Filter(_l2el, _flowSbL2);
+      }
+
+      document.addEventListener('click', () => {
+        document.getElementById('demo-float-menu')?.classList.remove('show');
+      });
+
       if (location.hash) { _applyHash(); setFontSize(_fontLevel); }
       _hashReady = true;
       refreshCommFilterCounts();
+      refreshCommBuySellCounts();
       refreshOvFilterCounts();
+      refreshOvTypeCounts();
+      refreshOvBuySellCounts();
       // 把所有 line-clamp-2 內的 prod-code 轉成 flex 結構，讓股號緊跟股名不溢出
       document.querySelectorAll('.line-clamp-2').forEach(div => {
         const codeSpan = div.querySelector('.prod-code');
