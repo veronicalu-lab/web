@@ -5492,13 +5492,6 @@
       font-weight: 500;
       margin-bottom: 0;
     }
-    #ov-card .ev-no-robot .empty-sub,
-    #ov-all .ev-no-robot .empty-sub {
-      font-size: var(--f-xl);
-      color: var(--text);
-      font-weight: 500;
-      margin-bottom: 0;
-    }
     #ov-card .ev-no-running .empty-sub,
     #ov-all .ev-no-running .empty-sub {
       font-size: var(--f-md);
@@ -5510,15 +5503,19 @@
 
     #sb-empty-btn,
     .noperm-sb-lock .empty-action-btn {
+      height: auto;
       font-size: var(--f-sm);
       padding: 6px 14px;
-      gap: 4px;
+      gap: 8px;
     }
+    #sb-empty-btn i { margin-right: 4px; }
 
     .expiring-notice .empty-action-btn,
-    .noperm-upgrade-sec .empty-action-btn { background: var(--warning) !important; }
+    .noperm-upgrade-sec .empty-action-btn,
+    .noperm-sb-lock .empty-action-btn { background: var(--warning) !important; }
     .expiring-notice .empty-action-btn:hover,
-    .noperm-upgrade-sec .empty-action-btn:hover { background: var(--warning) !important; filter: brightness(1.1); }
+    .noperm-upgrade-sec .empty-action-btn:hover,
+    .noperm-sb-lock .empty-action-btn:hover { background: var(--warning) !important; filter: brightness(1.1); }
 
     .empty-view .empty-title {
       font-size: var(--f-md);
@@ -5675,6 +5672,15 @@
     body.is-partial-empty #ov-all .ev-no-running { display: flex !important; }
     body.is-partial-empty #ov-all .all-orders-wrap { display: none !important; }
     body.is-partial-empty #ov-card .r-card { display: none !important; }
+    .ev-rec-list { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 20px; }
+    .ev-rec-label { display: flex; align-items: center; gap: 8px; font-size: var(--f-base); color: var(--text); margin-bottom: 10px; }
+    .ev-rec-label::before, .ev-rec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .ev-rec-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); box-shadow: var(--comp-card-shadow); border-radius: var(--r-md); cursor: pointer; transition: background .12s, box-shadow .12s; }
+    .ev-rec-item:hover { background: var(--hover-bg); box-shadow: var(--comp-float-shadow); }
+    .ev-rec-item:hover .ev-rec-item-name { color: var(--accent); }
+    .ev-rec-item-name { display: flex; align-items: center; gap: 6px; flex-shrink: 0; font-size: var(--f-base); font-weight: 500; color: var(--text); }
+    .ev-rec-item-sub { flex: 1; min-width: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ev-rec-item .rh-status-btn { height: 32px; font-size: var(--f-sm); padding: 0 12px; gap: 5px; flex-shrink: 0; }
     body.is-partial-empty .ctrl-bar { display: none !important; }
 
     body.is-empty-state.empty-no-order .ev-no-order { display: flex !important; }
@@ -5686,7 +5692,16 @@
     .noperm-upgrade-sec { display: none; }
 
     body.is-no-permission #sb-data-view { display: none !important; }
+    body.is-no-permission [data-tip="新增機器人"],
+    body.is-no-permission [data-tip="搜尋"],
+    body.is-expiring [data-tip="新增機器人"],
+    body.is-empty-state.empty-no-robot [data-tip="搜尋"] {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
     body.is-no-permission .sb-l2-filter { display: none; }
+    body.is-no-permission #sb-search-sort-row { visibility: hidden; }
     body.is-no-permission .noperm-sb-lock { display: flex; }
 
     body.is-no-permission #ov-card .r-card { display: none; }
@@ -5971,7 +5986,7 @@
         <div class="sb-hdr">
           <div class="sb-hdr-logo">
             <span class="sb-hdr-xq">XQ</span>
-            <span class="sb-hdr-name">自動交易機器人</span>
+            <span class="sb-hdr-name">自動下單機器人</span>
           </div>
         </div>
 
@@ -6088,13 +6103,6 @@
               </div>
             </div>
 
-            <!-- 無權限鎖定 banner（只有 is-no-permission 時顯示） -->
-            <div class="noperm-sb-lock" style="flex-direction:column;align-items:center;gap:6px;padding:14px var(--sp-3) 10px;border-top:1px solid var(--border2);margin-top:4px;text-align:center;">
-              <i class="fas fa-lock" style="font-size:18px;opacity:0.4;color:var(--text3);"></i>
-              <div style="font-size:var(--f-xs);color:var(--text3);line-height:1.5;">尚未開通自動交易<br>訂閱後即可使用機器人</div>
-              <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:2px;">了解訂閱方案</button>
-            </div>
-
             <!-- 智慧單 -->
             <div class="sb-group" data-group="smart">
               <div class="sb-group-hdr" onclick="sbToggle(this)">
@@ -6110,6 +6118,14 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- 無權限鎖定 banner（只有 is-no-permission 時顯示，在 #sb-data-view 外） -->
+          <div class="noperm-sb-lock empty-view">
+            <div class="empty-icon"><i class="fas fa-crown"></i></div>
+            <div class="empty-title">升級訂閱解鎖建立</div>
+            <div class="empty-sub">訂閱即享30組新建機器人額度</div>
+            <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:12px;">前往升級</button>
           </div>
         </div><!-- /sb-list -->
       </div><!-- /sb-l2 -->
@@ -6185,11 +6201,29 @@
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
             <div class="empty-title">目前無執行中機器人</div>
             <div class="empty-sub">請啟動看更多執行數據</div>
+            <div class="ev-rec-list">
+              <div class="ev-rec-label">為你推薦</div>
+              <div class="ev-rec-item" onclick="goToRobot('交易機器人 2','証-模擬交易(內建)-01')">
+                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 2</span>
+                <span class="ev-rec-item-sub">証-模擬交易(內建)-01｜<span class="dir-tag long">作多</span>聯發科策略 v2.0</span>
+                <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
+              </div>
+              <div class="ev-rec-item" onclick="goToRobot('交易機器人 4','元大-現貨(A)-01')">
+                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 4</span>
+                <span class="ev-rec-item-sub">元大-現貨(A)-01｜<span class="dir-tag long">作多</span>台積電均線策略 v2.1</span>
+                <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
+              </div>
+              <div class="ev-rec-item" onclick="goToRobot('交易機器人 5','富邦-模擬交易-02')">
+                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 5</span>
+                <span class="ev-rec-item-sub">富邦-模擬交易-02｜<span class="dir-tag short">作空</span>台指期反轉策略 v1.3</span>
+                <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
+              </div>
+            </div>
           </div>
+
           <div class="empty-view ev-no-robot">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
-            <div class="empty-title">建立交易機器人</div>
-            <div class="empty-sub">來啟動自動下單吧！</div>
+            <div class="empty-title">建立交易機器人<br>來啟動自動下單吧！</div>
             <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;gap:8px;"><i class="fas fa-plus"></i>新建機器人</button>
           </div>
           <div class="empty-view ev-inactive">
@@ -6700,7 +6734,7 @@
           <!-- 無權限升級區（is-no-permission 時顯示） -->
           <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
-            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動交易</div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動下單</div>
             <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
               支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
             </div>
@@ -6713,8 +6747,7 @@
         <div id="ov-all" style="display:none">
           <div class="empty-view ev-no-robot">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
-            <div class="empty-title">建立交易機器人</div>
-            <div class="empty-sub">來啟動自動下單吧！</div>
+            <div class="empty-title">建立交易機器人<br>來啟動自動下單吧！</div>
             <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;"><i class="fas fa-plus"></i>新建機器人</button>
           </div>
           <div class="empty-view ev-no-running">
@@ -6739,7 +6772,7 @@
           </div>
           <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
-            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動交易</div>
+            <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動下單</div>
             <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
               支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
             </div>
@@ -8917,7 +8950,7 @@
       const isNoPermission = document.body.classList.contains('is-no-permission');
       // 展示需求: 依照特定順序覆寫數量 (999, 23, 0, 9)，若在空畫面狀態則全設為 0
       const commRows = document.querySelectorAll('#ov-all .o-table tbody tr').length;
-      const counts = isEmptyState ? {
+      const counts = (isEmptyState || isNoPermission) ? {
         all: 0,
         running: 0,
         fav: 0,
@@ -10561,6 +10594,7 @@
       if (bar) bar.dataset.tip = isOpen ? '收合委託列表' : '展開委託列表';
     }
     function showOvComm() {
+      if (document.body.classList.contains('is-no-permission')) { showOv(); return; }
       _ovReturnSeg = 'all';
       showOv();
       ovSwitch('all');
@@ -10872,6 +10906,7 @@
       return false;
     }
     function openArmModal() {
+      if (document.body.classList.contains('is-no-permission')) return;
       if (document.body.classList.contains('is-quota-active') && (_quotaScenario === 'upgrade' || _quotaScenario === 'limits' || _quotaScenario === 'expiring')) {
         openQuotaModal();
         return;
