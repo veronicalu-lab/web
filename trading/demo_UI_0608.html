@@ -671,14 +671,10 @@
       transition: background .2s, color .2s
     }
 
-    ::-webkit-scrollbar {
-      width: 5px
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #8a8a8a;
-      border-radius: var(--r-sm)
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text4); }
 
     /* ── TITLEBAR ── */
     .titlebar {
@@ -1373,72 +1369,72 @@
       white-space: nowrap;
     }
 
-    #ov-all .o-table td:nth-child(5) {
+    #ov-comm .o-table td:nth-child(5) {
       max-width: 140px;
     }
-    #ov-all .o-table td:nth-child(5) .batch-prod-cell {
+    #ov-comm .o-table td:nth-child(5) .batch-prod-cell {
       max-width: 140px;
     }
-    #ov-all .o-table th:nth-child(7),
-    #ov-all .o-table td:nth-child(7) { white-space: nowrap; }
-    #ov-all .o-table th:nth-child(14),
-    #ov-all .o-table td:nth-child(14) { white-space: nowrap; }
-    #ov-all .o-table th.col-robot { white-space: normal; }
-    #ov-all .o-table th:nth-child(12),
-    #ov-all .o-table td:nth-child(12),
-    #ov-all .o-table th:nth-child(13),
-    #ov-all .o-table td:nth-child(13) { width: 200px; max-width: 200px; }
-    #ov-all .o-robot-link {
+    #ov-comm .o-table th:nth-child(7),
+    #ov-comm .o-table td:nth-child(7) { white-space: nowrap; }
+    #ov-comm .o-table th:nth-child(14),
+    #ov-comm .o-table td:nth-child(14) { white-space: nowrap; }
+    #ov-comm .o-table th.col-robot { white-space: normal; }
+    #ov-comm .o-table th:nth-child(12),
+    #ov-comm .o-table td:nth-child(12),
+    #ov-comm .o-table th:nth-child(13),
+    #ov-comm .o-table td:nth-child(13) { width: 200px; max-width: 200px; }
+    #ov-comm .o-robot-link {
       white-space: normal;
       text-overflow: unset;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
-    #ov-all .o-table td:nth-child(13),
-    #ov-all .o-table td:nth-child(14) { font-weight: 500; }
+    #ov-comm .o-table td:nth-child(13),
+    #ov-comm .o-table td:nth-child(14) { font-weight: 500; }
 
     /* ── 委託價 / 成交均價 靠右 ── */
     .o-table th.col-right { text-align: right; }
     .pend-orders .o-table td:nth-child(7),
     .pend-orders .o-table td:nth-child(8) { text-align: right; }
-    #ov-all .o-table td:nth-child(8),
-    #ov-all .o-table td:nth-child(9) { text-align: right; }
+    #ov-comm .o-table td:nth-child(8),
+    #ov-comm .o-table td:nth-child(9) { text-align: right; }
     #t-comm .table-radius-wrap .o-table td:nth-child(7),
     #t-comm .table-radius-wrap .o-table td:nth-child(8) { text-align: right; }
 
     /* ── 當日委託表格排序 ── */
-    #ov-all .o-table th[data-sortable] { cursor: pointer; user-select: none; }
-    #ov-all .o-table th[data-sortable]:hover { background: var(--comp-table-row-hover); }
+    #ov-comm .o-table th[data-sortable] { cursor: pointer; user-select: none; }
+    #ov-comm .o-table th[data-sortable]:hover { background: var(--comp-table-row-hover); }
     /* 左/置中欄：箭頭在後，opacity:0 預留空位避免 hover 時寬度跳動 */
-    #ov-all .o-table th[data-sortable]:not(.col-right)::after {
+    #ov-comm .o-table th[data-sortable]:not(.col-right)::after {
       content: '↓'; display: inline-block; margin-left: 2px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .35; }
-    #ov-all .o-table th[data-sort-dir="asc"]:not(.col-right)::after  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
-    #ov-all .o-table th[data-sort-dir="desc"]:not(.col-right)::after { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
-    #ov-all .o-table th[data-sort-dir]:not(.col-right):hover::after  { opacity: 1; filter: brightness(1.35); }
+    #ov-comm .o-table th[data-sortable]:not(.col-right):hover::after { opacity: .35; }
+    #ov-comm .o-table th[data-sort-dir="asc"]:not(.col-right)::after  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-comm .o-table th[data-sort-dir="desc"]:not(.col-right)::after { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-comm .o-table th[data-sort-dir]:not(.col-right):hover::after  { opacity: 1; filter: brightness(1.35); }
     /* 置右欄：箭頭在前（::before），同樣 opacity:0 預留空位 */
-    #ov-all .o-table th[data-sortable].col-right { text-align: right; }
-    #ov-all .o-table th[data-sortable].col-right::before {
+    #ov-comm .o-table th[data-sortable].col-right { text-align: right; }
+    #ov-comm .o-table th[data-sortable].col-right::before {
       content: '↓'; display: inline-block; margin-right: 2px; font-size: 14px; opacity: 0;
     }
-    #ov-all .o-table th[data-sortable].col-right:hover::before { opacity: .35; }
-    #ov-all .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
-    #ov-all .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
-    #ov-all .o-table th[data-sort-dir].col-right:hover::before  { opacity: 1; filter: brightness(1.35); }
+    #ov-comm .o-table th[data-sortable].col-right:hover::before { opacity: .35; }
+    #ov-comm .o-table th[data-sort-dir="asc"].col-right::before  { content: '↑'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-comm .o-table th[data-sort-dir="desc"].col-right::before { content: '↓'; opacity: 1; color: var(--comp-th-sort-active); }
+    #ov-comm .o-table th[data-sort-dir].col-right:hover::before  { opacity: 1; filter: brightness(1.35); }
 
     /* ── 委託/成交 雙欄循環排序 ── */
     /* steps 1&2：/成交 變淡 */
-    #ov-all .o-table #ov-both-th[data-dual-step="1"] .both-sep,
-    #ov-all .o-table #ov-both-th[data-dual-step="1"] .both-t2,
-    #ov-all .o-table #ov-both-th[data-dual-step="2"] .both-sep,
-    #ov-all .o-table #ov-both-th[data-dual-step="2"] .both-t2 { opacity: 0.45; }
+    #ov-comm .o-table #ov-both-th[data-dual-step="1"] .both-sep,
+    #ov-comm .o-table #ov-both-th[data-dual-step="1"] .both-t2,
+    #ov-comm .o-table #ov-both-th[data-dual-step="2"] .both-sep,
+    #ov-comm .o-table #ov-both-th[data-dual-step="2"] .both-t2 { opacity: 0.45; }
     /* steps 3&4：委託/ 變淡 */
-    #ov-all .o-table #ov-both-th[data-dual-step="3"] .both-t1,
-    #ov-all .o-table #ov-both-th[data-dual-step="3"] .both-sep,
-    #ov-all .o-table #ov-both-th[data-dual-step="4"] .both-t1,
-    #ov-all .o-table #ov-both-th[data-dual-step="4"] .both-sep { opacity: 0.45; }
+    #ov-comm .o-table #ov-both-th[data-dual-step="3"] .both-t1,
+    #ov-comm .o-table #ov-both-th[data-dual-step="3"] .both-sep,
+    #ov-comm .o-table #ov-both-th[data-dual-step="4"] .both-t1,
+    #ov-comm .o-table #ov-both-th[data-dual-step="4"] .both-sep { opacity: 0.45; }
 
     /* ── 總覽機器人卡片表格排序 ── */
     :is(.r-card, #t-comm, #t-pos, #t-log) .o-table th[data-sortable] { cursor: pointer; user-select: none; }
@@ -1554,14 +1550,8 @@
       background: var(--bg);
     }
 
-    .sb-list::-webkit-scrollbar {
-      width: 3px
-    }
-
-    .sb-list::-webkit-scrollbar-thumb {
-      background: var(--tint4);
-      border-radius: 2px
-    }
+    .sb-list::-webkit-scrollbar { width: 8px; }
+    .sb-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
     .sb-group {
       margin-bottom: 2px
@@ -2044,7 +2034,7 @@
     .ov-wrap .ctrl-bar.is-stuck {
       box-shadow: 0 4px 10px -4px rgba(0,0,0,.4);
     }
-    #ov-all .o-table thead {
+    #ov-comm .o-table thead {
       position: sticky;
       z-index: 10;
     }
@@ -3080,18 +3070,8 @@
       scrollbar-color: var(--border2) transparent
     }
 
-    .pend-orders .o-table tbody::-webkit-scrollbar {
-      width: 4px
-    }
-
-    .pend-orders .o-table tbody::-webkit-scrollbar-track {
-      background: transparent
-    }
-
-    .pend-orders .o-table tbody::-webkit-scrollbar-thumb {
-      background: var(--border2);
-      border-radius: 2px
-    }
+    .pend-orders .o-table tbody::-webkit-scrollbar { width: 8px; }
+    .pend-orders .o-table tbody::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
     .pend-orders .o-table tbody tr,
     #t-comm .o-table tbody tr {
@@ -3234,13 +3214,13 @@
       text-overflow: ellipsis
     }
 
-    #ov-all .o-table th:nth-child(8),
-    #ov-all .o-table td:nth-child(8) {
+    #ov-comm .o-table th:nth-child(8),
+    #ov-comm .o-table td:nth-child(8) {
       max-width: 90px
     }
 
-    #ov-all .o-table td:nth-child(13),
-    #ov-all .o-table td:nth-child(14) {
+    #ov-comm .o-table td:nth-child(13),
+    #ov-comm .o-table td:nth-child(14) {
       max-width: 120px
     }
 
@@ -4780,14 +4760,8 @@
       font-size: var(--f-xs)
     }
 
-    .arm-content::-webkit-scrollbar {
-      width: 4px
-    }
-
-    .arm-content::-webkit-scrollbar-thumb {
-      background: var(--bg4);
-      border-radius: 2px
-    }
+    .arm-content::-webkit-scrollbar { width: 8px; }
+    .arm-content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
     .arm-pane {
       display: none;
@@ -4881,14 +4855,8 @@
       background: transparent
     }
 
-    .set-content::-webkit-scrollbar {
-      width: 4px
-    }
-
-    .set-content::-webkit-scrollbar-thumb {
-      background: var(--bg4);
-      border-radius: 2px
-    }
+    .set-content::-webkit-scrollbar { width: 8px; }
+    .set-content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
     .arm-section-title {
       font-size: var(--f-base);
@@ -5448,8 +5416,8 @@
     /* ov-card 無機器人：與 r-card 同寬同陰影 */
     #ov-card .ev-no-robot,
     #ov-card .ev-no-running,
-    #ov-all .ev-no-robot,
-    #ov-all .ev-no-running {
+    #ov-comm .ev-no-robot,
+    #ov-comm .ev-no-running {
       background: var(--bg3);
       border-radius: var(--r-lg);
       box-shadow: var(--comp-card-shadow);
@@ -5458,14 +5426,14 @@
     }
     [data-platform="xq"] #ov-card .ev-no-robot,
     [data-platform="xq"] #ov-card .ev-no-running,
-    [data-platform="xq"] #ov-all .ev-no-robot,
-    [data-platform="xq"] #ov-all .ev-no-running {
+    [data-platform="xq"] #ov-comm .ev-no-robot,
+    [data-platform="xq"] #ov-comm .ev-no-running {
       border: 1px solid var(--border);
     }
     #ov-card .ev-no-robot .empty-icon,
     #ov-card .ev-no-running .empty-icon,
-    #ov-all .ev-no-robot .empty-icon,
-    #ov-all .ev-no-running .empty-icon {
+    #ov-comm .ev-no-robot .empty-icon,
+    #ov-comm .ev-no-running .empty-icon {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -5478,22 +5446,22 @@
     }
     #ov-card .ev-no-robot .empty-icon i,
     #ov-card .ev-no-running .empty-icon i,
-    #ov-all .ev-no-robot .empty-icon i,
-    #ov-all .ev-no-running .empty-icon i {
+    #ov-comm .ev-no-robot .empty-icon i,
+    #ov-comm .ev-no-running .empty-icon i {
       color: var(--accent);
       opacity: 1;
     }
     #ov-card .ev-no-robot .empty-title,
     #ov-card .ev-no-running .empty-title,
-    #ov-all .ev-no-robot .empty-title,
-    #ov-all .ev-no-running .empty-title {
+    #ov-comm .ev-no-robot .empty-title,
+    #ov-comm .ev-no-running .empty-title {
       font-size: var(--f-xl);
       color: var(--text);
       font-weight: 500;
       margin-bottom: 0;
     }
     #ov-card .ev-no-running .empty-sub,
-    #ov-all .ev-no-running .empty-sub {
+    #ov-comm .ev-no-running .empty-sub {
       font-size: var(--f-md);
       color: var(--text3);
       line-height: 1.65;
@@ -5669,18 +5637,24 @@
 
     /* ── 無機器人-部分（有機器人但全未啟動） ── */
     body.is-partial-empty #ov-card .ev-no-running,
-    body.is-partial-empty #ov-all .ev-no-running { display: flex !important; }
-    body.is-partial-empty #ov-all .all-orders-wrap { display: none !important; }
+    body.is-partial-empty #ov-comm .ev-no-running { display: flex !important; }
+    body.is-partial-empty #ov-comm .all-orders-wrap { display: none !important; }
     body.is-partial-empty #ov-card .r-card { display: none !important; }
-    .ev-rec-list { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 20px; }
-    .ev-rec-label { display: flex; align-items: center; gap: 8px; font-size: var(--f-base); color: var(--text); margin-bottom: 10px; }
+    .ev-rec-scroll { width: 100%; overflow-x: auto; }
+
+    .ev-rec-list { display: flex; flex-direction: column; gap: 12px; width: 100%; min-width: 900px; max-width: 1000px; margin: 32px auto 0; padding-bottom: 6px; }
+    .ev-rec-label { display: flex; align-items: center; gap: 8px; font-size: var(--f-lg); color: var(--text); margin-bottom: 8px; }
     .ev-rec-label::before, .ev-rec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .ev-rec-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); box-shadow: var(--comp-card-shadow); border-radius: var(--r-md); cursor: pointer; transition: background .12s, box-shadow .12s; }
-    .ev-rec-item:hover { background: var(--hover-bg); box-shadow: var(--comp-float-shadow); }
+    .ev-rec-item:hover { background: var(--hover-bg); }
     .ev-rec-item:hover .ev-rec-item-name { color: var(--accent); }
-    .ev-rec-item-name { display: flex; align-items: center; gap: 6px; flex-shrink: 0; font-size: var(--f-base); font-weight: 500; color: var(--text); }
-    .ev-rec-item-sub { flex: 1; min-width: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ev-rec-item .rh-status-btn { height: 32px; font-size: var(--f-sm); padding: 0 12px; gap: 5px; flex-shrink: 0; }
+    .ev-rec-item-name { display: flex; align-items: center; gap: 6px; flex-shrink: 0; font-size: var(--f-md); font-weight: 500; color: var(--text); width: 300px; }
+    .ev-rec-item-name .rh-fav { font-size: var(--f-sm); }
+    .ev-rec-item-strat .dir-tag { font-size: var(--f-sm); }
+    .ev-rec-item-name-txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .ev-rec-item-acct { width: 150px; flex-shrink: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+    .ev-rec-item-strat { flex: 1; min-width: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+    .ev-rec-item .rh-status-btn { height: 34px; width: 100px; font-size: var(--f-base); padding: 0 10px; gap: 5px; flex-shrink: 0; }
     body.is-partial-empty .ctrl-bar { display: none !important; }
 
     body.is-empty-state.empty-no-order .ev-no-order { display: flex !important; }
@@ -5697,7 +5671,6 @@
     body.is-expiring [data-tip="新增機器人"],
     body.is-empty-state.empty-no-robot [data-tip="搜尋"] {
       opacity: 0.35;
-      pointer-events: none;
       cursor: not-allowed;
     }
     body.is-no-permission .sb-l2-filter { display: none; }
@@ -5706,7 +5679,7 @@
 
     body.is-no-permission #ov-card .r-card { display: none; }
     body.is-no-permission .noperm-upgrade-sec { display: flex; }
-    body.is-no-permission #ov-all { display: none !important; }
+    body.is-no-permission #ov-comm { display: none !important; }
     body.is-no-permission .ov-switcher { display: none; }
 
     /* ── 即將到期狀態 ── */
@@ -5720,8 +5693,8 @@
     body.is-expiring #ov-card .data-view { display: none !important; }
     body.is-expiring .expiring-notice { display: flex !important; }
     body.is-expiring .ov-switcher { display: none; }
-    body.is-expiring #ov-all .all-orders-wrap,
-    body.is-no-permission #ov-all .all-orders-wrap { display: none !important; }
+    body.is-expiring #ov-comm .all-orders-wrap,
+    body.is-no-permission #ov-comm .all-orders-wrap { display: none !important; }
 
     .noperm-ghost-card {
       border: 1px solid var(--border2);
@@ -6201,23 +6174,28 @@
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
             <div class="empty-title">目前無執行中機器人</div>
             <div class="empty-sub">請啟動看更多執行數據</div>
+            <div class="ev-rec-scroll">
             <div class="ev-rec-list">
               <div class="ev-rec-label">為你推薦</div>
               <div class="ev-rec-item" onclick="goToRobot('交易機器人 2','証-模擬交易(內建)-01')">
-                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 2</span>
-                <span class="ev-rec-item-sub">証-模擬交易(內建)-01｜<span class="dir-tag long">作多</span>聯發科策略 v2.0</span>
+                <span class="ev-rec-item-name"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)" title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="ev-rec-item-name-txt">交易機器人 2</span></span>
+                <span class="ev-rec-item-acct">証-模擬交易(內建)-01</span>
+                <span class="ev-rec-item-strat"><span class="dir-tag long">作多</span>聯發科策略 v2.0</span>
                 <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
               </div>
-              <div class="ev-rec-item" onclick="goToRobot('交易機器人 4','元大-現貨(A)-01')">
-                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 4</span>
-                <span class="ev-rec-item-sub">元大-現貨(A)-01｜<span class="dir-tag long">作多</span>台積電均線策略 v2.1</span>
+<div class="ev-rec-item" onclick="goToRobot('交易機器人 5','富邦-模擬交易-02')">
+                <span class="ev-rec-item-name"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)" title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="ev-rec-item-name-txt">交易機器人 5</span></span>
+                <span class="ev-rec-item-acct">富邦-模擬交易-02</span>
+                <span class="ev-rec-item-strat"><span class="dir-tag short">作空</span>台指期反轉策略 v1.3</span>
                 <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
               </div>
-              <div class="ev-rec-item" onclick="goToRobot('交易機器人 5','富邦-模擬交易-02')">
-                <span class="ev-rec-item-name"><i class="icon-bookmark-border-02"></i>交易機器人 5</span>
-                <span class="ev-rec-item-sub">富邦-模擬交易-02｜<span class="dir-tag short">作空</span>台指期反轉策略 v1.3</span>
+              <div class="ev-rec-item" onclick="goToRobot('超級高頻當沖量化積木交易機器人測試滿版','凱基-現貨-01')">
+                <span class="ev-rec-item-name"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)" title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="ev-rec-item-name-txt">超級高頻當沖量化積木交易機器人測試滿版</span></span>
+                <span class="ev-rec-item-acct">凱基-現貨-01</span>
+                <span class="ev-rec-item-strat"><span class="dir-tag long">作多</span>大盤動能策略 v3.0</span>
                 <button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>啟動</button>
               </div>
+            </div>
             </div>
           </div>
 
@@ -6744,7 +6722,7 @@
         </div><!-- /ov-card -->
 
         <!-- 全部委託 VIEW -->
-        <div id="ov-all" style="display:none">
+        <div id="ov-comm" style="display:none">
           <div class="empty-view ev-no-robot">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
             <div class="empty-title">建立交易機器人<br>來啟動自動下單吧！</div>
@@ -8755,7 +8733,7 @@
         const v = page === 'ov-comm' ? 'all' : 'card';
         document.getElementById('ov-card').style.display = v === 'card' ? 'flex' : 'none';
         if (v === 'card') document.getElementById('ov-card').style.flexDirection = 'column';
-        document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
+        document.getElementById('ov-comm').style.display = v === 'all' ? 'block' : 'none';
         document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
         document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
       } else {
@@ -8949,7 +8927,7 @@
       const isExpiring = document.body.classList.contains('is-expiring');
       const isNoPermission = document.body.classList.contains('is-no-permission');
       // 展示需求: 依照特定順序覆寫數量 (999, 23, 0, 9)，若在空畫面狀態則全設為 0
-      const commRows = document.querySelectorAll('#ov-all .o-table tbody tr').length;
+      const commRows = document.querySelectorAll('#ov-comm .o-table tbody tr').length;
       const counts = (isEmptyState || isNoPermission) ? {
         all: 0,
         running: 0,
@@ -9146,7 +9124,7 @@
         card.style.display = (!acct || card.dataset.account === acct) ? '' : 'none';
       });
       _updateOvDirCounts();
-      // filter #ov-all rows
+      // filter #ov-comm rows
       document.querySelectorAll('.all-orders-wrap .o-table tbody tr').forEach(tr => {
         tr.style.display = (!acct || tr.dataset.account === acct) ? '' : 'none';
       });
@@ -9536,6 +9514,9 @@
     /* ── Sidebar Search ── */
     let _sbHistory = [];
     function sbSearchExpand() {
+      const b = document.body.classList;
+      if (b.contains('is-no-permission')) return;
+      if (b.contains('is-empty-state') && b.contains('empty-no-robot')) return;
       if (document.querySelector('.sb').classList.contains('sb-collapsed')) toggleSidebar();
       document.getElementById('sb-l2-hdr').style.display = 'none';
       const bar = document.getElementById('sb-search-bar');
@@ -9768,7 +9749,7 @@
     let _ovBuySellFilter = '';
     let _ovTypeFilter = '';
     function ovFilterBySelect(val) {
-      document.querySelectorAll('#ov-all .o-table tbody tr').forEach(tr => {
+      document.querySelectorAll('#ov-comm .o-table tbody tr').forEach(tr => {
         let show = true;
         if (val) {
           const cls = tr.querySelector('.s-tag')?.className || '';
@@ -9830,10 +9811,10 @@
         const colWrap = colSel.closest('.xsel-wrap');
         if (colWrap) colWrap.classList.toggle('has-filter', !!val);
       }
-      // filter #ov-all + r-cards + sync other rc-status-sel
+      // filter #ov-comm + r-cards + sync other rc-status-sel
       ovFilterBySelect(val);
     }
-    // ── Multi-key sort for #ov-all ──────────────────────────────────────────
+    // ── Multi-key sort for #ov-comm ──────────────────────────────────────────
     // Default tiebreaker priority; '6a'=委託qty, '6b'=成交qty (both from col 6)
     const _OV_PRIORITY = [2, 3, 4, 5, '6a', '6b', 7, 8, 9, 10, 11, 12, 13];
     const _OV_NAT_DIR  = {
@@ -9914,7 +9895,7 @@
     let _ovColBothStep = 0;
 
     function _ovApplySort() {
-      const tbody = document.querySelector('#ov-all .o-table tbody');
+      const tbody = document.querySelector('#ov-comm .o-table tbody');
       if (!tbody) return;
       const rows = [...tbody.querySelectorAll('tr')];
       const primary = _ovPrimaryCol ?? 2;
@@ -9934,11 +9915,11 @@
       _ovPrimaryCol = null;
       _ovPrimaryDir = -1;
       _ovColBothStep = 0;
-      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => {
+      document.querySelectorAll('#ov-comm .o-table th[data-sortable]').forEach(t => {
         t.removeAttribute('data-sort-dir');
         t.removeAttribute('data-dual-step');
       });
-      const timeTh = document.querySelector('#ov-all .o-table th[onclick="ovColSort(this,2)"]');
+      const timeTh = document.querySelector('#ov-comm .o-table th[onclick="ovColSort(this,2)"]');
       if (timeTh) timeTh.dataset.sortDir = 'desc';
       _ovApplySort();
     }
@@ -9959,7 +9940,7 @@
         _ovPrimaryCol = colIdx;
         _ovPrimaryDir = _OV_NAT_DIR[colIdx] ?? -1;
       }
-      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      document.querySelectorAll('#ov-comm .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
       th.dataset.sortDir = _ovPrimaryDir === -1 ? 'desc' : 'asc';
       _ovApplySort();
     }
@@ -9967,7 +9948,7 @@
     function ovColBothSort() {
       _ovColBothStep = _ovColBothStep >= 4 ? 5 : _ovColBothStep + 1;
       if (_ovColBothStep === 5) { _ovDefaultSort(); return; }
-      document.querySelectorAll('#ov-all .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
+      document.querySelectorAll('#ov-comm .o-table th[data-sortable]').forEach(t => t.removeAttribute('data-sort-dir'));
       const th = document.getElementById('ov-both-th');
       th.dataset.dualStep = _ovColBothStep;
       _ovPrimaryCol = _ovColBothStep <= 2 ? '6a' : '6b';
@@ -10242,7 +10223,7 @@
       sel._xselRebuild();
     }
     function refreshOvFilterCounts() {
-      const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
+      const rows = [...document.querySelectorAll('#ov-comm .o-table tbody tr')];
       const map = { '': rows.length, 'pend': 0, 'filled': 0, 'fail': 0, 'cancel': 0 };
       rows.forEach(tr => {
         const cls = tr.querySelector('.s-tag')?.className || '';
@@ -10260,7 +10241,7 @@
     function refreshOvTypeCounts() {
       const sel = document.getElementById('ov-col-type-sel');
       if (!sel || !sel._xselRebuild) return;
-      const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
+      const rows = [...document.querySelectorAll('#ov-comm .o-table tbody tr')];
       const map = { '': rows.length, 'odd': 0, 'stock': 0 };
       rows.forEach(tr => {
         if (tr.cells[3]?.querySelector('.t-odd')) map.odd++;
@@ -10272,7 +10253,7 @@
     function refreshOvBuySellCounts() {
       const sel = document.getElementById('ov-col-buysell-sel');
       if (!sel || !sel._xselRebuild) return;
-      const rows = [...document.querySelectorAll('#ov-all .o-table tbody tr')];
+      const rows = [...document.querySelectorAll('#ov-comm .o-table tbody tr')];
       const map = { '': rows.length, 'buy': 0, 'sell': 0 };
       rows.forEach(tr => {
         if (tr.cells[5]?.classList.contains('side-buy')) map.buy++;
@@ -10603,7 +10584,7 @@
       if (typeof clearBatchSel === 'function') clearBatchSel();
       document.getElementById('ov-card').style.display = v === 'card' ? 'flex' : 'none';
       if (v === 'card') document.getElementById('ov-card').style.flexDirection = 'column';
-      document.getElementById('ov-all').style.display = v === 'all' ? 'block' : 'none';
+      document.getElementById('ov-comm').style.display = v === 'all' ? 'block' : 'none';
       document.getElementById('vbtn-card').classList.toggle('active', v === 'card');
       document.getElementById('vbtn-all').classList.toggle('active', v === 'all');
       document.getElementById('ov-prod-search-wrap').style.display = v === 'all' ? '' : 'none';
@@ -10619,7 +10600,7 @@
     }
     function ovProdSearch(q) {
       const kw = q.trim().toLowerCase();
-      document.querySelectorAll('#ov-all .o-table tbody tr').forEach(tr => {
+      document.querySelectorAll('#ov-comm .o-table tbody tr').forEach(tr => {
         const prodCell = tr.querySelector('td.col-prod');
         const text = prodCell ? prodCell.textContent.toLowerCase() : '';
         tr.style.display = (!kw || text.includes(kw)) ? '' : 'none';
@@ -10708,7 +10689,7 @@
       pendingDelRow = btn.closest('tr');
       const cells = pendingDelRow.querySelectorAll('td');
       const table = pendingDelRow.closest('table');
-      const isAllOrders = table && table.closest('#ov-all') !== null;
+      const isAllOrders = table && table.closest('#ov-comm') !== null;
       const off = isAllOrders ? 1 : 0;
       const prodCell  = cells[3 + off];
       const sideEl    = cells[4 + off];
@@ -11436,7 +11417,7 @@
       };
       // 機器人欄 index = 11 (col-chk + col-act + 委託時間 + 類別 + 商品 + 買賣 + 委託/成交 + 委託價 + 成交均價 + 狀態 + 委託書號 + 機器人)
       const COL = 11;
-      document.querySelectorAll('#ov-all tbody tr').forEach(tr => {
+      document.querySelectorAll('#ov-comm tbody tr').forEach(tr => {
         const td = tr.cells[COL];
         if (!td) return;
         const name = td.textContent.trim();
@@ -11470,7 +11451,7 @@
       if (!ovWrap) return;
       const metricBar = ovWrap.querySelector('.metric-bar');
       const ctrlBar   = ovWrap.querySelector('.ctrl-bar');
-      const thead     = document.querySelector('#ov-all .o-table thead');
+      const thead     = document.querySelector('#ov-comm .o-table thead');
       if (!metricBar || !ctrlBar) return;
       const mh = metricBar.offsetHeight;
       ctrlBar.style.top = mh + 'px';
@@ -11840,7 +11821,7 @@
     function _getRowData(tr) {
       const cells = tr.querySelectorAll('td');
       const table = tr.closest('table');
-      const isAllOrders = table && table.closest('#ov-all') !== null;
+      const isAllOrders = table && table.closest('#ov-comm') !== null;
       const off = isAllOrders ? 1 : 0; // offset if category column exists
 
       // cols: [col-chk][col-act][col-act][時間]([類別])?[商品][買賣][數量][委託價][成交價][狀態]
@@ -11865,7 +11846,7 @@
       _batchRows.forEach(tr => {
         const cells = tr.querySelectorAll('td');
         const table = tr.closest('table');
-        const isAllOrders = table && table.closest('#ov-all') !== null;
+        const isAllOrders = table && table.closest('#ov-comm') !== null;
         const off = isAllOrders ? 1 : 0;
         const prodCell = cells[3 + off];
         const sideCell  = cells[4 + off];
