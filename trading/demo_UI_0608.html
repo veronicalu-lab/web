@@ -44,6 +44,7 @@
       --danger2: #e42845; /* Trade/Limit-up */
       --warning: var(--cta); /* System/Warning */
       --cta: #f57f16;     /* System/CTA */
+      --warning-orange: #f27030; /* Warning Orange：全部停止等次級警告操作 */
       --online: var(--cta);
       --tooltip-bg: #262626; /* Tooltip — 保持深色對比 */
     }
@@ -2590,7 +2591,7 @@
     }
 
     .op-red {
-      background: var(--danger2)
+      background: var(--warning-orange)
     }
     .op-red:hover {
       opacity: .85
@@ -3178,9 +3179,9 @@
     .log-table th:first-child,
     .log-table td:first-child { padding-left: var(--sp-6); }
     #t-comm .table-radius-wrap .o-table th:first-child,
+    #t-pos .table-radius-wrap .o-table th:first-child { padding-left: var(--sp-6); }
     #t-comm .table-radius-wrap .o-table td:first-child,
-    #t-pos .table-radius-wrap .o-table th:first-child,
-    #t-pos .table-radius-wrap .o-table td:first-child { padding-left: var(--sp-6); }
+    #t-pos .table-radius-wrap .o-table td:first-child { padding-left: calc(var(--sp-6) + 1px); }
     #t-comm .table-radius-wrap .o-table th:last-child,
     #t-comm .table-radius-wrap .o-table td:last-child,
     #t-pos .table-radius-wrap .o-table th:last-child,
@@ -3265,7 +3266,7 @@
     .o-table td.col-chk {
       width: 40px;
       padding: var(--sp-1) 0 var(--sp-1) var(--sp-3);
-      text-align: center;
+      text-align: left;
       vertical-align: middle
     }
 
@@ -3275,6 +3276,14 @@
       padding: var(--sp-1) var(--sp-3) var(--sp-1) 0;
       text-align: center;
       vertical-align: middle
+    }
+
+    .o-table td.col-act .ico-btn {
+      width: 32px;
+      height: 32px;
+      margin: 0 0 0 var(--sp-2);
+      padding-left: 2px;
+      padding-right: 4px;
     }
 
     .ico-btn {
@@ -3301,8 +3310,22 @@
     }
 
     .ico-btn.del:hover {
-      color: var(--danger);
-      background: rgba(254, 43, 72, .08)
+      color: var(--cta);
+      background: rgba(245, 127, 22, .08)
+    }
+
+    #t-pos .ico-btn.del:hover {
+      color: var(--danger2);
+      background: rgba(228, 40, 69, .08)
+    }
+
+    #t-pos .o-table th.col-chk,
+    #t-pos .o-table td.col-chk { padding-right: 4px; }
+
+    #t-pos .o-table td.col-act .ico-btn {
+      padding-left: 3px;
+      padding-right: 3px;
+      justify-content: center;
     }
 
     .ico-btn:disabled,
@@ -3865,8 +3888,8 @@
       padding: 0 var(--sp-4);
       height: var(--comp-ctrl-h);
       box-sizing: border-box;
-      background: var(--danger2);
-      color: var(--bg);
+      background: var(--cta);
+      color: #fff;
       border: none;
       border-radius: var(--r-md);
       font-size: var(--f-base);
@@ -3876,7 +3899,13 @@
       transition: background .15s
     }
     .del-all-btn:hover {
-      background: var(--danger)
+      opacity: .85
+    }
+    .close-all-btn {
+      background: var(--danger2);
+    }
+    .close-all-btn:hover {
+      opacity: .85
     }
 
     /* EXEC LOG */
@@ -4143,7 +4172,7 @@
       gap: 6px;
       padding: var(--sp-2) var(--sp-5);
       background: var(--danger2);
-      color: var(--bg);
+      color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -5417,7 +5446,8 @@
     #ov-card .ev-no-robot,
     #ov-card .ev-no-running,
     #ov-comm .ev-no-robot,
-    #ov-comm .ev-no-running {
+    #ov-comm .ev-no-running,
+    #ov-comm .ev-inactive {
       background: var(--bg3);
       border-radius: var(--r-lg);
       box-shadow: var(--comp-card-shadow);
@@ -5427,13 +5457,15 @@
     [data-platform="xq"] #ov-card .ev-no-robot,
     [data-platform="xq"] #ov-card .ev-no-running,
     [data-platform="xq"] #ov-comm .ev-no-robot,
-    [data-platform="xq"] #ov-comm .ev-no-running {
+    [data-platform="xq"] #ov-comm .ev-no-running,
+    [data-platform="xq"] #ov-comm .ev-inactive {
       border: 1px solid var(--border);
     }
     #ov-card .ev-no-robot .empty-icon,
     #ov-card .ev-no-running .empty-icon,
     #ov-comm .ev-no-robot .empty-icon,
-    #ov-comm .ev-no-running .empty-icon {
+    #ov-comm .ev-no-running .empty-icon,
+    #ov-comm .ev-inactive .empty-icon {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -5447,26 +5479,48 @@
     #ov-card .ev-no-robot .empty-icon i,
     #ov-card .ev-no-running .empty-icon i,
     #ov-comm .ev-no-robot .empty-icon i,
-    #ov-comm .ev-no-running .empty-icon i {
+    #ov-comm .ev-no-running .empty-icon i,
+    #ov-comm .ev-inactive .empty-icon i {
       color: var(--accent);
       opacity: 1;
     }
     #ov-card .ev-no-robot .empty-title,
     #ov-card .ev-no-running .empty-title,
     #ov-comm .ev-no-robot .empty-title,
-    #ov-comm .ev-no-running .empty-title {
+    #ov-comm .ev-no-running .empty-title,
+    #ov-comm .ev-inactive .empty-title {
       font-size: var(--f-xl);
       color: var(--text);
       font-weight: 500;
       margin-bottom: 0;
     }
     #ov-card .ev-no-running .empty-sub,
-    #ov-comm .ev-no-running .empty-sub {
+    #ov-comm .ev-no-running .empty-sub,
+    #ov-comm .ev-inactive .empty-sub {
       font-size: var(--f-md);
       color: var(--text3);
       line-height: 1.65;
       margin-bottom: 0;
     }
+    /* ── #t-pos 空狀態卡片樣式 ── */
+    #t-pos .empty-view {
+      background: var(--bg3);
+      border-radius: var(--r-lg);
+      box-shadow: var(--comp-card-shadow);
+      padding: 40px 24px;
+      gap: 12px;
+    }
+    [data-platform="xq"] #t-pos .empty-view { border: 1px solid var(--border); }
+    #t-pos .empty-view .empty-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; opacity: 1;
+    }
+    #t-pos .empty-view .empty-icon i,
+    #t-pos .empty-view .empty-icon svg { color: var(--accent); opacity: 1; }
+    #t-pos .empty-view .empty-title { font-size: var(--f-xl); color: var(--text); font-weight: 500; margin-bottom: 0; }
+    #t-pos .empty-view .empty-sub { font-size: var(--f-md); color: var(--text3); line-height: 1.65; margin-bottom: 0; }
     .ov-wrap .empty-view .empty-title { color: var(--text); font-size: var(--f-xl); }
 
     #sb-empty-btn,
@@ -5506,7 +5560,7 @@
       display: flex !important;
     }
 
-    body.is-empty-state .ctrl-bar,
+    body.is-empty-state:not(.empty-no-order) .ctrl-bar,
     body.is-no-permission .ctrl-bar,
     body.is-expiring .ctrl-bar,
     body.is-empty-state #det-filter-bar {
@@ -5514,7 +5568,7 @@
     }
 
     /* Metric Cards Zeroing in Empty State */
-    body.is-empty-state .metric .m-value,
+    body.is-empty-state:not(.empty-no-order) .metric .m-value,
     body.is-expiring .ov-wrap .metric .m-value,
     body.is-no-permission .ov-wrap .metric .m-value,
     body.is-partial-empty .ov-wrap .metric .m-value {
@@ -5522,14 +5576,14 @@
       color: var(--comp-metric-empty-text) !important;
     }
 
-    body.is-empty-state .metric .m-value span,
+    body.is-empty-state:not(.empty-no-order) .metric .m-value span,
     body.is-expiring .ov-wrap .metric .m-value span,
     body.is-no-permission .ov-wrap .metric .m-value span,
     body.is-partial-empty .ov-wrap .metric .m-value span {
       display: none !important;
     }
 
-    body.is-empty-state .metric .m-sub,
+    body.is-empty-state:not(.empty-no-order) .metric .m-sub,
     body.is-expiring .ov-wrap .metric .m-sub,
     body.is-no-permission .ov-wrap .metric .m-sub,
     body.is-partial-empty .ov-wrap .metric .m-sub {
@@ -5537,22 +5591,22 @@
       color: var(--comp-metric-empty-text) !important;
     }
 
-    body.is-empty-state .ov-wrap .metric-bar,
+    body.is-empty-state:not(.empty-no-order) .ov-wrap .metric-bar,
     body.is-expiring .ov-wrap .metric-bar,
     body.is-no-permission .ov-wrap .metric-bar,
     body.is-partial-empty .ov-wrap .metric-bar {
       opacity: 0.5;
     }
 
-    body.is-empty-state .metric.robot .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.robot .m-value::before,
     body.is-expiring .ov-wrap .metric.robot .m-value::before,
     body.is-no-permission .ov-wrap .metric.robot .m-value::before,
     body.is-partial-empty .ov-wrap .metric.robot .m-value::before {
       content: "--個"; font-size: 28px;
     }
-    body.is-empty-state .metric.long .m-value::before,
-    body.is-empty-state .metric.short .m-value::before,
-    body.is-empty-state .metric.warn .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.long .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.short .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.warn .m-value::before,
     body.is-expiring .ov-wrap .metric.long .m-value::before,
     body.is-expiring .ov-wrap .metric.short .m-value::before,
     body.is-expiring .ov-wrap .metric.warn .m-value::before,
@@ -5564,8 +5618,8 @@
     body.is-partial-empty .ov-wrap .metric.warn .m-value::before {
       content: "$--"; font-size: 28px;
     }
-    body.is-empty-state .metric.book .m-value::before,
-    body.is-empty-state .metric.filled .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.book .m-value::before,
+    body.is-empty-state:not(.empty-no-order) .metric.filled .m-value::before,
     body.is-expiring .ov-wrap .metric.book .m-value::before,
     body.is-expiring .ov-wrap .metric.filled .m-value::before,
     body.is-no-permission .ov-wrap .metric.book .m-value::before,
@@ -5575,14 +5629,14 @@
       content: "--筆"; font-size: 28px;
     }
 
-    body.is-empty-state .metric.robot .m-sub::before,
+    body.is-empty-state:not(.empty-no-order) .metric.robot .m-sub::before,
     body.is-expiring .ov-wrap .metric.robot .m-sub::before,
     body.is-no-permission .ov-wrap .metric.robot .m-sub::before,
     body.is-partial-empty .ov-wrap .metric.robot .m-sub::before {
       content: "共--檔"; font-size: var(--f-base);
     }
-    body.is-empty-state .metric.long .m-sub::before,
-    body.is-empty-state .metric.short .m-sub::before,
+    body.is-empty-state:not(.empty-no-order) .metric.long .m-sub::before,
+    body.is-empty-state:not(.empty-no-order) .metric.short .m-sub::before,
     body.is-expiring .ov-wrap .metric.long .m-sub::before,
     body.is-expiring .ov-wrap .metric.short .m-sub::before,
     body.is-no-permission .ov-wrap .metric.long .m-sub::before,
@@ -5591,8 +5645,8 @@
     body.is-partial-empty .ov-wrap .metric.short .m-sub::before {
       content: "--股"; font-size: var(--f-base);
     }
-    body.is-empty-state .metric.book .m-sub::before,
-    body.is-empty-state .metric.filled .m-sub::before,
+    body.is-empty-state:not(.empty-no-order) .metric.book .m-sub::before,
+    body.is-empty-state:not(.empty-no-order) .metric.filled .m-sub::before,
     body.is-expiring .ov-wrap .metric.book .m-sub::before,
     body.is-expiring .ov-wrap .metric.filled .m-sub::before,
     body.is-no-permission .ov-wrap .metric.book .m-sub::before,
@@ -5601,6 +5655,30 @@
     body.is-partial-empty .ov-wrap .metric.filled .m-sub::before {
       content: "共--檔"; font-size: var(--f-base);
     }
+
+    /* ── empty-no-order：metric 歸零（robot m-value 保留，其餘全清） ── */
+    body.is-empty-state.empty-no-order .ov-wrap .metric.long .m-value,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.short .m-value,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.book .m-value,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.robot .m-sub,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.long .m-sub,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.short .m-sub,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.book .m-sub {
+      font-size: 0 !important;
+      color: var(--comp-metric-empty-text) !important;
+    }
+    body.is-empty-state.empty-no-order .ov-wrap .metric.long .m-value span,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.short .m-value span,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.book .m-value span { display: none !important; }
+
+    body.is-empty-state.empty-no-order .ov-wrap .metric.long .m-value::before,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.short .m-value::before { content: "$0"; font-size: 28px; }
+    body.is-empty-state.empty-no-order .ov-wrap .metric.book .m-value::before { content: "0筆"; font-size: 28px; }
+
+    body.is-empty-state.empty-no-order .ov-wrap .metric.robot .m-sub::before { content: "共0檔商品"; font-size: var(--f-base); }
+    body.is-empty-state.empty-no-order .ov-wrap .metric.long .m-sub::before,
+    body.is-empty-state.empty-no-order .ov-wrap .metric.short .m-sub::before { content: "0股"; font-size: var(--f-base); }
+    body.is-empty-state.empty-no-order .ov-wrap .metric.book .m-sub::before { content: "共0檔商品"; font-size: var(--f-base); }
 
     .empty-action-btn {
       display: inline-flex;
@@ -5656,10 +5734,29 @@
     .ev-rec-item-strat { flex: 1; min-width: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
     .ev-rec-item .rh-status-btn { height: 34px; width: 100px; font-size: var(--f-base); padding: 0 10px; gap: 5px; flex-shrink: 0; }
     body.is-partial-empty .ctrl-bar { display: none !important; }
+    body.is-partial-empty #sb-l2-filter [data-l2filter="running"],
+    body.is-partial-empty #sb-l2-filter [data-l2filter="fav"] {
+      opacity: 0.4;
+      cursor: default;
+    }
 
     body.is-empty-state.empty-no-order .ev-no-order { display: flex !important; }
     body.is-empty-state.empty-no-order #sb-data-view { display: contents !important; }
-    body.is-empty-state.empty-no-order #ov-card .data-view { display: contents !important; }
+    body.is-empty-state.empty-no-order #ov-card > .data-view { display: flex !important; flex-direction: column; gap: var(--sp-3); }
+    body.is-empty-state.empty-no-order #ov-card .rh-signal-lbl { font-size: 0; }
+    body.is-empty-state.empty-no-order #ov-card .rh-signal-lbl::before { content: "最新委託 --:--:--"; font-size: var(--f-sm); }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.pend { font-size: 0; }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.pend::before { content: "未完全成交(0)"; font-size: var(--f-base); }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.filled { font-size: 0; }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.filled::before { content: "完全成交(0)"; font-size: var(--f-base); }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.fail { font-size: 0; }
+    body.is-empty-state.empty-no-order #ov-card .rh-pill.fail::before { content: "失敗(0)"; font-size: var(--f-base); }
+    body.is-empty-state.empty-no-order #ov-card .rh-cap-label { font-size: 0; }
+    body.is-empty-state.empty-no-order #ov-card .rh-cap-label::before { content: "安控 " attr(data-cap) "(0%)"; font-size: var(--f-sm); }
+    body.is-empty-state.empty-no-order #ov-card .cap-fill { width: 0 !important; }
+    /* 內頁 tab 空狀態：委託明細隱藏 table，持倉庫存隱藏 running content */
+    body.is-empty-state.empty-no-order #t-comm .table-radius-wrap { display: none !important; }
+    body.is-empty-state.empty-no-order #t-pos #pos-running-content { display: none !important; }
 
     /* ── 無權限狀態 ── */
     .noperm-sb-lock,
@@ -6155,16 +6252,18 @@
             <input class="f-input" id="ov-prod-search" type="text" placeholder="輸入股票代號或股名" oninput="ovProdSearch(this.value)">
             <button class="inp-clear" onclick="this.previousElementSibling.value='';ovProdSearch('')" title="清除"><span style="font-family:xqnext;font-size:14px;line-height:1">&#xe913;</span></button>
           </div>
-          <div id="ov-type-tag" class="ov-filter-tag" style="display:none">
-            <span class="tag-label">零股</span>
-            <button class="tag-close" onclick="ovTypeClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
-          </div>
-          <div id="ov-buysell-tag" class="ov-filter-tag" style="display:none">
-            <span class="tag-label">買進</span>
-            <button class="tag-close" onclick="ovBuySellClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
-          </div>
-          <div class="op-btns">
-            <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:var(--sp-3)">
+            <div id="ov-type-tag" class="ov-filter-tag" style="display:none">
+              <span class="tag-label">零股</span>
+              <button class="tag-close" onclick="ovTypeClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
+            </div>
+            <div id="ov-buysell-tag" class="ov-filter-tag" style="display:none">
+              <span class="tag-label">買進</span>
+              <button class="tag-close" onclick="ovBuySellClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
+            </div>
+            <div class="op-btns">
+              <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
+            </div>
           </div>
         </div>
 
@@ -6173,7 +6272,7 @@
           <div class="empty-view ev-no-running">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
             <div class="empty-title">目前無執行中機器人</div>
-            <div class="empty-sub">請啟動看更多執行數據</div>
+            <div class="empty-sub">請點擊啟動開始自動下單</div>
             <div class="ev-rec-scroll">
             <div class="ev-rec-list">
               <div class="ev-rec-label">為你推薦</div>
@@ -6202,7 +6301,7 @@
           <div class="empty-view ev-no-robot">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
             <div class="empty-title">建立交易機器人<br>來啟動自動下單吧！</div>
-            <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;gap:8px;"><i class="fas fa-plus"></i>新建機器人</button>
+            <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;"><i class="fas fa-plus"></i>新建機器人</button>
           </div>
           <div class="empty-view ev-inactive">
             <div class="empty-icon"><i class="fas fa-video-slash"></i></div>
@@ -6232,7 +6331,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $65萬(65%)</span>
+                  <span class="rh-cap-label" data-cap="$65萬">安控 $65萬(65%)</span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill" style="width:65%"></div>
@@ -6252,8 +6351,8 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無未平倉委託</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
                   </div>
                   <table class="o-table data-view">
                     <thead>
@@ -6426,7 +6525,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $32萬(40%)</span>
+                  <span class="rh-cap-label" data-cap="$32萬">安控 $32萬(40%)</span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill" style="width:40%"></div>
@@ -6446,8 +6545,8 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無未平倉委託</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">請啟動機器人，策略訊號觸發後將自動下單</div>
                   </div>
                   <table class="o-table data-view">
                     <thead>
@@ -6665,7 +6764,7 @@
                   </div>
                 </div>
                 <div class="rh-cap">
-                  <span class="rh-cap-label">安控 $100萬(100%) <i class="icon-alert-triangle-fill" style="color:var(--warning)"></i></span>
+                  <span class="rh-cap-label" data-cap="$100萬">安控 $100萬(100%) <i class="icon-alert-triangle-fill" style="color:var(--warning)"></i></span>
                   <div class="rh-cap-bar-wrap">
                     <div class="cap-bar">
                       <div class="cap-fill warn" style="width:100%"></div>
@@ -6685,8 +6784,8 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前無交易委託</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
                   </div>
                   <div class="data-view" style="display:contents"></div>
                 </div>
@@ -6725,18 +6824,23 @@
         <div id="ov-comm" style="display:none">
           <div class="empty-view ev-no-robot">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
-            <div class="empty-title">建立交易機器人<br>來啟動自動下單吧！</div>
+            <div class="empty-title">建立交易機器人<br>啟動後輕鬆掌握每筆委託！</div>
             <button class="empty-action-btn" onclick="openArmModal()" style="margin-top:12px;"><i class="fas fa-plus"></i>新建機器人</button>
           </div>
           <div class="empty-view ev-no-running">
             <div class="empty-icon"><i class="fas fa-robot"></i></div>
-            <div class="empty-title">目前無執行中機器人</div>
-            <div class="empty-sub">請啟動看更多委託資訊</div>
+            <div class="empty-title">目前無任何委託紀錄</div>
+            <div class="empty-sub">請啟動機器人輕鬆掌握每筆委託</div>
+            <div class="ev-rec-scroll">
+              <div class="ev-rec-list" id="comm-rec-list">
+                <div class="ev-rec-label">為你推薦</div>
+              </div>
+            </div>
           </div>
           <div class="empty-view ev-inactive ev-no-order">
             <div class="empty-icon"><i class="icon-inbox"></i></div>
-            <div class="empty-title">今日目前無委託紀錄</div>
-            <div class="empty-sub">送出委託後將顯示於此</div>
+            <div class="empty-title">目前尚無委託紀錄</div>
+            <div class="empty-sub">訊號觸發送出委託後將顯示於此</div>
           </div>
           <div class="expiring-notice" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-clock" style="color:var(--warning);opacity:1;"></i></div>
@@ -6967,7 +7071,7 @@
         </div>
         <div class="tabs">
           <div class="tab active" onclick="switchTab(event,'t-settings')">機器人設定</div>
-          <div class="tab" onclick="switchTab(event,'t-comm')">每日委託</div>
+          <div class="tab" onclick="switchTab(event,'t-comm')">委託明細</div>
           <div class="tab" onclick="switchTab(event,'t-pos')">持倉庫存</div>
           <div class="tab" onclick="switchTab(event,'t-log')">執行紀錄</div>
           <div class="tabs-meta" id="det-time">啟動執行時間 2026/04/11 10:54:38</div>
@@ -7257,7 +7361,7 @@
             <div class="empty-view ev-no-running" style="padding:80px 20px;">
               <div class="empty-icon"><i class="fas fa-robot"></i></div>
               <div class="empty-title">目前無執行中機器人</div>
-              <div class="empty-sub">請啟動看更多執行數據</div>
+              <div class="empty-sub">請點擊啟動開始自動下單</div>
             </div>
             <!-- 未啟動空畫面 -->
             <div id="comm-idle-state" class="empty-view ev-inactive" style="padding:80px 20px;display:none;">
@@ -7323,12 +7427,12 @@
                   <option value="cancel">已刪單</option>
                 </select>
                 <button class="del-all-btn"
-                  onclick="xConfirm('全部刪單','將刪除所有未完全成交委託',()=>xAlert('已刪除','所有未完全成交委託已刪除','<i class=&quot;icon-check-circle-fill&quot; style=&quot;color:var(--success)&quot;></i>'),{icon:'<span style=&quot;font-family:xqnext;color:var(--warning)&quot;>&#xe91b;</span>',confirmText:'確認',confirmCls:'danger',noClose:true})" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
+                  onclick="delAllComm(this)" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-trash-01" style="font-size:24px;line-height:1"></i><span>全部刪單</span></button>
               </div>
               <div class="empty-view ev-no-order" style="padding:60px 20px;">
                 <div class="empty-icon"><i class="icon-folder-open"></i></div>
-                <div class="empty-title">今日目前無委託紀錄</div>
-                <div class="empty-sub">開通機器人後送出的委託紀錄將顯示於此</div>
+                <div class="empty-title">目前尚無委託紀錄</div>
+                <div class="empty-sub">機器人已啟動，策略訊號觸發後將自動下單</div>
               </div>
               <div class="table-radius-wrap">
               <table class="o-table data-view">
@@ -7685,17 +7789,27 @@
 
           <!-- TAB: 持倉庫存 -->
           <div id="t-pos" class="tab-pane">
-            <div class="empty-view ev-no-robot" style="padding:80px 20px;">
+            <div class="empty-view ev-no-robot">
               <div class="empty-icon"><i class="fas fa-robot"></i></div>
               <div class="empty-title">目前無可用機器人</div>
               <div class="empty-sub">建立並啟動機器人後，持倉紀錄將顯示於此</div>
             </div>
-            <div id="pos-idle-state" class="empty-view ev-inactive" style="padding:80px 20px;display:none;">
+            <div class="empty-view ev-no-order">
+              <div class="empty-icon"><i class="icon-folder-open"></i></div>
+              <div class="empty-title">目前尚無持倉紀錄</div>
+              <div class="empty-sub">策略訊號觸發送出委託後，持倉將顯示於此</div>
+            </div>
+            <div id="pos-idle-state" class="empty-view ev-inactive" style="display:none;">
               <div class="empty-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><path d="M12 12v4"/><path d="M10 14h4"/></svg>
               </div>
-              <div class="empty-title">目前無持倉紀錄</div>
-              <div class="empty-sub">機器人建立持倉後將顯示於此</div>
+              <div class="empty-title">請啟動機器人</div>
+              <div class="empty-sub">啟動後持倉紀錄將顯示於此</div>
+              <button class="empty-action-btn" style="margin-top:16px;"
+                onclick="document.querySelector('.det-hdr-actions .rh-status-btn').click()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>
+                啟動
+              </button>
             </div>
             <div id="pos-running-content">
               <!-- 指標卡 -->
@@ -7747,10 +7861,10 @@
                       </div>
                     </div>
                   </div>
-                  <button class="del-all-btn"
+                  <button class="del-all-btn close-all-btn"
                     onclick="closeAllPosConfirm()"
                     style="display:inline-flex;align-items:center;gap:6px">
-                    <i class="icon-trash-01" style="font-size:24px;line-height:1"></i>
+                    <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg>
                     <span>全部平倉</span>
                   </button>
                 </div>
@@ -7775,7 +7889,7 @@
                       <!-- 台積電 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330',815)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330',815)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
                         <td>
                           <div class="line-clamp-2" title="台積電 2330">台積電 <span class="prod-code">2330</span></div>
                         </td>
@@ -7791,7 +7905,7 @@
                       <!-- 聯發科 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454',1230)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454',1230)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
                         <td>
                           <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
                         </td>
@@ -7807,7 +7921,7 @@
                       <!-- 台塑 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301',105.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301',105.5)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
                         <td>
                           <div class="line-clamp-2" title="台塑 1301">台塑 <span class="prod-code">1301</span></div>
                         </td>
@@ -7823,7 +7937,7 @@
                       <!-- 國泰金 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882',68.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe9f3;</span></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882',68.5)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
                         <td>
                           <div class="line-clamp-2" title="國泰金 2882">國泰金 <span class="prod-code">2882</span></div>
                         </td>
@@ -7845,6 +7959,19 @@
 
           <!-- TAB 5: 執行紀錄 -->
           <div id="t-log" class="tab-pane">
+            <div id="log-idle-state" class="empty-view" style="padding:80px 20px;display:none;">
+              <div class="empty-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div class="empty-title">請啟動機器人</div>
+              <div class="empty-sub">啟動後執行紀錄將顯示於此</div>
+              <button class="empty-action-btn" style="margin-top:16px;"
+                onclick="document.querySelector('.det-hdr-actions .rh-status-btn').click()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>
+                啟動
+              </button>
+            </div>
+            <div id="log-running-content">
             <div class="s-section" style="padding:0">
               <div id="log-filter-bar">
                 <div class="log-date-nav" id="log-date-nav">
@@ -8040,6 +8167,7 @@
               </table>
               </div>
             </div>
+            </div><!-- /log-running-content -->
           </div>
 
 
@@ -8670,6 +8798,16 @@
     function xAlert(title, msg, icon, onOk) { _xpopShow({ icon: icon || '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', title, msg, type: 'alert', onOk: onOk || null }); }
     function xConfirm(title, msg, onOk, opts) { _xpopShow({ icon: (opts && opts.icon) || '<i class="icon-alert-triangle-fill" style="color:var(--warning)"></i>', title, msg, type: 'confirm', confirmText: (opts && opts.confirmText) || '確認', cancelText: (opts && opts.cancelText) || '取消', confirmCls: (opts && opts.confirmCls != null) ? opts.confirmCls : 'danger', onOk, onCancel: (opts && opts.onCancel) || null, noClose: !!(opts && opts.noClose) }); }
     function xPrompt(title, msg, defaultVal, onOk) { _xpopShow({ icon: '✏️', title, msg, type: 'prompt', inputVal: defaultVal || '', confirmText: '確認', confirmCls: 'accent', onOk }); }
+    function delAllComm(btn) {
+      const tbl = btn.closest('#t-comm') || document.getElementById('t-comm');
+      const cnt = tbl ? tbl.querySelectorAll('.o-table tbody tr .s-pend').length : 0;
+      const msg = `將刪除共 <strong style="color:var(--accent)">${cnt}</strong> 筆未完全成交委託`;
+      xConfirm('全部刪單', msg,
+        () => xAlert('已刪除', '所有未完全成交委託已刪除', '<i class="icon-check-circle-fill" style="color:var(--success)"></i>'),
+        { icon: `<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>`, confirmText: '確認', confirmCls: 'danger', noClose: true }
+      );
+    }
+
     function closeAllPosConfirm() {
       const _posCnt = document.querySelectorAll('#t-pos .o-table tbody tr:not(.pos-detail-row)').length;
       const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉送出委託價格</div>
@@ -8712,7 +8850,7 @@
       if (rv && rv.style.display !== 'none') {
         const pane = document.querySelector('#robot-view .tab-pane.active');
         const id = pane ? pane.id : 't-settings';
-        return { 't-settings': 'robot-settings', 't-comm': 'robot-comm', 't-log': 'robot-log' }[id] || 'robot-settings';
+        return { 't-settings': 'robot-settings', 't-comm': 'robot-comm', 't-pos': 'robot-pos', 't-log': 'robot-log' }[id] || 'robot-settings';
       }
       return document.getElementById('vbtn-all')?.classList.contains('active') ? 'ov-comm' : 'ov-robots';
     }
@@ -8741,11 +8879,11 @@
         _applyRobot('交易機器人 1');
         document.getElementById('ov').style.display = 'none';
         document.getElementById('robot-view').style.display = 'flex';
-        const tabId = { 'robot-settings': 't-settings', 'robot-comm': 't-comm', 'robot-log': 't-log' }[page] || 't-settings';
+        const tabId = { 'robot-settings': 't-settings', 'robot-comm': 't-comm', 'robot-pos': 't-pos', 'robot-log': 't-log' }[page] || 't-settings';
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        const tabIdx = ['t-settings', 't-comm', 't-log'].indexOf(tabId);
+        const tabIdx = ['t-settings', 't-comm', 't-pos', 't-log'].indexOf(tabId);
         const tabs = document.querySelectorAll('.tab');
         if (tabs[tabIdx]) tabs[tabIdx].classList.add('active');
       }
@@ -8851,11 +8989,46 @@
       document.querySelectorAll('.sb-l2-filter .seg-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.l2filter === 'all');
       });
+      // 移除 L2 disabled tooltip
+      const l2Running = document.querySelector('#sb-l2-filter [data-l2filter="running"]');
+      const l2Fav    = document.querySelector('#sb-l2-filter [data-l2filter="fav"]');
+      if (l2Running) delete l2Running.dataset.tip;
+      if (l2Fav)    delete l2Fav.dataset.tip;
       _applyListFilter(_sbCurrentFilter);
       _updateFilterCounts();
       _updateL2FilterCounts();
     }
 
+    function _renderCommRecommend() {
+      const list = document.getElementById('comm-rec-list');
+      if (!list) return;
+      // get all sidebar idle robots (no green dot)
+      const items = [...document.querySelectorAll('.sb-list .sb-item')];
+      const idle = items.filter(it => !it.querySelector('.sb-dot.green'));
+      // sort: 關閉時間近→遠 > 建立時間近→遠 (點擊次數 demo 無資料，略)
+      idle.sort((a, b) => {
+        const la = a.dataset.latestOrder, lb = b.dataset.latestOrder;
+        const aHas = la && la !== '—', bHas = lb && lb !== '—';
+        if (aHas && bHas) return lb.localeCompare(la);
+        if (aHas) return -1;
+        if (bHas) return 1;
+        return (b.dataset.created || '').localeCompare(a.dataset.created || '');
+      });
+      // clear old items, keep label
+      list.querySelectorAll('.ev-rec-item').forEach(el => el.remove());
+      const playIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg>`;
+      idle.slice(0, 3).forEach(item => {
+        const name = item.title || item.querySelector('.sb-item-name')?.textContent?.trim() || '';
+        const account = item.dataset.account || '';
+        const dir = item.dataset.dir || 'long';
+        const acctShort = account.replace('証-模擬交易(內建)-01','証-模擬-01').replace('期-模擬交易-01','期-模擬-01');
+        const el = document.createElement('div');
+        el.className = 'ev-rec-item';
+        el.setAttribute('onclick', `goToRobot('${name.replace(/'/g,"\\'")}','${account.replace(/'/g,"\\'")}')` );
+        el.innerHTML = `<span class="ev-rec-item-name"><span class="rh-fav" title="加入收藏" onclick="event.stopPropagation();toggleFav(this)"><i class="icon-bookmark-border-02"></i></span><span class="ev-rec-item-name-txt">${name}</span></span><span class="ev-rec-item-acct">${acctShort}</span><span class="ev-rec-item-strat"><span class="dir-tag ${dir}">${dir==='long'?'作多':'作空'}</span></span><button class="rh-status-btn idle" onclick="event.stopPropagation();toggleRobotStatus(this)">${playIcon}啟動</button>`;
+        list.appendChild(el);
+      });
+    }
     function setPartialEmpty() {
       const btn = document.getElementById('ev-no-robot-partial-btn');
       if (_partialEmptyActive) { _clearPartialEmpty(); return; }
@@ -8891,6 +9064,14 @@
       _updateFilterCounts();
       _updateL2FilterCounts();
       _updateSbEmpty();
+
+      // L2 running/fav disable + tooltip
+      const l2Running = document.querySelector('#sb-l2-filter [data-l2filter="running"]');
+      const l2Fav    = document.querySelector('#sb-l2-filter [data-l2filter="fav"]');
+      if (l2Running) l2Running.dataset.tip = '目前無執行中機器人';
+      if (l2Fav)    l2Fav.dataset.tip    = '目前無收藏的機器人';
+
+      _renderCommRecommend();
 
       // 強制導回首頁（執行總覽顯示空畫面）
       _applyPageSilent('ov-robots');
@@ -9381,6 +9562,7 @@
     }
 
     function sbL2Filter(el, type) {
+      if (document.body.classList.contains('is-partial-empty') && (type === 'running' || type === 'fav')) return;
       _sbL2Filter = type;
       document.querySelectorAll('#sb-l2-filter .seg-btn').forEach(b => b.classList.toggle('active', b === el));
       const items = [...document.querySelectorAll('.sb-list .sb-item')].filter(i => i.style.display !== 'none' || type === 'all');
@@ -9449,13 +9631,13 @@
       if (ev) ev.style.display = anyVisible ? 'none' : 'flex';
       const msgs = {
         all:    { all:     ['目前無任何機器人',       '請新建機器人即可開始',                true],
-                  running: ['目前無執行中機器人',   '請啟動看更多執行數據',              false],
+                  running: ['目前無執行中機器人',   '請點擊啟動開始自動下單',              false],
                   fav:     ['目前無收藏的機器人',     '點擊機器人旁的書籤加入收藏',          false] },
         running:{ all:     ['目前無量化積木機器人',   '請新建此來源機器人即可開始',         true],
-                  running: ['目前無執行中的量化積木', '請啟動看更多執行數據',              false],
+                  running: ['目前無執行中的量化積木', '請點擊啟動開始自動下單',              false],
                   fav:     ['目前無收藏的量化積木',   '點擊機器人旁的書籤加入收藏',          false] },
         fav:    { all:     ['目前無智慧單機器人',   '請新建此來源機器人即可開始',           true],
-                  running: ['目前無執行中的智慧單',   '請啟動看更多執行數據',              false],
+                  running: ['目前無執行中的智慧單',   '請點擊啟動開始自動下單',              false],
                   fav:     ['目前無收藏的智慧單',     '點擊機器人旁的書籤加入收藏',          false] },
         recent: { all:     ['近期目前無活動紀錄',     '這裡將顯示您最近操作的機器人',        false] },
       };
@@ -9748,6 +9930,7 @@
     }
     let _ovBuySellFilter = '';
     let _ovTypeFilter = '';
+    let _rcBuySellFilter = '';
     function ovFilterBySelect(val) {
       document.querySelectorAll('#ov-comm .o-table tbody tr').forEach(tr => {
         let show = true;
@@ -9774,12 +9957,18 @@
           if (v) v.textContent = colSel.options[colSel.selectedIndex]?.text || '';
         }
       }
-      // filter r-card table rows
+      // filter r-card table rows (by status + buy/sell)
       document.querySelectorAll('.r-card .o-table tbody tr').forEach(tr => {
-        if (!val) { tr.style.display = ''; return; }
-        const cls = tr.querySelector('.s-tag')?.className || '';
-        const match = val === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + val);
-        tr.style.display = match ? '' : 'none';
+        let show = true;
+        if (val) {
+          const cls = tr.querySelector('.s-tag')?.className || '';
+          show = val === 'pend' ? (cls.includes('s-pend') || cls.includes('s-partial')) : cls.includes('s-' + val);
+        }
+        if (show && _rcBuySellFilter) {
+          const hasBuy = tr.cells[4]?.classList.contains('side-buy');
+          show = _rcBuySellFilter === 'buy' ? hasBuy : !hasBuy;
+        }
+        tr.style.display = show ? '' : 'none';
       });
       // sync r-card inline selects
       document.querySelectorAll('.rc-status-sel').forEach(sel => {
@@ -10119,24 +10308,33 @@
 
     function rcBuySellSync(sel) {
       const val = sel.value;
-      const wrap = sel.closest('.xsel-wrap');
-      if (wrap) wrap.classList.toggle('has-filter', !!val);
-      const tagId = sel.dataset.tagId;
-      if (tagId) {
-        const tag = document.getElementById(tagId);
-        if (tag) {
-          tag.style.display = val ? '' : 'none';
-          const lbl = tag.querySelector('.tag-label');
-          if (lbl) lbl.textContent = val === 'buy' ? '買進' : '賣出';
+      // sync all rc-buysell-sel (robot cards + t-comm) to same value and filter each table
+      document.querySelectorAll('.rc-buysell-sel').forEach(s => {
+        s.value = val;
+        const w = s.closest('.xsel-wrap');
+        if (w) w.classList.toggle('has-filter', !!val);
+        const tb = s.closest('table')?.querySelector('tbody');
+        if (tb) {
+          tb.querySelectorAll('tr').forEach(tr => {
+            if (!val) { tr.style.display = ''; return; }
+            const hasBuy = tr.cells[4]?.classList.contains('side-buy');
+            tr.style.display = (val === 'buy' ? hasBuy : !hasBuy) ? '' : 'none';
+          });
         }
-      }
-      const tbody = sel.closest('table').querySelector('tbody');
-      if (!tbody) return;
-      tbody.querySelectorAll('tr').forEach(tr => {
-        if (!val) { tr.style.display = ''; return; }
-        const hasBuy = tr.cells[4]?.classList.contains('side-buy');
-        tr.style.display = (val === 'buy' ? hasBuy : !hasBuy) ? '' : 'none';
       });
+      // update shared state so ovFilterBySelect re-applies r-card buy/sell when called
+      _rcBuySellFilter = val;
+      // also sync ov-comm table (uses ov-col-buysell-sel / ovBuySellSync, cells[5])
+      const ovSel = document.getElementById('ov-col-buysell-sel');
+      if (ovSel) ovSel.value = val;
+      if (typeof ovBuySellSync === 'function') ovBuySellSync(val);
+      // update comm-buysell-tag (ov-buysell-tag already handled by ovBuySellSync)
+      const commTag = document.getElementById('comm-buysell-tag');
+      if (commTag) {
+        commTag.style.display = val ? '' : 'none';
+        const lbl = commTag.querySelector('.tag-label');
+        if (lbl) lbl.textContent = val === 'buy' ? '買進' : '賣出';
+      }
     }
     function commBuySellClear() {
       const sel = document.querySelector('#t-comm .o-table .rc-buysell-sel');
@@ -10192,6 +10390,9 @@
       const sel = document.getElementById('ov-col-buysell-sel');
       if (sel) sel.value = '';
       ovBuySellSync('');
+      // clear all rc-buysell-sel (robot cards + t-comm) via global sync
+      const anySel = document.querySelector('.rc-buysell-sel');
+      if (anySel) { anySel.value = ''; rcBuySellSync(anySel); }
     }
     function refreshCommFilterCounts() {
       const rows = [...document.querySelectorAll('#t-comm .o-table tbody tr')];
@@ -10525,6 +10726,20 @@
       if (idleEl) idleEl.style.display = isIdle ? 'flex' : 'none';
       if (contentEl) contentEl.style.display = isIdle ? 'none' : '';
     }
+    function _syncPosIdleState() {
+      const isIdle = _robotStateIndex !== 0;
+      const idleEl = document.getElementById('pos-idle-state');
+      const contentEl = document.getElementById('pos-running-content');
+      if (idleEl) idleEl.style.display = isIdle ? 'flex' : 'none';
+      if (contentEl) contentEl.style.display = isIdle ? 'none' : '';
+    }
+    function _syncLogIdleState() {
+      const isIdle = _robotStateIndex !== 0;
+      const idleEl = document.getElementById('log-idle-state');
+      const contentEl = document.getElementById('log-running-content');
+      if (idleEl) idleEl.style.display = isIdle ? 'flex' : 'none';
+      if (contentEl) contentEl.style.display = isIdle ? 'none' : '';
+    }
     function switchTab(e, id) {
       if (typeof clearBatchSel === 'function') clearBatchSel();
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -10535,6 +10750,8 @@
       _syncCompact(id);
       _syncTabSticky(id);
       if (id === 't-comm') _syncCommIdleState();
+      if (id === 't-pos') _syncPosIdleState();
+      if (id === 't-log') _syncLogIdleState();
       _updateHash();
     }
     function switchTabById(id) {
@@ -10547,6 +10764,8 @@
       _syncCompact(id);
       _syncTabSticky(id);
       if (id === 't-comm') _syncCommIdleState();
+      if (id === 't-pos') _syncPosIdleState();
+      if (id === 't-log') _syncLogIdleState();
       _updateHash();
     }
     function toggleFav(el) {
@@ -10951,7 +11170,7 @@
           _robotStateIndex = 1;
           _syncCommIdleState();
         },
-        { icon: '<i class="icon-alert-circle-fill" style="color:var(--danger)"></i>', confirmText: '確認', confirmCls: 'danger', noClose: true }
+        { icon: '<span style="font-family:xqnext;color:var(--warning)">&#xe91b;</span>', confirmText: '確認', confirmCls: 'danger', noClose: true }
       );
     }
     function toggleRobotStatus(btn) {
@@ -11158,8 +11377,8 @@
                       <div class="pend-orders">
                         <div class="empty-view" style="padding:24px 16px;display:flex">
                           <div class="empty-icon" style="font-size:28px;margin-bottom:8px;"><i class="icon-inbox"></i></div>
-                          <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">目前無交易委託</div>
-                          <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後，委託單將顯示於此</div>
+                          <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">目前尚無委託單</div>
+                          <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
                         </div>
                       </div>
                     </div>
@@ -11700,7 +11919,7 @@
   <div class="batch-bar" id="pos-batch-bar">
     <span class="batch-count" id="pos-batch-count">已選 0檔</span>
     <div class="batch-sep"></div>
-    <button class="batch-del-btn" onclick="showPosBatchClose()"><i class="icon-logout-01" style="font-size:20px"></i> 批次平倉</button>
+    <button class="batch-del-btn" onclick="showPosBatchClose()" style="display:inline-flex;align-items:center;gap:6px"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg><span>批次平倉</span></button>
     <div class="batch-sep"></div>
     <button class="batch-cancel-btn" onclick="clearPosBatchSel()">取消選取</button>
   </div>
