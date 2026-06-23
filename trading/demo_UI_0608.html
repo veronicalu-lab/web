@@ -5574,6 +5574,23 @@
     body.is-empty-state #det-filter-bar {
       display: none !important;
     }
+    body.is-empty-state.empty-no-order .ctrl-bar {
+      display: flex !important;
+    }
+
+    body.is-no-permission #nav-comm,
+    body.is-expiring #nav-comm,
+    body.is-no-permission .sb-l1-filter[data-filter="running"],
+    body.is-no-permission .sb-l1-filter[data-filter="fav"] {
+      opacity: 0.4;
+    }
+    body.is-no-permission #nav-comm:hover,
+    body.is-expiring #nav-comm:hover,
+    body.is-no-permission .sb-l1-filter[data-filter="running"]:hover,
+    body.is-no-permission .sb-l1-filter[data-filter="fav"]:hover {
+      background: transparent !important;
+      color: var(--comp-nav-inactive-text) !important;
+    }
 
     /* Metric Cards Zeroing in Empty State */
     body.is-empty-state:not(.empty-no-order) .metric .m-value,
@@ -5856,8 +5873,14 @@
     body.is-no-permission [data-tip="搜尋"],
     body.is-expiring [data-tip="新增機器人"],
     body.is-empty-state.empty-no-robot [data-tip="搜尋"] {
-      opacity: 0.35;
-      cursor: not-allowed;
+      opacity: 0.4;
+    }
+    body.is-no-permission [data-tip="新增機器人"]:hover,
+    body.is-no-permission [data-tip="搜尋"]:hover,
+    body.is-expiring [data-tip="新增機器人"]:hover,
+    body.is-empty-state.empty-no-robot [data-tip="搜尋"]:hover {
+      background: transparent !important;
+      color: var(--comp-nav-inactive-text) !important;
     }
     body.is-no-permission .sb-l2-filter { display: none; }
     body.is-no-permission #sb-search-sort-row { visibility: hidden; }
@@ -6351,7 +6374,7 @@
               <button class="tag-close" onclick="ovBuySellClear()" title="清除篩選"><span style="font-family:xqnext;font-size:16px;line-height:1">&#xe913;</span></button>
             </div>
             <div class="op-btns">
-              <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
+              <button class="op-btn op-red" onclick="showStopAll()" style="display:inline-flex;align-items:center;gap:7px;height:38px;font-size:18px;padding:0 18px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><span>全部停止</span></button>
             </div>
           </div>
         </div>
@@ -6441,7 +6464,7 @@
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
                     <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將顯示委託</div>
                   </div>
                   <table class="o-table data-view">
                     <thead>
@@ -6634,8 +6657,8 @@
                   <div class="empty-view ev-no-order" style="padding:24px 16px;">
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
-                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">請啟動機器人，策略訊號觸發後將自動下單</div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">請啟動機器人</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後將顯示委託</div>
                   </div>
                   <table class="o-table data-view">
                     <thead>
@@ -6874,7 +6897,7 @@
                     <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i>
                     </div>
                     <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">目前尚無委託單</div>
-                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將顯示委託</div>
                   </div>
                   <div class="data-view" style="display:contents"></div>
                 </div>
@@ -6956,11 +6979,7 @@
                   <th class="col-chk"><input type="checkbox" class="row-cb" onclick="toggleAllRows(this)"></th>
                   <th class="col-act"></th>
                   <th data-sortable data-sort-dir="desc" onclick="ovColSort(this,2)">委託時間</th>
-                  <th>類別 <select class="th-inline-sel" id="ov-col-type-sel" onchange="ovTypeSync(this.value)">
-                      <option value="">全部</option>
-                      <option value="odd">零股</option>
-                      <option value="stock">整股</option>
-                    </select></th>
+                  <th data-sortable onclick="ovColSort(this,3)">類別</th>
                   <th class="col-prod" data-sortable onclick="ovColSort(this,4)">商品</th>
                   <th>買賣 <select class="th-inline-sel" id="ov-col-buysell-sel" onchange="ovBuySellSync(this.value)">
                       <option value="">全部</option>
@@ -7508,7 +7527,7 @@
               <div class="empty-view ev-no-order" style="padding:60px 20px;">
                 <div class="empty-icon"><i class="icon-folder-open"></i></div>
                 <div class="empty-title">目前尚無委託紀錄</div>
-                <div class="empty-sub">機器人已啟動，策略訊號觸發後將自動下單</div>
+                <div class="empty-sub">機器人已啟動，策略訊號觸發後將顯示委託</div>
               </div>
               <div id="comm-idle-state" class="empty-view ev-inactive" style="display:none;padding:60px 20px;">
                 <div class="empty-icon"><i class="fas fa-robot"></i></div>
@@ -7933,14 +7952,14 @@
                   <button class="del-all-btn close-all-btn"
                     onclick="closeAllPosConfirm()"
                     style="display:inline-flex;align-items:center;gap:6px">
-                    <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg>
+                    <span style="font-family:xqnext;font-size:20px;line-height:1;flex-shrink:0">&#xe920;</span>
                     <span>全部平倉</span>
                   </button>
                 </div>
                 <div class="empty-view ev-no-order" style="padding:60px 20px;">
                   <div class="empty-icon"><i class="icon-folder-open"></i></div>
-                  <div class="empty-title">目前尚無持倉紀錄</div>
-                  <div class="empty-sub">策略訊號觸發送出委託後，持倉將顯示於此</div>
+                  <div class="empty-title">無持倉紀錄</div>
+                  <div class="empty-sub">委託成交後，持倉將顯示於此</div>
                 </div>
                 <div id="pos-idle-state" class="empty-view ev-inactive" style="display:none;padding:60px 20px;">
                   <div class="empty-icon"><i class="fas fa-robot"></i></div>
@@ -7973,7 +7992,7 @@
                       <!-- 台積電 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330',815)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台積電 2330',815)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe920;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="台積電 2330">台積電 <span class="prod-code">2330</span></div>
                         </td>
@@ -7989,7 +8008,7 @@
                       <!-- 聯發科 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454',1230)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'聯發科 2454',1230)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe920;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="聯發科 2454">聯發科 <span class="prod-code">2454</span></div>
                         </td>
@@ -8005,7 +8024,7 @@
                       <!-- 台塑 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301',105.5)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'台塑 1301',105.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe920;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="台塑 1301">台塑 <span class="prod-code">1301</span></div>
                         </td>
@@ -8021,7 +8040,7 @@
                       <!-- 國泰金 -->
                       <tr>
                         <td class="col-chk"><input type="checkbox" class="pos-cb" onchange="onPosCbChange()"></td>
-                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882',68.5)" title="平倉"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg></button></td>
+                        <td class="col-act"><button class="ico-btn del" onclick="posCloseSingle(this,'國泰金 2882',68.5)" title="平倉"><span style="font-family:xqnext;font-size:20px;line-height:1">&#xe920;</span></button></td>
                         <td>
                           <div class="line-clamp-2" title="國泰金 2882">國泰金 <span class="prod-code">2882</span></div>
                         </td>
@@ -8068,12 +8087,13 @@
                   <button class="seg-btn active" onclick="filterLog('',this)">全部</button>
                   <button class="seg-btn" onclick="filterLog('trade',this)">交易</button>
                   <button class="seg-btn" onclick="filterLog('warning',this)">警示</button>
+                  <button class="seg-btn" onclick="filterLog('error',this)">錯誤</button>
                 </div>
                 <button class="export-btn" style="display:inline-flex;align-items:center;gap:6px"><i class="icon-export" style="font-size:24px;line-height:1"></i><span>匯出紀錄</span></button>
               </div>
               <div class="empty-view ev-no-robot ev-inactive ev-no-order" style="padding:40px 20px;">
                 <div class="empty-icon"><i class="icon-file-list"></i></div>
-                <div class="empty-title">目前無執行紀錄</div>
+                <div class="empty-title">無執行紀錄</div>
                 <div class="empty-sub">此處將顯示機器人交易與系統警告等推播紀錄</div>
               </div>
               <div id="log-idle-state" class="empty-view ev-inactive" style="display:none;padding:60px 20px;">
@@ -8105,47 +8125,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-etype="trade" data-src="robot">
-                    <td>13:30:00</td>
-                    <td class="log-src">交易機器人 1</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td>機器人停止</td>
-                    <td>交易機器人 1 已停止 • 原因：手動停止</td>
-                  </tr>
-                  <tr data-etype="trade" data-src="product">
-                    <td>10:00:00</td>
-                    <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td><strong class="log-event-cancel">刪除委託</strong></td>
-                    <td>聯發科 <span class="prod-code">2454</span> 原委託已刪除</td>
-                  </tr>
-                  <tr data-etype="trade" data-src="product">
-                    <td>09:30:45</td>
-                    <td class="log-src">台積電 <span class="prod-code">2330</span></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td><strong class="log-event-success">委託成交</strong></td>
-                    <td>台積電 <span class="prod-code">2330</span> 成交 10張 @ 920</td>
-                  </tr>
-                  <tr data-etype="warning" data-src="product">
-                    <td>09:15:00</td>
-                    <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                  <tr data-etype="warning" data-src="robot">
+                    <td>20:30:00</td>
+                    <td class="log-src">聯發科策略 v2.0</td>
                     <td><span class="evt-badge eb-warn">警示</span></td>
-                    <td><strong class="log-event-err">委託失敗</strong></td>
-                    <td>聯發科 <span class="prod-code">2454</span> 賣出 5張：委託失敗</td>
-                  </tr>
-                  <tr data-etype="trade" data-src="product">
-                    <td>09:01:12</td>
-                    <td class="log-src">台積電 <span class="prod-code">2330</span></td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td>委託送出</td>
-                    <td>台積電 <span class="prod-code">2330</span> 買進 10張 @ 920</td>
-                  </tr>
-                  <tr data-etype="trade" data-src="robot">
-                    <td>09:00:05</td>
-                    <td class="log-src">交易機器人 1</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td>機器人啟動</td>
-                    <td>交易機器人 1 已啟動 • 帳號：証-模擬交易-01</td>
+                    <td>策略資料變動</td>
+                    <td>回測資料重新計算，策略訊號可能改變</td>
                   </tr>
                   <tr data-etype="trade" data-src="robot">
                     <td>15:10:00</td>
@@ -8154,19 +8139,12 @@
                     <td>策略已停止監控</td>
                     <td>使用者在量化積木端停止了策略監控</td>
                   </tr>
-                  <tr data-etype="trade" data-src="robot">
-                    <td>09:05:00</td>
-                    <td class="log-src">聯發科策略 v2.0</td>
-                    <td><span class="evt-badge eb-trade">交易</span></td>
-                    <td>策略重新開始監控</td>
-                    <td>使用者重新啟動了策略監控</td>
-                  </tr>
-                  <tr data-etype="warning" data-src="robot">
-                    <td>20:30:00</td>
-                    <td class="log-src">聯發科策略 v2.0</td>
-                    <td><span class="evt-badge eb-warn">警示</span></td>
-                    <td>策略資料變動</td>
-                    <td>回測資料重新計算，策略訊號可能改變</td>
+                  <tr data-etype="error" data-src="robot">
+                    <td>14:02:33</td>
+                    <td class="log-src">交易機器人 1</td>
+                    <td><span class="evt-badge eb-err">錯誤</span></td>
+                    <td>安控阻擋</td>
+                    <td><span style="color:var(--danger)">超過每日金額上限</span> • 已用 320 萬 / 上限 300 萬（觸發商品：台積電 <span class="prod-code">2330</span>）</td>
                   </tr>
                   <tr data-etype="trade" data-src="product">
                     <td>13:45:22</td>
@@ -8181,6 +8159,13 @@
                     <td><span class="evt-badge eb-trade">交易</span></td>
                     <td>委託送出</td>
                     <td>聯發科 <span class="prod-code">2454</span> 賣出 5張 @ 1,032</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="robot">
+                    <td>13:30:00</td>
+                    <td class="log-src">交易機器人 1</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>機器人停止</td>
+                    <td>交易機器人 1 已停止 • 原因：手動停止</td>
                   </tr>
                   <tr data-etype="warning" data-src="product">
                     <td>13:20:11</td>
@@ -8244,6 +8229,48 @@
                     <td><span class="evt-badge eb-trade">交易</span></td>
                     <td>委託送出</td>
                     <td>聯發科 <span class="prod-code">2454</span> 買進 10張 @ 1,025</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="product">
+                    <td>10:00:00</td>
+                    <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-cancel">刪除委託</strong></td>
+                    <td>聯發科 <span class="prod-code">2454</span> 原委託已刪除</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="product">
+                    <td>09:30:45</td>
+                    <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td><strong class="log-event-success">委託成交</strong></td>
+                    <td>台積電 <span class="prod-code">2330</span> 成交 10張 @ 920</td>
+                  </tr>
+                  <tr data-etype="warning" data-src="product">
+                    <td>09:15:00</td>
+                    <td class="log-src">聯發科 <span class="prod-code">2454</span></td>
+                    <td><span class="evt-badge eb-warn">警示</span></td>
+                    <td><strong class="log-event-err">委託失敗</strong></td>
+                    <td>聯發科 <span class="prod-code">2454</span> 賣出 5張：委託失敗</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="robot">
+                    <td>09:05:00</td>
+                    <td class="log-src">聯發科策略 v2.0</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>策略重新開始監控</td>
+                    <td>使用者重新啟動了策略監控</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="product">
+                    <td>09:01:12</td>
+                    <td class="log-src">台積電 <span class="prod-code">2330</span></td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>委託送出</td>
+                    <td>台積電 <span class="prod-code">2330</span> 買進 10張 @ 920</td>
+                  </tr>
+                  <tr data-etype="trade" data-src="robot">
+                    <td>09:00:05</td>
+                    <td class="log-src">交易機器人 1</td>
+                    <td><span class="evt-badge eb-trade">交易</span></td>
+                    <td>機器人啟動</td>
+                    <td>交易機器人 1 已啟動 • 帳號：証-模擬交易-01</td>
                   </tr>
                 </tbody>
               </table>
@@ -9707,6 +9734,7 @@
     }
 
     function sbFilterClick(el, type) {
+      if (document.body.classList.contains('is-no-permission') && (type === 'running' || type === 'fav')) return;
       if (document.querySelector('.sb').classList.contains('sb-collapsed')) toggleSidebar();
       _syncFilterActive(type);
       if (type === 'running') showOv();
@@ -10896,7 +10924,7 @@
       if (bar) bar.dataset.tip = isOpen ? '收合委託列表' : '展開委託列表';
     }
     function showOvComm() {
-      if (document.body.classList.contains('is-no-permission')) { showOv(); return; }
+      if (document.body.classList.contains('is-no-permission') || document.body.classList.contains('is-expiring')) return;
       _ovReturnSeg = 'all';
       showOv();
       ovSwitch('all');
@@ -11208,8 +11236,8 @@
       return false;
     }
     function openArmModal() {
-      if (document.body.classList.contains('is-no-permission')) return;
-      if (document.body.classList.contains('is-quota-active') && (_quotaScenario === 'upgrade' || _quotaScenario === 'limits' || _quotaScenario === 'expiring')) {
+      if (document.body.classList.contains('is-no-permission') || document.body.classList.contains('is-expiring')) return;
+      if (document.body.classList.contains('is-quota-active') && (_quotaScenario === 'upgrade' || _quotaScenario === 'limits')) {
         openQuotaModal();
         return;
       }
@@ -11481,7 +11509,7 @@
                         <div class="empty-view" style="padding:24px 16px;display:flex">
                           <div class="empty-icon" style="font-size:28px;margin-bottom:8px;"><i class="icon-inbox"></i></div>
                           <div class="empty-title" style="font-size:var(--f-sm);margin-bottom:4px;">目前尚無委託單</div>
-                          <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將自動下單</div>
+                          <div class="empty-sub" style="font-size:var(--f-xs);">機器人已啟動，策略訊號觸發後將顯示委託</div>
                         </div>
                       </div>
                     </div>
@@ -11977,9 +12005,32 @@
       const _flowQuota = _sp.get('quota');
       const _flowSbL1  = _sp.get('sb_l1');
       const _flowSbL2  = _sp.get('sb_l2');
-      if (_flowEv) setEmptyVariant(_flowEv);
-      if (_flowQuota) setQuotaScenario(_flowQuota);
-      if (_flowTab) switchTabById(_flowTab);
+      if (_flowEv === 'partial') setPartialEmpty(); else if (_flowEv) setEmptyVariant(_flowEv);
+      if (_flowQuota) {
+        setQuotaScenario(_flowQuota);
+        if (_flowQuota === 'add-limit' || _flowQuota === 'run-limit') openQuotaModal(_flowQuota);
+      }
+      if (_flowTab && ['t-comm', 't-pos', 't-log', 't-settings'].includes(_flowTab)) {
+        _applyRobot('交易機器人 2');
+        document.getElementById('ov').style.display = 'none';
+        document.getElementById('robot-view').style.display = 'flex';
+        if (_flowEv === 'partial') {
+          _robotStateIndex = 1;
+          const _detBtn = document.querySelector('.det-hdr-actions .rh-status-btn');
+          if (_detBtn) {
+            _detBtn.classList.remove('running', 'waiting');
+            _detBtn.classList.add('idle');
+            _detBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M7 4.5C7 3.1 8.6 2.3 9.7 3.1L20.3 10.6C21.3 11.3 21.3 12.7 20.3 13.4L9.7 20.9C8.6 21.7 7 20.9 7 19.5V4.5Z"/></svg> 啟動';
+            _detBtn.setAttribute('data-tip', '執行機器人');
+          }
+          _syncCommIdleState(); _syncPosIdleState(); _syncLogIdleState();
+        }
+        switchTabById(_flowTab);
+      } else if (_flowTab === 'ov-comm') {
+        showOvComm();
+      } else if (_flowTab) {
+        switchTabById(_flowTab);
+      }
       if (_flowSbL1) { _syncFilterActive(_flowSbL1); _applyListFilter(_flowSbL1); }
       if (_flowSbL2 && _flowSbL2 !== 'all') {
         const _l2el = document.querySelector(`#sb-l2-filter .seg-btn[data-l2filter="${_flowSbL2}"]`);
