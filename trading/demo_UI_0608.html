@@ -8919,7 +8919,7 @@
 
     function closeAllPosConfirm() {
       const _posCnt = document.querySelectorAll('#t-pos .o-table tbody tr:not(.pos-detail-row)').length;
-      const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉送出委託價格</div>
+      const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉委託<span style="color:var(--success)">賣出</span>價格</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
@@ -10717,7 +10717,7 @@
     });
     function posCloseSingle(btn, name, price) {
       const step = price >= 500 ? 1 : price >= 100 ? 0.5 : price >= 50 ? 0.1 : price >= 10 ? 0.05 : 0.01;
-      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 送出委託價格</div>
+      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 委託<span style="color:var(--success)">賣出</span>價格</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
@@ -10740,7 +10740,7 @@
     }
     function showPosBatchClose() {
       const n = document.querySelectorAll('#t-pos .pos-cb:checked:not([disabled])').length;
-      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔持倉送出委託價格</div>
+      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔持倉委託<span style="color:var(--success)">賣出</span>價格</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
@@ -12073,7 +12073,7 @@
   <div class="batch-bar" id="pos-batch-bar">
     <span class="batch-count" id="pos-batch-count">已選 0檔</span>
     <div class="batch-sep"></div>
-    <button class="batch-del-btn" onclick="showPosBatchClose()" style="display:inline-flex;align-items:center;gap:6px"><svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><line x1="7.8" y1="7.8" x2="12.2" y2="12.2"/><line x1="12.2" y1="7.8" x2="7.8" y2="12.2"/></svg><span>批次平倉</span></button>
+    <button class="batch-del-btn" onclick="showPosBatchClose()" style="display:inline-flex;align-items:center;gap:6px"><span style="font-family:xqnext;font-size:20px;line-height:1;flex-shrink:0">&#xe920;</span><span>批次平倉</span></button>
     <div class="batch-sep"></div>
     <button class="batch-cancel-btn" onclick="clearPosBatchSel()">取消選取</button>
   </div>
