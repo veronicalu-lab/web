@@ -7443,7 +7443,7 @@
                       </div>
                       <div class="s-row">
                         <div class="s-label">最大部位限制</div>
-                        <div style="display:flex;align-items:center;gap:6px"><input type="number" value="50" class="s-input"><span style="font-size:var(--f-base);white-space:nowrap">張</span></div>
+                        <input type="number" value="50" class="s-input">
                       </div>
                       <div class="s-row">
                         <div class="s-label">最多持有商品檔數</div>
@@ -8613,7 +8613,6 @@
                 <div class="s-label" style="margin-bottom:0;width:160px;flex-shrink:0">最大部位限制</div>
                 <div style="display:flex;align-items:center;gap:8px">
                   <div class="num-wrap" style="width:140px"><input type="text" inputmode="numeric" value="50" min="1" max="100"><div class="num-arrows"><button type="button" onclick="numStep(this,1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0L10 6H0L5 0Z"/></svg></button><button type="button" onclick="numStep(this,-1)"><svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0H10L5 6Z"/></svg></button></div></div>
-                  <span style="font-size:var(--f-base);white-space:nowrap">張</span>
                 </div>
               </div>
               <div class="s-row" style="display:flex;align-items:center;margin-bottom:10px">
@@ -8691,9 +8690,9 @@
   <!-- ===== 右鍵選單 ===== -->
   <div class="ctx-menu" id="ctx-menu">
     <div class="ctx-item" id="ctx-start" onclick="ctxAction('start')"><span>啟動</span><span
-        class="ctx-shortcut" style="display:none">Ctrl+Num+</span></div>
+        class="ctx-shortcut">Ctrl+Num+</span></div>
     <div class="ctx-item" id="ctx-stop" onclick="ctxAction('stop')"><span>停止</span><span
-        class="ctx-shortcut" style="display:none">Ctrl+Num−</span></div>
+        class="ctx-shortcut">Ctrl+Num−</span></div>
     <div class="ctx-sep"></div>
     <div class="ctx-item" id="ctx-fav" onclick="ctxAction('fav')"><span id="ctx-fav-label">加入收藏</span></div>
     <div class="ctx-sep"></div>
@@ -9198,7 +9197,7 @@
       if (body) body.style.display = hdr.classList.contains('collapsed') ? 'none' : 'block';
     }
     /* ── Sidebar filter state ── */
-    let _sbFavs = new Set(['KD高檔死亡交叉', '法人累計買超超過1,000張', '智慧單策略 A']);
+    let _sbFavs = new Set([]);
     let _sbRecent = [
       'BBand翻多極度無敵超長策略文字滿版顯示測試狀態（字數測試極限）',
       'KD高檔死亡交叉',
