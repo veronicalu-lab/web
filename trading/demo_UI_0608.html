@@ -5372,7 +5372,7 @@
       border: 1px solid var(--border2);
       border-radius: var(--r-md);
       padding: var(--sp-1) 0;
-      min-width: 180px;
+      min-width: 150px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
       display: none;
       user-select: none
@@ -7251,7 +7251,7 @@
                     <i class="icon-setting-01 orig-icon"></i><i class="icon-edit-01 hover-icon"></i>安控設定
                   </div>
                   <div class="sv-row"><span class="sv-label">每日金額上限</span><span class="sv-val">$100萬</span></div>
-                  <div class="sv-row"><span class="sv-label">最大部位限制</span><span class="sv-val">50</span></div>
+                  <div class="sv-row"><span class="sv-label">最大部位限制</span><span class="sv-val">50 張</span></div>
                   <div class="sv-row"><span class="sv-label">最多持有商品檔數</span><span class="sv-val">5 檔</span></div>
                 </div>
 
@@ -8920,7 +8920,10 @@
 
     function closeAllPosConfirm() {
       const _posCnt = document.querySelectorAll('#t-pos .o-table tbody tr:not(.pos-detail-row)').length;
-      const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉委託<span style="color:var(--success)">賣出</span>價格</div>
+      const isLong = (document.getElementById('robot-view')?.dataset?.dir || 'long') !== 'short';
+      const actionWord = isLong ? '賣出' : '回補';
+      const actionColor = isLong ? 'var(--success)' : 'var(--danger)';
+      const msgHtml = `<div>將對所有 <strong style="color:var(--accent)">${_posCnt}</strong> 檔持倉進行<span style="color:${actionColor}">${actionWord}</span>委託</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
@@ -10718,7 +10721,10 @@
     });
     function posCloseSingle(btn, name, price) {
       const step = price >= 500 ? 1 : price >= 100 ? 0.5 : price >= 50 ? 0.1 : price >= 10 ? 0.05 : 0.01;
-      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 委託<span style="color:var(--success)">賣出</span>價格</div>
+      const isLong = (document.getElementById('robot-view')?.dataset?.dir || 'long') !== 'short';
+      const actionWord = isLong ? '賣出' : '回補';
+      const actionColor = isLong ? 'var(--success)' : 'var(--danger)';
+      const msgHtml = `<div>將對 <strong style="color:var(--accent)">${name}</strong> 進行<span style="color:${actionColor}">${actionWord}</span>委託</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
@@ -10741,7 +10747,10 @@
     }
     function showPosBatchClose() {
       const n = document.querySelectorAll('#t-pos .pos-cb:checked:not([disabled])').length;
-      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔持倉委託<span style="color:var(--success)">賣出</span>價格</div>
+      const isLong = (document.getElementById('robot-view')?.dataset?.dir || 'long') !== 'short';
+      const actionWord = isLong ? '賣出' : '回補';
+      const actionColor = isLong ? 'var(--success)' : 'var(--danger)';
+      const msgHtml = `<div>將對已選 <strong style="color:var(--accent)">${n}</strong> 檔持倉進行<span style="color:${actionColor}">${actionWord}</span>委託</div>
         <div class="xpop-price-opts" style="gap:0;">
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="market" checked> 市價</label>
           <label style="padding:10px 0;border-bottom:1px solid var(--border);"><input type="radio" name="cap-price" value="current"> 現價</label>
