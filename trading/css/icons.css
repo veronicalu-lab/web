@@ -1215,3 +1215,39 @@
 .icon-triangle-left-02:before {
   content: "\e99c";
 }
+.icon-bars-menu:before {
+  content: "\ea89";
+}
+.icon-folder-fill:before {
+  content: "\ea8a";
+}
+.icon-robot:before {
+  content: "\ea8b";
+}
+.icon-crown:before {
+  content: "\ea8c";
+}
+.icon-table-cells-large:before {
+  content: "\ea8d";
+}
+.icon-calendar-check:before {
+  content: "\ea8e";
+}
+.icon-fa-plus:before {
+  content: "\ea8f";
+}
+.icon-fa-search:before {
+  content: "\ea90";
+}
+.icon-cube:before {
+  content: "\ea91";
+}
+.icon-lightbulb:before {
+  content: "\ea92";
+}
+.icon-play-stroke:before {
+  content: "\ea87";
+}
+.icon-pause-stroke:before {
+  content: "\ea88";
+}
