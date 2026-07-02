@@ -84,6 +84,7 @@
       --warning-orange: #f27030; /* Warning Orange：全部停止等次級警告操作 */
       --online: var(--cta);
       --tooltip-bg: #262626; /* Tooltip — 保持深色對比 */
+      --accent-nav: var(--accent); /* L1 nav 專用 accent；⚡ XQ dark 鎖回原藍 */
     }
 
     /* Light mode — XQNext light spec (from XQNext-design-demo.md §4)
@@ -127,32 +128,33 @@
    Accent: #6886DC  |  Base: deep navy
 ================================================================ */
     [data-platform="xq"] {
-      --bg: #0d1526;
-      /* deep navy */
-      --bg2: #131d38;
-      /* sidebar / titlebar */
-      --bg3: #192344;
-      /* cards / panels */
-      --bg4: #1f2b4f;
-      /* pressed / hover */
-      --border: #253055;
-      --border2: #2e3b65;
+      --bg:  #252B3B;  /* page bg */
+      --bg2: #2C3448;  /* titlebar / modal header */
+      --bg3: #323B52;  /* cards / panels */
+      --bg4: #3A4462;  /* hover / pressed */
+      --bg5: #474C5C;  /* pop/modal header */
+      --border:  #363F5A;  /* subtle separator */
+      --border2: #445070;  /* outline / input border */
 
       --text: #dce2f5;
       --text2: #a2aed0;
       --text3: #7d88a8;
-      --text4: #444f75;
+      --text4: #6070a0;  /* 已提亮：#444f75 在深藍底色上對比不足（~2:1）→ #6070a0 約 3.2:1 */
       --icon-text: var(--text3);  /* XQ dark: 跟隨 text3 = #7d88a8 藍灰 */
 
       --tint1: rgba(255, 255, 255, .04);
       --tint2: rgba(255, 255, 255, .08);
-      --tint3: #253055;
-      --tint4: #2e3b65;
+      --tint3: #3A4462;  /* L2 sidebar + cancel badge bg（= bg4，略淺於 card） */
+      --tint4: #445070;  /* strong separator（= border2） */
       --hover-bg: rgba(255, 255, 255, .06);
 
-      --accent: #6886dc;
-      --accent-h: #7a98e8;
-      --accent-bg: #161e35;
+      --accent: #a3baff;
+      --accent-h: #bbceff;
+      --accent-bg: rgba(163, 186, 255, .15);
+      --accent-seg: #6886dc;    /* seg-btn 專用藍（原 accent） */
+      --accent-seg-h: #7a98e8;
+      --accent-seg-bg: rgba(104, 134, 220, .15);
+      --accent-nav: #6886dc;    /* L1 nav 專用藍（原 accent） */
       --success: #2dc87b;
       --danger: #f05454;
       --danger2: #e04040;
@@ -249,6 +251,18 @@
       --comp-dd-text: var(--text);
       --comp-dd-caret: var(--text2);
       --comp-dd-hover-border: var(--accent);
+
+      /* Input placeholder: XQ light — text3 (#808392) 約 3.4:1 on bg */
+      --comp-input-placeholder: var(--text3);
+
+      /* Modal separator: XQ light restore 回 --border */
+      --comp-modal-separator: var(--border);
+
+      /* Modal header: XQ light restore 回 --bg2（XQ dark 的 --bg5 不影響亮版） */
+      --comp-modal-hdr-bg: var(--bg2);
+
+      /* Modal outer border: XQ light 保留邊線 */
+      --comp-modal-border: 1px solid var(--border);
     }
 
     /* XQ light — surface overrides */
@@ -263,6 +277,9 @@
 
     /* XQ sb-list items：L2 機器人列表用 content 文字色，而非 nav icon token */
     [data-platform="xq"] .sb-item { color: var(--text) }
+
+    /* XQ tab inactive：用 --comp-tab-inactive-text（text3 藍灰），active 用 text（亮白） */
+    [data-platform="xq"] .tab { color: var(--comp-tab-inactive-text) }
 
     /* XQ light sidebar: dark navy 同 production（亮版保持深色 sidebar） */
     [data-platform="xq"][data-theme="light"] .sb-l1 {
@@ -520,6 +537,10 @@
       /* modal-box, arm-panel, xpop-box, ctx-menu */
       --comp-modal-hdr-bg: var(--bg2);
       /* modal header bar */
+      --comp-modal-border: 1px solid var(--border2);
+      /* 外框邊線；⚡ XQ dark 覆蓋為 none */
+      --comp-modal-separator: var(--border);
+      /* hdr↔body / body↔footer 分隔線 */
 
       /* ── Shadow ⚡ ──
      dark mode: 背景深，卡片靠色差區分，陰影很淡或無
@@ -573,13 +594,13 @@
    ⚡ 邏輯不同的元件在此覆蓋               */
     [data-platform="xq"] {
       /* Segmented: 實心填滿 + accent 邊框（production: border = accent ALL states） */
-      --comp-seg-active-bg: var(--accent);
+      --comp-seg-active-bg: var(--accent-seg);
       --comp-seg-active-text: #ffffff;
-      --comp-seg-inactive-text: var(--text);      /* XQ: #474c5c（比 text2 更黑） */
-      --comp-seg-inactive-border: var(--accent);  /* XQ: 全狀態邊框都是 accent */
-      --comp-seg-active-border: var(--accent);
-      --comp-seg-hover-bg: var(--accent-bg);      /* inactive hover: accent 淡底 #ecf1ff */
-      --comp-seg-active-hover-bg: var(--accent-h); /* active hover: accent 高亮 #84A0F0 */
+      --comp-seg-inactive-text: var(--text);
+      --comp-seg-inactive-border: var(--accent-seg);
+      --comp-seg-active-border: var(--accent-seg);
+      --comp-seg-hover-bg: var(--accent-seg-bg);
+      --comp-seg-active-hover-bg: var(--accent-seg-h);
 
       /* Nav sidebar: XQ 永遠使用 navy sidebar 色系（dark / light sidebar 顏色相同，
          XQ light block 的 --comp-nav-active-bg 仍可覆蓋此值） */
@@ -593,9 +614,18 @@
       --comp-nav-badge-bg:         #232742; /* = sb-l1 bg */
       --comp-nav-badge-accent-bg:  #354479; /* = sb-l1--accent bg */
 
-      /* Page Tab: XQ 用 accent 色，不走 XQNext 的 --indicator */
+      /* Page Tab: XQ — active 維持 accent 藍（production spec），inactive 改用 text3 偏暗
+         讓 inactive 比 active 更暗，視覺層次正確 */
       --comp-tab-active-text: var(--accent);
       --comp-tab-active-indicator: var(--accent);
+      --comp-tab-inactive-text: var(--text3);
+
+      /* Modal: XQ dark — header/body/footer 全用 --bg */
+      --comp-modal-bg: var(--bg);
+      --comp-modal-separator: var(--border);
+
+      /* Input placeholder: XQ dark — text3 (#7d88a8) 約 4.7:1 on bg3，比 text4 可讀 */
+      --comp-input-placeholder: var(--text3);
 
       /* Dropdown sel: XQ accent rgba */
       --comp-sel-active-bg: rgba(104, 134, 220, .18);
@@ -612,8 +642,11 @@
       /* Titlebar */
       --comp-titlebar-h: 44px;
 
-      /* Modal header: XQ 用純灰（同 --bg #f4f4f6），與 XQNext 藍灰 --bg2 區分 */
-      --comp-modal-hdr-bg: var(--bg);
+      /* Modal header: XQ dark — 用 bg5 (#474C5C) 與 body bg (#252B3B) 拉開層次 */
+      --comp-modal-hdr-bg: var(--bg5);
+
+      /* Modal outer border: XQ dark 靠背景色差區分，不用外框線 */
+      --comp-modal-border: none;
 
       /* Shadow: XQ dark — navy bg，卡片用較重陰影增加深度感 */
       --comp-card-shadow: 0 2px 6px rgba(0, 0, 0, .35);
@@ -1036,7 +1069,7 @@
 
     .sb-l1-filter:hover .sb-l1-cnt,
     .sb-l1-filter.active .sb-l1-cnt {
-      background: var(--accent);
+      background: var(--accent-nav);
     }
     .sb-l1-item:hover .sb-l1-cnt {
       background: var(--text2);
@@ -1055,7 +1088,7 @@
     }
     .sb-l1--accent .sb-l1-item:hover {
       color: var(--comp-nav-active-text);
-      background: var(--accent);
+      background: var(--accent-nav);
     }
     .sb-l1--accent .sb-l1-item.active {
       background: #4f67a8;
@@ -1066,7 +1099,7 @@
     }
     .sb-l1--accent .sb-hdr-toggle:hover {
       color: var(--comp-nav-active-text);
-      background: var(--accent);
+      background: var(--accent-nav);
     }
     .sb-l1--accent .sb-l1-divider {
       background: var(--text3);
@@ -1079,8 +1112,8 @@
     }
     .sb-l1--accent .sb-l1-filter.active {
       background: var(--tint3);
-      color: var(--accent);
-      border-left-color: var(--accent);
+      color: var(--accent-nav);
+      border-left-color: var(--accent-nav);
     }
     .sb-l1--accent .sb-l1-cnt {
       background: var(--comp-nav-badge-accent-bg, var(--comp-nav-active-bg));
@@ -1091,11 +1124,11 @@
       color: var(--bg2);
     }
     .sb-l1--accent .sb-l1-item:hover .sb-l1-cnt {
-      background: var(--accent);
+      background: var(--accent-nav);
       color: var(--comp-nav-active-text);
     }
     .sb-l1--accent .sb-l1-filter.active .sb-l1-cnt {
-      background: var(--accent);
+      background: var(--accent-nav);
       color: var(--comp-nav-active-text);
     }
 
@@ -1419,7 +1452,7 @@
     }
 
     .sb-search-input::placeholder {
-      color: var(--text4);
+      color: var(--comp-input-placeholder);
     }
 
     /* Table adjustments */
@@ -2957,16 +2990,11 @@
     }
 
     .rh-status-btn.running .rh-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 0;
-      background-color: transparent;
-      background-image: url(data:image/gif;base64,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);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      animation: none;
-      margin-right: 0
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--online);
+      animation: dot-breathe 1.5s ease-in-out infinite;
     }
 
     @keyframes spin {
@@ -3695,7 +3723,7 @@
       font-weight: var(--f-weight);
     }
 
-    input.s-input::placeholder { opacity: 0.45; }
+    input.s-input::placeholder { color: var(--comp-input-placeholder); opacity: 1; }
     input.s-input.is-error { border-color: var(--danger); }
 
     .s-field-warn {
@@ -3873,7 +3901,8 @@
     }
 
     .f-input::placeholder {
-      opacity: 0.45;
+      color: var(--comp-input-placeholder);
+      opacity: 1;
     }
 
     /* Search clear button */
@@ -3979,6 +4008,10 @@
 
     .eb-trade {
       background: var(--accent)
+    }
+
+    [data-platform="xq"] .eb-trade {
+      background: var(--accent-seg)
     }
 
     .eb-warn {
@@ -4163,6 +4196,13 @@
       background: var(--comp-seg-active-hover-bg)
     }
 
+    [data-platform="xq"] .export-btn {
+      background: var(--accent-seg)
+    }
+    [data-platform="xq"] .export-btn:hover {
+      background: var(--accent-seg-h)
+    }
+
     /* MODAL */
     .modal {
       display: none;
@@ -4180,7 +4220,7 @@
 
     .modal-box {
       background: var(--bg2);
-      border: 1px solid var(--border2);
+      border: var(--comp-modal-border);
       border-radius: var(--r-xl);
       width: 90%;
       max-width: 480px;
@@ -4361,7 +4401,7 @@
 
     .modal-hdr {
       padding: var(--sp-5) var(--sp-6);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--comp-modal-separator);
       background: var(--comp-modal-hdr-bg);
       border-radius: var(--r-xl) var(--r-xl) 0 0;
       display: flex;
@@ -4404,7 +4444,8 @@
 
     .modal-footer {
       padding: var(--sp-4) var(--sp-6);
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--comp-modal-separator);
+      background: var(--comp-modal-bg);
       border-radius: 0 0 var(--r-xl) var(--r-xl);
       display: flex;
       gap: var(--sp-3);
@@ -4606,7 +4647,7 @@
 
     .arm-panel {
       background: var(--comp-modal-bg);
-      border: 1px solid var(--border2);
+      border: var(--comp-modal-border);
       border-radius: 10px;
       width: min(960px, 94vw);
       height: min(680px, 88vh);
@@ -4621,7 +4662,7 @@
       align-items: center;
       justify-content: space-between;
       padding: var(--sp-5) 24px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border2);
       flex-shrink: 0;
       background: var(--comp-modal-hdr-bg)
     }
@@ -4676,6 +4717,15 @@
       flex-direction: column;
       gap: var(--sp-1);
       flex-shrink: 0
+    }
+
+    .arm-panel .arm-nav {
+      background: var(--comp-modal-bg);
+      border-right-color: var(--comp-modal-separator)
+    }
+
+    [data-platform="xq"] .set-wrap .arm-nav {
+      border-right-color: var(--border2);
     }
 
     .arm-step {
@@ -4879,6 +4929,10 @@
       border-bottom: none;
     }
 
+    [data-platform="xq"] .sv-row {
+      border-bottom-color: var(--border2);
+    }
+
     .sv-label {
       width: 160px;
       flex-shrink: 0;
@@ -4999,8 +5053,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 24px;
-      border-top: 1px solid var(--border);
-      background: var(--bg3);
+      border-top: 1px solid var(--comp-modal-separator);
+      background: var(--comp-modal-bg);
       flex-shrink: 0
     }
 
@@ -5154,7 +5208,7 @@
 
     .xpop-box {
       background: var(--comp-modal-bg);
-      border: 1px solid var(--border2);
+      border: var(--comp-modal-border);
       border-radius: var(--r-xl);
       width: min(298px, 88vw);
       overflow: hidden;
@@ -5352,7 +5406,7 @@
     }
 
     .xpop-footer-single {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--comp-modal-separator);
       padding: 0
     }
 
@@ -5375,7 +5429,7 @@
 
     .xpop-footer-double {
       display: flex;
-      border-top: 1px solid var(--border)
+      border-top: 1px solid var(--comp-modal-separator)
     }
 
     .xpop-footer-double button {
@@ -5390,7 +5444,7 @@
 
     .xpop-btn-cancel {
       color: var(--text3);
-      border-right: 1px solid var(--border) !important
+      border-right: 1px solid var(--comp-modal-separator) !important
     }
 
     .xpop-btn-cancel:hover {
@@ -5427,7 +5481,7 @@
       position: fixed;
       z-index: 500;
       background: var(--comp-modal-bg);
-      border: 1px solid var(--border2);
+      border: var(--comp-modal-border);
       border-radius: var(--r-md);
       padding: var(--sp-1) 0;
       min-width: 150px;
