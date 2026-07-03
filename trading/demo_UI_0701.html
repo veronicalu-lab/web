@@ -520,6 +520,11 @@
       --comp-status-idle-text: var(--success);
       --comp-status-idle-border: var(--success);
 
+      /* ── Primary Button ⚡ ── */
+      --comp-btn-primary-bg:    var(--accent);
+      --comp-btn-primary-hover: var(--accent-h);
+      --comp-btn-primary-text:  var(--bg);   /* XQNext: dark bg = dark text；⚡ XQ dark: #fff */
+
       /* ── Icon Button ── */
       --comp-ico-text: var(--icon-text);
       --comp-ico-hover-bg: var(--bg4);
@@ -641,6 +646,11 @@
 
       /* Titlebar */
       --comp-titlebar-h: 44px;
+
+      /* Primary Button: XQ dark — 原始藍底白字 */
+      --comp-btn-primary-bg:    var(--accent-seg);
+      --comp-btn-primary-hover: var(--accent-seg-h);
+      --comp-btn-primary-text:  #fff;
 
       /* Modal header: XQ dark — 用 bg5 (#474C5C) 與 body bg (#252B3B) 拉開層次 */
       --comp-modal-hdr-bg: var(--bg5);
@@ -2665,7 +2675,7 @@
       padding: 0 10px;
       height: var(--comp-ctrl-h);
       box-sizing: border-box;
-      color: var(--bg);
+      color: var(--comp-btn-primary-text);
       border: none;
       border-radius: var(--r-md);
       font-size: var(--f-base);
@@ -2675,10 +2685,10 @@
     }
 
     .op-blue {
-      background: var(--accent)
+      background: var(--comp-btn-primary-bg)
     }
     .op-blue:hover {
-      background: var(--comp-seg-active-hover-bg)
+      background: var(--comp-btn-primary-hover)
     }
 
     .op-red {
@@ -4179,8 +4189,8 @@
       padding: 0 var(--sp-4);
       height: var(--comp-ctrl-h);
       box-sizing: border-box;
-      background: var(--accent);
-      color: var(--bg);
+      background: var(--comp-btn-primary-bg);
+      color: var(--comp-btn-primary-text);
       border: none;
       border-radius: var(--r-md);
       font-size: var(--f-base);
@@ -4193,14 +4203,7 @@
       transition: background .15s
     }
     .export-btn:hover {
-      background: var(--comp-seg-active-hover-bg)
-    }
-
-    [data-platform="xq"] .export-btn {
-      background: var(--accent-seg)
-    }
-    [data-platform="xq"] .export-btn:hover {
-      background: var(--accent-seg-h)
+      background: var(--comp-btn-primary-hover)
     }
 
     /* MODAL */
@@ -5094,8 +5097,8 @@
       gap: 4px;
       height: 36px;
       padding: 0 14px;
-      background: var(--accent);
-      color: var(--bg);
+      background: var(--comp-btn-primary-bg);
+      color: var(--comp-btn-primary-text);
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -5105,7 +5108,7 @@
     .arm-next i { font-size: 24px; transform: translateY(1px); }
 
     .arm-next:hover {
-      background: var(--accent-h)
+      background: var(--comp-btn-primary-hover)
     }
 
     .arm-cancel {
