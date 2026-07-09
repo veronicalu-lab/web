@@ -394,6 +394,10 @@
       box-shadow: 0 12px 36px rgba(104, 134, 220, .20)
     }
 
+    [data-theme="light"] .arm-header {
+      border-bottom-color: transparent;
+    }
+
     [data-platform="xq"][data-theme="light"] .xpop-box {
       box-shadow: var(--comp-float-shadow)
     }
@@ -5197,6 +5201,8 @@
       border-radius: var(--comp-pill-radius);
       margin-right: 4px;
       vertical-align: middle;
+      position: relative;
+      top: -2px;
       white-space: nowrap;
     }
     .dir-tag.long  { color: var(--danger);  background: var(--tint2); }
@@ -5208,6 +5214,18 @@
       color: var(--text2);
       font-size: var(--f-sm)
     }
+
+    /* ── Sidebar Strategy Filter ── */
+    #sb-strat-filter-wrap {
+      display: none;
+      padding: 4px var(--sp-3) 5px;
+      border-bottom: 1px solid var(--border);
+    }
+    #sb-strat-filter-wrap.visible { display: block; }
+    #sb-strat-wrap { width: 100%; }
+    #sb-strat-wrap .xsel-trigger { height: 28px; background: var(--bg); }
+    #sb-strat-wrap.has-filter .xsel-trigger { border-color: var(--accent); color: var(--accent); }
+    #sb-strat-dd { background: var(--comp-modal-bg); }
 
     /* ── CUSTOM POPUP ── */
     .xpop-overlay {
@@ -6359,10 +6377,21 @@
 
         <!-- L2 次篩選列 -->
         <div class="sb-l2-filter" id="sb-l2-filter">
-          <div class="seg-nav full" style="padding: 0;">
+          <div class="seg-nav full" style="padding:0;">
             <button class="seg-btn active" data-l2filter="all" onclick="sbL2Filter(this,'all')">全部<span class="sb-l2-f-cnt" id="sb-l2-cnt-all"></span></button>
             <button class="seg-btn" data-l2filter="running" onclick="sbL2Filter(this,'running')">執行中<span class="sb-l2-f-cnt" id="sb-l2-cnt-running"></span></button>
             <button class="seg-btn" data-l2filter="fav" onclick="sbL2Filter(this,'fav')">收藏<span class="sb-l2-f-cnt" id="sb-l2-cnt-fav"></span></button>
+          </div>
+        </div>
+
+        <!-- 策略篩選（量化積木 L1 時顯示） -->
+        <div id="sb-strat-filter-wrap">
+          <div class="xsel-wrap" id="sb-strat-wrap">
+            <div class="xsel-trigger sm" id="sb-strat-trigger" onclick="sbStratToggle()">
+              <span class="xsel-val" id="sb-strat-val">全部策略</span>
+              <span class="xsel-arrow">▼</span>
+            </div>
+            <div class="xsel-drop" id="sb-strat-dd"></div>
           </div>
         </div>
 
@@ -6415,6 +6444,9 @@
                 </div>
                 <div class="sb-item" onclick="selRobot(this,'價量背離警示策略','証-模擬交易(內建)-01')" title="價量背離警示策略" data-dir="short" data-created="2025/01/08 08:30:00" data-started="—" data-latest-order="—" data-account="証-模擬交易(內建)-01" data-risk="45000" data-strategy="價量背離策略 v1.0">
                   <span class="sb-dot gray"></span><span class="sb-item-name">價量背離警示策略</span><span class="sb-item-val"></span>
+                </div>
+                <div class="sb-item" onclick="selRobot(this,'機器人- 策略未開啟監控狀態','証-模擬交易(內建)-01')" title="機器人- 策略未開啟監控狀態" data-dir="long" data-created="2025/06/01 10:00:00" data-started="—" data-latest-order="—" data-account="証-模擬交易(內建)-01" data-risk="80000" data-strategy="BBand翻多突破策略">
+                  <span class="sb-dot gray"></span><span class="sb-item-name">機器人- 策略未開啟監控狀態</span><span class="sb-item-val"></span>
                 </div>
               </div>
             </div>
@@ -6990,6 +7022,34 @@
               </div>
               <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="展開委託列表"><i
                   class="tog-icon icon-chevron-down"></i></div>
+            </div>
+
+            <!-- Card 2-B -->
+            <div class="r-card" data-account="証-模擬交易(內建)-01" data-dir="long">
+              <div class="r-header" onclick="toggleCard(this.closest('.r-card'))">
+                <div class="rh-name-block">
+                  <div class="rh-title"><span class="rh-fav" onclick="event.stopPropagation();toggleFav(this)"
+                      title="加入收藏"><i class="icon-bookmark-border-02"></i></span><span class="rh-title-link"
+                      onclick="event.stopPropagation()">機器人- 策略未開啟監控狀態</span></div>
+                  <div class="rh-sub">証-模擬交易(內建)-01｜<span style="opacity:0.6"><span class="dir-tag long">作多</span><span style="color:var(--text3)">BBand翻多突破策略</span><span style="color:var(--text3)"> (停止監控)</span></span></div>
+                </div>
+                <div class="rh-actions" onclick="event.stopPropagation()">
+                  <button class="ico-btn edit" title="編輯"><i class="icon-edit-01"></i></button>
+                  <button class="ico-btn" title="複製"><i class="icon-copy"></i></button>
+                  <button class="ico-btn del" title="刪除" onclick="showDelSingle('機器人- 策略未開啟監控狀態')"><i class="icon-trash-01"></i></button>
+                  <button class="rh-status-btn idle" data-tip="執行機器人" onclick="showStratMonitorPop()"><i class="xqicon-play" style="font-size:20px;flex-shrink:0"></i> 啟動</button>
+                </div>
+              </div>
+              <div class="r-body" id="rb2b">
+                <div class="pend-orders">
+                  <div class="empty-view ev-no-order" style="padding:24px 16px; display:flex;">
+                    <div class="empty-icon" style="font-size:28px; margin-bottom:8px;"><i class="icon-inbox"></i></div>
+                    <div class="empty-title" style="font-size:var(--f-sm); margin-bottom:4px;">請啟動機器人</div>
+                    <div class="empty-sub" style="font-size:var(--f-xs);">策略訊號觸發後將顯示委託</div>
+                  </div>
+                </div>
+              </div>
+              <div class="r-toggle-bar" onclick="toggleCard(this.closest('.r-card'))" data-tip="展開委託列表"><i class="tog-icon icon-chevron-down"></i></div>
             </div>
 
             <!-- Card 3 -->
@@ -8911,12 +8971,12 @@
       { name: '外資連續買超',          dir: 'long' },
       { name: '籌碼集中度偵測',        dir: 'long' },
     ];
-    function _armDirTag(dir) {
+    function _armDirTag(dir, compact = false) {
       const isLong = dir === 'long';
       const style = [
         'display:inline-block;cursor:default;pointer-events:none;flex-shrink:0',
         'font-size:11px;font-weight:500;line-height:1',
-        'padding:2px 5px;border-radius:3px;margin-right:6px',
+        compact ? 'padding:2px 5px;border-radius:3px' : 'padding:2px 5px;border-radius:3px;margin-right:6px',
         isLong ? 'color:var(--danger);background:var(--tint1)' : 'color:var(--success);background:var(--tint2)'
       ].join(';');
       return `<span style="${style}">${isLong ? '作多' : '作空'}</span>`;
@@ -8993,6 +9053,59 @@
       input.focus();
     }
 
+    /* ── Sidebar Strategy Filter ── */
+    let _sbStratFilter = null; // null = 全部，string = 策略名稱
+    let _sbStratKbdIdx = -1;
+
+    function _sbStratUniqueList() {
+      const seen = new Set(), result = [];
+      document.querySelectorAll('.sb-group[data-group="quant"] .sb-item[data-strategy]').forEach(i => {
+        const s = i.dataset.strategy, d = i.dataset.dir;
+        if (s && !seen.has(s)) { seen.add(s); result.push({ name: s, dir: d }); }
+      });
+      return result;
+    }
+
+    function sbStratToggle() {
+      const dd   = document.getElementById('sb-strat-dd');
+      const trig = document.getElementById('sb-strat-trigger');
+      if (dd.classList.contains('show')) {
+        dd.classList.remove('show');
+        return;
+      }
+      document.querySelectorAll('.xsel-drop.show').forEach(d => d.classList.remove('show'));
+      // 渲染選項
+      const list = _sbStratUniqueList();
+      const sel  = _sbStratFilter;
+      let html = `<div class="xsel-opt${!sel ? ' sel' : ''}" onmousedown="sbStratSelect(null,null)">全部策略</div>`;
+      html += list.map(s =>
+        `<div class="xsel-opt${sel === s.name ? ' sel' : ''}" onmousedown="sbStratSelect('${s.name.replace(/'/g,"\\'")}','${s.dir}')"><span style="display:inline-flex;align-items:center;gap:4px;">${_armDirTag(s.dir, true)}${s.name}</span></div>`
+      ).join('');
+      dd.innerHTML = html;
+      // 定位 & 寬度對齊 trigger
+      const r = trig.getBoundingClientRect();
+      dd.style.top   = (r.bottom + 4) + 'px';
+      dd.style.left  = r.left + 'px';
+      dd.style.width = r.width + 'px';
+      dd.classList.add('show');
+    }
+
+    function sbStratSelect(name, dir) {
+      _sbStratFilter = name;
+      const valEl = document.getElementById('sb-strat-val');
+      const wrap  = document.getElementById('sb-strat-wrap');
+      const dd    = document.getElementById('sb-strat-dd');
+      if (name) {
+        valEl.innerHTML = _armDirTag(dir) + name;
+        wrap.classList.add('has-filter');
+      } else {
+        valEl.textContent = '全部策略';
+        wrap.classList.remove('has-filter');
+      }
+      dd.classList.remove('show');
+      _applyListFilter(_sbCurrentFilter);
+    }
+
     function armDirSelect(btn) {
       btn.closest('.seg-nav').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -9039,6 +9152,9 @@
     }
     document.getElementById('dir-pop-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeDirPop(); });
 
+    function showStratMonitorPop() {
+      xAlert('策略尚未監控', '請先到量化積木開啟策略監控<br>再啟動機器人', '<i class="icon-alert-triangle-fill" style="color:var(--warning)"></i>');
+    }
     function xAlert(title, msg, icon, onOk) { _xpopShow({ icon: icon || '<i class="icon-check-circle-fill" style="color:var(--success)"></i>', title, msg, type: 'alert', onOk: onOk || null }); }
     function xConfirm(title, msg, onOk, opts) { _xpopShow({ icon: (opts && opts.icon) || '<i class="icon-alert-triangle-fill" style="color:var(--warning)"></i>', title, msg, type: 'confirm', confirmText: (opts && opts.confirmText) || '確認', cancelText: (opts && opts.cancelText) || '取消', confirmCls: (opts && opts.confirmCls != null) ? opts.confirmCls : 'danger', onOk, onCancel: (opts && opts.onCancel) || null, noClose: !!(opts && opts.noClose) }); }
     function xPrompt(title, msg, defaultVal, onOk) { _xpopShow({ icon: '✏️', title, msg, type: 'prompt', inputVal: defaultVal || '', confirmText: '確認', confirmCls: 'accent', onOk }); }
@@ -9832,6 +9948,7 @@
         const _isExpiring = document.body.classList.contains('is-expiring');
         if (type === 'running') show = !_isExpiring && dot?.classList.contains('green');
         else if (type === 'fav') show = _sbFavs.has(name);
+        if (show && _sbStratFilter) show = i.dataset.strategy === _sbStratFilter;
         i.style.display = show ? '' : 'none';
       });
       // re-evaluate group visibility after l2 filter
@@ -9927,6 +10044,7 @@
           else if (type === 'fav') show = i.closest('[data-group="smart"]') !== null;
           else if (type === 'recent') show = _sbRecent.includes(name);
           if (show && _sbDirActive.size < 2) show = _sbDirActive.has(i.dataset.dir);
+          if (show && _sbStratFilter) show = i.dataset.strategy === _sbStratFilter;
         }
         // is-partial-empty：執行中機器人一律隱藏
         if (isPartialEmpty && i.querySelector('.sb-dot.green')) show = false;
@@ -10730,6 +10848,10 @@
       // reset l2 sub-filter when l1 changes
       _sbL2Filter = 'all';
       document.querySelectorAll('#sb-l2-filter .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.l2filter === 'all'));
+      // show/hide strategy filter row + reset when leaving 量化積木
+      const sfWrap = document.getElementById('sb-strat-filter-wrap');
+      if (sfWrap) sfWrap.classList.toggle('visible', filterKey === 'running');
+      if (filterKey !== 'running') sbStratSelect(null, null);
       _applyListFilter(filterKey);
       _updateFilterCounts();
       // update tier-2 folder title
