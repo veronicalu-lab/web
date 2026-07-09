@@ -133,14 +133,14 @@
       --bg3: #323B52;  /* cards / panels */
       --bg4: #3A4462;  /* hover / pressed */
       --bg5: #474C5C;  /* pop/modal header */
-      --border:  #363F5A;  /* subtle separator */
+      --border:  #445070;  /* separator（= arm-nav 線色） */
       --border2: #445070;  /* outline / input border */
 
       --text: #dce2f5;
       --text2: #a2aed0;
       --text3: #7d88a8;
       --text4: #6070a0;  /* 已提亮：#444f75 在深藍底色上對比不足（~2:1）→ #6070a0 約 3.2:1 */
-      --icon-text: var(--text3);  /* XQ dark: 跟隨 text3 = #7d88a8 藍灰 */
+      --icon-text: var(--text2);  /* XQ dark: 跟隨 text3 = #7d88a8 藍灰 */
 
       --tint1: rgba(255, 255, 255, .04);
       --tint2: rgba(255, 255, 255, .08);
@@ -249,7 +249,7 @@
       /* Dropdown input (亮版) */
       --comp-dd-bg: #ffffff;
       --comp-dd-text: var(--text);
-      --comp-dd-caret: var(--text2);
+      --comp-dd-caret: var(--text3);
       --comp-dd-hover-border: var(--accent);
 
       /* Input placeholder: XQ light — text3 (#808392) 約 3.4:1 on bg */
@@ -263,6 +263,10 @@
 
       /* Modal outer border: XQ light 保留邊線 */
       --comp-modal-border: 1px solid var(--border);
+
+      /* Input / Dropdown border: XQ light restore 回 --border2 */
+      --comp-input-border: var(--border2);
+      --comp-dd-border:    var(--border2);
     }
 
     /* XQ light — surface overrides */
@@ -272,8 +276,8 @@
     [data-platform="xq"] .sb-l1.sb-l1--accent { background: #354479 }
 
     /* XQ l2 sidebar: var(--tint3) 在暗版=#253055，亮版=#eaeaed，兩者自動跟主題 */
-    [data-platform="xq"] .sb-l2,
-    [data-platform="xq"] .sb-list { background: var(--tint3) }
+    [data-platform="xq"] .sb-l2 { background: var(--bg3) }
+    [data-platform="xq"] .sb-list { background: var(--bg3) }
 
     /* XQ sb-list items：L2 機器人列表用 content 文字色，而非 nav icon token */
     [data-platform="xq"] .sb-item { color: var(--text) }
@@ -471,8 +475,8 @@
       --comp-dd-hover-border:     #8FB8FF;           /* Theme-800 */
       --comp-dd-focus-border:     var(--accent);     /* #6597FF */
       --comp-dd-disabled-bg:      var(--border);     /* #313131 */
-      --comp-dd-disabled-text:    var(--text4);      /* #626262 */
-      --comp-dd-disabled-border:  var(--text4);      /* #626262 */
+      --comp-dd-disabled-text:    var(--text3);      /* #626262 */
+      --comp-dd-disabled-border:  var(--text3);      /* #626262 */
       --comp-dd-radius:           4px;
 
       /* ── Card ── */
@@ -480,14 +484,14 @@
       --comp-card-border: var(--border);
       --comp-card-radius: var(--r-lg);
       --comp-metric-empty-bg: rgba(255,255,255,0.2);
-      --comp-metric-empty-text: color-mix(in srgb, var(--text4) 60%, transparent);
+      --comp-metric-empty-text: color-mix(in srgb, var(--text3) 60%, transparent);
 
       /* ── Input ── */
       --comp-input-bg: var(--bg3);
       --comp-input-border: var(--border2);
       --comp-input-focus: var(--accent);
       --comp-input-text: var(--text);
-      --comp-input-placeholder: var(--text4);
+      --comp-input-placeholder: var(--text3);
       --comp-input-radius: var(--r-md);
 
       /* ── Table ── */
@@ -509,7 +513,7 @@
       --comp-pill-filled-bg: rgba(46, 200, 123, .12);
       --comp-pill-filled-text: var(--success);
       --comp-pill-fail-bg: var(--tint3);
-      --comp-pill-fail-text: var(--text3);
+      --comp-pill-fail-text: var(--text2);
 
       /* ── Status Button ── */
       --comp-status-radius: var(--r-md);
@@ -566,7 +570,7 @@
 
       /* Dropdown text (dark #E1E1E1/#C3C3C3 → semantic vars) */
       --comp-dd-text:  var(--text);
-      --comp-dd-caret: var(--text2);
+      --comp-dd-caret: var(--text3);
 
       /* Icon Button hover — 與 hover-bg 保持一致 */
       --comp-ico-hover-bg: var(--hover-bg);
@@ -623,14 +627,14 @@
          讓 inactive 比 active 更暗，視覺層次正確 */
       --comp-tab-active-text: var(--accent);
       --comp-tab-active-indicator: var(--accent);
-      --comp-tab-inactive-text: var(--text3);
+      --comp-tab-inactive-text: var(--text2);
 
       /* Modal: XQ dark — header/body/footer 全用 --bg */
       --comp-modal-bg: var(--bg);
       --comp-modal-separator: var(--border);
 
       /* Input placeholder: XQ dark — text3 (#7d88a8) 約 4.7:1 on bg3，比 text4 可讀 */
-      --comp-input-placeholder: var(--text3);
+      --comp-input-placeholder: var(--text2);
 
       /* Dropdown sel: XQ accent rgba */
       --comp-sel-active-bg: rgba(104, 134, 220, .18);
@@ -646,6 +650,10 @@
 
       /* Titlebar */
       --comp-titlebar-h: 44px;
+
+      /* Input / Dropdown border: 比一般分隔線亮一階 */
+      --comp-input-border: #566890;
+      --comp-dd-border:    #566890;
 
       /* Primary Button: XQ dark — 原始藍底白字 */
       --comp-btn-primary-bg:    var(--accent-seg);
@@ -776,7 +784,7 @@
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--text4); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
     /* ── TITLEBAR ── */
     .titlebar {
@@ -832,7 +840,7 @@
       background: var(--bg3);
       cursor: pointer;
       font-size: var(--f-sm);
-      color: var(--text3);
+      color: var(--text2);
       transition: all .15s
     }
 
@@ -859,7 +867,7 @@
     .platform-toggle span {
       padding: var(--sp-1) 10px;
       cursor: pointer;
-      color: var(--text3);
+      color: var(--text2);
       transition: all .15s;
       white-space: nowrap
     }
@@ -1031,7 +1039,7 @@
       color: var(--comp-nav-active-text);
       border-left-color: var(--comp-nav-active-indicator);
       font-weight: 500;
-      background: var(--comp-nav-active-bg);
+      background: var(--bg3);
       margin-right: -1px;
       border-radius: 0;
       position: relative;
@@ -1112,7 +1120,7 @@
       background: var(--accent-nav);
     }
     .sb-l1--accent .sb-l1-divider {
-      background: var(--text3);
+      background: var(--text2);
     }
     .sb-l1--accent .sb-l1-filter {
       color: var(--comp-nav-inactive-text);
@@ -1121,7 +1129,7 @@
       color: var(--comp-nav-active-indicator);
     }
     .sb-l1--accent .sb-l1-filter.active {
-      background: var(--tint3);
+      background: var(--bg3);
       color: var(--accent-nav);
       border-left-color: var(--accent-nav);
     }
@@ -1172,7 +1180,7 @@
     /* Tier 2 */
     .sb-l2 {
       width: 250px;
-      background: var(--bg);
+      background: var(--bg3);
       border-right: 0px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -1236,7 +1244,7 @@
     .sb-sort-section-hdr {
       padding: 7px 8px 2px var(--sp-4);
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       font-weight: 500;
       display: flex;
       justify-content: space-between;
@@ -1245,14 +1253,14 @@
     .sb-sort-reset {
       display: none;
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       cursor: pointer;
       padding: 0;
       font-weight: 500;
       text-decoration: underline;
     }
     .sb-sort-reset.show { display: inline-block; }
-    .sb-sort-reset:hover { color: var(--text3); }
+    .sb-sort-reset:hover { color: var(--text2); }
     .sb-acct-chk-row {
       display: flex;
       align-items: center;
@@ -1281,7 +1289,7 @@
       display: none;
       flex-shrink: 0;
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       margin-left: var(--sp-2);
       text-align: right;
     }
@@ -1351,7 +1359,7 @@
       gap: 5px;
       font-size: var(--f-xs);
       font-weight: 500;
-      color: var(--text3);
+      color: var(--text2);
       padding: 3px 7px;
       border-radius: var(--r-sm);
       cursor: pointer;
@@ -1378,7 +1386,7 @@
     .sb-l2-f.active { background: var(--comp-nav-active-bg); color: var(--accent); font-weight: 500; }
     .sb-l2-f-cnt {
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       margin-left: 3px;
     }
     #sb-l2-filter .seg-btn.active .sb-l2-f-cnt {
@@ -1407,7 +1415,7 @@
 
     .sb-folder-cnt {
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       flex-shrink: 0;
     }
 
@@ -1429,12 +1437,12 @@
     }
 
     .sb-hdr-search-ico {
-      color: var(--text4);
+      color: var(--text3);
       font-size: 18px;
     }
 
     .sb-search-close {
-      color: var(--text3);
+      color: var(--text2);
       font-size: 18px;
     }
 
@@ -1602,13 +1610,13 @@
       align-items: center;
       justify-content: space-between;
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       margin-bottom: var(--sp-2)
     }
 
     .sb-history-clear {
       cursor: pointer;
-      color: var(--text4)
+      color: var(--text3)
     }
 
     .sb-history-clear:hover {
@@ -1632,7 +1640,7 @@
     }
 
     .sb-history-item i {
-      color: var(--text4);
+      color: var(--text);
       font-size: var(--f-xs)
     }
 
@@ -1641,7 +1649,7 @@
       padding: 24px 0;
       text-align: center;
       font-size: var(--f-sm);
-      color: var(--text4)
+      color: var(--text3)
     }
 
     /* list */
@@ -1665,7 +1673,7 @@
       gap: var(--sp-2);
       padding: var(--sp-2) var(--sp-3);
       font-size: var(--f-sm);
-      color: var(--text3);
+      color: var(--text2);
       font-weight: 500;
       letter-spacing: .04em;
       cursor: pointer;
@@ -1681,17 +1689,17 @@
     .sb-group-cnt {
       margin-left: var(--sp-1);
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       font-weight: var(--f-weight);
     }
 
     .sb-group-hdr:hover .sb-group-cnt {
-      color: var(--text3);
+      color: var(--text2);
     }
 
     .sb-group-hdr .arrow {
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       transition: transform .15s;
       margin-right: 2px
     }
@@ -1747,13 +1755,13 @@
     }
 
     .sb-dot.gray {
-      background: var(--text4)
+      background: var(--text3)
     }
 
     .sb-tag {
       display: inline-block;
       font-size: var(--f-sm);
-      color: var(--text4);
+      color: var(--text3);
       margin-left: 2px
     }
 
@@ -1949,7 +1957,7 @@
       padding: 2px 7px;
       border-radius: var(--r-sm);
       font-size: var(--f-base);
-      color: var(--text3);
+      color: var(--text2);
       background: var(--tint3)
     }
 
@@ -2270,7 +2278,7 @@
     .pos-filter-drop.show { display: block; }
     .pos-expand-btn {
       background: none; border: none; cursor: pointer;
-      color: var(--text3); padding: 2px; display: flex;
+      color: var(--text2); padding: 2px; display: flex;
       align-items: center; flex-shrink: 0; border-radius: var(--r-sm);
     }
     .pos-expand-btn:hover { color: var(--text); background: var(--hover-bg); }
@@ -2285,7 +2293,7 @@
     .pos-detail-wrap .pos-sub-table th:first-child,
     .pos-detail-wrap .pos-sub-table td:first-child { text-align: left; }
     .pos-detail-wrap .pos-sub-table th {
-      padding: 5px 8px; text-align: right; color: var(--text3);
+      padding: 5px 8px; text-align: right; color: var(--text2);
       font-weight: 400; border-bottom: 1px solid var(--border2);
       white-space: nowrap;
     }
@@ -2649,7 +2657,7 @@
 
     .xsel-opt-count {
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       flex-shrink: 0;
       font-weight: var(--f-weight)
     }
@@ -2719,8 +2727,8 @@
       box-shadow: var(--comp-card-shadow)
     }
 
-    /* XQ: 每張卡獨立 border，radius 一致 */
-    [data-platform="xq"] .r-card {
+    /* XQ light: 每張卡獨立 border，radius 一致 */
+    [data-platform="xq"][data-theme="light"] .r-card {
       border: 1px solid var(--border);
       border-radius: var(--r-lg)
     }
@@ -2781,7 +2789,7 @@
     }
 
     .rh-fav {
-      color: var(--text3);
+      color: var(--text2);
       font-size: var(--f-xl);
       line-height: 1;
       cursor: pointer;
@@ -2811,7 +2819,7 @@
 
     .rh-signal {
       font-size: var(--f-sm);
-      color: var(--text4);
+      color: var(--text3);
       padding-left: var(--sp-1);
       white-space: nowrap
     }
@@ -2867,7 +2875,7 @@
 
     .rh-pill.cancel {
       background: transparent;
-      color: var(--text3);
+      color: var(--text2);
       border-color: var(--border2)
     }
 
@@ -2883,7 +2891,7 @@
     }
 
     .rh-lbl {
-      color: var(--text3)
+      color: var(--text2)
     }
 
     /* safety bar */
@@ -2898,7 +2906,7 @@
 
     .rh-cap-label {
       font-size: var(--f-sm);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .rh-cap-bar-wrap {
@@ -2958,9 +2966,9 @@
 
     /* state: idle — outlined green, play icon */
     .rh-status-btn.idle {
-      border-color: var(--text3);
+      border-color: var(--text2);
       background: var(--comp-status-idle-bg);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .rh-status-btn.idle:hover {
@@ -3110,19 +3118,19 @@
       border-top: 1px solid var(--border);
       cursor: pointer;
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       user-select: none;
       transition: background .12s, color .12s
     }
 
     .r-toggle-bar:hover {
       background: var(--hover-bg);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .r-card:has(.r-header:hover) .r-toggle-bar {
       background: var(--hover-bg);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .r-toggle-bar .tog-icon {
@@ -3131,7 +3139,7 @@
 
     .pend-title {
       font-size: var(--f-sm);
-      color: var(--text3);
+      color: var(--text2);
       font-weight: 500;
       text-transform: uppercase;
       margin-bottom: var(--sp-3);
@@ -3184,7 +3192,7 @@
       justify-content: center;
       gap: var(--sp-3);
       padding: 32px var(--sp-5);
-      color: var(--text4)
+      color: var(--text3)
     }
 
     .empty-orders .empty-ico {
@@ -3194,12 +3202,12 @@
 
     .empty-orders .empty-txt {
       font-size: var(--f-base);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .empty-orders .empty-sub {
       font-size: var(--f-sm);
-      color: var(--text4)
+      color: var(--text3)
     }
 
     /* ORDER TABLE */
@@ -3256,7 +3264,7 @@
     }
 
     .unit {
-      color: var(--text3);
+      color: var(--text2);
       font-size: var(--f-sm);
       margin-left: 2px
     }
@@ -3389,7 +3397,7 @@
       border-radius: var(--r-sm);
       font-size: 28px;
       line-height: 1;
-      color: var(--text3);
+      color: var(--text2);
       display: flex;
       align-items: center;
       justify-content: center
@@ -3432,7 +3440,7 @@
 
     .m-info-icon {
       font-size: 16px;
-      color: var(--text3);
+      color: var(--text2);
       cursor: default;
       padding: 2px;
       border-radius: var(--r-sm);
@@ -3586,7 +3594,7 @@
 
     .s-cancel {
       background: var(--tint3);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .s-fail {
@@ -3599,11 +3607,11 @@
     }
 
     .o-table tbody tr:has(.s-cancel) td {
-      color: var(--text4)
+      color: var(--text3)
     }
 
     .o-table tbody tr:has(.s-cancel) .prod-code {
-      color: var(--text4)
+      color: var(--text3)
     }
 
     .xs-btn {
@@ -3798,7 +3806,7 @@
 
     .hint {
       font-size: var(--f-sm);
-      color: var(--text4);
+      color: var(--text3);
       margin-top: 3px
     }
 
@@ -3825,7 +3833,7 @@
 
     .ch-label {
       font-size: var(--f-sm);
-      color: var(--text3);
+      color: var(--text2);
       margin-top: 3px
     }
 
@@ -3885,7 +3893,7 @@
       left: 9px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text4);
+      color: var(--text3);
       font-size: var(--f-base);
       pointer-events: none;
     }
@@ -3929,7 +3937,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--text3);
+      color: var(--text2);
       padding: 0;
       border-radius: var(--r-sm);
     }
@@ -4045,7 +4053,7 @@
       color: var(--danger);
     }
     .log-event-cancel {
-      color: var(--text3);
+      color: var(--text2);
     }
 
     .filter-btns {
@@ -4079,7 +4087,7 @@
       height: 100%;
       border: none;
       background: transparent;
-      color: var(--text3);
+      color: var(--text2);
       font-size: 28px;
       cursor: pointer;
       transition: color .15s, background .15s;
@@ -4299,7 +4307,7 @@
       padding: var(--sp-2) var(--sp-4);
       background: transparent;
       border: 1px solid var(--border2);
-      color: var(--text3);
+      color: var(--text2);
       border-radius: 5px;
       cursor: pointer;
       font-size: var(--f-base)
@@ -4316,7 +4324,7 @@
     .batch-table th {
       padding: var(--sp-3) var(--sp-4);
       text-align: left;
-      color: var(--text3);
+      color: var(--text2);
       font-weight: 500;
       font-size: var(--f-base);
       border-bottom: 1px solid var(--border)
@@ -4384,7 +4392,7 @@
       align-items: center;
       gap: 5px;
       font-size: var(--f-sm);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .batch-mod-field input {
@@ -4607,7 +4615,7 @@
 
     .compare-from {
       font-size: var(--f-base);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .compare-to {
@@ -4678,7 +4686,7 @@
 
     .arm-header-sub {
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       margin-top: 2px
     }
 
@@ -4727,8 +4735,15 @@
       border-right-color: var(--comp-modal-separator)
     }
 
-    [data-platform="xq"] .set-wrap .arm-nav {
+    [data-platform="xq"]:not([data-theme="light"]) .set-wrap .arm-nav {
       border-right-color: var(--border2);
+    }
+
+    [data-platform="xq"]:not([data-theme="light"]) .f-input {
+      border-color: var(--comp-input-border);
+    }
+    [data-platform="xq"]:not([data-theme="light"]) .xsel-trigger {
+      border-color: var(--comp-dd-border);
     }
 
     .arm-step {
@@ -4770,7 +4785,7 @@
       justify-content: center;
       font-size: var(--f-xs);
       font-weight: 500;
-      color: var(--text3);
+      color: var(--text2);
       flex-shrink: 0;
       background: var(--bg2);
       position: relative;
@@ -4779,7 +4794,7 @@
 
     .arm-step.active .arm-step-num {
       border-color: var(--accent);
-      color: var(--text3);
+      color: var(--text2);
       background: var(--bg2)
     }
 
@@ -4801,12 +4816,12 @@
 
     .arm-step-label {
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       font-weight: var(--f-weight)
     }
 
     .arm-step.active .arm-step-label {
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .arm-step-name {
@@ -4897,7 +4912,7 @@
     }
 
     .arm-edit-ico {
-      color: var(--text4);
+      color: var(--text3);
       font-size: var(--f-xs)
     }
 
@@ -4932,14 +4947,14 @@
       border-bottom: none;
     }
 
-    [data-platform="xq"] .sv-row {
+    [data-platform="xq"]:not([data-theme="light"]) .sv-row {
       border-bottom-color: var(--border2);
     }
 
     .sv-label {
       width: 160px;
       flex-shrink: 0;
-      color: var(--text3);
+      color: var(--text2);
       font-size: var(--f-base);
     }
 
@@ -4949,12 +4964,12 @@
     }
 
     .sv-muted {
-      color: var(--text4);
+      color: var(--text3);
       flex: 1;
     }
 
     .sv-sub {
-      color: var(--text4);
+      color: var(--text2);
       font-size: var(--f-sm);
       margin-left: var(--sp-3);
     }
@@ -4977,7 +4992,7 @@
     .sv-group-label {
       font-size: var(--f-sm);
       font-weight: 500;
-      color: var(--text3);
+      color: var(--text2);
       margin: 10px 0 var(--sp-1);
       text-transform: uppercase;
       letter-spacing: .04em;
@@ -5063,7 +5078,7 @@
 
     .arm-footer-steps {
       font-size: var(--f-xs);
-      color: var(--text3)
+      color: var(--text2)
     }
 
     .arm-footer-btns {
@@ -5115,7 +5130,7 @@
       padding: 7px var(--sp-5);
       border: 1px solid var(--border2);
       background: transparent;
-      color: var(--text3);
+      color: var(--text2);
       border-radius: 5px;
       cursor: pointer;
       font-size: var(--f-sm)
@@ -5190,7 +5205,7 @@
     .arm-strat-empty {
       padding: 12px;
       text-align: center;
-      color: var(--text3);
+      color: var(--text2);
       font-size: var(--f-sm)
     }
 
@@ -5268,7 +5283,7 @@
 
     .xpop-msg {
       font-size: var(--f-base);
-      color: var(--text3);
+      color: var(--text2);
       line-height: 1.4
     }
 
@@ -5324,7 +5339,7 @@
     }
     .price-card-sub {
       font-size: var(--f-xs);
-      color: var(--text3);
+      color: var(--text2);
       margin-top: 3px;
     }
     .price-card-radio {
@@ -5446,7 +5461,7 @@
     }
 
     .xpop-btn-cancel {
-      color: var(--text3);
+      color: var(--text2);
       border-right: 1px solid var(--comp-modal-separator) !important
     }
 
@@ -5515,7 +5530,7 @@
     }
 
     .ctx-item.disabled {
-      color: var(--text4);
+      color: var(--text3);
       cursor: default;
       pointer-events: none
     }
@@ -5530,7 +5545,7 @@
 
     .ctx-shortcut {
       font-size: var(--f-xs);
-      color: var(--text4);
+      color: var(--text3);
       white-space: nowrap
     }
 
@@ -5547,7 +5562,7 @@
       align-items: center;
       justify-content: center;
       padding: 40px var(--sp-6);
-      color: var(--text4);
+      color: var(--text);
       text-align: center;
       flex: 1;
     }
@@ -5614,7 +5629,7 @@
     #ov-comm .ev-no-running .empty-sub,
     #ov-comm .ev-inactive .empty-sub {
       font-size: var(--f-md);
-      color: var(--text3);
+      color: var(--text2);
       line-height: 1.65;
       margin-bottom: 0;
     }
@@ -5631,9 +5646,9 @@
     #t-pos .ev-no-order { background: transparent !important; border-radius: 0 !important; box-shadow: none !important; border: none !important; padding: 60px var(--sp-6) !important; gap: 0 !important; }
     #t-pos .ev-no-order .empty-icon { width: auto !important; height: auto !important; border-radius: 0 !important; background: transparent !important; display: block !important; font-size: 36px !important; opacity: 0.35 !important; margin-bottom: var(--sp-4) !important; }
     #t-pos .ev-no-order .empty-icon i,
-    #t-pos .ev-no-order .empty-icon svg { color: var(--text4) !important; opacity: 1 !important; }
+    #t-pos .ev-no-order .empty-icon svg { color: var(--text) !important; opacity: 1 !important; }
     #t-pos .ev-no-order .empty-title { font-size: var(--f-md) !important; color: var(--text2) !important; font-weight: 500 !important; margin-bottom: var(--sp-2) !important; }
-    #t-pos .ev-no-order .empty-sub { font-size: var(--f-sm) !important; color: var(--text4) !important; line-height: 1.5 !important; margin-bottom: 0 !important; }
+    #t-pos .ev-no-order .empty-sub { font-size: var(--f-sm) !important; color: var(--text3) !important; line-height: 1.5 !important; margin-bottom: 0 !important; }
     #t-pos .empty-view .empty-icon {
       width: 80px; height: 80px; border-radius: 50%;
       background: color-mix(in srgb, var(--accent) 10%, transparent);
@@ -5643,7 +5658,7 @@
     #t-pos .empty-view .empty-icon i,
     #t-pos .empty-view .empty-icon svg { color: var(--accent); opacity: 1; }
     #t-pos .empty-view .empty-title { font-size: var(--f-xl); color: var(--text); font-weight: 500; margin-bottom: 0; }
-    #t-pos .empty-view .empty-sub { font-size: var(--f-md); color: var(--text3); line-height: 1.65; margin-bottom: 0; }
+    #t-pos .empty-view .empty-sub { font-size: var(--f-md); color: var(--text2); line-height: 1.65; margin-bottom: 0; }
     .ov-wrap .empty-view .empty-title { color: var(--text); font-size: var(--f-xl); }
 
     #sb-empty-btn,
@@ -5671,7 +5686,7 @@
 
     .empty-view .empty-sub {
       font-size: var(--f-sm);
-      color: var(--text4);
+      color: var(--text3);
     }
 
     /* 啟動全局空畫面模式時 */
@@ -5862,8 +5877,8 @@
       gap: 7px;
       padding: 0 20px;
       height: 44px;
-      background: var(--accent);
-      color: #fff;
+      background: var(--comp-btn-primary-bg);
+      color: var(--comp-btn-primary-text);
       border: none;
       border-radius: var(--comp-status-radius);
       font-size: 18px;
@@ -5873,7 +5888,7 @@
     }
 
     .empty-action-btn:hover {
-      background: var(--accent-h);
+      background: var(--comp-btn-primary-hover);
     }
 
     /* ── Empty state variants ── */
@@ -5905,8 +5920,8 @@
     .ev-rec-item-name .rh-fav { font-size: var(--f-sm); }
     .ev-rec-item-strat .dir-tag { font-size: var(--f-sm); }
     .ev-rec-item-name-txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-    .ev-rec-item-acct { width: 150px; flex-shrink: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
-    .ev-rec-item-strat { flex: 1; min-width: 0; color: var(--text3); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+    .ev-rec-item-acct { width: 150px; flex-shrink: 0; color: var(--text2); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+    .ev-rec-item-strat { flex: 1; min-width: 0; color: var(--text2); font-size: var(--f-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
     .ev-rec-item .rh-status-btn { height: 34px; width: 100px; font-size: var(--f-base); padding: 0 10px; gap: 5px; flex-shrink: 0; }
     body.is-partial-empty .ctrl-bar { display: none !important; }
     body.is-partial-empty #sb-l2-filter [data-l2filter="running"],
@@ -5950,9 +5965,9 @@
     [data-platform="xq"] #pos-idle-state { border: none; }
     #pos-idle-state .empty-icon { width: auto !important; height: auto !important; border-radius: 0 !important; background: transparent !important; display: block !important; font-size: 36px !important; opacity: 0.35 !important; margin-bottom: var(--sp-4) !important; }
     #pos-idle-state .empty-icon i,
-    #pos-idle-state .empty-icon svg { color: var(--text4) !important; opacity: 1 !important; }
+    #pos-idle-state .empty-icon svg { color: var(--text) !important; opacity: 1 !important; }
     #pos-idle-state .empty-title { font-size: var(--f-md) !important; color: var(--text2) !important; font-weight: 500 !important; margin-bottom: var(--sp-2) !important; }
-    #pos-idle-state .empty-sub { font-size: var(--f-sm) !important; color: var(--text4) !important; line-height: 1.5 !important; margin-bottom: var(--sp-4) !important; }
+    #pos-idle-state .empty-sub { font-size: var(--f-sm) !important; color: var(--text3) !important; line-height: 1.5 !important; margin-bottom: var(--sp-4) !important; }
 
     /* ── #t-comm idle（未啟動）：指標卡歸零 ── */
     #t-comm.comm-is-idle .metric.warn .m-value::before                  { content: "$--";      font-size: var(--f-xl) !important;   color: var(--comp-metric-empty-text); }
@@ -5973,11 +5988,11 @@
     #comm-idle-state .empty-icon,
     #log-idle-state .empty-icon { width: auto !important; height: auto !important; border-radius: 0 !important; background: transparent !important; display: block !important; font-size: 36px !important; opacity: 0.35 !important; margin-bottom: var(--sp-4) !important; }
     #comm-idle-state .empty-icon i, #comm-idle-state .empty-icon svg,
-    #log-idle-state .empty-icon i,  #log-idle-state .empty-icon svg { color: var(--text4) !important; opacity: 1 !important; }
+    #log-idle-state .empty-icon i,  #log-idle-state .empty-icon svg { color: var(--text) !important; opacity: 1 !important; }
     #comm-idle-state .empty-title,
     #log-idle-state .empty-title { font-size: var(--f-md) !important; color: var(--text2) !important; font-weight: 500 !important; margin-bottom: var(--sp-2) !important; }
     #comm-idle-state .empty-sub,
-    #log-idle-state .empty-sub { font-size: var(--f-sm) !important; color: var(--text4) !important; line-height: 1.5 !important; margin-bottom: var(--sp-4) !important; }
+    #log-idle-state .empty-sub { font-size: var(--f-sm) !important; color: var(--text3) !important; line-height: 1.5 !important; margin-bottom: var(--sp-4) !important; }
 
     /* ── 無權限狀態 ── */
     .noperm-sb-lock,
@@ -6011,7 +6026,7 @@
     [data-platform="xq"] .expiring-notice,
     [data-platform="xq"] .noperm-upgrade-sec { border: 1px solid var(--border); }
     body.is-expiring .sb-list .sb-item { opacity: 0.45; pointer-events: none; user-select: none; }
-    body.is-expiring .sb-list .sb-dot.green { background: var(--text4); }
+    body.is-expiring .sb-list .sb-dot.green { background: var(--text3); }
     body.is-expiring #sb-cnt-running { display: none !important; }
     body.is-expiring #sb-l2-cnt-running { display: none !important; }
     body.is-expiring #ov-card .data-view { display: none !important; }
@@ -6091,7 +6106,7 @@
     .num-wrap .num-arrows button:active { background: var(--tint2); }
     .num-wrap.is-disabled { background: var(--border); pointer-events: none; }
     .num-wrap.is-disabled input,
-    .num-wrap.is-disabled .num-arrows button { color: var(--text4); }
+    .num-wrap.is-disabled .num-arrows button { color: var(--text3); }
     .num-wrap.is-error { border-color: var(--danger2); }
   </style>
 </head>
@@ -6110,7 +6125,7 @@
     <div class="demo-float-menu" id="demo-float-menu" onclick="event.stopPropagation();"
       style="display: none; flex-direction: column; gap: 8px; background: var(--bg3); padding: 12px; border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
       <div
-        style="font-size: var(--f-xs); color: var(--text3); font-weight: 500; padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 4px;">
+        style="font-size: var(--f-xs); color: var(--text2); font-weight: 500; padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 4px;">
         DEMO 控制選單</div>
 
       <div class="platform-toggle" id="platform-toggle"
@@ -6129,7 +6144,7 @@
 
       <!-- 字級控制 -->
       <div style="display:flex;flex-direction:column;gap:4px;">
-        <div style="font-size:var(--f-xs);color:var(--text3);font-weight: 500;">字級</div>
+        <div style="font-size:var(--f-xs);color:var(--text2);font-weight: 500;">字級</div>
         <div style="position:relative;height:20px;display:flex;align-items:center;">
           <div style="position:absolute;left:5px;right:5px;height:2px;background:var(--border2);border-radius:1px;">
           </div>
@@ -6141,7 +6156,7 @@
             <div class="fs-step" onclick="setFontSize(5)"></div>
           </div>
         </div>
-        <div id="fs-level-label" style="font-size:9px;color:var(--text4);text-align:center;">預設</div>
+        <div id="fs-level-label" style="font-size:9px;color:var(--text3);text-align:center;">預設</div>
       </div>
 
       <div class="theme-toggle" onclick="setQuotaScenario('upgrade')" id="quota-upgrade-btn"
@@ -6160,7 +6175,7 @@
         <span>權限到期-緩衝期</span>
       </div>
       <div style="display:flex;align-items:center;gap:6px;padding:2px 8px;">
-        <span style="font-size:var(--f-xs);color:var(--text3);flex:1;">剩餘天數</span>
+        <span style="font-size:var(--f-xs);color:var(--text2);flex:1;">剩餘天數</span>
         <button onclick="setExpiringDays(_expiringDays-1)"
           style="width:20px;height:20px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--text2);cursor:pointer;font-size:14px;line-height:1;padding:0;">−</button>
         <span id="expiring-days-val" style="font-size:var(--f-sm);color:var(--accent);font-weight:600;min-width:18px;text-align:center;">14</span>
@@ -6622,7 +6637,7 @@
                         <td class="side-buy">買進</td>
                         <td><span class="edit-val" data-qty="10">10/0張</span></td>
                         <td><span class="edit-val" data-price="985">985</span></td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-pend">委託成功</span></td>
                         <td title="委託書號">A11305001</td>
                       </tr>
@@ -6638,7 +6653,7 @@
                         <td class="side-sell">賣出</td>
                         <td><span class="edit-val" data-qty="5">5/0張</span></td>
                         <td><span class="edit-val" data-price="21300">21,300</span></td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-pend">委託成功</span></td>
                         <td title="委託書號">B10050211</td>
                       </tr>
@@ -6653,7 +6668,7 @@
                         <td class="side-buy">買進</td>
                         <td><span class="edit-val" data-qty="8">8/0張</span></td>
                         <td><span class="edit-val" data-price="1300">1,300</span></td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-pend">委託成功</span></td>
                         <td title="委託書號">A11400033</td>
                       </tr>
@@ -6697,7 +6712,7 @@
                         <td class="side-buy">買進</td>
                         <td>2/0張</td>
                         <td>180</td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-fail">委託失敗</span></td>
                         <td title="委託書號">A10020071</td>
                       </tr>
@@ -6711,7 +6726,7 @@
                         <td class="side-sell">賣出</td>
                         <td>4/0張</td>
                         <td>1,305</td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-cancel">已刪單</span></td>
                         <td title="委託書號">B10180092</td>
                       </tr>
@@ -6816,7 +6831,7 @@
                         <td class="side-buy">買進</td>
                         <td><span class="edit-val" data-qty="100">100/0張</span></td>
                         <td><span class="edit-val" data-price="1245">1,245</span></td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-pend">委託成功</span></td>
                         <td title="委託書號">C10150321</td>
                       </tr>
@@ -6831,7 +6846,7 @@
                         <td class="side-sell">賣出</td>
                         <td><span class="edit-val" data-qty="50">50/0張</span></td>
                         <td><span class="edit-val" data-price="1260">1,260</span></td>
-                        <td style="color:var(--text4)">—</td>
+                        <td style="color:var(--text3)">—</td>
                         <td><span class="s-tag s-pend">委託成功</span></td>
                         <td title="委託書號">C10180089</td>
                       </tr>
@@ -7031,7 +7046,7 @@
           <div class="expiring-notice" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-clock" style="color:var(--warning);opacity:1;"></i></div>
             <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">訂閱已到期</div>
-            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+            <div style="font-size:var(--f-md);color:var(--text2);line-height:1.65;">
               機器人資料將在
               <strong id="expiring-days-card" style="color:var(--warning);">14</strong>
               天內清空<br>立即續訂以繼續使用所有機器人
@@ -7043,7 +7058,7 @@
           <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
             <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動下單</div>
-            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+            <div style="font-size:var(--f-md);color:var(--text2);line-height:1.65;">
               支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
             </div>
             <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:4px;">前往升級</button>
@@ -7076,7 +7091,7 @@
           <div class="expiring-notice" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-clock" style="color:var(--warning);opacity:1;"></i></div>
             <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">訂閱已到期</div>
-            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+            <div style="font-size:var(--f-md);color:var(--text2);line-height:1.65;">
               機器人資料將在
               <strong id="expiring-days-card-comm" style="color:var(--warning);">14</strong>
               天內清空<br>立即續訂以繼續使用所有機器人
@@ -7086,7 +7101,7 @@
           <div class="noperm-upgrade-sec" style="flex-direction:column;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-lg);box-shadow:var(--comp-card-shadow);padding:40px 24px;text-align:center;">
             <div class="empty-icon" style="width:80px;height:80px;border-radius:50%;background:color-mix(in srgb,var(--warning) 10%,transparent);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--sp-4);"><i class="fas fa-crown" style="color:var(--warning);opacity:1;"></i></div>
             <div style="font-size:var(--f-xl);font-weight:600;color:var(--text);">升級訂閱解鎖自動下單</div>
-            <div style="font-size:var(--f-md);color:var(--text3);line-height:1.65;">
+            <div style="font-size:var(--f-md);color:var(--text2);line-height:1.65;">
               支援同時啟動 10 組交易機器人<br>並開啟完整設定與交易功能
             </div>
             <button class="empty-action-btn" onclick="openQuotaModal('upgrade')" style="margin-top:4px;">前往升級</button>
@@ -7137,7 +7152,7 @@
                   <td class="side-buy">買進</td>
                   <td><span class="edit-val" data-qty="7">7</span>/<span>0</span>股</td>
                   <td><span class="edit-val" data-price="27.5">27.5</span></td>
-                  <td style="color:var(--text3)">—</td>
+                  <td style="color:var(--text2)">—</td>
                   <td><span class="s-tag s-pend">委託成功</span></td>
                   <td title="委託書號">C14200733</td>
                   <td>
@@ -7181,7 +7196,7 @@
                   <td class="side-buy">買進</td>
                   <td><span class="edit-val" data-qty="100">100</span>/<span>20</span>張</td>
                   <td><span class="edit-val" data-price="1245">1,245</span></td>
-                  <td style="color:var(--text3)">—</td>
+                  <td style="color:var(--text2)">—</td>
                   <td><span class="s-tag s-pend">委託成功</span></td>
                   <td title="委託書號">B10150099</td>
                   <td>
@@ -7697,7 +7712,7 @@
                     <td class="side-buy">買進</td>
                     <td><span class="edit-val" data-qty="10">10/0張</span></td>
                     <td><span class="edit-val" data-price="105">105.00</span></td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-pend">委託成功</span></td>
                     <td title="委託書號">A11305001</td>
                   </tr>
@@ -7743,7 +7758,7 @@
                     <td class="side-buy">買進</td>
                     <td><span class="edit-val" data-qty="20">20/0張</span></td>
                     <td><span class="edit-val" data-price="32.5">32.50</span></td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-pend">委託成功</span></td>
                     <td title="委託書號">A11200004</td>
                   </tr>
@@ -7773,9 +7788,9 @@
                     <td class="side-buy">買進</td>
                     <td>5/0張</td>
                     <td>21.30</td>
-                    <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-fail">委託失敗</span></td>
                     <td style="color:var(--text3)">—</td>
+                    <td><span class="s-tag s-fail">委託失敗</span></td>
+                    <td style="color:var(--text2)">—</td>
                   </tr>
                   <!-- 7 -->
                   <tr>
@@ -7788,7 +7803,7 @@
                     <td class="side-sell">賣出</td>
                     <td>30/0張</td>
                     <td>15.80</td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-cancel">已刪單</span></td>
                     <td title="委託書號">X11050007</td>
                   </tr>
@@ -7834,7 +7849,7 @@
                     <td class="side-buy">買進</td>
                     <td><span class="edit-val" data-qty="1000">1000/0股</span></td>
                     <td><span class="edit-val" data-price="18.5">18.50</span></td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-pend">委託成功</span></td>
                     <td title="委託書號">A10400010</td>
                   </tr>
@@ -7879,9 +7894,9 @@
                     <td class="side-buy">買進</td>
                     <td>50/0張</td>
                     <td>9.60</td>
-                    <td style="color:var(--text4)">—</td>
-                    <td><span class="s-tag s-fail">委託失敗</span></td>
                     <td style="color:var(--text3)">—</td>
+                    <td><span class="s-tag s-fail">委託失敗</span></td>
+                    <td style="color:var(--text2)">—</td>
                   </tr>
                   <!-- 14 -->
                   <tr>
@@ -7924,7 +7939,7 @@
                     <td class="side-sell">賣出</td>
                     <td>8/0張</td>
                     <td>21.50</td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-cancel">已刪單</span></td>
                     <td title="委託書號">X10100016</td>
                   </tr>
@@ -7940,7 +7955,7 @@
                     <td class="side-buy">買進</td>
                     <td><span class="edit-val" data-qty="10">10/0張</span></td>
                     <td><span class="edit-val" data-price="15.7">15.70</span></td>
-                    <td style="color:var(--text4)">—</td>
+                    <td style="color:var(--text3)">—</td>
                     <td><span class="s-tag s-pend">委託成功</span></td>
                     <td title="委託書號">A10050017</td>
                   </tr>
@@ -8419,24 +8434,24 @@
         </div>
         <div class="compare-row">
           <div style="flex:1">
-            <div style="font-size:var(--f-xs);color:var(--text3);margin-bottom:3px">數量（修改前）</div>
+            <div style="font-size:var(--f-xs);color:var(--text2);margin-bottom:3px">數量（修改前）</div>
             <div class="compare-from" id="mod-qty-from">-</div>
           </div>
-          <div style="color:var(--text4);font-size:16px">→</div>
+          <div style="color:var(--text3);font-size:16px">→</div>
           <div style="flex:1">
-            <div style="font-size:var(--f-xs);color:var(--text3);margin-bottom:3px">修改為</div><input type="number"
+            <div style="font-size:var(--f-xs);color:var(--text2);margin-bottom:3px">修改為</div><input type="number"
               id="mod-qty-new"
               style="width:100%;padding:5px;border:1px solid var(--tint3);border-radius:var(--r-md);font-size:var(--f-sm)">
           </div>
         </div>
         <div class="compare-row">
           <div style="flex:1">
-            <div style="font-size:var(--f-xs);color:var(--text3);margin-bottom:3px">委託價（修改前）</div>
+            <div style="font-size:var(--f-xs);color:var(--text2);margin-bottom:3px">委託價（修改前）</div>
             <div class="compare-from" id="mod-price-from">-</div>
           </div>
-          <div style="color:var(--text4);font-size:16px">→</div>
+          <div style="color:var(--text3);font-size:16px">→</div>
           <div style="flex:1">
-            <div style="font-size:var(--f-xs);color:var(--text3);margin-bottom:3px">修改為</div><input type="number"
+            <div style="font-size:var(--f-xs);color:var(--text2);margin-bottom:3px">修改為</div><input type="number"
               id="mod-price-new"
               style="width:100%;padding:5px;border:1px solid var(--tint3);border-radius:var(--r-md);font-size:var(--f-sm)"
               step="0.01">
@@ -8496,7 +8511,7 @@
       <div class="modal-body">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
           <p style="font-size:var(--f-base);color:var(--text2);margin:0">即將停止以下 <strong id="stop-all-robot-cnt" style="color:var(--accent)">6</strong> 個機器人：</p>
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--f-sm);color:var(--text3);flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--f-sm);color:var(--text2);flex-shrink:0">
             <input type="checkbox" id="stop-all-select-all" class="row-cb" checked style="padding:0;margin:0;flex-shrink:0" onchange="(function(cb){document.querySelectorAll('.stop-all-cb').forEach(c=>{c.checked=cb.checked});_updateStopAllCounts()})(this)">
             全選
           </label>
@@ -11181,7 +11196,7 @@
       row.cells[2].textContent = qty;
       row.cells[3].textContent = price;
       row.cells[4].textContent = 'A' + Math.floor(1000000 + Math.random() * 9000000);
-      row.cells[4].style.color = 'var(--text3)';
+      row.cells[4].style.color = 'var(--text2)';
       document.getElementById('del-modal').classList.add('show');
     }
     function confirmDel() {
@@ -11594,7 +11609,7 @@
           _xpopShow({
             icon: '<i class="icon-check-circle-fill" style="color:var(--success)"></i>',
             title: '交易機器人已建立',
-            msg: '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:var(--f-base);color:var(--text3)"><input type="checkbox" id="arm-start-now" style="flex-shrink:0"> 立即開始執行</label>',
+            msg: '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:var(--f-base);color:var(--text2)"><input type="checkbox" id="arm-start-now" style="flex-shrink:0"> 立即開始執行</label>',
             type: 'alert',
             confirmText: '確認',
             noClose: true,
@@ -12234,7 +12249,7 @@
               <td class="side-buy">買進</td>
               <td>10張</td>
               <td>985</td>
-              <td style="color:var(--text3)">A1234567</td>
+              <td style="color:var(--text2)">A1234567</td>
             </tr>
             <tr>
               <td class="col-chk"><input type="checkbox" class="row-cb" checked></td>
@@ -12242,7 +12257,7 @@
               <td class="side-sell">賣出</td>
               <td>5張</td>
               <td>21,300</td>
-              <td style="color:var(--text3)">A1234568</td>
+              <td style="color:var(--text2)">A1234568</td>
             </tr>
             <tr>
               <td class="col-chk"><input type="checkbox" class="row-cb" checked></td>
@@ -12250,7 +12265,7 @@
               <td class="side-buy">買進</td>
               <td>8張</td>
               <td>1,300</td>
-              <td style="color:var(--text3)">A1234569</td>
+              <td style="color:var(--text2)">A1234569</td>
             </tr>
           </tbody>
         </table>
@@ -12288,8 +12303,8 @@
         </div>
       </div>
       <div class="modal-footer" style="justify-content:space-between">
-        <span id="sig-record-stock" style="font-size:var(--f-xs);color:var(--text3)">股票-華南金(2880)</span>
-        <span id="sig-record-time" style="font-size:var(--f-xs);color:var(--text3)">2026/05/28 10:43</span>
+        <span id="sig-record-stock" style="font-size:var(--f-xs);color:var(--text2)">股票-華南金(2880)</span>
+        <span id="sig-record-time" style="font-size:var(--f-xs);color:var(--text2)">2026/05/28 10:43</span>
       </div>
     </div>
   </div>
@@ -12361,7 +12376,7 @@
       <td class="${sideClass}">${sideCell ? sideCell.textContent.trim() : '—'}</td>
       <td>${(qtyCell?.querySelector('[data-qty]')?.dataset.qty ?? qtyCell?.textContent.trim() ?? '—') + '張'}</td>
       <td>${priceCell ? priceCell.textContent.trim() : '—'}</td>
-      <td style="color:var(--text3)">A${Math.floor(1000000 + Math.random() * 9000000)}</td>`;
+      <td style="color:var(--text2)">A${Math.floor(1000000 + Math.random() * 9000000)}</td>`;
         tbody.appendChild(row);
       });
       document.querySelector('#batch-del-table thead .row-cb').checked = true;
