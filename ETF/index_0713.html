@@ -200,6 +200,7 @@
     .xqm-section-tabs [role="tablist"] {
       display: flex;
       width: 100%;
+      gap: 0;
     }
     .xqm-section-tabs [role="tab"] {
       flex: 1;
@@ -209,6 +210,16 @@
     }
     [data-platform="xqm"] [data-xqm-section] { display: none; }
     [data-platform="xqm"] [data-xqm-section].xqm-section-active { display: block; }
+
+    /* XQM 版：買賣超圖表頂部控制列，動態圖例數值換到獨立一行 */
+    [data-platform="xqm"] #stk-chart-top-bar {
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+    [data-platform="xqm"] #stk-chart-legend {
+      flex: 1 0 100%;
+      margin-left: 0;
+    }
 
     /* ── Date popover trigger（三頁共用） ── */
     #stk-date-trigger-btn,
@@ -4916,7 +4927,7 @@
         _syncHash();
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/07/15 10:37';
+        const FILE_UPDATED = '2026/07/15 10:58';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
