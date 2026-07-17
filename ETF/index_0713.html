@@ -221,6 +221,69 @@
       margin-left: 0;
     }
 
+    /* XQM 版：偵測到手機螢幕寬度時關閉左側欄（prototype 導覽用側欄，正式 App 沒有這塊），
+       讓內容區改用滿版寬度。純 CSS media query，會隨實際瀏覽器寬度即時反應 */
+    @media (max-width: 768px) {
+      [data-platform="xqm"] .proto-sidebar { display: none; }
+      [data-platform="xqm"] #proto-main { margin-left: 0 !important; }
+      [data-platform="xqm"] #mkt-compact-hdr,
+      [data-platform="xqm"] #stk-compact-hdr,
+      [data-platform="xqm"] #etf-compact-hdr {
+        left: 0 !important;
+      }
+      /* proto-supplement.css 的「手機框預覽」效果（灰底 + padding + 陰影 + 圓角）是給桌面瀏覽器模擬用的，
+         真的在手機瀏覽器打開時不需要，內容要直接滿版、不留灰邊 */
+      body.is-xqm #proto-main {
+        padding: 0 !important;
+        background: transparent !important;
+      }
+      body.is-xqm .page.active {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding-bottom: 56px; /* 避免內容被底部導覽列蓋住 */
+      }
+      /* 移除手機框 padding 後，市場總覽頁標題（原本只靠外層 24px padding 撐開）會貼頂，補回頂部留白 */
+      [data-platform="xqm"] #mkt-full-hdr {
+        padding-top: 16px;
+      }
+    }
+
+    /* XQM 手機版底部導覽（市場／個股／ETF），側欄關閉後靠這個切頁 */
+    .xqm-mobile-nav { display: none; }
+    @media (max-width: 768px) {
+      [data-platform="xqm"] .xqm-mobile-nav {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        z-index: 60;
+        background: var(--xqm-blue-04);
+        border-top: 1px solid var(--xqm-blue-06);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      [data-platform="xqm"] .xqm-mobile-nav button {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 8px 0 6px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--xqm-gray-10);
+        font-size: 11px;
+      }
+      [data-platform="xqm"] .xqm-mobile-nav button [class^="icon-"] {
+        font-size: 20px;
+      }
+      [data-platform="xqm"] .xqm-mobile-nav button.active {
+        color: var(--xqm-active);
+      }
+    }
+
     /* ── Date popover trigger（三頁共用） ── */
     #stk-date-trigger-btn,
     #etf-date-trigger-btn,
@@ -2333,6 +2396,9 @@
       document.querySelectorAll('.proto-nav-btn').forEach(b => {
         const targets = { market: '市場總覽', stock: '個股 → ETF持股', etf: 'ETF → 持股狀態', 'us-theme': '主題投資' };
         b.classList.toggle('active', b.textContent.trim() === (targets[id] || ''));
+      });
+      document.querySelectorAll('#xqm-mobile-nav button[data-page]').forEach(b => {
+        b.classList.toggle('active', b.dataset.page === id);
       });
       // Hide all compact headers when switching pages
       ['stk-compact-hdr', 'etf-compact-hdr', 'mkt-compact-hdr'].forEach(i => { const el = document.getElementById(i); if (el) el.style.display = 'none'; });
@@ -4927,7 +4993,7 @@
         _syncHash();
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/07/15 10:58';
+        const FILE_UPDATED = '2026/07/17 15:18';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
@@ -4967,6 +5033,19 @@
   <div id="chg-bar-tip"
     style="display:none;position:fixed;z-index:1000;background:var(--comp-tooltip-bg);border:1px solid var(--color-gray-400);border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.8;color:var(--comp-tooltip-text);pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);min-width:140px;">
   </div>
+
+  <!-- ── XQM 手機版底部導覽：市場／個股／ETF（側欄在手機寬度下關閉後，靠這個切頁）── -->
+  <nav id="xqm-mobile-nav" class="xqm-mobile-nav">
+    <button type="button" data-page="market" class="active" onclick="showPage('market')">
+      <span class="icon-home"></span><span>市場</span>
+    </button>
+    <button type="button" data-page="stock" onclick="showPage('stock')">
+      <span class="icon-line-trend"></span><span>個股</span>
+    </button>
+    <button type="button" data-page="etf" onclick="showPage('etf')">
+      <span class="icon-pie-chart"></span><span>ETF</span>
+    </button>
+  </nav>
 </body>
 
 </html>
