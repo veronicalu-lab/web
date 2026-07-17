@@ -76,12 +76,11 @@
 [data-platform="xq"] {
   --f-xs:         12px;
   --f-sm:         14px;
-  --f-base:       16px;
+  --f-base:       14px;
   --f-md:         16px;
   --f-lg:         18px;
   --f-xl:         18px;
   --f-page-title: 26px;
-  --f-weight:     500;                              /* XQ 全域字重 medium */
   --font-sans:    -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; /* XQ 字體 */
   --f-family:     -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --comp-summary-card-val-weight: var(--font-weight-medium); /* 數字列字重（XQ: medium=500，非 bold） */
@@ -295,7 +294,7 @@
 /* ── Tooltip tokens — Component/Content/Popup/Tooltip_* ── */
 :root                { --comp-tooltip-bg:       var(--color-gray-300);  } /* dark:  Gray-300 */
 [data-theme="light"] { --comp-tooltip-bg:       var(--color-gray-150);  } /* light: Gray-150 */
-:root                { --comp-tooltip-bg-2:     var(--color-gray-450);  } /* dark:  Gray-450 */
+:root                { --comp-tooltip-bg-2:     var(--color-gray-500);  } /* dark:  Gray-450 */
 [data-theme="light"] { --comp-tooltip-bg-2:     var(--color-gray-250);  } /* light: Gray-250 */
 :root                { --comp-tooltip-text:     var(--color-gray-1000); } /* both:  Gray-1000 */
 :root                { --comp-tooltip-text-sec: var(--color-gray-800);  } /* both:  Gray-800 */
@@ -335,7 +334,7 @@
 :root                { --comp-btn-primary-text:        var(--color-gray-100); }
 :root                { --comp-btn-primary-text-dis:    var(--color-gray-250); }
 [data-theme="light"] { --comp-btn-primary-text-dis:    var(--color-gray-600); }
-:root                { --comp-btn-primary-bg-dis:      var(--color-gray-450); }
+:root                { --comp-btn-primary-bg-dis:      var(--color-gray-500); }
 [data-theme="light"] { --comp-btn-primary-bg-dis:      var(--color-gray-350); }
 
 /* Layer 3 — Component: Btn/Primary/Ghost & Stroke（共用 theme 色）*/
@@ -376,12 +375,12 @@
 /* Trade 漲跌色票 */
 :root {
   --color-trade-up:            var(--xq-red-550);
-  --color-trade-up-dark-100:   var(--xq-red-450);
+  --color-trade-up-dark-100:   var(--xq-red-500);
   --color-trade-up-dark-200:   var(--xq-red-200);
   --color-trade-up-dark-300:   var(--xq-red-150);
   --color-trade-up-dark-400:   var(--xq-red-100);
   --color-trade-down:          var(--xq-green-550);
-  --color-trade-down-dark-100: var(--xq-green-450);
+  --color-trade-down-dark-100: var(--xq-green-500);
   --color-trade-down-dark-200: var(--xq-green-200);
   --color-trade-down-dark-300: var(--xq-green-150);
   --color-trade-down-dark-400: var(--xq-green-100);
@@ -662,7 +661,7 @@ body.is-xqm #etf-summary-row > div {
   margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
 }
 .page-hero-back {
-  font-size: 18px; color: var(--color-gray-450);
+  font-size: 18px; color: var(--color-gray-500);
   cursor: pointer; letter-spacing: 0; text-transform: none; font-weight: 400;
 }
 .page-hero-back:hover { color: var(--color-gray-1000); }
@@ -759,6 +758,10 @@ body.is-xqm #etf-summary-row > div {
 .table-head-sort-container { gap: calc(var(--spacing) * 1.5); }
 .table-head-sort-icon-inactive { opacity: 0; }
 .table-head:hover .table-head-sort-icon-inactive { opacity: 0.5; }
+/* table sort token bridge — rd-app.css hardcodes color-theme-500; override here */
+:root { --comp-th-sort-active: var(--color-theme-500); }
+[data-platform="xqm"] { --comp-th-sort-active: var(--xqm-gray-12); }
+.table-head-sort-icon { color: var(--comp-th-sort-active); }
 .table-head {
   padding-inline: calc(var(--spacing) * 3);
   position: sticky;
@@ -875,6 +878,7 @@ body.is-xqm #etf-summary-row > div {
   color:     var(--comp-table-stock-num);
   font-size: var(--comp-table-sub-font-size);
 }
+.t-sector { font-size: var(--comp-table-cell-font-size); }
 /* rd-app.css turns sortable header text to theme-500 on hover; keep it unchanged */
 .table-head-sortable:hover {
   color: var(--comp-table-title-text);
@@ -1062,7 +1066,7 @@ body.is-xqm #etf-summary-row > div {
 .card-accent-orange { border-left: 3px solid var(--color-orange-500) !important; }
 .card-accent-red    { border-left: 3px solid var(--color-trade-up) !important; }
 .card-accent-green  { border-left: 3px solid var(--color-trade-down) !important; }
-.card-accent-gray   { border-left: 3px solid var(--color-gray-450) !important; }
+.card-accent-gray   { border-left: 3px solid var(--color-gray-500) !important; }
 .card-accent-teal   { border-left: 3px solid var(--color-turquoise-blue-400) !important; }
 .card-accent-yellow { border-left: 3px solid var(--color-yellow-500) !important; }
 
@@ -1083,32 +1087,37 @@ body.is-xqm #etf-summary-row > div {
   border-radius: 999px;
   padding: 1px 10px;
   transition: background .12s, color .12s;
+  color: #fff;
 }
-/* Hover: badge goes fully opaque */
-.card-clickable:hover .card-new-label   { background: var(--xq-red-600) !important; color: #fff !important; }
-[data-platform="xqm"] .card-clickable:hover .card-new-label   { background: var(--xqm-trade-up-h)   !important; }
-[data-platform="xqm"] .card-clickable:hover .card-clear-label { background: var(--xqm-trade-down-h) !important; }
-.card-clickable:hover .card-clear-label { background: var(--color-trade-down) !important; color: #fff !important; }
+.card-new-label   { background: color-mix(in srgb, var(--color-trade-up)   60%, transparent); }
+.card-clear-label { background: color-mix(in srgb, var(--color-trade-down) 60%, transparent); }
+/* Hover: badge goes +10% opacity */
+.card-clickable:hover .card-new-label   { background: color-mix(in srgb, var(--color-trade-up)   70%, transparent) !important; color: #fff !important; }
+.card-clickable:hover .card-clear-label { background: color-mix(in srgb, var(--color-trade-down) 70%, transparent) !important; color: #fff !important; }
 /* Selected: 60% tint + 2px outline + checkmark */
 .card-clickable.card-selected .card-new-label,
 .card-clickable.card-selected .card-clear-label {
   display: inline-flex !important;
   align-items: center;
   color: #fff !important;
-  outline-width: 1px;
+  outline-width: 2px;
   outline-style: solid;
-  outline-offset: -1px;
+  outline-offset: -2px;
 }
 .card-clickable.card-selected .card-new-label {
-  background: var(--color-trade-up-dark-100) !important;
-  outline-color: var(--xq-red-650);
+  background: color-mix(in srgb, var(--color-trade-up)   60%, transparent) !important;
+  outline-color: var(--xq-red-600);
 }
 .card-clickable.card-selected .card-clear-label {
-  background: var(--color-trade-down-dark-100) !important;
-  outline-color: var(--xq-green-650);
+  background: color-mix(in srgb, var(--color-trade-down) 60%, transparent) !important;
+  outline-color: var(--xq-green-600);
 }
-[data-platform="xqm"] .card-clickable.card-selected .card-new-label   { outline-color: var(--xqm-trade-up-volume-f);   }
-[data-platform="xqm"] .card-clickable.card-selected .card-clear-label { outline-color: var(--xqm-trade-down-volume-f); }
+/* XQ 亮版：chip active = solid，card selected 也 solid */
+[data-platform="xq"][data-theme="light"] .card-clickable.card-selected .card-new-label   { background: var(--xq-red-500)   !important; }
+[data-platform="xq"][data-theme="light"] .card-clickable.card-selected .card-clear-label { background: var(--xq-green-500) !important; }
+/* XQM：outline 改用主色（-volume-f 太亮）*/
+[data-platform="xqm"] .card-clickable.card-selected .card-new-label   { outline-color: var(--xqm-trade-up);   }
+[data-platform="xqm"] .card-clickable.card-selected .card-clear-label { outline-color: var(--xqm-trade-down); }
 .card-clickable.card-selected .card-new-label::before,
 .card-clickable.card-selected .card-clear-label::before {
   content: '';
@@ -1257,7 +1266,7 @@ body.is-xqm #etf-summary-row > div {
 .segment-item[data-disabled] {
   color:            var(--color-gray-750);   /* Text_Disable dark */
   border-color:     var(--color-gray-400);   /* Stroke_Disable */
-  background-color: var(--color-gray-450);   /* Bg_Disable dark */
+  background-color: var(--color-gray-500);   /* Bg_Disable dark */
   pointer-events: none;
 }
 [data-theme="light"] .segment-item:disabled,
@@ -1395,21 +1404,6 @@ body.is-xqm #etf-summary-row > div {
 
 
 
-/* 關鍵異動訊號 tag 強制套色 */
-tr[data-sig="new"] td:first-child span {
-  background: color-mix(in srgb, var(--xq-red-600) 60%, transparent) !important;
-  color: #fff !important;
-  outline: 1px solid var(--xq-red-600) !important;
-  outline-offset: -1px !important;
-  font-weight: 400 !important;
-}
-tr[data-sig="exit"] td:first-child span {
-  background: var(--color-trade-down-dark-100) !important;
-  color: #fff !important;
-  outline: 1px solid currentColor !important;
-  outline-offset: -1px !important;
-  font-weight: 400 !important;
-}
 
 /* ── Clickable table rows — name turns blue on hover ── */
 .table-row[onclick]:hover .row-name { color: var(--color-theme-500); }
@@ -1436,8 +1430,8 @@ tr[data-sig="exit"] td:first-child span {
   background-size: 11px 11px;
 }
 .stk-cb:checked:disabled {
-  background-color: var(--color-gray-450);
-  border-color: var(--color-gray-450);
+  background-color: var(--color-gray-500);
+  border-color: var(--color-gray-500);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6L5 9L10 3' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
@@ -1504,16 +1498,47 @@ tr[data-sig="exit"] td:first-child span {
   top: 3px; bottom: 3px;   /* 往上下各多延伸 4px */
 }
 
-/* ── 首次買入 / 完全出清 chip buttons — 已選取邊線（同表格 tag 樣式） ── */
-/* 全部 chip: 對齊 tab active 顏色 (theme-550) */
-#stk-chip-all .tag,
-#etf-chip-all .tag {
-  --tag-text:        var(--color-theme-550);
-  --tag-text-active: var(--color-theme-550);
+/* ── Filter chip colored backgrounds ── */
+[id$="-chip-all"] .tag,
+[id$="-chip-new"] .tag,
+[id$="-chip-add"] .tag,
+[id$="-chip-reduce"] .tag,
+[id$="-chip-clear"] .tag,
+[id$="-chip-exit"] .tag {
+  --tag-text: var(--color-gray-1000);
+}
+[id$="-chip-all"] .tag,
+[id$="-chip-new"] .tag,
+[id$="-chip-add"] .tag,
+[id$="-chip-reduce"] .tag,
+[id$="-chip-clear"] .tag,
+[id$="-chip-exit"] .tag   { --tag-text-active: var(--color-gray-1000); }
+
+
+[id$="-chip-all"] .tag {
+  --tag-bg:       color-mix(in srgb, var(--color-theme-550) 30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-theme-550) 40%, transparent);
+}
+[id$="-chip-new"] .tag {
+  --tag-bg:       color-mix(in srgb, var(--color-trade-up) 60%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-trade-up) 70%, transparent);
+}
+[id$="-chip-add"] .tag {
+  --tag-bg:       color-mix(in srgb, var(--color-trade-up) 30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-trade-up) 40%, transparent);
+}
+[id$="-chip-reduce"] .tag {
+  --tag-bg:       color-mix(in srgb, var(--color-trade-down) 30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-trade-down) 40%, transparent);
+}
+[id$="-chip-clear"] .tag,
+[id$="-chip-exit"] .tag {
+  --tag-bg:       color-mix(in srgb, var(--color-trade-down) 60%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-trade-down) 70%, transparent);
 }
 
-.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650);   outline-offset: -1px; }
-.chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650); outline-offset: -1px; }
+.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-600);   outline-offset: -1px; }
+.chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-600); outline-offset: -1px; }
 [data-platform="xqm"] .chip-new-tag.tag-active   { outline-color: var(--xqm-trade-up-volume-f);   }
 [data-platform="xqm"] .chip-clear-tag.tag-active { outline-color: var(--xqm-trade-down-volume-f); }
 
@@ -1556,27 +1581,34 @@ tr[data-sig="exit"] td:first-child span {
   mask-position: center;
 }
 
-/* ── Filter chip — active 邊線 ── */
+/* ── Filter chip — active ring 顏色（per type） ── */
+[id$="-chip-all"] .tag                              { --chip-ring: var(--xq-blue-600);  }
+[id$="-chip-new"] .tag, [id$="-chip-add"] .tag,
+.chip-new-tag                                       { --chip-ring: var(--xq-red-600);   }
+[id$="-chip-reduce"] .tag, [id$="-chip-clear"] .tag,
+[id$="-chip-exit"] .tag, .chip-clear-tag            { --chip-ring: var(--xq-green-600); }
+[id$="-chip-hold"] .tag {
+  --chip-ring:    var(--color-gray-750);
+  --tag-bg:       color-mix(in srgb, var(--color-gray-600) 30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-gray-600) 40%, transparent);
+  --tag-text:        var(--color-gray-1000);
+  --tag-text-active: var(--color-gray-1000);
+}
+
+/* ── Filter chip — active 邊線（inset box-shadow，跟隨 border-radius，無裁切）── */
 [id$="-chip-all"] .tag-active,
 [id$="-chip-new"] .tag-active,
 [id$="-chip-add"] .tag-active,
 [id$="-chip-hold"] .tag-active,
 [id$="-chip-reduce"] .tag-active,
 [id$="-chip-clear"] .tag-active,
-[id$="-chip-exit"] .tag-active {
-  outline: 1px solid currentColor !important;
-  outline-offset: -1px;
+[id$="-chip-exit"] .tag-active,
+.chip-new-tag.tag-active,
+.chip-clear-tag.tag-active {
+  outline: none !important;
+  box-shadow: inset 0 0 0 2px var(--chip-ring) !important;
 }
 
-/* 首次買入 / 完全出清 active 邊線用固定顏色（override currentColor） */
-.chip-new-tag.tag-active   { outline: 1px solid var(--xq-red-650)   !important; outline-offset: -1px; }
-.chip-clear-tag.tag-active { outline: 1px solid var(--xq-green-650) !important; outline-offset: -1px; }
-[data-platform="xqm"] .chip-new-tag.tag-active   { outline-color: var(--xqm-trade-up-volume-f)   !important; }
-[data-platform="xqm"] .chip-clear-tag.tag-active { outline-color: var(--xqm-trade-down-volume-f) !important; }
-
-/* ── 加碼 / 減碼 filter chip — 文字色改用 trade 色票 ── */
-[id$="-chip-add"]    .tag { color: var(--color-trade-up); }
-[id$="-chip-reduce"] .tag { color: var(--color-trade-down); }
 
 /* ── 首次買入 / 完全出清 chip buttons — hover 全不透明（共用元件，改這裡全頁同步） ── */
 .chip-new-tag,
@@ -1584,17 +1616,140 @@ tr[data-sig="exit"] td:first-child span {
   transition: background .12s;
 }
 button:hover .chip-new-tag {
-  background: var(--xq-red-600) !important;
+  background: color-mix(in srgb, var(--color-trade-up)    70%, transparent) !important;
 }
 [data-platform="xqm"] button:hover .chip-new-tag {
-  background: var(--xqm-trade-up-h) !important;
+  background: color-mix(in srgb, var(--xqm-trade-up)    70%, transparent) !important;
 }
 button:hover .chip-clear-tag {
-  background: var(--color-trade-down) !important;
+  background: color-mix(in srgb, var(--color-trade-down) 70%, transparent) !important;
 }
 [data-platform="xqm"] button:hover .chip-clear-tag {
-  background: var(--xqm-trade-down-h) !important;
+  background: color-mix(in srgb, var(--xqm-trade-down)  70%, transparent) !important;
 }
+
+/* ── Filter chip — XQ 亮版 overrides ── */
+[data-platform="xq"][data-theme="light"] [id$="-chip-all"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-new"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-add"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-reduce"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-clear"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-exit"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-hold"] .tag,
+[data-platform="xq"][data-theme="light"] .chip-new-tag,
+[data-platform="xq"][data-theme="light"] .chip-clear-tag {
+  --tag-text:        #fff;
+  --tag-text-active: #fff;
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-all"] .tag {
+  --chip-ring:    var(--xq-blue-600);
+  --tag-bg:       color-mix(in srgb, var(--xq-blue-500) 60%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xq-blue-500) 50%, transparent);
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-new"] .tag {
+  --chip-ring:    var(--xq-red-600);
+  --tag-bg:       var(--xq-red-500);
+  --tag-bg-hover: color-mix(in srgb, var(--xq-red-500) 90%, transparent);
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-add"] .tag {
+  --chip-ring:    var(--xq-red-600);
+  --tag-bg:       color-mix(in srgb, var(--xq-red-500) 70%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xq-red-500) 60%, transparent);
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-reduce"] .tag {
+  --chip-ring:    var(--xq-green-600);
+  --tag-bg:       color-mix(in srgb, var(--xq-green-500) 70%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xq-green-500) 60%, transparent);
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-clear"] .tag,
+[data-platform="xq"][data-theme="light"] [id$="-chip-exit"] .tag {
+  --chip-ring:    var(--xq-green-600);
+  --tag-bg:       var(--xq-green-500);
+  --tag-bg-hover: color-mix(in srgb, var(--xq-green-500) 90%, transparent);
+}
+[data-platform="xq"][data-theme="light"] [id$="-chip-hold"] .tag {
+  --chip-ring:    var(--color-gray-600);
+  --tag-bg:       color-mix(in srgb, var(--color-gray-500) 70%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--color-gray-500) 60%, transparent);
+}
+/* chip-new-tag / chip-clear-tag — 亮版 ring + hover（base 100%，hover 90%）*/
+[data-platform="xq"][data-theme="light"] .chip-new-tag   { --chip-ring: var(--xq-red-600);   }
+[data-platform="xq"][data-theme="light"] .chip-clear-tag { --chip-ring: var(--xq-green-600); }
+[data-platform="xq"][data-theme="light"] [id$="-chip-all"]:hover .tag:not(.tag-active) {
+  background: color-mix(in srgb, var(--xq-blue-500) 50%, transparent) !important;
+}
+[data-platform="xq"][data-theme="light"] button:hover .chip-new-tag {
+  background: color-mix(in srgb, var(--xq-red-500)   90%, transparent) !important;
+}
+[data-platform="xq"][data-theme="light"] button:hover .chip-clear-tag {
+  background: color-mix(in srgb, var(--xq-green-500) 90%, transparent) !important;
+}
+
+/* ── Filter chip — XQM overrides ── */
+[data-platform="xqm"] [id$="-chip-all"] .tag,
+[data-platform="xqm"] [id$="-chip-new"] .tag,
+[data-platform="xqm"] [id$="-chip-add"] .tag,
+[data-platform="xqm"] [id$="-chip-hold"] .tag,
+[data-platform="xqm"] [id$="-chip-reduce"] .tag,
+[data-platform="xqm"] [id$="-chip-clear"] .tag,
+[data-platform="xqm"] [id$="-chip-exit"] .tag {
+  --tag-text:        #fff;
+  --tag-text-hover:  #fff;
+  --tag-text-active: #fff;
+}
+[data-platform="xqm"] [id$="-chip-all"] .tag {
+  --chip-ring:    var(--xqm-active);
+  --tag-bg:       color-mix(in srgb, var(--xqm-active)      30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-active)      40%, transparent);
+}
+[data-platform="xqm"] [id$="-chip-new"] .tag {
+  --chip-ring:    var(--xqm-trade-up);
+  --tag-bg:       color-mix(in srgb, var(--xqm-trade-up)    60%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-trade-up)    70%, transparent);
+}
+[data-platform="xqm"] [id$="-chip-add"] .tag {
+  --chip-ring:    var(--xqm-trade-up);
+  --tag-bg:       color-mix(in srgb, var(--xqm-trade-up)    30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-trade-up)    40%, transparent);
+}
+[data-platform="xqm"] [id$="-chip-reduce"] .tag {
+  --chip-ring:    var(--xqm-trade-down);
+  --tag-bg:       color-mix(in srgb, var(--xqm-trade-down)  30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-trade-down)  40%, transparent);
+}
+[data-platform="xqm"] [id$="-chip-clear"] .tag,
+[data-platform="xqm"] [id$="-chip-exit"] .tag {
+  --chip-ring:    var(--xqm-trade-down);
+  --tag-bg:       color-mix(in srgb, var(--xqm-trade-down)  60%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-trade-down)  70%, transparent);
+}
+[data-platform="xqm"] [id$="-chip-hold"] .tag {
+  --chip-ring:    var(--xqm-gray-10);
+  --tag-bg:       color-mix(in srgb, var(--xqm-gray-10)     30%, transparent);
+  --tag-bg-hover: color-mix(in srgb, var(--xqm-gray-10)     40%, transparent);
+}
+
+/* ── Signal tag tokens ── */
+:root {
+  --sig-new-bg:    color-mix(in srgb, var(--color-trade-up)   60%, transparent);
+  --sig-exit-bg:   color-mix(in srgb, var(--color-trade-down) 60%, transparent);
+  --sig-add-bg:    color-mix(in srgb, var(--color-trade-up)   30%, transparent);
+  --sig-reduce-bg: color-mix(in srgb, var(--color-trade-down) 30%, transparent);
+  --sig-hold-bg:   color-mix(in srgb, var(--color-gray-600)   30%, transparent);
+}
+[data-platform="xq"][data-theme="light"] {
+  --sig-new-bg:    var(--xq-red-500);
+  --sig-exit-bg:   var(--xq-green-500);
+  --sig-add-bg:    color-mix(in srgb, var(--xq-red-500)     70%, transparent);
+  --sig-reduce-bg: color-mix(in srgb, var(--xq-green-500)   70%, transparent);
+  --sig-hold-bg:   color-mix(in srgb, var(--color-gray-500) 60%, transparent);
+}
+/* XQM: new/exit/add/reduce 自動繼承 --color-trade-up/down（已在 [data-platform="xqm"] block override）；hold 需顯式指定 */
+[data-platform="xqm"] {
+  --sig-hold-bg: color-mix(in srgb, var(--xqm-gray-09) 30%, transparent);
+}
+[data-platform="xq"][data-theme="light"] .card-new-label   { background: var(--xq-red-500);   }
+[data-platform="xq"][data-theme="light"] .card-clear-label { background: var(--xq-green-500); }
 
 /* ── 加減碼分析 Bar chart hover ── */
 .chg-bar-col {
@@ -1694,16 +1849,8 @@ button:hover .chip-clear-tag {
 [data-platform="xqm"] .tag      { font-weight: var(--f-weight) !important; }
 [data-platform="xqm"] .sig-pill { font-weight: var(--f-weight) !important; }
 
-/* XQM filter chip 底色 — 覆蓋 --tag-bg（dark theme 直接寫在 .tag 上，需要更高優先度蓋過） */
-[data-platform="xqm"] [id$="-chip-all"] .tag,
-[data-platform="xqm"] [id$="-chip-new"] .tag,
-[data-platform="xqm"] [id$="-chip-add"] .tag,
-[data-platform="xqm"] [id$="-chip-hold"] .tag,
-[data-platform="xqm"] [id$="-chip-reduce"] .tag,
-[data-platform="xqm"] [id$="-chip-clear"] .tag,
-[data-platform="xqm"] [id$="-chip-exit"] .tag {
-  --tag-bg: var(--comp-filter-chip-bg);
-}
+/* XQM filter chip 底色 — 每種 chip 個別設定（暗版邏輯 × XQM 色票）；
+   原本統一 --comp-filter-chip-bg 已移至上方 XQM overrides block（line ~1681）改為個別規則 */
 
 /* XQM tag — 覆蓋 element-scoped --tag-text（rd-app.css 定義在 .tag 上，無法從 :root 繼承蓋過） */
 [data-platform="xqm"] .tag[data-variant="blue"] {
@@ -1717,6 +1864,14 @@ button:hover .chip-clear-tag {
 [data-platform="xqm"] .tag[data-variant="green-teal"] {
   --tag-text: var(--xqm-trade-down);       /* 減碼 → #0AA446 */
 }
+/* filter chip 有彩色底色，文字一律白（蓋過上方 data-variant 文字色，specificity 0,4,0 > 0,3,0）*/
+[data-platform="xqm"] [id$="-chip-all"] .tag[data-variant="blue"],
+[data-platform="xqm"] [id$="-chip-add"] .tag[data-variant="red"],
+[data-platform="xqm"] [id$="-chip-reduce"] .tag[data-variant="green-teal"] {
+  --tag-text:        #fff;
+  --tag-text-hover:  #fff;
+  --tag-text-active: #fff;
+}
 
 /* XQM 表格內 tag：字級 H7 + other-02 底色（filter chip 有更高優先度的 ID 規則，不受影響） */
 [data-platform="xqm"] [data-slot="table-cell"] .tag {
@@ -1728,8 +1883,6 @@ button:hover .chip-clear-tag {
   font-size: var(--xqm-fs-h7) !important;
 }
 
-/* XQM 表格排序箭頭 → gray-12（覆蓋 rd-app.css 的 --color-theme-500）*/
-[data-platform="xqm"] .table-head-sort-icon { color: var(--xqm-gray-12); }
 
 /* ── 投資比率 Bar 寬度（components.html 元件庫） ── */
 .ratio-bar-track               { width: 80px; }
@@ -1766,6 +1919,12 @@ button:hover .chip-clear-tag {
 :root[data-platform="xqm"] .summary-card-value {
   font-size:   16px !important;  /* H6 */
   font-weight: 700  !important;  /* bold */
+}
+
+/* XQ/XQM segment — 直接設 font-size，不靠 custom property 繼承（規避 rd-app.css @layer utilities 邊界問題） */
+:root[data-platform="xq"] .segment-item {
+  font-size:   var(--f-base)   !important;  /* XQ: 14px */
+  font-weight: var(--f-weight) !important;  /* XQ: 400 */
 }
 
 /* XQM segment — 直接設 color/bg/border，不靠 custom property 繼承（規避 @layer 邊界問題） */

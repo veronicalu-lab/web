@@ -221,9 +221,27 @@
       margin-left: 0;
     }
 
+    /* XQM 桌面預覽「手機框」：寬度固定 390px，高度跟著瀏覽器視窗高度、上下各留 20px，
+       原本 proto-supplement.css 是 padding:24px 0 48px（上下不對稱）+ min-height:100vh，這裡改成上下對稱 20px */
+    body.is-xqm #proto-main {
+      padding: 20px 0;
+    }
+    body.is-xqm .page.active {
+      height: calc(100vh - 40px);
+      max-height: calc(100vh - 40px);
+      min-height: 0;
+      overflow-y: auto;
+    }
+
     /* XQM 版：偵測到手機螢幕寬度時關閉左側欄（prototype 導覽用側欄，正式 App 沒有這塊），
        讓內容區改用滿版寬度。純 CSS media query，會隨實際瀏覽器寬度即時反應 */
     @media (max-width: 768px) {
+      /* 真手機瀏覽器本身就是「手機框」，改用實際裝置高度，不要卡在桌面預覽用的 844px */
+      body.is-xqm .page.active {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100vh;
+      }
       [data-platform="xqm"] .proto-sidebar { display: none; }
       [data-platform="xqm"] #proto-main { margin-left: 0 !important; }
       [data-platform="xqm"] #mkt-compact-hdr,
@@ -4993,7 +5011,7 @@
         _syncHash();
         const fmtD = d => `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
         const today = new Date();
-        const FILE_UPDATED = '2026/07/17 15:18';
+        const FILE_UPDATED = '2026/07/17 15:47';
         const utEl = document.getElementById('sidebar-update-time');
         if (utEl) utEl.textContent = `檔案更新時間：${FILE_UPDATED}`;
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
